@@ -1,0 +1,31 @@
+
+> exfluencervn@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/main/influencer/shop/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/mnt/c/Users/user/OneDrive/민기현_SUPERS/슈퍼_익스플루언서/베트남/exfluencervn/app/main/influencer/shop/page.tsx[0m:281:1]
+ [2m281[0m |   };
+ [2m282[0m | 
+ [2m283[0m |   return (
+ [2m284[0m |     <div className="min-h-screen bg-dark-700 pb-20">
+     : [31;1m     ^^^[0m
+ [2m285[0m |       {/* 페이스북/SNS 공유 최적화 */}
+ [2m286[0m |       <SocialMetaTags
+ [2m287[0m |         title="🛍️ 포인트 상점 - 응모권, 프리미엄 아이템 | Exfluencer VN"
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/main/influencer/shop/page.tsx
+
+
+> Build failed because of webpack errors

@@ -1,0 +1,94 @@
+{
+  "common": {
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "sort": "Sắp xếp",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "submit": "Gửi",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "campaigns": "Chiến dịch",
+    "favorites": "Yêu thích",
+    "messages": "Tin nhắn",
+    "stats": "Thống kê",
+    "profile": "Hồ sơ",
+    "notifications": "Thông báo",
+    "wallet": "Ví"
+  },
+  "campaign": {
+    "title": "Chiến dịch",
+    "create": "Tạo chiến dịch",
+    "detail": "Chi tiết chiến dịch",
+    "apply": "Ứng tuyển",
+    "eligible": "Đủ điều kiện",
+    "notEligible": "Không đủ điều kiện",
+    "deadline": "Hạn chót",
+    "budget": "Ngân sách",
+    "applicants": "Ứng viên",
+    "matching": "Tỷ lệ phù hợp",
+    "requirements": "Yêu cầu",
+    "description": "Mô tả",
+    "status": {
+      "active": "Đang hoạt động",
+      "completed": "Hoàn thành",
+      "pending": "Chờ xử lý",
+      "draft": "Bản nháp"
+    }
+  },
+  "influencer": {
+    "profile": "Hồ sơ",
+    "followers": "Người theo dõi",
+    "engagement": "Tỷ lệ tương tác",
+    "rating": "Đánh giá",
+    "completedCampaigns": "Chiến dịch hoàn thành",
+    "search": "Tìm influencer",
+    "invite": "Mời",
+    "portfolio": "Danh mục đầu tư"
+  },
+  "profile": {
+    "basic": "Thông tin cơ bản",
+    "demographic": "Nhân khẩu học",
+    "lifestyle": "Lối sống",
+    "beauty": "Thông tin làm đẹp",
+    "completion": "Hoàn thiện",
+    "edit": "Chỉnh sửa hồ sơ"
+  },
+  "notification": {
+    "title": "Thông báo",
+    "unread": "Chưa đọc",
+    "all": "Tất cả",
+    "markAllRead": "Đánh dấu đã đọc",
+    "settings": "Cài đặt thông báo",
+    "types": {
+      "campaignMatch": "Chiến dịch mới phù hợp",
+      "deadline": "Sắp hết hạn",
+      "accepted": "Đã chấp nhận",
+      "rejected": "Đã từ chối",
+      "payment": "Thanh toán hoàn tất"
+    }
+  },
+  "message": {
+    "title": "Tin nhắn",
+    "send": "Gửi",
+    "typeMessage": "Nhập tin nhắn...",
+    "noMessages": "Không có tin nhắn",
+    "newConversation": "Cuộc trò chuyện mới"
+  },
+  "review": {
+    "title": "Đánh giá",
+    "write": "Viết đánh giá",
+    "rating": "Xếp hạng",
+    "comment": "Bình luận",
+    "submit": "Gửi đánh giá"
+  }
+}

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * GET /api/verifications
  * 사업자 인증 목록 조회

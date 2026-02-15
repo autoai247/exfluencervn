@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * GET /api/campaigns/[id]
  * 캠페인 상세 조회

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+// 이 API 라우트는 동적이어야 함 (쿠키 사용)
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/auth/me
  * 현재 로그인한 사용자 정보 조회

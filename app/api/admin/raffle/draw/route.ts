@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db/jsonDb';
 
+
+export const dynamic = 'force-dynamic';
 // 추첨 실행 (관리자용)
 export async function POST(request: NextRequest) {
   try {

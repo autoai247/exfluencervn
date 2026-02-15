@@ -18,7 +18,7 @@ import {
   FileText,
   CheckCircle,
   Trash2,
-  IdCard,
+  User,
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
@@ -378,7 +378,7 @@ export default function AdvertiserProfileEditPage() {
           {/* ===== 기본 정보 ===== */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <IdCard size={18} className="text-primary" />
+              <User size={18} className="text-primary" />
               <h3 className="text-sm font-bold text-gray-300">{text.basicInfo}</h3>
             </div>
 

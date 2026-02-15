@@ -402,6 +402,10 @@ export default function CampaignDetailPage() {
   const [showPaymentGuaranteeModal, setShowPaymentGuaranteeModal] = useState(false);
   const [showContractProtectionModal, setShowContractProtectionModal] = useState(false);
 
+  // 통계 모달 상태
+  const [showApplicantsModal, setShowApplicantsModal] = useState(false);
+  const [showEarningsModal, setShowEarningsModal] = useState(false);
+
   // Load share history from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('exfluencer_share_history');
@@ -763,12 +767,16 @@ export default function CampaignDetailPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-dark-600 rounded-lg p-3 border-2 border-warning/50">
+              <div
+                onClick={() => setShowApplicantsModal(true)}
+                className="bg-dark-600 rounded-lg p-3 border-2 border-warning/50 cursor-pointer hover:border-warning hover:shadow-lg transition-all"
+              >
                 <div className="flex items-center gap-2 mb-1">
                   <Users size={16} className="text-warning" />
                   <p className="text-xs text-gray-400">{t.campaignDetail.urgency.slotsRemaining || '남은 자리'}</p>
                 </div>
                 <p className="text-2xl font-bold text-warning">{mockCampaign.urgency.remainingSlots}/{mockCampaign.urgency.totalSlots}</p>
+                <p className="text-xs text-gray-400 mt-1">👆 {language === 'ko' ? '지원자 보기' : 'Xem ứng viên'}</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 border-2 border-error/50">
                 <div className="flex items-center gap-2 mb-1">
@@ -782,7 +790,7 @@ export default function CampaignDetailPage() {
         )}
 
         {/* 최근 지원자 프로필 섹션 (신뢰도 향상) */}
-        <div className="card">
+        <div className="card cursor-pointer hover:border-primary/50 transition-all" onClick={() => setShowApplicantsModal(true)}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users size={20} className="text-primary" />
@@ -1010,10 +1018,16 @@ export default function CampaignDetailPage() {
 
         {/* Earnings Breakdown Calculator */}
         {mockCampaign.earningsBreakdown && (
-          <div className="card bg-gradient-to-br from-success/10 to-accent/10 border-success/30">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-xl">💰</span>
-              <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || '수익 계산기'}</h3>
+          <div
+            onClick={() => setShowEarningsModal(true)}
+            className="card bg-gradient-to-br from-success/10 to-accent/10 border-success/30 cursor-pointer hover:border-success hover:shadow-lg transition-all"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💰</span>
+                <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || '수익 계산기'}</h3>
+              </div>
+              <span className="text-xs text-gray-400">👆 {language === 'ko' ? '상세 보기' : 'Xem chi tiết'}</span>
             </div>
 
             <div className="space-y-3">
@@ -2571,6 +2585,161 @@ export default function CampaignDetailPage() {
         isOpen={showContractProtectionModal}
         onClose={() => setShowContractProtectionModal(false)}
       />
+
+      {/* 지원자 리스트 모달 */}
+      {showApplicantsModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={() => setShowApplicantsModal(false)}>
+          <div className="bg-dark-700 rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-primary/30" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Users size={20} className="text-primary" />
+                {language === 'ko' ? '최근 지원자 목록' : 'Danh sách ứng viên gần đây'}
+              </h3>
+              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-400 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/30">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-300">{language === 'ko' ? '총 지원자' : 'Tổng ứng viên'}</span>
+                <span className="text-lg font-bold text-primary">{mockCampaign.urgency.recentApplications}명</span>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-sm text-gray-300">{language === 'ko' ? '남은 자리' : 'Vị trí còn lại'}</span>
+                <span className="text-lg font-bold text-warning">{mockCampaign.urgency.remainingSlots}/{mockCampaign.urgency.totalSlots}</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {generateApplicantAvatars(params?.id as string || '1', mockCampaign.urgency.recentApplications, 20).map((avatar, idx) => (
+                <div key={idx} className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg hover:bg-dark-500 transition-all">
+                  <div className="relative">
+                    <img
+                      src={avatar.url}
+                      alt={avatar.name}
+                      className="w-12 h-12 rounded-full border-2 border-primary/30"
+                    />
+                    {avatar.isOnline && (
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-dark-700"></div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-white flex items-center gap-2">
+                      {avatar.name}
+                      {avatar.badge && (
+                        <span className={`${avatar.badge.color} text-white text-[10px] px-1.5 py-0.5 rounded-full`}>
+                          {avatar.badge.type === 'verified' && '✓'}
+                          {avatar.badge.type === 'popular' && '⭐'}
+                          {avatar.badge.type === 'rising' && '🔥'}
+                          {avatar.badge.type === 'new' && '🆕'}
+                        </span>
+                      )}
+                    </h4>
+                    <p className="text-xs text-gray-400">{(avatar.followers / 1000).toFixed(1)}K {language === 'ko' ? '팔로워' : 'người theo dõi'}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-gray-500">{avatar.applyTime}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs text-gray-400 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
+              💡 {language === 'ko'
+                ? '다른 인플루언서들도 이 캠페인에 관심을 갖고 있습니다. 서둘러 지원하세요!'
+                : 'Các influencer khác cũng quan tâm đến chiến dịch này. Hãy nhanh tay ứng tuyển!'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 수익 상세 모달 */}
+      {showEarningsModal && mockCampaign.earningsBreakdown && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={() => setShowEarningsModal(false)}>
+          <div className="bg-dark-700 rounded-2xl p-6 w-full max-w-md border border-success/30" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <DollarSign size={20} className="text-success" />
+                {language === 'ko' ? '수익 상세 내역' : 'Chi tiết thu nhập'}
+              </h3>
+              <button onClick={() => setShowEarningsModal(false)} className="text-gray-400 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {/* 기본 페이 */}
+              <div className="p-4 bg-success/10 rounded-lg border border-success/30">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle size={16} className="text-success" />
+                    <span className="text-sm text-white">{language === 'ko' ? '기본 페이' : 'Thanh toán cơ bản'}</span>
+                  </div>
+                  <span className="text-xl font-bold text-success">{formatPoints(mockCampaign.earningsBreakdown.basePayment)}</span>
+                </div>
+                <p className="text-xs text-gray-400">{language === 'ko' ? '캠페인 완료 시 보장' : 'Đảm bảo khi hoàn thành'}</p>
+              </div>
+
+              {/* 제품 가치 */}
+              <div className="p-4 bg-primary/10 rounded-lg border border-primary/30">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Gift size={16} className="text-primary" />
+                    <span className="text-sm text-white">{language === 'ko' ? '제공 제품 가치' : 'Giá trị sản phẩm'}</span>
+                  </div>
+                  <span className="text-xl font-bold text-primary">{formatPoints(mockCampaign.earningsBreakdown.productValue)}</span>
+                </div>
+                <p className="text-xs text-gray-400">{language === 'ko' ? '무료로 제공되는 제품' : 'Sản phẩm miễn phí'}</p>
+              </div>
+
+              {/* 보너스 기회 */}
+              {mockCampaign.earningsBreakdown.bonusOpportunities.length > 0 && (
+                <div className="p-4 bg-warning/10 rounded-lg border border-warning/30">
+                  <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                    <Trophy size={16} className="text-warning" />
+                    {language === 'ko' ? '보너스 기회' : 'Cơ hội thưởng'}
+                  </h4>
+                  <div className="space-y-2">
+                    {mockCampaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
+                      <div key={idx} className="flex items-start justify-between text-xs">
+                        <div className="flex-1">
+                          <p className="text-white font-medium">{bonus.type}</p>
+                          <p className="text-gray-400">{bonus.condition}</p>
+                        </div>
+                        <span className="text-warning font-bold">+{formatPoints(bonus.amount)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 총 예상 수익 */}
+              <div className="p-4 bg-gradient-to-br from-success/20 to-primary/20 rounded-lg border-2 border-success">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-white font-bold">{language === 'ko' ? '총 예상 수익' : 'Tổng thu nhập dự kiến'}</span>
+                  <span className="text-2xl font-bold text-success">
+                    {formatPoints(
+                      mockCampaign.earningsBreakdown.basePayment +
+                      mockCampaign.earningsBreakdown.productValue +
+                      mockCampaign.earningsBreakdown.bonusOpportunities.reduce((sum: number, b: any) => sum + b.amount, 0)
+                    )}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  {language === 'ko' ? '보너스 포함 최대 수익' : 'Thu nhập tối đa bao gồm thưởng'}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-400 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
+              💡 {language === 'ko'
+                ? '보너스는 성과 목표 달성 시 지급됩니다'
+                : 'Tiền thưởng được trả khi đạt mục tiêu hiệu suất'}
+            </p>
+          </div>
+        </div>
+      )}
 
       <BottomNav userType="influencer" />
     </div>

@@ -432,11 +432,11 @@ function CampaignsPageContent() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // 스크롤 방향 감지
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        // 아래로 스크롤 중 & 100px 이상 내려감 → 헤더 숨김
+      // 스크롤 방향 감지 - 더 빠른 반응
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        // 아래로 스크롤 중 & 80px 이상 내려감 → 헤더 숨김
         setHideHeader(true);
-      } else if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
+      } else if (currentScrollY < lastScrollY.current || currentScrollY < 30) {
         // 위로 스크롤 중 또는 상단 근처 → 헤더 표시
         setHideHeader(false);
       }
@@ -750,7 +750,7 @@ function CampaignsPageContent() {
       {!hideHeader && (
         <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500">
         <Link href="/main/influencer/korea-dream">
-          <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] animate-pulse">
+          <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px]">
             <div className="bg-dark-700 rounded-xl px-4 py-3 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-xl"></div>
 

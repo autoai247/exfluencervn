@@ -83,6 +83,21 @@ export default function CreateCampaignPage() {
     type: 'image' | 'video';
   }>>([]);
 
+  // Form errors for inline validation
+  const [errors, setErrors] = useState<{
+    title?: string;
+    description?: string;
+    budget?: string;
+    platforms?: string;
+    categories?: string;
+    startDate?: string;
+    endDate?: string;
+    applicationDeadline?: string;
+  }>({});
+
+  // Loading state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Track scroll progress
   useEffect(() => {
     const handleScroll = () => {
@@ -103,62 +118,67 @@ export default function CreateCampaignPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
-    const errors: string[] = [];
+    // Clear previous errors
+    const newErrors: typeof errors = {};
 
+    // Validation
     if (!formData.title.trim()) {
-      errors.push('캠페인 제목을 입력해주세요');
+      newErrors.title = '캠페인 제목을 입력해주세요';
     }
 
     if (!formData.description.trim()) {
-      errors.push('캠페인 설명을 입력해주세요');
+      newErrors.description = '캠페인 설명을 입력해주세요';
     }
 
     if (formData.platforms.length === 0) {
-      errors.push('플랫폼을 최소 1개 선택해주세요');
+      newErrors.platforms = '플랫폼을 최소 1개 선택해주세요';
     }
 
     if (formData.categories.length === 0) {
-      errors.push('카테고리를 최소 1개 선택해주세요');
+      newErrors.categories = '카테고리를 최소 1개 선택해주세요';
     }
 
     if (!formData.budget || parseInt(formData.budget) <= 0) {
-      errors.push('예산을 입력해주세요');
+      newErrors.budget = '예산을 입력해주세요';
     }
 
     if (!formData.startDate) {
-      errors.push('시작일을 선택해주세요');
+      newErrors.startDate = '시작일을 선택해주세요';
     }
 
     if (!formData.endDate) {
-      errors.push('종료일을 선택해주세요');
+      newErrors.endDate = '종료일을 선택해주세요';
     }
 
     if (!formData.applicationDeadline) {
-      errors.push('지원 마감일을 선택해주세요');
+      newErrors.applicationDeadline = '지원 마감일을 선택해주세요';
     }
 
-    // Note: Deliverables field to be added in future update
+    // Update errors state
+    setErrors(newErrors);
 
-    // Show validation errors
-    if (errors.length > 0) {
-      alert('다음 항목을 확인해주세요:\n\n' + errors.map((e, i) => `${i + 1}. ${e}`).join('\n'));
+    // Show validation errors if any
+    if (Object.keys(newErrors).length > 0) {
+      // Scroll to first error
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    // TODO: Save to API
+    // Start loading
+    setIsSubmitting(true);
 
-    // Show success message and wait for user acknowledgment before routing
-    await new Promise<void>((resolve) => {
-      const confirmed = window.confirm('캠페인이 생성되었습니다!\n\n광고주 대시보드로 이동하시겠습니까?');
-      if (confirmed) {
-        resolve();
-      } else {
-        resolve();
-      }
-    });
+    try {
+      // TODO: Save to API
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-    router.push('/main/advertiser');
+      // Success - navigate to dashboard
+      router.push('/main/advertiser');
+    } catch (error) {
+      alert('캠페인 생성에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const togglePlatform = (platform: Platform) => {
@@ -231,9 +251,26 @@ export default function CreateCampaignPage() {
                 <p className="text-xs text-gray-500 mt-0.5">{Math.round(scrollProgress)}% 완료</p>
               </div>
             </div>
-            <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
-              <Save size={18} />
-              생성
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className={`px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1 ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
+              }`}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  생성 중...
+                </>
+              ) : (
+                <>
+                  <Save size={18} />
+                  생성
+                </>
+              )}
             </button>
           </div>
           <Breadcrumb
@@ -254,6 +291,29 @@ export default function CreateCampaignPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="container-mobile space-y-6 py-6">
+        {/* Error Summary */}
+        {Object.keys(errors).length > 0 && (
+          <div className="bg-red-50 border-2 border-red-500 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-white text-sm font-bold">!</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-red-900 font-bold mb-2">입력 항목을 확인해주세요</h3>
+                <ul className="space-y-1">
+                  {Object.entries(errors).map(([key, value]) => (
+                    value && (
+                      <li key={key} className="text-red-700 text-sm">
+                        • {value}
+                      </li>
+                    )
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Basic Information */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -267,22 +327,42 @@ export default function CreateCampaignPage() {
               <input
                 type="text"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, title: e.target.value });
+                  if (errors.title) setErrors({ ...errors, title: undefined });
+                }}
                 placeholder="예: 신규 스킨케어 제품 리뷰 캠페인"
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                className={`w-full px-4 py-2.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent ${
+                  errors.title ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-gray-900'
+                }`}
                 required
               />
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  ⚠️ {errors.title}
+                </p>
+              )}
             </div>
 
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">설명 *</label>
               <textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, description: e.target.value });
+                  if (errors.description) setErrors({ ...errors, description: undefined });
+                }}
                 placeholder="캠페인에 대한 상세한 설명을 입력하세요..."
-                className="input min-h-[100px]"
+                className={`input min-h-[100px] ${
+                  errors.description ? '!border-red-500 !focus:ring-red-500' : ''
+                }`}
                 required
               />
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  ⚠️ {errors.description}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-3">

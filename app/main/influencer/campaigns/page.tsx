@@ -344,6 +344,14 @@ export default function CampaignsPage() {
 
   // ADMIN MODE: Toggle to see demo campaign indicators (only for platform owner)
   // In production, this would check user.isAdmin from authentication
+  // For now, check if ?admin=true in URL or development mode
+  const [isAdmin] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('admin') === 'true' || process.env.NODE_ENV === 'development';
+    }
+    return false;
+  });
   const [isAdminMode, setIsAdminMode] = useState(false);
 
   // Use translated mock data based on current language
@@ -566,31 +574,33 @@ export default function CampaignsPage() {
         onNotification={() => router.push('/main/influencer/notifications')}
       />
 
-      {/* ADMIN MODE TOGGLE (hidden from regular users) */}
-      <div className="sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500">
-        <div className="px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 font-mono">🔐 Admin Panel</span>
-            {isAdminMode && (
-              <Link href="/admin/demo-campaigns">
-                <button className="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white text-[10px] rounded-full font-bold transition-all flex items-center gap-1">
-                  ⚙️ 자동 생성 설정
-                </button>
-              </Link>
-            )}
+      {/* ADMIN MODE TOGGLE (only visible to admins) */}
+      {isAdmin && (
+        <div className="sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500">
+          <div className="px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 font-mono">🔐 Admin Panel</span>
+              {isAdminMode && (
+                <Link href="/admin/demo-campaigns">
+                  <button className="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white text-[10px] rounded-full font-bold transition-all flex items-center gap-1">
+                    ⚙️ 자동 생성 설정
+                  </button>
+                </Link>
+              )}
+            </div>
+            <button
+              onClick={() => setIsAdminMode(!isAdminMode)}
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                isAdminMode
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
+                  : 'bg-dark-600 text-gray-500 hover:bg-dark-500'
+              }`}
+            >
+              {isAdminMode ? '🎭 Admin Mode ON' : 'Admin Mode OFF'}
+            </button>
           </div>
-          <button
-            onClick={() => setIsAdminMode(!isAdminMode)}
-            className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-              isAdminMode
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30'
-                : 'bg-dark-600 text-gray-500 hover:bg-dark-500'
-            }`}
-          >
-            {isAdminMode ? '🎭 Admin Mode ON' : 'Admin Mode OFF'}
-          </button>
         </div>
-      </div>
+      )}
 
       {/* 🇰🇷 KOREA DREAM 고정 배너 */}
       <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500">
@@ -926,24 +936,30 @@ export default function CampaignsPage() {
             </div>
 
             {/* Active Filters Count */}
-            {(filters.platforms.length > 0 || filters.categories.length > 0 || filters.location || filters.minBudget || filters.maxBudget || filters.type || filters.eligibleOnly || filters.requiresVehicle || filters.requiresParent || filters.requiresPet || filters.maritalStatus) && (
-              <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg">
-                <div className="text-xs text-primary font-semibold">
-                  ✅ {
-                    filters.platforms.length +
-                    filters.categories.length +
-                    (filters.location ? 1 : 0) +
-                    (filters.minBudget || filters.maxBudget ? 1 : 0) +
-                    (filters.type ? 1 : 0) +
-                    (filters.eligibleOnly ? 1 : 0) +
-                    (filters.requiresVehicle ? 1 : 0) +
-                    (filters.requiresParent ? 1 : 0) +
-                    (filters.requiresPet ? 1 : 0) +
-                    (filters.maritalStatus ? 1 : 0)
-                  }{t.campaignFilters.filtersApplied}
+            {(() => {
+              const activeFilterCount = [
+                filters.platforms.length > 0,
+                filters.categories.length > 0,
+                filters.location,
+                filters.minBudget || filters.maxBudget,
+                filters.type,
+                filters.eligibleOnly,
+                filters.requiresVehicle,
+                filters.requiresParent,
+                filters.requiresPet,
+                filters.maritalStatus,
+              ].filter(Boolean).length;
+
+              return activeFilterCount > 0 ? (
+                <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg">
+                  <div className="text-xs text-primary font-semibold">
+                    ✅ {activeFilterCount}{t.campaignFilters.filtersApplied}
+                    {filters.platforms.length > 1 && ` (플랫폼 ${filters.platforms.length}개)`}
+                    {filters.categories.length > 1 && ` (카테고리 ${filters.categories.length}개)`}
+                  </div>
                 </div>
-              </div>
-            )}
+              ) : null;
+            })()}
 
             {/* Reset Button */}
             <button

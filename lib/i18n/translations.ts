@@ -1029,6 +1029,50 @@ export interface Translations {
     adminLogin: string;
     and: string;
     agreeBySigningUp: string;
+    // How It Works
+    howItWorksTitle: string;
+    step1Title: string;
+    step1Desc: string;
+    step2Title: string;
+    step2Desc: string;
+    step3Title: string;
+    step3Desc: string;
+    // For Influencers
+    forInfluencersTitle: string;
+    influencerBenefit1Title: string;
+    influencerBenefit1Desc: string;
+    influencerBenefit2Title: string;
+    influencerBenefit2Desc: string;
+    influencerBenefit3Title: string;
+    influencerBenefit3Desc: string;
+    influencerBenefit4Title: string;
+    influencerBenefit4Desc: string;
+    // For Advertisers
+    forAdvertisersTitle: string;
+    advertiserBenefit1Title: string;
+    advertiserBenefit1Desc: string;
+    advertiserBenefit2Title: string;
+    advertiserBenefit2Desc: string;
+    advertiserBenefit3Title: string;
+    advertiserBenefit3Desc: string;
+    advertiserBenefit4Title: string;
+    advertiserBenefit4Desc: string;
+    // Success Stats
+    successStatsTitle: string;
+    stat1Value: string;
+    stat1Label: string;
+    stat2Value: string;
+    stat2Label: string;
+    stat3Value: string;
+    stat3Label: string;
+    stat4Value: string;
+    stat4Label: string;
+    // Platforms
+    platformsTitle: string;
+    platformsSubtitle: string;
+    // Final CTA
+    readyToStart: string;
+    joinNow: string;
   };
 
   // Auth
@@ -1647,6 +1691,50 @@ export const translations: Record<Language, Translations> = {
       adminLogin: '🔐 Đăng nhập quản trị viên',
       and: 'và',
       agreeBySigningUp: '',
+      // How It Works
+      howItWorksTitle: 'Cách thức hoạt động',
+      step1Title: '1. Đăng ký miễn phí',
+      step1Desc: 'Tạo tài khoản chỉ trong 2 phút. Chọn vai trò của bạn: Influencer hoặc Nhà quảng cáo.',
+      step2Title: '2. Tìm & Kết nối',
+      step2Desc: 'Influencer tìm chiến dịch phù hợp. Nhà quảng cáo tìm KOL đã xác minh với dữ liệu thực.',
+      step3Title: '3. Hợp tác & Kiếm tiền',
+      step3Desc: 'Hoàn thành chiến dịch, nhận thanh toán an toàn. Phát triển cùng nhau trong nền tảng.',
+      // For Influencers
+      forInfluencersTitle: 'Dành cho Influencers',
+      influencerBenefit1Title: '💰 Thu nhập ổn định',
+      influencerBenefit1Desc: 'Kiếm tiền từ nội dung với hàng nghìn chiến dịch đa dạng. Phí 0%, rút tiền nhanh chóng.',
+      influencerBenefit2Title: '🤝 Hợp tác với thương hiệu lớn',
+      influencerBenefit2Desc: 'Kết nối với các thương hiệu uy tín tại Việt Nam. Xây dựng danh mục đối tác chất lượng.',
+      influencerBenefit3Title: '📊 Công cụ phân tích chuyên nghiệp',
+      influencerBenefit3Desc: 'Theo dõi hiệu suất, tăng trưởng và thu nhập của bạn. Tối ưu hóa chiến lược nội dung.',
+      influencerBenefit4Title: '🎓 Hỗ trợ & Đào tạo',
+      influencerBenefit4Desc: 'Nhận hướng dẫn chuyên môn, tips & tricks từ các KOL hàng đầu. Phát triển kỹ năng liên tục.',
+      // For Advertisers
+      forAdvertisersTitle: 'Dành cho Nhà quảng cáo',
+      advertiserBenefit1Title: '🎯 Tìm đúng KOL',
+      advertiserBenefit1Desc: 'Hệ thống AI giúp tìm KOL phù hợp với thương hiệu. Lọc theo niche, độ tương tác, giá cả.',
+      advertiserBenefit2Title: '✅ KOL đã xác minh',
+      advertiserBenefit2Desc: 'Mọi KOL đều được kiểm tra kỹ lưỡng. Dữ liệu follower thật, không fake, không bot.',
+      advertiserBenefit3Title: '📈 ROI minh bạch',
+      advertiserBenefit3Desc: 'Theo dõi hiệu quả chiến dịch realtime. Báo cáo chi tiết về reach, engagement, conversion.',
+      advertiserBenefit4Title: '💳 Thanh toán an toàn',
+      advertiserBenefit4Desc: 'Hệ thống escrow bảo vệ ngân sách. Chỉ thanh toán khi chiến dịch hoàn thành đúng yêu cầu.',
+      // Success Stats
+      successStatsTitle: 'Thành công cùng Exfluencer VN',
+      stat1Value: '95%',
+      stat1Label: 'Tỷ lệ hoàn thành chiến dịch',
+      stat2Value: '2 giờ',
+      stat2Label: 'Thời gian phản hồi trung bình',
+      stat3Value: '300%',
+      stat3Label: 'ROI trung bình',
+      stat4Value: '10,000+',
+      stat4Label: 'Chiến dịch thành công',
+      // Platforms
+      platformsTitle: 'Hỗ trợ mọi nền tảng phổ biến',
+      platformsSubtitle: 'Instagram, TikTok, YouTube, Facebook - Tất cả trong một nền tảng duy nhất',
+      // Final CTA
+      readyToStart: 'Sẵn sàng bắt đầu hành trình của bạn?',
+      joinNow: 'Tham gia ngay - Miễn phí 100%',
     },
     auth: {
       login: {
@@ -3194,6 +3282,50 @@ export const translations: Record<Language, Translations> = {
       adminLogin: '🔐 관리자 로그인',
       and: '및',
       agreeBySigningUp: '에 동의하게 됩니다',
+      // How It Works
+      howItWorksTitle: '이용 방법',
+      step1Title: '1. 무료 회원가입',
+      step1Desc: '2분 안에 계정을 만드세요. 인플루언서 또는 광고주 중 선택하세요.',
+      step2Title: '2. 검색 & 연결',
+      step2Desc: '인플루언서는 적합한 캠페인을 찾고, 광고주는 검증된 KOL을 실제 데이터로 찾습니다.',
+      step3Title: '3. 협업 & 수익 창출',
+      step3Desc: '캠페인을 완료하고 안전한 결제를 받으세요. 플랫폼에서 함께 성장하세요.',
+      // For Influencers
+      forInfluencersTitle: '인플루언서를 위한',
+      influencerBenefit1Title: '💰 안정적인 수입',
+      influencerBenefit1Desc: '수천 개의 다양한 캠페인으로 콘텐츠에서 수익을 창출하세요. 수수료 0%, 빠른 출금.',
+      influencerBenefit2Title: '🤝 대형 브랜드와 협업',
+      influencerBenefit2Desc: '베트남 내 신뢰할 수 있는 브랜드와 연결하세요. 고품질 파트너 포트폴리오를 구축하세요.',
+      influencerBenefit3Title: '📊 전문 분석 도구',
+      influencerBenefit3Desc: '성과, 성장 및 수익을 추적하세요. 콘텐츠 전략을 최적화하세요.',
+      influencerBenefit4Title: '🎓 지원 & 교육',
+      influencerBenefit4Desc: '전문 가이드, 팁 & 트릭을 최고 KOL로부터 받으세요. 지속적인 스킬 개발.',
+      // For Advertisers
+      forAdvertisersTitle: '광고주를 위한',
+      advertiserBenefit1Title: '🎯 정확한 KOL 찾기',
+      advertiserBenefit1Desc: 'AI 시스템이 브랜드에 맞는 KOL을 찾아드립니다. 니치, 참여도, 가격으로 필터링.',
+      advertiserBenefit2Title: '✅ 검증된 KOL',
+      advertiserBenefit2Desc: '모든 KOL은 철저히 검증됩니다. 실제 팔로워 데이터, 가짜 없음, 봇 없음.',
+      advertiserBenefit3Title: '📈 투명한 ROI',
+      advertiserBenefit3Desc: '실시간으로 캠페인 효과를 추적하세요. 도달률, 참여도, 전환율 상세 보고서.',
+      advertiserBenefit4Title: '💳 안전한 결제',
+      advertiserBenefit4Desc: '에스크로 시스템으로 예산을 보호합니다. 캠페인이 요구사항대로 완료될 때만 결제.',
+      // Success Stats
+      successStatsTitle: 'Exfluencer VN과 함께한 성공',
+      stat1Value: '95%',
+      stat1Label: '캠페인 완료율',
+      stat2Value: '2시간',
+      stat2Label: '평균 응답 시간',
+      stat3Value: '300%',
+      stat3Label: '평균 ROI',
+      stat4Value: '10,000+',
+      stat4Label: '성공한 캠페인',
+      // Platforms
+      platformsTitle: '모든 주요 플랫폼 지원',
+      platformsSubtitle: 'Instagram, TikTok, YouTube, Facebook - 하나의 플랫폼에서 모두',
+      // Final CTA
+      readyToStart: '당신의 여정을 시작할 준비가 되셨나요?',
+      joinNow: '지금 참여하기 - 100% 무료',
     },
     auth: {
       login: {

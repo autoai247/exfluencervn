@@ -2,52 +2,75 @@
 
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { useLanguage, LanguageSelector } from '@/lib/i18n/LanguageContext';
 
 export default function TermsPage() {
+  const { t, language } = useLanguage();
+
   return (
     <main className="min-h-screen bg-dark-700">
       <div className="container-mobile min-h-screen">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="btn-icon text-white">
-              <ArrowLeft size={24} />
-            </Link>
-            <h1 className="text-lg font-bold text-white">서비스 약관</h1>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Link href="/" className="btn-icon text-white">
+                <ArrowLeft size={24} />
+              </Link>
+              <h1 className="text-lg font-bold text-white">{t.homepage.termsLink}</h1>
+            </div>
+            <LanguageSelector />
           </div>
         </div>
 
         {/* Content */}
         <div className="px-4 py-6 space-y-6 text-gray-300">
           <div className="text-sm text-gray-400">
-            최종 수정일: 2024년 2월 12일
+            {language === 'ko' ? '최종 수정일: 2024년 2월 12일' : 'Cập nhật lần cuối: 12/02/2024'}
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">1. 서비스 이용약관</h2>
+            <h2 className="text-xl font-bold text-white">
+              {language === 'ko' ? '1. 서비스 이용약관' : '1. Điều khoản sử dụng dịch vụ'}
+            </h2>
             <p className="leading-relaxed">
-              Exfluencer VN(이하 "회사")이 제공하는 인플루언서 마케팅 플랫폼 서비스(이하 "서비스")를 이용해 주셔서 감사합니다.
-              본 약관은 회사가 제공하는 서비스의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+              {language === 'ko'
+                ? 'Exfluencer VN(이하 "회사")이 제공하는 인플루언서 마케팅 플랫폼 서비스(이하 "서비스")를 이용해 주셔서 감사합니다. 본 약관은 회사가 제공하는 서비스의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.'
+                : 'Cảm ơn bạn đã sử dụng dịch vụ nền tảng tiếp thị influencer (sau đây gọi là "Dịch vụ") do Exfluencer VN (sau đây gọi là "Công ty") cung cấp. Điều khoản này nhằm quy định về quyền, nghĩa vụ và trách nhiệm giữa Công ty và người dùng liên quan đến việc sử dụng Dịch vụ.'}
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">2. 용어의 정의</h2>
+            <h2 className="text-xl font-bold text-white">
+              {language === 'ko' ? '2. 용어의 정의' : '2. Định nghĩa thuật ngữ'}
+            </h2>
             <ul className="list-disc list-inside space-y-2 pl-2">
-              <li>"서비스"란 회사가 제공하는 인플루언서와 광고주를 연결하는 온라인 마케팅 플랫폼을 의미합니다.</li>
-              <li>"회원"이란 본 약관에 동의하고 회사와 서비스 이용계약을 체결한 자를 의미합니다.</li>
-              <li>"인플루언서"란 소셜미디어 플랫폼에서 콘텐츠를 생성하고 캠페인에 참여하는 회원을 의미합니다.</li>
-              <li>"광고주"란 캠페인을 생성하고 인플루언서와 협업하는 회원을 의미합니다.</li>
-              <li>"포인트"란 서비스 내에서 사용되는 가상 화폐로, 1 VI Point = 1 VND로 환산됩니다.</li>
+              <li>{language === 'ko'
+                ? '"서비스"란 회사가 제공하는 인플루언서와 광고주를 연결하는 온라인 마케팅 플랫폼을 의미합니다.'
+                : '"Dịch vụ" là nền tảng tiếp thị trực tuyến kết nối influencer và nhà quảng cáo do Công ty cung cấp.'}</li>
+              <li>{language === 'ko'
+                ? '"회원"이란 본 약관에 동의하고 회사와 서비스 이용계약을 체결한 자를 의미합니다.'
+                : '"Thành viên" là người đồng ý với điều khoản này và ký hợp đồng sử dụng dịch vụ với Công ty.'}</li>
+              <li>{language === 'ko'
+                ? '"인플루언서"란 소셜미디어 플랫폼에서 콘텐츠를 생성하고 캠페인에 참여하는 회원을 의미합니다.'
+                : '"Influencer" là thành viên tạo nội dung trên nền tảng mạng xã hội và tham gia các chiến dịch.'}</li>
+              <li>{language === 'ko'
+                ? '"광고주"란 캠페인을 생성하고 인플루언서와 협업하는 회원을 의미합니다.'
+                : '"Nhà quảng cáo" là thành viên tạo chiến dịch và hợp tác với influencer.'}</li>
+              <li>{language === 'ko'
+                ? '"포인트"란 서비스 내에서 사용되는 가상 화폐로, 1 VI Point = 1 VND로 환산됩니다.'
+                : '"Điểm" là tiền ảo được sử dụng trong dịch vụ, được quy đổi 1 VI Point = 1 VND.'}</li>
             </ul>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">3. 회원가입 및 계정</h2>
+            <h2 className="text-xl font-bold text-white">
+              {language === 'ko' ? '3. 회원가입 및 계정' : '3. Đăng ký thành viên và tài khoản'}
+            </h2>
             <ul className="list-disc list-inside space-y-2 pl-2">
-              <li>회원가입은 만 18세 이상만 가능합니다.</li>
-              <li>회원은 정확하고 최신의 정보를 제공해야 합니다.</li>
-              <li>회원은 계정 정보를 안전하게 관리할 책임이 있습니다.</li>
+              <li>{language === 'ko' ? '회원가입은 만 18세 이상만 가능합니다.' : 'Chỉ người từ 18 tuổi trở lên mới có thể đăng ký thành viên.'}</li>
+              <li>{language === 'ko' ? '회원은 정확하고 최신의 정보를 제공해야 합니다.' : 'Thành viên phải cung cấp thông tin chính xác và mới nhất.'}</li>
+              <li>{language === 'ko' ? '회원은 계정 정보를 안전하게 관리할 책임이 있습니다.' : 'Thành viên có trách nhiệm quản lý thông tin tài khoản một cách an toàn.'}</li>
               <li>타인의 정보를 도용하거나 허위 정보를 제공할 경우 계정이 정지될 수 있습니다.</li>
             </ul>
           </section>

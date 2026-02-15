@@ -2,52 +2,67 @@
 
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { useLanguage, LanguageSelector } from '@/lib/i18n/LanguageContext';
 
 export default function PrivacyPage() {
+  const { t, language } = useLanguage();
+
   return (
     <main className="min-h-screen bg-dark-700">
       <div className="container-mobile min-h-screen">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="btn-icon text-white">
-              <ArrowLeft size={24} />
-            </Link>
-            <h1 className="text-lg font-bold text-white">개인정보 처리방침</h1>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Link href="/" className="btn-icon text-white">
+                <ArrowLeft size={24} />
+              </Link>
+              <h1 className="text-lg font-bold text-white">{t.homepage.privacyLink}</h1>
+            </div>
+            <LanguageSelector />
           </div>
         </div>
 
         {/* Content */}
         <div className="px-4 py-6 space-y-6 text-gray-300">
           <div className="text-sm text-gray-400">
-            최종 수정일: 2024년 2월 12일
+            {language === 'ko' ? '최종 수정일: 2024년 2월 12일' : 'Cập nhật lần cuối: 12/02/2024'}
           </div>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">1. 개인정보 처리방침</h2>
+            <h2 className="text-xl font-bold text-white">
+              {language === 'ko' ? '1. 개인정보 처리방침' : '1. Chính sách bảo mật'}
+            </h2>
             <p className="leading-relaxed">
-              Exfluencer VN(이하 "회사")은 이용자의 개인정보를 중요시하며, 개인정보 보호법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률 등 관련 법령을 준수하고 있습니다.
-              본 개인정보 처리방침은 회사가 수집하는 개인정보의 항목, 수집 및 이용 목적, 보유 및 이용기간, 파기절차 등에 관한 사항을 알려드립니다.
+              {language === 'ko'
+                ? 'Exfluencer VN(이하 "회사")은 이용자의 개인정보를 중요시하며, 개인정보 보호법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률 등 관련 법령을 준수하고 있습니다. 본 개인정보 처리방침은 회사가 수집하는 개인정보의 항목, 수집 및 이용 목적, 보유 및 이용기간, 파기절차 등에 관한 사항을 알려드립니다.'
+                : 'Exfluencer VN (sau đây gọi là "Công ty") coi trọng thông tin cá nhân của người dùng và tuân thủ các luật liên quan như Luật Bảo vệ Thông tin Cá nhân, Luật Xúc tiến Sử dụng Mạng Thông tin và Truyền thông và Bảo vệ Thông tin. Chính sách bảo mật này thông báo về các mục thông tin cá nhân mà Công ty thu thập, mục đích thu thập và sử dụng, thời gian lưu trữ và sử dụng, quy trình hủy bỏ, v.v.'}
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-white">2. 수집하는 개인정보 항목</h2>
+            <h2 className="text-xl font-bold text-white">
+              {language === 'ko' ? '2. 수집하는 개인정보 항목' : '2. Các mục thông tin cá nhân được thu thập'}
+            </h2>
             <div className="space-y-3">
               <div>
-                <h3 className="font-semibold text-white mb-2">필수 수집 항목</h3>
+                <h3 className="font-semibold text-white mb-2">
+                  {language === 'ko' ? '필수 수집 항목' : 'Mục bắt buộc'}
+                </h3>
                 <ul className="list-disc list-inside space-y-1 pl-2">
-                  <li>이메일 주소</li>
-                  <li>비밀번호 (암호화 저장)</li>
-                  <li>이름</li>
-                  <li>전화번호</li>
-                  <li>회사명 (광고주의 경우)</li>
+                  <li>{language === 'ko' ? '이메일 주소' : 'Địa chỉ email'}</li>
+                  <li>{language === 'ko' ? '비밀번호 (암호화 저장)' : 'Mật khẩu (lưu trữ mã hóa)'}</li>
+                  <li>{language === 'ko' ? '이름' : 'Tên'}</li>
+                  <li>{language === 'ko' ? '전화번호' : 'Số điện thoại'}</li>
+                  <li>{language === 'ko' ? '회사명 (광고주의 경우)' : 'Tên công ty (đối với nhà quảng cáo)'}</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-white mb-2">선택 수집 항목</h3>
+                <h3 className="font-semibold text-white mb-2">
+                  {language === 'ko' ? '선택 수집 항목' : 'Mục tùy chọn'}
+                </h3>
                 <ul className="list-disc list-inside space-y-1 pl-2">
-                  <li>프로필 사진</li>
+                  <li>{language === 'ko' ? '프로필 사진' : 'Ảnh hồ sơ'}</li>
                   <li>소셜미디어 계정 정보 (Instagram, TikTok, YouTube, Facebook)</li>
                   <li>은행 계좌 정보 (출금용)</li>
                   <li>자기소개</li>

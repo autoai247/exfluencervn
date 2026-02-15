@@ -128,16 +128,16 @@ export default function HomePage() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="space-y-3 mt-12">
+          <div className="space-y-4 mt-12 max-w-md mx-auto w-full">
             <Link
               href="/auth/register"
-              className="btn btn-primary w-full text-base py-3"
+              className="btn btn-primary w-full text-lg py-5 font-bold shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all transform hover:scale-105"
             >
               {t.homepage.signupText}
             </Link>
             <Link
               href="/auth/login"
-              className="btn btn-ghost w-full text-base py-3 border border-gray-600"
+              className="btn btn-ghost w-full text-lg py-5 font-semibold border-2 border-gray-500 hover:border-primary hover:bg-primary/10 transition-all"
             >
               {t.homepage.loginText}
             </Link>

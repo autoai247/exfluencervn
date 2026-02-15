@@ -16,19 +16,22 @@ export default function BottomNav({ userType }: BottomNavProps) {
   const { t } = useLanguage();
 
   // Different nav items for influencer vs advertiser
-  // 인플루언서용: 중요도 순서 - 홈, 캠페인, 상점(후킹!), 랭킹(경쟁), MY
+  // 인플루언서용: 6개 메뉴 - 홈, 캠페인, 상점(후킹!), 랭킹, 통계, MY
   const navItems = userType === 'influencer'
     ? [
         { href: '/main/influencer', icon: Home, label: t.nav.home },
         { href: '/main/influencer/campaigns', icon: Briefcase, label: t.nav.campaigns },
         { href: '/main/influencer/shop', icon: ShoppingBag, label: t.nav.shop, highlight: true },
+        { href: '/main/influencer/ranking', icon: Trophy, label: '랭킹' },
+        { href: '/main/influencer/analytics', icon: BarChart3, label: '통계' },
         { href: '/main/influencer/profile', icon: User, label: t.nav.profile },
       ]
     : [
         { href: '/main/advertiser', icon: Home, label: t.nav.home },
         { href: '/main/advertiser/campaigns', icon: LayoutGrid, label: t.nav.campaigns },
-        { href: '/main/advertiser/influencers', icon: Search, label: t.influencer.search },
-        { href: '/main/messages', icon: MessageCircle, label: t.nav.messages },
+        { href: '/main/advertiser/shop', icon: ShoppingBag, label: t.nav.shop, highlight: true },
+        { href: '/main/advertiser/influencers', icon: Search, label: 'KOL' },
+        { href: '/main/advertiser/analytics', icon: BarChart3, label: '분석' },
         { href: '/main/advertiser/profile', icon: User, label: t.nav.profile },
       ];
 

@@ -16,6 +16,7 @@ import {
   Award,
   AlertCircle,
   ChevronDown,
+  ArrowLeft,
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import AdvancedInfluencerFilter, { type AdvancedFilters } from '@/components/advertiser/AdvancedInfluencerFilter';
@@ -329,11 +330,11 @@ export default function InfluencerSearchPage() {
     <div className="min-h-screen bg-white pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3">
-        <div className="flex items-center justify-between mb-3">
-          <h1 className="text-xl font-bold text-gray-900">인플루언서 검색</h1>
-          <button onClick={() => router.back()} className="text-gray-500 hover:text-gray-900">
-            <X size={24} />
+        <div className="flex items-center gap-3 mb-3">
+          <button onClick={() => router.back()} className="text-gray-700 hover:text-gray-900">
+            <ArrowLeft size={24} />
           </button>
+          <h1 className="text-xl font-bold text-gray-900">인플루언서 검색</h1>
         </div>
 
         {/* Search Bar */}

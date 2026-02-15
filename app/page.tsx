@@ -135,7 +135,10 @@ export default function HomePage() {
                 {t.homepage.howToStart}
               </h2>
               <p className="text-xs text-gray-500">
-                {t.homepage.howToStartEn} | {t.homepage.howToStartVi}
+                {t.homepage.howToStartEn}
+              </p>
+              <p className="text-xs text-gray-500">
+                {t.homepage.howToStartVi}
               </p>
             </div>
 
@@ -202,17 +205,17 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div className="space-y-3 mt-8">
-            {selectedRole && (
-              <Link
-                href={`/auth/register?type=${selectedRole}`}
-                className="btn btn-primary w-full text-base animate-scale-in"
-              >
-                {t.homepage.startNowFree}
-              </Link>
-            )}
+            <Link
+              href={selectedRole ? `/auth/register?type=${selectedRole}` : '/auth/register'}
+              className="btn btn-primary w-full text-base py-3"
+            >
+              {selectedRole
+                ? t.homepage.startNowFree
+                : t.homepage.signupText || '회원가입'}
+            </Link>
             <Link
               href="/auth/login"
-              className={`btn ${selectedRole ? 'btn-ghost' : 'btn-primary'} w-full text-base`}
+              className="btn btn-ghost w-full text-base py-3 border border-gray-600"
             >
               {t.homepage.loginText}
             </Link>

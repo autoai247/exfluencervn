@@ -1021,6 +1021,7 @@ export interface Translations {
     verifiedKOL: string;
     realtimeAnalysis: string;
     startNowFree: string;
+    signupText: string;
     loginText: string;
     agreeToTerms: string;
     termsLink: string;
@@ -1617,7 +1618,8 @@ export const translations: Record<Language, Translations> = {
       verifiedKOL: '검증된 KOL',
       realtimeAnalysis: '실시간 분석',
       startNowFree: '🚀 지금 시작하기 - 완전 무료 (100% Free)',
-      loginText: '로그인 Login Đăng nhập',
+      signupText: '회원가입 Đăng ký',
+      loginText: '로그인 Đăng nhập',
       agreeToTerms: '가입하시면',
       termsLink: '서비스 약관 Terms',
       privacyLink: '개인정보 보호정책 Privacy',
@@ -3142,7 +3144,8 @@ export const translations: Record<Language, Translations> = {
       verifiedKOL: '검증된 KOL',
       realtimeAnalysis: '실시간 분석',
       startNowFree: '🚀 지금 시작하기 - 완전 무료 (100% Free)',
-      loginText: '로그인 Login Đăng nhập',
+      signupText: '회원가입 Đăng ký',
+      loginText: '로그인 Đăng nhập',
       agreeToTerms: '가입하시면',
       termsLink: '서비스 약관 Terms',
       privacyLink: '개인정보 보호정책 Privacy',

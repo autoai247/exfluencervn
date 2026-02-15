@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   TrendingUp,
@@ -17,7 +17,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type TabType = 'overview' | 'budget' | 'roi' | 'performance';
 
-export default function AdvertiserAnalyticsPage() {
+function AnalyticsContent() {
   const { language } = useLanguage();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab') as TabType | null;
@@ -297,5 +297,17 @@ export default function AdvertiserAnalyticsPage() {
 
       <BottomNav userType="advertiser" />
     </div>
+  );
+}
+
+export default function AdvertiserAnalyticsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    }>
+      <AnalyticsContent />
+    </Suspense>
   );
 }

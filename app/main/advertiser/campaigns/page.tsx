@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -74,7 +74,7 @@ const mockCampaigns = [
 
 type StatusType = 'all' | 'active' | 'completed' | 'draft';
 
-export default function AdvertiserCampaignsPage() {
+function CampaignsContent() {
   const { language } = useLanguage();
   const searchParams = useSearchParams();
   const statusParam = searchParams.get('status') as StatusType | null;
@@ -288,5 +288,17 @@ export default function AdvertiserCampaignsPage() {
 
       <BottomNav userType="advertiser" />
     </div>
+  );
+}
+
+export default function AdvertiserCampaignsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    }>
+      <CampaignsContent />
+    </Suspense>
   );
 }

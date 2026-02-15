@@ -642,8 +642,20 @@ export default function InfluencerSearchPage() {
               label: '필터 초기화',
               onClick: () => {
                 setSearchQuery('');
-                setAdvancedFilters({});
-                setShowAdvancedFilter(false);
+                setFilters({
+                  platforms: [],
+                  categories: [],
+                  minFollowers: undefined,
+                  maxFollowers: undefined,
+                  minEngagement: undefined,
+                  location: undefined,
+                  verified: undefined,
+                  skinType: [],
+                  skinTone: [],
+                  hasVehicle: undefined,
+                  gender: undefined,
+                });
+                setShowFilters(false);
               },
             }}
           />

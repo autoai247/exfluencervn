@@ -102,6 +102,52 @@ export default function CreateCampaignPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validation
+    const errors: string[] = [];
+
+    if (!formData.title.trim()) {
+      errors.push('캠페인 제목을 입력해주세요');
+    }
+
+    if (!formData.description.trim()) {
+      errors.push('캠페인 설명을 입력해주세요');
+    }
+
+    if (formData.platforms.length === 0) {
+      errors.push('플랫폼을 최소 1개 선택해주세요');
+    }
+
+    if (formData.categories.length === 0) {
+      errors.push('카테고리를 최소 1개 선택해주세요');
+    }
+
+    if (!formData.budget || parseInt(formData.budget) <= 0) {
+      errors.push('예산을 입력해주세요');
+    }
+
+    if (!formData.startDate) {
+      errors.push('시작일을 선택해주세요');
+    }
+
+    if (!formData.endDate) {
+      errors.push('종료일을 선택해주세요');
+    }
+
+    if (!formData.applicationDeadline) {
+      errors.push('지원 마감일을 선택해주세요');
+    }
+
+    if (formData.deliverables.length === 0) {
+      errors.push('결과물 요구사항을 최소 1개 추가해주세요');
+    }
+
+    // Show validation errors
+    if (errors.length > 0) {
+      alert('다음 항목을 확인해주세요:\n\n' + errors.map((e, i) => `${i + 1}. ${e}`).join('\n'));
+      return;
+    }
+
     // TODO: Save to API
 
     // Show success message and wait for user acknowledgment before routing
@@ -364,9 +410,10 @@ export default function CreateCampaignPage() {
                     <button
                       type="button"
                       onClick={() => removeFile(index)}
-                      className="absolute top-1 right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1 right-1 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      aria-label="파일 삭제"
                     >
-                      <X size={14} className="text-gray-900" />
+                      <X size={16} className="text-white" />
                     </button>
                     {/* Type Badge */}
                     <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-white">

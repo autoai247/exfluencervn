@@ -7,16 +7,15 @@ import {
   Search,
   Filter,
   Users,
-  TrendingUp,
   MapPin,
   Star,
   CheckCircle,
   Send,
   X,
-  Trophy,
   Sparkles,
   Award,
   AlertCircle,
+  ChevronDown,
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import AdvancedInfluencerFilter, { type AdvancedFilters } from '@/components/advertiser/AdvancedInfluencerFilter';
@@ -278,6 +277,10 @@ export default function InfluencerSearchPage() {
     setSelectedMatchScore(null);
   };
 
+  const handleCardClick = (influencerId: string) => {
+    router.push(`/main/advertiser/influencers/${influencerId}`);
+  };
+
   const activeFilterCount =
     filters.categories.length +
     (filters.minFollowers ? 1 : 0) +
@@ -298,14 +301,17 @@ export default function InfluencerSearchPage() {
     (filters.maxAvgViews ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-dark-700 pb-20">
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+    <div className="min-h-screen bg-white pb-20">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-lg font-bold text-white">인플루언서 검색</h1>
-          <button onClick={() => router.back()} className="text-gray-400 hover:text-white">
+          <h1 className="text-xl font-bold text-gray-900">인플루언서 검색</h1>
+          <button onClick={() => router.back()} className="text-gray-500 hover:text-gray-900">
             <X size={24} />
           </button>
         </div>
+
+        {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
@@ -313,36 +319,43 @@ export default function InfluencerSearchPage() {
             placeholder="이름, 카테고리로 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-dark-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full pl-10 pr-4 py-2.5 bg-gray-50 text-gray-900 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-white transition-colors"
           />
         </div>
       </div>
 
-      <div className="sticky top-[118px] z-10 bg-dark-700 border-b border-dark-500 px-4 py-3 flex items-center gap-3">
+      {/* Filter & Sort Bar */}
+      <div className="sticky top-[94px] z-10 bg-white border-b border-gray-100 px-4 py-2.5 flex items-center gap-2">
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm ${
-            showFilters || activeFilterCount > 0 ? 'bg-primary text-white' : 'bg-dark-600 text-gray-400'
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+            showFilters || activeFilterCount > 0
+              ? 'bg-gray-900 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
           <Filter size={16} />
           필터
           {activeFilterCount > 0 && (
-            <span className="px-2 py-0.5 bg-white text-primary rounded-full text-xs">{activeFilterCount}</span>
+            <span className="px-2 py-0.5 bg-white text-gray-900 rounded-full text-xs font-bold">
+              {activeFilterCount}
+            </span>
           )}
         </button>
+
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as any)}
-          className="flex-1 px-4 py-2 bg-dark-600 text-white rounded-lg text-sm"
+          className="flex-1 px-4 py-2 bg-gray-100 text-gray-900 rounded-lg text-sm font-medium border border-gray-200 focus:outline-none focus:border-gray-900"
         >
+          <option value="matchingScore">매칭률 높은 순</option>
           <option value="followers">팔로워 많은 순</option>
           <option value="engagement">참여율 높은 순</option>
           <option value="rating">평점 높은 순</option>
-          <option value="matchingScore">매칭률 높은 순</option>
         </select>
       </div>
 
+      {/* Filter Panel */}
       {showFilters && (
         <AdvancedInfluencerFilter
           filters={filters}
@@ -352,227 +365,266 @@ export default function InfluencerSearchPage() {
         />
       )}
 
-      <div className="px-4 py-3 flex items-center justify-between">
-        <p className="text-sm text-gray-400">
-          총 {sortedInfluencers.length}명의 인플루언서
+      {/* Results Count */}
+      <div className="px-4 py-3 flex items-center justify-between bg-white">
+        <p className="text-sm text-gray-500 font-medium">
+          총 {sortedInfluencers.length}명
         </p>
         {sortedInfluencers.length > 0 && sortBy === 'matchingScore' && (
-          <div className="flex items-center gap-1 text-xs text-mint">
+          <div className="flex items-center gap-1 text-xs text-gray-600">
             <Sparkles size={14} />
-            AI 매칭 활성화
+            <span className="font-medium">AI 매칭</span>
           </div>
         )}
       </div>
 
-      <div className="container-mobile space-y-3 px-4 pb-6">
+      {/* Influencer Grid */}
+      <div className="px-4 space-y-4 pb-6">
         {sortedInfluencers.map((matchScore) => {
           const influencer = matchScore.influencer;
           const PlatformIcon = platformIcons[influencer.platform];
 
           return (
-            <div key={influencer.id} className="card-glass relative overflow-hidden">
-              {/* AI Matching Badge */}
-              <div className="absolute top-3 right-3 z-10">
-                <div className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 backdrop-blur-xl ${
-                  matchScore.totalScore >= 90 ? 'bg-success/90 text-white shadow-lg shadow-success/20' :
-                  matchScore.totalScore >= 80 ? 'bg-mint/90 text-dark shadow-lg shadow-mint/20' :
-                  matchScore.totalScore >= 70 ? 'bg-primary/90 text-white shadow-lg shadow-primary/20' :
-                  matchScore.totalScore >= 60 ? 'bg-warning/90 text-white shadow-lg shadow-warning/20' :
-                  'bg-dark-500/90 text-gray-300'
-                }`}>
-                  <Sparkles size={12} />
-                  {matchScore.totalScore}점
-                </div>
-              </div>
+            <div
+              key={influencer.id}
+              className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+              onClick={(e) => {
+                // Only navigate if not clicking on buttons
+                if (!(e.target as HTMLElement).closest('button')) {
+                  handleCardClick(influencer.id);
+                }
+              }}
+            >
+              {/* Card Header */}
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    {/* Profile Image */}
+                    <div className="relative">
+                      <img
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&background=random&color=fff&size=80`}
+                        alt={influencer.name}
+                        className="w-14 h-14 rounded-full border border-gray-200"
+                      />
+                      <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 border border-gray-200">
+                        <PlatformIcon className="w-3.5 h-3.5 text-gray-700" />
+                      </div>
+                    </div>
 
-              {/* Recommendation Badge */}
-              {matchScore.totalScore >= 80 && (
-                <div className="absolute top-14 right-3 z-10">
-                  <div className="px-2 py-1 rounded-lg text-[10px] font-bold bg-gradient-primary text-white shadow-lg animate-pulse-glow">
-                    {matchScore.recommendation}
-                  </div>
-                </div>
-              )}
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <h3 className="text-gray-900 font-semibold text-base truncate">
+                          {influencer.name}
+                        </h3>
+                        {influencer.verified && (
+                          <CheckCircle size={16} className="text-gray-900 flex-shrink-0" />
+                        )}
+                      </div>
 
-              <div className="flex items-start gap-3 mb-3">
-                <div className="relative">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(influencer.name)}&background=FF6B6B&color=fff`}
-                    alt={influencer.name}
-                    className="w-16 h-16 rounded-full border-2 border-mint shadow-lg"
-                  />
-                  <div className="absolute -bottom-1 -right-1 bg-dark-600 rounded-full p-1">
-                    <PlatformIcon className="w-4 h-4 text-mint" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-white font-bold">{influencer.name}</h3>
-                    {influencer.verified && (
-                      <CheckCircle size={16} className="text-mint" />
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-1 mb-2">
-                    {influencer.categories.map(cat => (
-                      <span key={cat} className="badge-accent text-[10px] px-2 py-0.5">
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <MapPin size={12} />
-                    {influencer.location}
-                  </div>
-                </div>
-              </div>
+                      {/* Categories */}
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {influencer.categories.map(cat => (
+                          <span
+                            key={cat}
+                            className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full font-medium"
+                          >
+                            {cat}
+                          </span>
+                        ))}
+                      </div>
 
-              {/* AI Strengths */}
-              {matchScore.strengths.length > 0 && (
-                <div className="mb-3 p-2 bg-success/10 border border-success/20 rounded-lg">
-                  <div className="flex items-center gap-1 mb-1">
-                    <Award size={12} className="text-success" />
-                    <p className="text-xs font-bold text-success">강점</p>
+                      {/* Location */}
+                      <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <MapPin size={12} />
+                        {influencer.location}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {matchScore.strengths.slice(0, 3).map((strength, idx) => (
-                      <span key={idx} className="text-[10px] text-gray-300">
-                        • {strength}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
 
-              {/* AI Concerns */}
-              {matchScore.concerns.length > 0 && (
-                <div className="mb-3 p-2 bg-warning/10 border border-warning/20 rounded-lg">
-                  <div className="flex items-center gap-1 mb-1">
-                    <AlertCircle size={12} className="text-warning" />
-                    <p className="text-xs font-bold text-warning">주의사항</p>
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {matchScore.concerns.slice(0, 2).map((concern, idx) => (
-                      <span key={idx} className="text-[10px] text-gray-300">
-                        • {concern}
-                      </span>
-                    ))}
+                  {/* AI Match Score Badge */}
+                  <div className={`px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 ${
+                    matchScore.totalScore >= 90 ? 'bg-gray-900 text-white' :
+                    matchScore.totalScore >= 80 ? 'bg-gray-800 text-white' :
+                    matchScore.totalScore >= 70 ? 'bg-gray-700 text-white' :
+                    matchScore.totalScore >= 60 ? 'bg-gray-600 text-white' :
+                    'bg-gray-100 text-gray-700'
+                  }`}>
+                    {matchScore.totalScore}점
                   </div>
                 </div>
-              )}
 
-              {/* Stats Grid */}
-              <div className="grid grid-cols-4 gap-2 mb-3">
-                <div className="stat-item bg-dark-700/50">
-                  <p className="text-xs text-gray-400">팔로워</p>
-                  <p className="text-white font-bold text-sm">{(influencer.followers / 1000).toFixed(0)}K</p>
+                {/* Stats Grid */}
+                <div className="grid grid-cols-4 gap-2 mb-3">
+                  <div className="text-center py-2 bg-gray-50 rounded-lg">
+                    <p className="text-xs text-gray-500 mb-0.5">팔로워</p>
+                    <p className="text-gray-900 font-semibold text-sm">
+                      {(influencer.followers / 1000).toFixed(0)}K
+                    </p>
+                  </div>
+                  <div className="text-center py-2 bg-gray-50 rounded-lg">
+                    <p className="text-xs text-gray-500 mb-0.5">참여율</p>
+                    <p className="text-gray-900 font-semibold text-sm">
+                      {influencer.engagement}%
+                    </p>
+                  </div>
+                  <div className="text-center py-2 bg-gray-50 rounded-lg">
+                    <p className="text-xs text-gray-500 mb-0.5">평점</p>
+                    <p className="text-gray-900 font-semibold text-sm flex items-center justify-center gap-1">
+                      <Star size={12} className="text-gray-900 fill-gray-900" />
+                      {influencer.rating}
+                    </p>
+                  </div>
+                  <div className="text-center py-2 bg-gray-50 rounded-lg">
+                    <p className="text-xs text-gray-500 mb-0.5">완료</p>
+                    <p className="text-gray-900 font-semibold text-sm">
+                      {influencer.completedCampaigns}
+                    </p>
+                  </div>
                 </div>
-                <div className="stat-item bg-dark-700/50">
-                  <p className="text-xs text-gray-400">참여율</p>
-                  <p className="text-mint font-bold text-sm">{influencer.engagement}%</p>
-                </div>
-                <div className="stat-item bg-dark-700/50">
-                  <p className="text-xs text-gray-400">평점</p>
-                  <p className="text-white font-bold text-sm flex items-center justify-center gap-1">
-                    <Star size={12} className="text-warning fill-warning" />
-                    {influencer.rating}
-                  </p>
-                </div>
-                <div className="stat-item bg-dark-700/50">
-                  <p className="text-xs text-gray-400">완료</p>
-                  <p className="text-white font-bold text-sm">{influencer.completedCampaigns}</p>
-                </div>
-              </div>
 
-              {/* AI Score Breakdown */}
-              <details className="mb-3">
-                <summary className="text-xs text-mint cursor-pointer hover:underline">
-                  상세 매칭 분석 보기
-                </summary>
-                <div className="mt-2 p-3 bg-dark-700/50 rounded-lg space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">카테고리 매칭</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.categoryMatch}/30</span>
+                {/* AI Strengths */}
+                {matchScore.strengths.length > 0 && (
+                  <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Award size={14} className="text-gray-700" />
+                      <p className="text-xs font-semibold text-gray-900">강점</p>
+                    </div>
+                    <div className="space-y-1">
+                      {matchScore.strengths.slice(0, 3).map((strength: string, idx: number) => (
+                        <p key={idx} className="text-xs text-gray-600">
+                          • {strength}
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">팔로워 범위</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.followerMatch}/20</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">참여율</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.engagementScore}/20</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">경험</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.experienceScore}/15</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">평점</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.ratingScore}/10</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">위치</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.locationMatch}/5</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">인증 보너스</span>
-                    <span className="text-white font-bold">{matchScore.breakdown.verifiedBonus}/5</span>
-                  </div>
-                </div>
-              </details>
+                )}
 
-              {/* Action Buttons */}
-              <div className="flex gap-2">
-                <button className="flex-1 btn-outline text-sm">프로필 보기</button>
-                <button
-                  onClick={() => handleInvite(matchScore)}
-                  className="flex-1 btn-primary text-sm flex items-center justify-center gap-2"
-                >
-                  <Send size={14} />
-                  초대하기
-                </button>
+                {/* AI Concerns */}
+                {matchScore.concerns.length > 0 && (
+                  <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <AlertCircle size={14} className="text-gray-700" />
+                      <p className="text-xs font-semibold text-gray-900">주의사항</p>
+                    </div>
+                    <div className="space-y-1">
+                      {matchScore.concerns.slice(0, 2).map((concern: string, idx: number) => (
+                        <p key={idx} className="text-xs text-gray-600">
+                          • {concern}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* AI Score Breakdown */}
+                <details className="mb-3 group">
+                  <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-900 flex items-center gap-1 font-medium">
+                    상세 매칭 분석 보기
+                    <ChevronDown size={14} className="group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">카테고리 매칭</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.categoryMatch}/30</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">팔로워 범위</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.followerMatch}/20</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">참여율</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.engagementScore}/20</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">경험</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.experienceScore}/15</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">평점</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.ratingScore}/10</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">위치</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.locationMatch}/5</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-600">인증 보너스</span>
+                      <span className="text-gray-900 font-semibold">{matchScore.breakdown.verifiedBonus}/5</span>
+                    </div>
+                  </div>
+                </details>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(influencer.id);
+                    }}
+                    className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-200 transition-colors"
+                  >
+                    프로필 보기
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleInvite(matchScore);
+                    }}
+                    className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Send size={14} />
+                    초대하기
+                  </button>
+                </div>
               </div>
             </div>
           );
         })}
 
+        {/* Empty State */}
         {sortedInfluencers.length === 0 && (
-          <div className="text-center py-12">
-            <Users size={48} className="mx-auto text-gray-600 mb-3" />
-            <p className="text-gray-400 mb-2">검색 결과가 없습니다</p>
+          <div className="text-center py-16">
+            <Users size={48} className="mx-auto text-gray-300 mb-3" />
+            <p className="text-gray-900 font-semibold mb-1">검색 결과가 없습니다</p>
             <p className="text-sm text-gray-500">다른 필터 조건으로 시도해보세요</p>
           </div>
         )}
       </div>
 
+      {/* Invite Modal */}
       {showInviteModal && selectedInfluencer && selectedMatchScore && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-dark-600 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-white">캠페인 초대</h3>
-              <button onClick={() => setShowInviteModal(false)} className="text-gray-400 hover:text-white transition">
+              <h3 className="text-lg font-bold text-gray-900">캠페인 초대</h3>
+              <button
+                onClick={() => setShowInviteModal(false)}
+                className="text-gray-500 hover:text-gray-900 transition-colors"
+              >
                 <X size={24} />
               </button>
             </div>
 
             {/* Influencer Card */}
-            <div className="mb-4 p-4 bg-dark-700 rounded-xl border border-dark-500">
+            <div className="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
               <div className="flex items-center gap-3 mb-3">
                 <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedInfluencer.name)}&background=FF6B6B&color=fff`}
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedInfluencer.name)}&background=random&color=fff&size=80`}
                   alt={selectedInfluencer.name}
-                  className="w-12 h-12 rounded-full border-2 border-mint"
+                  className="w-12 h-12 rounded-full border border-gray-200"
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-white font-bold">{selectedInfluencer.name}</p>
-                    {selectedInfluencer.verified && <CheckCircle size={14} className="text-mint" />}
+                    <p className="text-gray-900 font-bold">{selectedInfluencer.name}</p>
+                    {selectedInfluencer.verified && <CheckCircle size={14} className="text-gray-900" />}
                   </div>
-                  <p className="text-xs text-gray-400">{selectedInfluencer.followers.toLocaleString()} 팔로워</p>
+                  <p className="text-xs text-gray-600">{selectedInfluencer.followers.toLocaleString()} 팔로워</p>
                 </div>
                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                  selectedMatchScore.totalScore >= 90 ? 'bg-success text-white' :
-                  selectedMatchScore.totalScore >= 80 ? 'bg-mint text-dark' :
-                  'bg-primary text-white'
+                  selectedMatchScore.totalScore >= 90 ? 'bg-gray-900 text-white' :
+                  selectedMatchScore.totalScore >= 80 ? 'bg-gray-800 text-white' :
+                  'bg-gray-700 text-white'
                 }`}>
                   {selectedMatchScore.totalScore}점
                 </div>
@@ -581,9 +633,9 @@ export default function InfluencerSearchPage() {
               {/* Match Highlights */}
               <div className="space-y-2">
                 {selectedMatchScore.strengths.length > 0 && (
-                  <div className="p-2 bg-success/10 border border-success/20 rounded-lg">
-                    <p className="text-xs font-bold text-success mb-1">✅ 강점</p>
-                    <ul className="text-[10px] text-gray-300 space-y-0.5">
+                  <div className="p-3 bg-white rounded-lg border border-gray-200">
+                    <p className="text-xs font-semibold text-gray-900 mb-1.5">강점</p>
+                    <ul className="text-xs text-gray-600 space-y-1">
                       {selectedMatchScore.strengths.slice(0, 3).map((strength: string, idx: number) => (
                         <li key={idx}>• {strength}</li>
                       ))}
@@ -591,9 +643,9 @@ export default function InfluencerSearchPage() {
                   </div>
                 )}
                 {selectedMatchScore.concerns.length > 0 && (
-                  <div className="p-2 bg-warning/10 border border-warning/20 rounded-lg">
-                    <p className="text-xs font-bold text-warning mb-1">⚠️ 주의사항</p>
-                    <ul className="text-[10px] text-gray-300 space-y-0.5">
+                  <div className="p-3 bg-white rounded-lg border border-gray-200">
+                    <p className="text-xs font-semibold text-gray-900 mb-1.5">주의사항</p>
+                    <ul className="text-xs text-gray-600 space-y-1">
                       {selectedMatchScore.concerns.map((concern: string, idx: number) => (
                         <li key={idx}>• {concern}</li>
                       ))}
@@ -603,21 +655,29 @@ export default function InfluencerSearchPage() {
               </div>
             </div>
 
+            {/* Message Input */}
             <div className="mb-4">
-              <label className="text-sm text-gray-300 mb-2 block font-semibold">초대 메시지</label>
+              <label className="text-sm text-gray-900 mb-2 block font-semibold">초대 메시지</label>
               <textarea
                 value={inviteMessage}
                 onChange={(e) => setInviteMessage(e.target.value)}
-                className="input w-full h-32 resize-none"
+                className="w-full h-32 px-4 py-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-gray-900 text-gray-900 bg-gray-50"
                 placeholder="인플루언서에게 보낼 메시지를 작성하세요..."
               />
             </div>
 
+            {/* Action Buttons */}
             <div className="flex gap-3">
-              <button onClick={() => setShowInviteModal(false)} className="flex-1 btn-ghost">
+              <button
+                onClick={() => setShowInviteModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-100 text-gray-900 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+              >
                 취소
               </button>
-              <button onClick={handleSendInvite} className="flex-1 btn-primary flex items-center justify-center gap-2">
+              <button
+                onClick={handleSendInvite}
+                className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+              >
                 <Send size={16} />
                 초대 발송
               </button>

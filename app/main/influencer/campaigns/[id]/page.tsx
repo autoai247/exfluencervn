@@ -383,14 +383,14 @@ export default function CampaignDetailPage() {
       return;
     }
 
-    if (!campaign) return;
+    if (!currentCampaign) return;
 
     // Campaign URL for sharing
-    const campaignUrl = `${window.location.origin}/main/influencer/campaigns/${id}`;
+    const campaignUrl = `${window.location.origin}/main/influencer/campaigns/${params.id}`;
 
     // Prepare share content
-    const shareTitle = campaign.title;
-    const shareText = `${campaign.title}\n\n${campaign.description}\n\n💰 Ngân sách: ${formatPoints(campaign.budget_min)} - ${formatPoints(campaign.budget_max)} VND\n📅 Hạn chót: ${new Date(campaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
+    const shareTitle = currentCampaign.title;
+    const shareText = `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 Ngân sách: ${formatPoints(currentCampaign.budget_min)} - ${formatPoints(currentCampaign.budget_max)} VND\n📅 Hạn chót: ${new Date(currentCampaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {

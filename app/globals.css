@@ -14,6 +14,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* 줌 완전 차단 */
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
   }
 
   body {
@@ -23,6 +26,9 @@
     @apply overflow-x-hidden;
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    /* 줌 완전 차단 */
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
   }
 
   .container-mobile {
@@ -648,6 +654,10 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  /* 입력 시 줌 방지 */
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+  font-size: 16px; /* iOS 줌 방지 */
 }
 
 button,
@@ -656,6 +666,9 @@ a,
   -webkit-tap-highlight-color: rgba(255, 107, 107, 0.1);
   min-height: 44px;
   min-width: 44px;
+  /* 더블탭 줌 차단 */
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
 }
 
 /* Enhanced touch feedback */

@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { TrendingUp, Users, DollarSign } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import type { UserType } from '@/types';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useLanguage, LanguageSelector } from '@/lib/i18n/LanguageContext';
 
 export default function HomePage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedRole, setSelectedRole] = useState<UserType | null>(null);
   const [checking, setChecking] = useState(true);
 
@@ -53,6 +53,11 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-dark-700 via-dark-600 to-dark-700">
       <div className="container-mobile min-h-screen flex flex-col">
+        {/* Language Selector - Top Right */}
+        <div className="absolute top-4 right-4 z-50">
+          <LanguageSelector />
+        </div>
+
         {/* Hero Section */}
         <div className="flex-1 flex flex-col justify-center py-12">
           <div className="text-center space-y-6 animate-fade-in">
@@ -70,12 +75,6 @@ export default function HomePage() {
               </h1>
               <p className="text-gray-400 text-sm px-4">
                 {t.homepage.tagline}
-              </p>
-              <p className="text-gray-500 text-xs px-4">
-                {t.homepage.taglineEn}
-              </p>
-              <p className="text-gray-500 text-xs px-4">
-                {t.homepage.taglineVi}
               </p>
             </div>
 
@@ -134,12 +133,6 @@ export default function HomePage() {
               <h2 className="text-lg font-semibold text-white">
                 {t.homepage.howToStart}
               </h2>
-              <p className="text-xs text-gray-500">
-                {t.homepage.howToStartEn}
-              </p>
-              <p className="text-xs text-gray-500">
-                {t.homepage.howToStartVi}
-              </p>
             </div>
 
             {/* Influencer Card */}
@@ -159,9 +152,6 @@ export default function HomePage() {
                   <h3 className="text-lg font-bold text-white">{t.homepage.influencerRole}</h3>
                   <p className="text-sm text-gray-400 mt-1">
                     {t.homepage.influencerDesc}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t.homepage.influencerDescEn}
                   </p>
                   <div className="flex gap-2 mt-3 flex-wrap">
                     <span className="badge badge-primary text-xs">{t.homepage.avgMonthlyEarning}</span>
@@ -189,9 +179,6 @@ export default function HomePage() {
                   <h3 className="text-lg font-bold text-white">{t.homepage.advertiserRole}</h3>
                   <p className="text-sm text-gray-400 mt-1">
                     {t.homepage.advertiserDesc}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {t.homepage.advertiserDescEn}
                   </p>
                   <div className="flex gap-2 mt-3 flex-wrap">
                     <span className="badge badge-secondary text-xs">{t.homepage.avgROI}</span>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X } from 'lucide-react';
+import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X, User } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -634,7 +634,21 @@ export default function CampaignDetailPage() {
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{applicant.name}</h4>
                     <p className="text-xs text-gray-500">{applicant.platform}</p>
-                    <p className="text-xs text-gray-500 mt-1">지원일: {applicant.appliedAt}</p>
+                    <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                      <span>📍 {applicant.location}</span>
+                      {applicant.gender && <span>• {applicant.gender === '여성' ? '여성' : applicant.gender === '남성' ? '남성' : applicant.gender}</span>}
+                      {applicant.age && <span>• {applicant.age}세</span>}
+                    </div>
+                    {applicant.categories && applicant.categories.length > 0 && (
+                      <div className="flex gap-1 mt-1.5">
+                        {applicant.categories.slice(0, 2).map((cat: string, idx: number) => (
+                          <span key={idx} className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                            {cat}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-xs text-gray-400 mt-1">지원일: {applicant.appliedAt}</p>
                   </div>
               </div>
 
@@ -649,17 +663,27 @@ export default function CampaignDetailPage() {
                 </div>
               </div>
 
+              {/* View Profile Button */}
+              <button
+                onClick={() => router.push(`/main/advertiser/influencers/${applicant.id}`)}
+                className="w-full mb-2 bg-gray-100 text-gray-900 hover:bg-gray-200 rounded-lg text-xs py-2.5 flex items-center justify-center gap-1 font-medium border border-gray-200"
+              >
+                <User size={14} />
+                상세 프로필 보기
+              </button>
+
+              {/* Approve/Reject Buttons */}
               <div className="flex gap-2">
                 <button
                   onClick={() => handleApprove(applicant)}
-                  className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
+                  className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1 border border-green-200 font-medium"
                 >
                   <CheckCircle size={14} />
                   승인
                 </button>
                 <button
                   onClick={() => handleReject(applicant)}
-                  className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
+                  className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1 border border-red-200 font-medium"
                 >
                   <X size={14} />
                   거절

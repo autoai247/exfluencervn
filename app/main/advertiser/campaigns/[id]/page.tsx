@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X, User } from 'lucide-react';
+import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X, User, Star } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -182,6 +182,16 @@ export default function CampaignDetailPage() {
   const [showAcceptedModal, setShowAcceptedModal] = useState(false);
   const [showApplicantsModal, setShowApplicantsModal] = useState(false);
   const [showBudgetModal, setShowBudgetModal] = useState(false);
+
+  // Review modal state
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewInfluencer, setReviewInfluencer] = useState<any>(null);
+  const [reviewData, setReviewData] = useState({
+    rating: 5,
+    comment: '',
+    tags: [] as string[],
+    wouldRecommend: true,
+  });
 
   // Handle approve applicant
   const handleApprove = (applicant: any) => {
@@ -625,15 +635,33 @@ export default function CampaignDetailPage() {
               )}
 
               {influencer.status === 'completed' && (
-                <div className="mt-3 pt-3 border-t border-gray-200 grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <p className="text-gray-600">조회수</p>
-                    <p className="text-gray-900 font-semibold">{influencer.views?.toLocaleString()}</p>
+                <div className="mt-3 pt-3 border-t border-gray-200">
+                  <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                    <div>
+                      <p className="text-gray-600">조회수</p>
+                      <p className="text-gray-900 font-semibold">{influencer.views?.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">좋아요</p>
+                      <p className="text-gray-900 font-semibold">{influencer.likes?.toLocaleString()}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-gray-600">좋아요</p>
-                    <p className="text-gray-900 font-semibold">{influencer.likes?.toLocaleString()}</p>
-                  </div>
+                  <button
+                    onClick={() => {
+                      setReviewInfluencer(influencer);
+                      setReviewData({
+                        rating: 5,
+                        comment: '',
+                        tags: [],
+                        wouldRecommend: true,
+                      });
+                      setShowReviewModal(true);
+                    }}
+                    className="w-full bg-yellow-50 text-yellow-700 hover:bg-yellow-100 rounded-lg py-2 flex items-center justify-center gap-1 text-xs font-medium border border-yellow-200"
+                  >
+                    <Star size={14} className="fill-yellow-500" />
+                    리뷰 작성하기
+                  </button>
                 </div>
               )}
 
@@ -963,6 +991,119 @@ export default function CampaignDetailPage() {
                   💡 승인된 인플루언서 {acceptedInfluencers.length}명 × {formatPoints(mockCampaignDetail.budgetPerInfluencer)} = {formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && reviewInfluencer && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowReviewModal(false)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">인플루언서 리뷰 작성</h3>
+              <button onClick={() => setShowReviewModal(false)} className="text-gray-500 hover:text-gray-900">
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Influencer Info */}
+            <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+              <img src={reviewInfluencer.avatar} alt={reviewInfluencer.name} className="w-12 h-12 rounded-full" />
+              <div>
+                <h4 className="font-semibold text-gray-900">{reviewInfluencer.name}</h4>
+                <p className="text-xs text-gray-500">{reviewInfluencer.platform}</p>
+              </div>
+            </div>
+
+            {/* Rating */}
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-900 mb-2 block">평점</label>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setReviewData({ ...reviewData, rating: star })}
+                    className="transition-transform hover:scale-110"
+                  >
+                    <Star
+                      size={32}
+                      className={star <= reviewData.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
+                    />
+                  </button>
+                ))}
+                <span className="ml-2 text-lg font-bold text-gray-900">{reviewData.rating.toFixed(1)}</span>
+              </div>
+            </div>
+
+            {/* Comment */}
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-900 mb-2 block">리뷰 내용</label>
+              <textarea
+                value={reviewData.comment}
+                onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
+                placeholder="인플루언서와의 협업 경험을 공유해주세요..."
+                rows={4}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
+              />
+            </div>
+
+            {/* Tags */}
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-900 mb-2 block">태그 선택</label>
+              <div className="flex flex-wrap gap-2">
+                {['성실함', '소통 원활', '퀄리티 우수', '창의적', '기한 준수', '전문성', '적극적'].map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => {
+                      if (reviewData.tags.includes(tag)) {
+                        setReviewData({ ...reviewData, tags: reviewData.tags.filter(t => t !== tag) });
+                      } else {
+                        setReviewData({ ...reviewData, tags: [...reviewData.tags, tag] });
+                      }
+                    }}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      reviewData.tags.includes(tag)
+                        ? 'bg-gray-900 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {reviewData.tags.includes(tag) ? '✓ ' : ''}{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Would Recommend */}
+            <div className="mb-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={reviewData.wouldRecommend}
+                  onChange={(e) => setReviewData({ ...reviewData, wouldRecommend: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                />
+                <span className="text-sm text-gray-700">다른 광고주에게 추천합니다</span>
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className="flex-1 py-3 border border-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
+              >
+                취소
+              </button>
+              <button
+                onClick={() => {
+                  alert(`리뷰가 저장되었습니다!\n평점: ${reviewData.rating}\n태그: ${reviewData.tags.join(', ')}\n추천: ${reviewData.wouldRecommend ? '예' : '아니오'}`);
+                  setShowReviewModal(false);
+                }}
+                className="flex-1 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800"
+              >
+                리뷰 제출
+              </button>
             </div>
           </div>
         </div>

@@ -91,6 +91,11 @@ export default function AdvertiserProfilePage() {
 
   return (
     <div className="min-h-screen bg-dark-700">
+      {/* 🚨 TEST: 이 메시지가 보이면 페이지는 로딩됨 */}
+      <div className="fixed top-0 left-0 right-0 bg-red-500 text-white text-center py-2 z-50 font-black text-xl">
+        ⚠️ 광고주 프로필 페이지 - LOADED ⚠️
+      </div>
+
       <MobileHeader title={text.title} showBack />
 
       <main className="container-mobile pb-24 pt-20">

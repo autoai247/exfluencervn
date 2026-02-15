@@ -87,21 +87,24 @@ export default function AdvertiserDashboard() {
 
       {/* Content */}
       <div className="container-mobile space-y-6 py-6">
-        {/* Company Card */}
-        <div className="card bg-gradient-to-br from-secondary/20 to-primary/20 border-secondary/30">
-          <div className="flex items-center gap-4">
-            <img
-              src={mockData.company.logo}
-              alt={mockData.company.name}
-              className="w-16 h-16 rounded-full border-2 border-secondary"
-            />
-            <div className="flex-1">
-              <h2 className="text-lg font-bold text-white">{mockData.company.name}</h2>
-              <p className="text-sm text-gray-300">{t.advertiser.brandAccount}</p>
-              <p className="text-xs text-gray-500 mt-1">{t.advertiser.verifiedAdvertiser}</p>
+        {/* Company Card - 클릭하면 프로필로 이동 */}
+        <Link href="/main/advertiser/profile">
+          <div className="card bg-gradient-to-br from-secondary/20 to-primary/20 border-secondary/30 hover:border-secondary/50 transition-all cursor-pointer">
+            <div className="flex items-center gap-4">
+              <img
+                src={mockData.company.logo}
+                alt={mockData.company.name}
+                className="w-16 h-16 rounded-full border-2 border-secondary"
+              />
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-white">{mockData.company.name}</h2>
+                <p className="text-sm text-gray-300">{t.advertiser.brandAccount}</p>
+                <p className="text-xs text-gray-500 mt-1">{t.advertiser.verifiedAdvertiser}</p>
+              </div>
+              <ChevronRight size={20} className="text-gray-400" />
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-3">

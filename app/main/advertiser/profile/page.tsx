@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Building2, Mail, Phone, Globe, Edit, Settings, LogOut, BarChart3, Package } from 'lucide-react';
+import { Building2, Mail, Phone, Globe, Edit, Settings, LogOut, BarChart3, Package, Facebook, Instagram, Youtube, Share2 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -27,6 +27,11 @@ export default function AdvertiserProfilePage() {
     completedCampaigns: 7,
     totalBudget: 150000000,
     totalInfluencers: 45,
+    // SNS
+    facebook: 'https://facebook.com/demobrand',
+    instagram: 'https://instagram.com/demobrand',
+    tiktok: '@demobrand',
+    youtube: 'https://youtube.com/@demobrand',
   });
 
   const t = {
@@ -159,6 +164,64 @@ export default function AdvertiserProfilePage() {
               <span className="text-gray-300">{advertiser.phone}</span>
             </div>
           </div>
+
+          {/* SNS Links */}
+          {(advertiser.facebook || advertiser.instagram || advertiser.tiktok || advertiser.youtube) && (
+            <div className="mt-4 pt-4 border-t border-dark-500">
+              <div className="flex items-center gap-2 mb-3">
+                <Share2 size={16} className="text-gray-400" />
+                <span className="text-sm font-semibold text-gray-300">
+                  {language === 'ko' ? 'SNS 채널' : 'Kênh mạng xã hội'}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {advertiser.facebook && (
+                  <a
+                    href={advertiser.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-[#1877F2]/20 text-[#1877F2] rounded-lg hover:bg-[#1877F2]/30 transition-colors text-sm"
+                  >
+                    <Facebook size={16} />
+                    Facebook
+                  </a>
+                )}
+                {advertiser.instagram && (
+                  <a
+                    href={advertiser.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-pink-400 rounded-lg hover:from-purple-500/30 hover:to-pink-500/30 transition-colors text-sm"
+                  >
+                    <Instagram size={16} />
+                    Instagram
+                  </a>
+                )}
+                {advertiser.tiktok && (
+                  <a
+                    href={`https://tiktok.com/${advertiser.tiktok.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-black/40 text-white rounded-lg hover:bg-black/60 transition-colors text-sm"
+                  >
+                    <span className="font-bold">TikTok</span>
+                    {advertiser.tiktok}
+                  </a>
+                )}
+                {advertiser.youtube && (
+                  <a
+                    href={advertiser.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-[#FF0000]/20 text-[#FF0000] rounded-lg hover:bg-[#FF0000]/30 transition-colors text-sm"
+                  >
+                    <Youtube size={16} />
+                    YouTube
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Stats Cards */}

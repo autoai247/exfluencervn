@@ -47,6 +47,7 @@ export default function AdvertiserProfileEditPage() {
 
   const [formData, setFormData] = useState({
     // 기본 정보
+    country: 'VN', // VN, KR, etc.
     company_name: 'Demo Brand VN',
     ceo_name: 'Nguyen Van A',
     contact_person: 'Tran Thi B',
@@ -102,6 +103,8 @@ export default function AdvertiserProfileEditPage() {
       uploadLogo: '로고 업로드',
       changeLogo: '로고 변경',
       logoNote: '권장: 정사각형 500x500px 이상, 최대 5MB (PNG, JPG)',
+      country: '국가',
+      selectCountry: '국가를 선택하세요',
       companyName: '회사명 (상호)',
       companyNamePlaceholder: '주식회사 데모브랜드',
       ceoName: '대표자명',
@@ -110,14 +113,14 @@ export default function AdvertiserProfileEditPage() {
       contactPersonPlaceholder: '김영희',
 
       // 사업자 정보
-      businessRegNumber: '사업자 등록 번호',
-      businessRegNumberPlaceholder: '123-45-67890',
-      taxCode: '납세자 번호',
-      taxCodePlaceholder: '123-45-67890-001',
-      businessType: '업종',
-      businessTypePlaceholder: '예: 도소매업, 제조업, 서비스업',
-      businessCategory: '업태',
-      businessCategoryPlaceholder: '예: 패션/의류, 화장품, 식품',
+      businessRegNumber: '사업자 등록 번호 / Business Reg. No.',
+      businessRegNumberPlaceholder: '한국: 123-45-67890 / 베트남: 0123456789',
+      taxCode: '납세자 번호 / Tax ID',
+      taxCodePlaceholder: '세금 식별 번호',
+      businessType: '업종 / Business Type',
+      businessTypePlaceholder: '도소매업, 제조업, 서비스업 등',
+      businessCategory: '업태 / Business Category',
+      businessCategoryPlaceholder: '패션/의류, 화장품, 식품 등',
       establishmentDate: '설립일',
       employeeCount: '직원 수',
       employeeCountPlaceholder: '예: 10-50명, 50-100명',
@@ -195,6 +198,8 @@ export default function AdvertiserProfileEditPage() {
       uploadLogo: 'Tải logo lên',
       changeLogo: 'Đổi logo',
       logoNote: 'Khuyến nghị: Vuông 500x500px trở lên, tối đa 5MB (PNG, JPG)',
+      country: 'Quốc gia',
+      selectCountry: 'Chọn quốc gia',
       companyName: 'Tên công ty',
       companyNamePlaceholder: 'Công ty TNHH Demo Brand',
       ceoName: 'Tên giám đốc',
@@ -203,14 +208,14 @@ export default function AdvertiserProfileEditPage() {
       contactPersonPlaceholder: 'Trần Thị B',
 
       // 사업자 정보
-      businessRegNumber: 'Mã số doanh nghiệp',
-      businessRegNumberPlaceholder: '0123456789',
-      taxCode: 'Mã số thuế',
-      taxCodePlaceholder: '0123456789-001',
-      businessType: 'Loại hình kinh doanh',
-      businessTypePlaceholder: 'VD: Bán lẻ, Sản xuất, Dịch vụ',
-      businessCategory: 'Ngành nghề',
-      businessCategoryPlaceholder: 'VD: Thời trang, Mỹ phẩm, Thực phẩm',
+      businessRegNumber: 'Mã số doanh nghiệp / Business Reg. No.',
+      businessRegNumberPlaceholder: 'VN: 0123456789 / KR: 123-45-67890',
+      taxCode: 'Mã số thuế / Tax ID',
+      taxCodePlaceholder: 'Mã định danh thuế',
+      businessType: 'Loại hình / Business Type',
+      businessTypePlaceholder: 'Bán lẻ, Sản xuất, Dịch vụ',
+      businessCategory: 'Ngành nghề / Category',
+      businessCategoryPlaceholder: 'Thời trang, Mỹ phẩm, Thực phẩm',
       establishmentDate: 'Ngày thành lập',
       employeeCount: 'Số lượng nhân viên',
       employeeCountPlaceholder: 'VD: 10-50, 50-100',
@@ -410,6 +415,35 @@ export default function AdvertiserProfileEditPage() {
             <div className="flex items-center gap-2">
               <User size={18} className="text-primary" />
               <h3 className="text-sm font-bold text-gray-300">{text.basicInfo}</h3>
+            </div>
+
+            {/* 국가 선택 */}
+            <div className="card bg-primary/5 border-primary/30">
+              <label className="block mb-2">
+                <span className="text-sm font-semibold text-white">{text.country}</span>
+                <span className="text-red-400 ml-1">*</span>
+              </label>
+              <select
+                required
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                className="input"
+              >
+                <option value="">{text.selectCountry}</option>
+                <option value="VN">🇻🇳 Việt Nam (베트남)</option>
+                <option value="KR">🇰🇷 한국 (Hàn Quốc)</option>
+                <option value="US">🇺🇸 United States</option>
+                <option value="JP">🇯🇵 日本 (Nhật Bản)</option>
+                <option value="CN">🇨🇳 中国 (Trung Quốc)</option>
+                <option value="TH">🇹🇭 ประเทศไทย (Thái Lan)</option>
+                <option value="SG">🇸🇬 Singapore</option>
+                <option value="OTHER">{language === 'ko' ? '기타' : 'Khác'}</option>
+              </select>
+              <p className="text-xs text-gray-400 mt-2">
+                {language === 'ko'
+                  ? '회사가 등록된 국가를 선택하세요. 사업자 정보 양식이 국가에 맞게 조정됩니다.'
+                  : 'Chọn quốc gia đăng ký công ty. Mẫu thông tin doanh nghiệp sẽ được điều chỉnh theo quốc gia.'}
+              </p>
             </div>
 
             {/* 회사명 */}

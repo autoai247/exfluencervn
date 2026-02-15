@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 // Mock data
 const mockCampaigns = [
@@ -74,6 +75,7 @@ export default function CampaignsClient() {
 
   const [activeTab, setActiveTab] = useState<StatusType>(statusParam || 'all');
   const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const t = {
     ko: {
@@ -151,6 +153,27 @@ export default function CampaignsClient() {
     }
   };
 
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: '/',
+      action: () => {
+        searchInputRef.current?.focus();
+      },
+      description: 'Focus search input'
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (searchQuery) {
+          setSearchQuery('');
+          searchInputRef.current?.blur();
+        }
+      },
+      description: 'Clear search'
+    }
+  ]);
+
   return (
     <div className="container-mobile py-6 space-y-6">
       {/* Create Campaign Button */}
@@ -165,6 +188,7 @@ export default function CampaignsClient() {
       <div className="relative">
         <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
+          ref={searchInputRef}
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

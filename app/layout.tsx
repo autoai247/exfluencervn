@@ -6,6 +6,7 @@ import { LanguageProvider, useLanguage } from '@/lib/i18n/LanguageContext'
 import { MessageProvider } from '@/contexts/MessageContext'
 import { ReviewProvider } from '@/contexts/ReviewContext'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ToastProvider } from '@/components/common/ToastContainer'
 import { useEffect } from 'react'
 
 const inter = Inter({
@@ -111,17 +112,19 @@ export default function RootLayout({
       <body className="font-sans">
         <AuthProvider>
           <LanguageProvider>
-            <MetaTags />
-            <MessageProvider>
-              <ReviewProvider>
-                {/* Mobile-first layout wrapper */}
-                <div className="min-h-screen bg-dark-700">
-                  <div className="w-full max-w-mobile mx-auto bg-dark-700 min-h-screen relative">
-                    {children}
+            <ToastProvider>
+              <MetaTags />
+              <MessageProvider>
+                <ReviewProvider>
+                  {/* Mobile-first layout wrapper */}
+                  <div className="min-h-screen bg-dark-700">
+                    <div className="w-full max-w-mobile mx-auto bg-dark-700 min-h-screen relative">
+                      {children}
+                    </div>
                   </div>
-                </div>
-              </ReviewProvider>
-            </MessageProvider>
+                </ReviewProvider>
+              </MessageProvider>
+            </ToastProvider>
           </LanguageProvider>
         </AuthProvider>
       </body>

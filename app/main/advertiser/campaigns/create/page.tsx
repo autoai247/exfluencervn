@@ -26,6 +26,7 @@ import {
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import Breadcrumb from '@/components/common/Breadcrumb';
 import type { Platform, Category } from '@/types';
+import { useToast } from '@/components/common/ToastContainer';
 
 const platformIcons = {
   instagram: FaInstagram,
@@ -36,6 +37,7 @@ const platformIcons = {
 
 export default function CreateCampaignPage() {
   const router = useRouter();
+  const toast = useToast();
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const [formData, setFormData] = useState({
@@ -97,6 +99,61 @@ export default function CreateCampaignPage() {
 
   // Loading state
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-save state
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [showDraftPrompt, setShowDraftPrompt] = useState(false);
+
+  // Load draft on mount
+  useEffect(() => {
+    const draft = localStorage.getItem('campaign_draft');
+    if (draft) {
+      try {
+        const savedData = JSON.parse(draft);
+        const savedTime = localStorage.getItem('campaign_draft_time');
+        if (savedTime) {
+          const timeDiff = Date.now() - parseInt(savedTime);
+          // Show draft if saved within last 24 hours
+          if (timeDiff < 24 * 60 * 60 * 1000) {
+            setShowDraftPrompt(true);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load draft:', error);
+      }
+    }
+  }, []);
+
+  // Auto-save every 3 seconds when form data changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (formData.title || formData.description) {
+        localStorage.setItem('campaign_draft', JSON.stringify(formData));
+        localStorage.setItem('campaign_draft_time', Date.now().toString());
+        setLastSaved(new Date());
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [formData]);
+
+  const loadDraft = () => {
+    const draft = localStorage.getItem('campaign_draft');
+    if (draft) {
+      try {
+        setFormData(JSON.parse(draft));
+        setShowDraftPrompt(false);
+      } catch (error) {
+        console.error('Failed to load draft:', error);
+      }
+    }
+  };
+
+  const discardDraft = () => {
+    localStorage.removeItem('campaign_draft');
+    localStorage.removeItem('campaign_draft_time');
+    setShowDraftPrompt(false);
+  };
 
   // Track scroll progress
   useEffect(() => {
@@ -172,10 +229,25 @@ export default function CreateCampaignPage() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Success - navigate to dashboard
-      router.push('/main/advertiser');
+      // Clear draft on successful submission
+      localStorage.removeItem('campaign_draft');
+      localStorage.removeItem('campaign_draft_time');
+
+      // Success notification
+      toast.success(
+        '캠페인 생성 완료!',
+        '새로운 캠페인이 성공적으로 생성되었습니다.'
+      );
+
+      // Navigate to dashboard
+      setTimeout(() => {
+        router.push('/main/advertiser');
+      }, 500);
     } catch (error) {
-      alert('캠페인 생성에 실패했습니다. 다시 시도해주세요.');
+      toast.error(
+        '캠페인 생성 실패',
+        '캠페인 생성에 실패했습니다. 다시 시도해주세요.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -207,13 +279,19 @@ export default function CreateCampaignPage() {
       const isVideo = file.type.startsWith('video/');
 
       if (!isImage && !isVideo) {
-        alert('이미지 또는 비디오 파일만 업로드 가능합니다.');
+        toast.error(
+          '파일 형식 오류',
+          '이미지 또는 비디오 파일만 업로드 가능합니다.'
+        );
         return;
       }
 
       // 파일 크기 체크 (100MB 제한)
       if (file.size > 100 * 1024 * 1024) {
-        alert(`${file.name}: 파일이 너무 큽니다 (최대 100MB)`);
+        toast.error(
+          '파일 크기 초과',
+          `${file.name}: 파일이 너무 큽니다 (최대 100MB)`
+        );
         return;
       }
 
@@ -248,7 +326,14 @@ export default function CreateCampaignPage() {
               </button>
               <div>
                 <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
-                <p className="text-xs text-gray-500 mt-0.5">{Math.round(scrollProgress)}% 완료</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <p className="text-xs text-gray-500">{Math.round(scrollProgress)}% 완료</p>
+                  {lastSaved && (
+                    <span className="text-xs text-green-600 flex items-center gap-1">
+                      ✓ 저장됨 {new Date(lastSaved).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <button
@@ -291,6 +376,39 @@ export default function CreateCampaignPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="container-mobile space-y-6 py-6">
+        {/* Draft Restoration Prompt */}
+        {showDraftPrompt && (
+          <div className="bg-blue-50 border-2 border-blue-500 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-white text-sm font-bold">💾</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-blue-900 font-bold mb-2">저장된 초안이 있습니다</h3>
+                <p className="text-blue-700 text-sm mb-3">
+                  이전에 작성하던 캠페인 초안을 불러올까요?
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={loadDraft}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  >
+                    초안 불러오기
+                  </button>
+                  <button
+                    type="button"
+                    onClick={discardDraft}
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
+                  >
+                    새로 작성
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Error Summary */}
         {Object.keys(errors).length > 0 && (
           <div className="bg-red-50 border-2 border-red-500 rounded-xl p-4">

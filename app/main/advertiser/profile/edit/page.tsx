@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Building2,
@@ -44,6 +44,9 @@ export default function AdvertiserProfileEditPage() {
   const [businessLicense, setBusinessLicense] = useState<UploadedDocument | null>(null);
   const [ecommerceLicense, setEcommerceLicense] = useState<UploadedDocument | null>(null);
   const [otherDocs, setOtherDocs] = useState<UploadedDocument[]>([]);
+
+  // Refs to track FileReader instances for cleanup
+  const fileReadersRef = useRef<FileReader[]>([]);
 
   const [formData, setFormData] = useState({
     // 기본 정보
@@ -280,6 +283,18 @@ export default function AdvertiserProfileEditPage() {
 
   const text = t[language];
 
+  // Cleanup FileReaders on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      fileReadersRef.current.forEach(reader => {
+        if (reader.readyState === FileReader.LOADING) {
+          reader.abort();
+        }
+      });
+      fileReadersRef.current = [];
+    };
+  }, []);
+
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -295,9 +310,19 @@ export default function AdvertiserProfileEditPage() {
     }
 
     const reader = new FileReader();
+    fileReadersRef.current.push(reader);
+
     reader.onload = (event) => {
       setLogoPreview(event.target?.result as string);
+      // Remove from tracking after completion
+      fileReadersRef.current = fileReadersRef.current.filter(r => r !== reader);
     };
+
+    reader.onerror = () => {
+      // Remove from tracking on error
+      fileReadersRef.current = fileReadersRef.current.filter(r => r !== reader);
+    };
+
     reader.readAsDataURL(file);
   };
 
@@ -320,6 +345,8 @@ export default function AdvertiserProfileEditPage() {
     }
 
     const reader = new FileReader();
+    fileReadersRef.current.push(reader);
+
     reader.onload = (event) => {
       const doc: UploadedDocument = {
         file,
@@ -335,7 +362,16 @@ export default function AdvertiserProfileEditPage() {
       } else if (type === 'other') {
         setOtherDocs((prev) => [...prev, doc]);
       }
+
+      // Remove from tracking after completion
+      fileReadersRef.current = fileReadersRef.current.filter(r => r !== reader);
     };
+
+    reader.onerror = () => {
+      // Remove from tracking on error
+      fileReadersRef.current = fileReadersRef.current.filter(r => r !== reader);
+    };
+
     reader.readAsDataURL(file);
     e.target.value = '';
   };

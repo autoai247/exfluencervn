@@ -24,8 +24,8 @@ const mockCampaigns = [
     applicants: 23,
     accepted: 8,
     views: 125000,
-    deadline: '2024-03-15',
-    createdAt: '2024-02-01',
+    deadline: '2026-03-15',
+    createdAt: '2026-02-01',
   },
   {
     id: '2',
@@ -36,8 +36,8 @@ const mockCampaigns = [
     applicants: 15,
     accepted: 5,
     views: 89000,
-    deadline: '2024-03-20',
-    createdAt: '2024-02-05',
+    deadline: '2026-03-20',
+    createdAt: '2026-02-05',
   },
   {
     id: '3',
@@ -48,8 +48,8 @@ const mockCampaigns = [
     applicants: 31,
     accepted: 10,
     views: 250000,
-    deadline: '2024-02-10',
-    createdAt: '2024-01-15',
+    deadline: '2026-02-10',
+    createdAt: '2026-01-15',
   },
   {
     id: '4',
@@ -60,8 +60,8 @@ const mockCampaigns = [
     applicants: 0,
     accepted: 0,
     views: 0,
-    deadline: '2024-04-01',
-    createdAt: '2024-02-10',
+    deadline: '2026-04-01',
+    createdAt: '2026-02-10',
   },
 ];
 

@@ -18,10 +18,10 @@ const mockCampaignDetail = {
   targetInfluencers: 8,
   applicants: 23,
   views: 125000,
-  startDate: '2024-02-01',
-  endDate: '2024-03-15',
-  deadline: '2024-03-15',
-  createdAt: '2024-02-01',
+  startDate: '2026-02-01',
+  endDate: '2026-03-15',
+  deadline: '2026-03-15',
+  createdAt: '2026-02-01',
 
   requirements: {
     minFollowers: 10000,
@@ -51,7 +51,7 @@ const mockCampaignDetail = {
       engagement: 4.2,
       platform: 'Instagram',
       status: 'completed',
-      submittedAt: '2024-02-20',
+      submittedAt: '2026-02-20',
       views: 15000,
       likes: 2300,
       submittedContent: [
@@ -60,18 +60,18 @@ const mockCampaignDetail = {
           url: 'https://instagram.com/p/example1',
           description: 'Instagram 피드 포스트 - 사용 전/후 비교',
           thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400',
-          submittedAt: '2024-02-18',
+          submittedAt: '2026-02-18',
           status: 'approved',
-          reviewedAt: '2024-02-19'
+          reviewedAt: '2026-02-19'
         },
         {
           id: 'content-2',
           url: 'https://instagram.com/stories/example2',
           description: 'Instagram 스토리 - 제품 언박싱',
           thumbnail: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400',
-          submittedAt: '2024-02-18',
+          submittedAt: '2026-02-18',
           status: 'approved',
-          reviewedAt: '2024-02-19'
+          reviewedAt: '2026-02-19'
         }
       ]
     },
@@ -83,14 +83,14 @@ const mockCampaignDetail = {
       engagement: 5.1,
       platform: 'Instagram',
       status: 'content_submitted',
-      acceptedAt: '2024-02-15',
+      acceptedAt: '2026-02-15',
       submittedContent: [
         {
           id: 'content-3',
           url: 'https://instagram.com/p/example3',
           description: 'Instagram 피드 포스트',
           thumbnail: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400',
-          submittedAt: '2024-02-22',
+          submittedAt: '2026-02-22',
           status: 'pending'
         }
       ]
@@ -103,7 +103,7 @@ const mockCampaignDetail = {
       engagement: 3.8,
       platform: 'TikTok',
       status: 'in_progress',
-      acceptedAt: '2024-02-18',
+      acceptedAt: '2026-02-18',
       submittedContent: []
     },
   ],
@@ -116,7 +116,7 @@ const mockCampaignDetail = {
       followers: 52000,
       engagement: 4.5,
       platform: 'Instagram',
-      appliedAt: '2024-02-10',
+      appliedAt: '2026-02-10',
       // Extended profile for matching
       categories: ['뷰티', '라이프스타일'],
       location: '호치민',
@@ -135,7 +135,7 @@ const mockCampaignDetail = {
       followers: 18000,
       engagement: 3.5,
       platform: 'TikTok',
-      appliedAt: '2024-02-12',
+      appliedAt: '2026-02-12',
       // Extended profile for matching
       categories: ['패션', '라이프스타일'],
       location: '하노이',
@@ -154,7 +154,7 @@ const mockCampaignDetail = {
       followers: 35000,
       engagement: 4.8,
       platform: 'Instagram',
-      appliedAt: '2024-02-13',
+      appliedAt: '2026-02-13',
       // Extended profile for matching
       categories: ['뷰티', 'lifestyle'],
       location: '호치민',
@@ -609,7 +609,7 @@ export default function CampaignDetailPage() {
             const matchResult = calculateApplicantMatch(applicant);
 
             return (
-              <div key={applicant.id} className={`bg-white rounded-xl p-4 ${
+              <div key={applicant.id} className={`relative bg-white rounded-xl p-4 ${
                 matchResult.isGoodMatch ? 'border-2 border-green-200' : 'border-2 border-gray-200'
               }`}>
                 {/* Matching Badge */}

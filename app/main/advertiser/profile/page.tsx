@@ -20,7 +20,7 @@ export default function AdvertiserProfilePage() {
     bio: language === 'ko'
       ? '베트남을 대표하는 패션 브랜드. 청년 패션과 스트릿웨어 전문.'
       : 'Thương hiệu thời trang hàng đầu Việt Nam. Chuyên về thời trang trẻ và streetwear.',
-    created_at: '2024-01-15',
+    created_at: '2026-01-15',
     verified: true,
     totalCampaigns: 12,
     activeCampaigns: 5,

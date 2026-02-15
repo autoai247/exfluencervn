@@ -80,10 +80,20 @@ export default function CreateCampaignPage() {
     type: 'image' | 'video';
   }>>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Save to API
-    alert('캠페인이 생성되었습니다!');
+
+    // Show success message and wait for user acknowledgment before routing
+    await new Promise<void>((resolve) => {
+      const confirmed = window.confirm('캠페인이 생성되었습니다!\n\n광고주 대시보드로 이동하시겠습니까?');
+      if (confirmed) {
+        resolve();
+      } else {
+        resolve();
+      }
+    });
+
     router.push('/main/advertiser');
   };
 
@@ -143,18 +153,18 @@ export default function CreateCampaignPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-700 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => router.back()} className="btn-icon text-white">
+            <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
               <ArrowLeft size={24} />
             </button>
-            <h1 className="text-lg font-bold text-white">🚀 새 캠페인 만들기</h1>
+            <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
           </div>
-          <button onClick={handleSubmit} className="btn btn-primary text-sm">
-            <Save size={18} className="mr-1" />
+          <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-gray-900 rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
+            <Save size={18} />
             생성
           </button>
         </div>
@@ -162,27 +172,27 @@ export default function CreateCampaignPage() {
 
       <form onSubmit={handleSubmit} className="container-mobile space-y-6 py-6">
         {/* Basic Information */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <FileText size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <FileText size={16} className="text-gray-700" />
             기본 정보
           </h3>
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">캠페인 제목 *</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">캠페인 제목 *</label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="예: 신규 스킨케어 제품 리뷰 캠페인"
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 required
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">설명 *</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">설명 *</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -194,28 +204,28 @@ export default function CreateCampaignPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
                   <Users size={14} className="inline mr-1" />
                   모집 인원 *
                 </label>
                 <input
                   type="number"
                   placeholder="10"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   required
                 />
                 <p className="text-xs text-gray-500 mt-1">선발할 인플루언서 수</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
                   <FileText size={14} className="inline mr-1" />
                   제출물 개수
                 </label>
                 <input
                   type="number"
                   placeholder="3"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
                 <p className="text-xs text-gray-500 mt-1">필요한 포스트/영상 수</p>
               </div>
@@ -223,7 +233,7 @@ export default function CreateCampaignPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
                   <DollarSign size={14} className="inline mr-1" />
                   예산 (VND) *
                 </label>
@@ -232,17 +242,17 @@ export default function CreateCampaignPage() {
                   value={formData.budget}
                   onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                   placeholder="500000"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">타입</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">타입</label>
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value as 'cash' | 'points' })}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 >
                   <option value="cash">💰 현금</option>
                   <option value="points">🛍️ 포인트</option>
@@ -251,7 +261,7 @@ export default function CreateCampaignPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
                 <MapPin size={14} className="inline mr-1" />
                 지역
               </label>
@@ -260,16 +270,16 @@ export default function CreateCampaignPage() {
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="예: 호치민, 하노이, 온라인"
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
           </div>
         </div>
 
         {/* Media Upload */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <Upload size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Upload size={16} className="text-gray-700" />
             사진 / 영상 업로드
           </h3>
 
@@ -283,9 +293,9 @@ export default function CreateCampaignPage() {
                 onChange={handleFileUpload}
                 className="hidden"
               />
-              <div className="border-2 border-dashed border-primary/50 rounded-xl p-8 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all">
-                <Upload size={40} className="text-primary mx-auto mb-3" />
-                <p className="text-white font-semibold mb-1">파일 선택 또는 드래그 & 드롭</p>
+              <div className="border-2 border-dashed border-gray-900/50 rounded-xl p-8 text-center cursor-pointer hover:border-gray-900 hover:bg-gray-900/5 transition-all">
+                <Upload size={40} className="text-gray-700 mx-auto mb-3" />
+                <p className="text-gray-900 font-semibold mb-1">파일 선택 또는 드래그 & 드롭</p>
                 <p className="text-xs text-gray-400">이미지 (JPG, PNG, GIF) 또는 비디오 (MP4, MOV)</p>
                 <p className="text-xs text-gray-500 mt-1">최대 100MB, 다중 선택 가능</p>
               </div>
@@ -296,7 +306,7 @@ export default function CreateCampaignPage() {
               <div className="grid grid-cols-3 gap-3">
                 {uploadedFiles.map((item, index) => (
                   <div key={index} className="relative group">
-                    <div className="aspect-square rounded-lg overflow-hidden bg-dark-600">
+                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-50">
                       {item.type === 'image' ? (
                         <img
                           src={item.preview}
@@ -317,10 +327,10 @@ export default function CreateCampaignPage() {
                       onClick={() => removeFile(index)}
                       className="absolute top-1 right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     >
-                      <X size={14} className="text-white" />
+                      <X size={14} className="text-gray-900" />
                     </button>
                     {/* Type Badge */}
-                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-white">
+                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-gray-900">
                       {item.type === 'image' ? '📷' : '🎥'} {item.file.name.length > 10 ? item.file.name.substring(0, 10) + '...' : item.file.name}
                     </div>
                   </div>
@@ -345,67 +355,67 @@ export default function CreateCampaignPage() {
         </div>
 
         {/* Dates */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <Calendar size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Calendar size={16} className="text-gray-700" />
             일정
           </h3>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">시작일</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">시작일</label>
               <input
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">종료일</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">종료일</label>
               <input
                 type="date"
                 value={formData.endDate}
                 onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
           </div>
 
           <div className="mt-3">
-            <label className="text-sm font-medium text-gray-300 mb-2 block">지원 마감일 *</label>
+            <label className="text-sm font-medium text-gray-700 mb-2 block">지원 마감일 *</label>
             <input
               type="date"
               value={formData.applicationDeadline}
               onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
-              className="input"
+              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               required
             />
           </div>
         </div>
 
         {/* Campaign Details */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <FileText size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <FileText size={16} className="text-gray-700" />
             캠페인 세부 정보
           </h3>
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
                 #️⃣ 필수 해시태그
               </label>
               <input
                 type="text"
                 placeholder="#beauty #skincare #kbeauty (스페이스로 구분)"
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
               <p className="text-xs text-gray-500 mt-1">인플루언서가 반드시 사용해야 할 해시태그</p>
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
                 📋 상세 가이드라인
               </label>
               <textarea
@@ -416,7 +426,7 @@ export default function CreateCampaignPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
                 📦 제공 사항
               </label>
               <textarea
@@ -427,7 +437,7 @@ export default function CreateCampaignPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
                 🎁 보너스 조건 (선택)
               </label>
               <textarea
@@ -440,15 +450,15 @@ export default function CreateCampaignPage() {
         </div>
 
         {/* Platforms & Categories */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <Tag size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Tag size={16} className="text-gray-700" />
             플랫폼 & 카테고리
           </h3>
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">플랫폼 *</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">플랫폼 *</label>
               <div className="grid grid-cols-2 gap-2">
                 {(['instagram', 'tiktok', 'youtube', 'facebook'] as Platform[]).map(platform => {
                   const Icon = platformIcons[platform];
@@ -457,8 +467,8 @@ export default function CreateCampaignPage() {
                       key={platform}
                       className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all ${
                         formData.platforms.includes(platform)
-                          ? 'bg-primary text-white'
-                          : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                          ? 'bg-gray-900 text-gray-900'
+                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
                       <input
@@ -476,15 +486,15 @@ export default function CreateCampaignPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">카테고리 *</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">카테고리 *</label>
               <div className="grid grid-cols-3 gap-2">
                 {(['beauty', 'food', 'fashion', 'tech', 'fitness', 'travel', 'lifestyle'] as Category[]).map(category => (
                   <label
                     key={category}
                     className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                       formData.categories.includes(category)
-                        ? 'bg-primary text-white'
-                        : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                        ? 'bg-gray-900 text-gray-900'
+                        : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                     }`}
                   >
                     <input
@@ -502,44 +512,44 @@ export default function CreateCampaignPage() {
         </div>
 
         {/* Basic Requirements */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <Users size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Users size={16} className="text-gray-700" />
             인플루언서 요구사항
           </h3>
 
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">최소 팔로워</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">최소 팔로워</label>
                 <input
                   type="number"
                   value={formData.minFollowers}
                   onChange={(e) => setFormData({ ...formData, minFollowers: e.target.value })}
                   placeholder="10000"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">최소 참여율 (%)</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">최소 참여율 (%)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={formData.minEngagement}
                   onChange={(e) => setFormData({ ...formData, minEngagement: e.target.value })}
                   placeholder="3.0"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">성별</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">성별</label>
                 <select
                   value={formData.gender}
                   onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 >
                   <option value="any">무관</option>
                   <option value="male">남성</option>
@@ -547,13 +557,13 @@ export default function CreateCampaignPage() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">연령대</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">연령대</label>
                 <input
                   type="text"
                   value={formData.ageRange}
                   onChange={(e) => setFormData({ ...formData, ageRange: e.target.value })}
                   placeholder="20-35"
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
@@ -561,62 +571,62 @@ export default function CreateCampaignPage() {
         </div>
 
         {/* Lifestyle Requirements */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-            <Home size={16} className="text-primary" />
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Home size={16} className="text-gray-700" />
             라이프스타일 조건
           </h3>
 
           <div className="space-y-3">
             {/* Vehicle */}
-            <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg cursor-pointer">
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.requiresVehicle}
                 onChange={(e) => setFormData({ ...formData, requiresVehicle: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-primary focus:ring-primary"
+                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
               />
               <Car size={18} className="text-blue-400" />
-              <span className="text-sm text-white">차량 소유 필수</span>
+              <span className="text-sm text-gray-900">차량 소유 필수</span>
             </label>
 
             {/* Parent */}
-            <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg cursor-pointer">
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.requiresParent}
                 onChange={(e) => setFormData({ ...formData, requiresParent: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-primary focus:ring-primary"
+                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
               />
               <Baby size={18} className="text-pink-400" />
-              <span className="text-sm text-white">자녀 있는 사람 필수</span>
+              <span className="text-sm text-gray-900">자녀 있는 사람 필수</span>
             </label>
 
             {/* Pet */}
-            <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg cursor-pointer">
+            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.requiresPet}
                 onChange={(e) => setFormData({ ...formData, requiresPet: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-primary focus:ring-primary"
+                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
               />
               <PawPrint size={18} className="text-orange-400" />
-              <span className="text-sm text-white">반려동물 있는 사람 필수</span>
+              <span className="text-sm text-gray-900">반려동물 있는 사람 필수</span>
             </label>
           </div>
         </div>
 
         {/* Beauty Requirements */}
         {formData.categories.includes('beauty') && (
-          <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Heart size={16} className="text-pink-400" />
               뷰티 조건
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">피부 타입</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">피부 타입</label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { value: 'dry', label: '건성' },
@@ -629,8 +639,8 @@ export default function CreateCampaignPage() {
                       key={type.value}
                       className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                         formData.skinTypes.includes(type.value)
-                          ? 'bg-pink-500 text-white'
-                          : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                          ? 'bg-pink-500 text-gray-900'
+                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
                       <input
@@ -653,7 +663,7 @@ export default function CreateCampaignPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">피부톤</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">피부톤</label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { value: 'fair', label: '매우 밝음' },
@@ -666,8 +676,8 @@ export default function CreateCampaignPage() {
                       key={tone.value}
                       className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                         formData.skinTones.includes(tone.value)
-                          ? 'bg-pink-500 text-white'
-                          : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                          ? 'bg-pink-500 text-gray-900'
+                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
                       <input
@@ -694,23 +704,23 @@ export default function CreateCampaignPage() {
 
         {/* Fashion Requirements */}
         {formData.categories.includes('fashion') && (
-          <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Shirt size={16} className="text-purple-400" />
               패션 조건
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">상의 사이즈</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">상의 사이즈</label>
                 <div className="grid grid-cols-6 gap-2">
                   {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
                     <label
                       key={size}
                       className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                         formData.clothingSizes.top.includes(size)
-                          ? 'bg-purple-500 text-white'
-                          : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                          ? 'bg-purple-500 text-gray-900'
+                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
                       <input
@@ -744,15 +754,15 @@ export default function CreateCampaignPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">하의 사이즈</label>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">하의 사이즈</label>
                 <div className="grid grid-cols-6 gap-2">
                   {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
                     <label
                       key={size}
                       className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                         formData.clothingSizes.bottom.includes(size)
-                          ? 'bg-purple-500 text-white'
-                          : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                          ? 'bg-purple-500 text-gray-900'
+                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
                       <input
@@ -791,14 +801,14 @@ export default function CreateCampaignPage() {
 
         {/* Food Requirements */}
         {formData.categories.includes('food') && (
-          <div className="card">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Utensils size={16} className="text-orange-400" />
               식품 조건
             </h3>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">식이 제한 고려</label>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">식이 제한 고려</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { value: 'vegetarian', label: '채식' },
@@ -810,13 +820,13 @@ export default function CreateCampaignPage() {
                 ].map(diet => (
                   <label
                     key={diet.value}
-                    className="flex items-center gap-2 p-2 bg-dark-600 rounded-lg cursor-pointer hover:bg-dark-500"
+                    className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100"
                   >
                     <input
                       type="checkbox"
-                      className="w-4 h-4 rounded border-gray-600 text-primary focus:ring-primary"
+                      className="w-4 h-4 rounded border-gray-600 text-gray-700 focus:ring-primary"
                     />
-                    <span className="text-xs text-white">{diet.label}</span>
+                    <span className="text-xs text-gray-900">{diet.label}</span>
                   </label>
                 ))}
               </div>
@@ -826,8 +836,8 @@ export default function CreateCampaignPage() {
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="btn btn-primary w-full py-4 text-lg">
-          <Save size={20} className="mr-2" />
+        <button type="submit" className="w-full py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-lg flex items-center justify-center gap-2">
+          <Save size={20} />
           캠페인 생성하기
         </button>
       </form>

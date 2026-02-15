@@ -106,37 +106,52 @@ export default function AdvertiserDashboard() {
           </div>
         </Link>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Clickable */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card text-center">
-            <TrendingUp size={24} className="text-primary mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">
-              {mockData.stats.activeCampaigns}
+          <Link href="/main/advertiser/campaigns?status=active">
+            <div className="card text-center hover:bg-dark-600 transition-all cursor-pointer border-2 border-transparent hover:border-primary/50">
+              <TrendingUp size={24} className="text-primary mx-auto mb-2" />
+              <div className="text-xl font-bold text-white">
+                {mockData.stats.activeCampaigns}
+              </div>
+              <div className="text-xs text-gray-400 mt-1">진행 중 Active</div>
+              <div className="text-xs text-primary mt-2">👆 상세 보기</div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">진행 중 Active</div>
-          </div>
-          <div className="card text-center">
-            <DollarSign size={24} className="text-accent mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">
-              {formatPoints(mockData.stats.totalSpent)}
+          </Link>
+
+          <Link href="/main/advertiser/analytics?tab=budget">
+            <div className="card text-center hover:bg-dark-600 transition-all cursor-pointer border-2 border-transparent hover:border-accent/50">
+              <DollarSign size={24} className="text-accent mx-auto mb-2" />
+              <div className="text-xl font-bold text-white">
+                {formatPoints(mockData.stats.totalSpent)}
+              </div>
+              <div className="text-xs text-gray-400 mt-1">총 지출 VND</div>
+              <div className="text-xs text-accent mt-2">👆 예산 분석</div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">총 지출 VND</div>
-          </div>
-          <div className="card text-center">
-            <Users size={24} className="text-secondary mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">
-              {mockData.stats.totalInfluencers}
+          </Link>
+
+          <Link href="/main/advertiser/influencers">
+            <div className="card text-center hover:bg-dark-600 transition-all cursor-pointer border-2 border-transparent hover:border-secondary/50">
+              <Users size={24} className="text-secondary mx-auto mb-2" />
+              <div className="text-xl font-bold text-white">
+                {mockData.stats.totalInfluencers}
+              </div>
+              <div className="text-xs text-gray-400 mt-1">협업 KOLs</div>
+              <div className="text-xs text-secondary mt-2">👆 KOL 목록</div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">협업 KOLs</div>
-          </div>
-          <div className="card text-center">
-            <BarChart size={24} className="text-success mx-auto mb-2" />
-            <div className="text-xl font-bold text-success">
-              {mockData.stats.avgROI.toFixed(1)}x
+          </Link>
+
+          <Link href="/main/advertiser/analytics?tab=roi">
+            <div className="card text-center hover:bg-dark-600 transition-all cursor-pointer border-2 border-transparent hover:border-success/50">
+              <BarChart size={24} className="text-success mx-auto mb-2" />
+              <div className="text-xl font-bold text-success">
+                {mockData.stats.avgROI.toFixed(1)}x
+              </div>
+              <div className="text-xs text-gray-400 mt-1">평균 ROI</div>
+              <div className="text-xs text-success mt-0.5">+{((mockData.stats.avgROI - 1) * 100).toFixed(0)}% return</div>
+              <div className="text-xs text-success mt-2">👆 ROI 분석</div>
             </div>
-            <div className="text-xs text-gray-400 mt-1">평균 ROI</div>
-            <div className="text-xs text-success mt-0.5">+{((mockData.stats.avgROI - 1) * 100).toFixed(0)}% return</div>
-          </div>
+          </Link>
         </div>
 
         {/* Create Campaign Button */}

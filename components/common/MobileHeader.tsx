@@ -55,7 +55,7 @@ export default function MobileHeader({
   };
 
   return (
-    <header className={cn('mobile-header', className)}>
+    <header className={cn('mobile-header', className)} role="banner">
       <div className="flex items-center justify-between h-14 px-4">
         {/* Left Action */}
         <div className="w-10">
@@ -63,16 +63,18 @@ export default function MobileHeader({
             <button
               onClick={handleBack}
               className="btn-icon text-white hover:bg-dark-600"
+              aria-label="Go back"
             >
-              <ArrowLeft size={24} />
+              <ArrowLeft size={24} aria-hidden="true" />
             </button>
           )}
           {showMenu && (
             <button
               onClick={onMenu}
               className="btn-icon text-white hover:bg-dark-600"
+              aria-label="Open menu"
             >
-              <Menu size={24} />
+              <Menu size={24} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -83,9 +85,12 @@ export default function MobileHeader({
             <>
               <h1 className="text-lg font-bold text-white truncate">{title}</h1>
               {showPoints && (
-                <Link href="/main/influencer/wallet?tab=shopping">
+                <Link
+                  href="/main/influencer/wallet?tab=shopping"
+                  aria-label={`Shopping points: ${formatShoppingPoints(currentPoints)}`}
+                >
                   <div className="flex items-center justify-center gap-1 mt-0.5">
-                    <Wallet size={12} className="text-primary" />
+                    <Wallet size={12} className="text-primary" aria-hidden="true" />
                     <span className="text-xs font-bold text-primary">
                       {formatShoppingPoints(currentPoints)}
                     </span>
@@ -102,8 +107,9 @@ export default function MobileHeader({
           <button
             onClick={() => setShowLanguageModal(true)}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-dark-600 hover:bg-dark-500 transition-all"
+            aria-label={`Change language, current: ${language}`}
           >
-            <span className="text-lg leading-none">{languageFlags[language]}</span>
+            <span className="text-lg leading-none" aria-hidden="true">{languageFlags[language]}</span>
             <span className="text-xs font-bold text-white uppercase">{language}</span>
           </button>
 
@@ -113,10 +119,11 @@ export default function MobileHeader({
                 <button
                   onClick={onNotification}
                   className="btn-icon text-white hover:bg-dark-600 relative"
+                  aria-label="Notifications"
                 >
-                  <Bell size={24} />
+                  <Bell size={24} aria-hidden="true" />
                   {/* Notification badge */}
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" aria-label="New notifications" />
                 </button>
               )
             )}

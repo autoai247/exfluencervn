@@ -43,6 +43,9 @@ export interface Translations {
     profile: string;
     notifications: string;
     wallet: string;
+    ranking: string;
+    analytics: string;
+    kol: string;
   };
 
   // Campaigns
@@ -2123,6 +2126,9 @@ export const translations: Record<Language, Translations> = {
       profile: 'Hồ sơ',
       notifications: 'Thông báo',
       wallet: 'Ví',
+      ranking: 'Xếp hạng',
+      analytics: 'Phân tích',
+      kol: 'KOL',
     },
     campaign: {
       title: 'Chiến dịch',
@@ -3715,6 +3721,9 @@ export const translations: Record<Language, Translations> = {
       profile: '프로필',
       notifications: '알림',
       wallet: '지갑',
+      ranking: '랭킹',
+      analytics: '분석',
+      kol: 'KOL',
     },
     campaign: {
       title: '캠페인',

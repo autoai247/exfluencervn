@@ -291,13 +291,15 @@ export default function FilterPanel({
       <div className="flex gap-2 pt-4 border-t border-dark-500">
         <button
           onClick={resetFilters}
-          className="flex-1 px-4 py-3 bg-dark-700 text-gray-300 rounded-lg font-medium hover:bg-dark-600 transition-colors"
+          className="flex-1 px-4 py-3 bg-dark-700 text-gray-300 rounded-lg font-medium hover:bg-dark-600 transition-colors active:scale-95"
+          aria-label="Reset all filters"
         >
           {t.campaignFilters.reset}
         </button>
         <button
           onClick={onClose}
-          className="flex-1 px-4 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+          className="flex-1 px-4 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors active:scale-95"
+          aria-label="Apply filters"
         >
           {t.campaignFilters.apply}
         </button>

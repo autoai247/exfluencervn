@@ -22,21 +22,21 @@ export default function BottomNav({ userType }: BottomNavProps) {
         { href: '/main/influencer', icon: Home, label: t.nav.home },
         { href: '/main/influencer/campaigns', icon: Briefcase, label: t.nav.campaigns },
         { href: '/main/influencer/shop', icon: ShoppingBag, label: t.nav.shop, highlight: true },
-        { href: '/main/influencer/ranking', icon: Trophy, label: '랭킹' },
-        { href: '/main/influencer/analytics', icon: BarChart3, label: '통계' },
+        { href: '/main/influencer/ranking', icon: Trophy, label: t.nav.ranking },
+        { href: '/main/influencer/analytics', icon: BarChart3, label: t.nav.analytics },
         { href: '/main/influencer/profile', icon: User, label: t.nav.profile },
       ]
     : [
         { href: '/main/advertiser', icon: Home, label: t.nav.home },
         { href: '/main/advertiser/campaigns', icon: LayoutGrid, label: t.nav.campaigns },
         { href: '/main/advertiser/shop', icon: ShoppingBag, label: t.nav.shop, highlight: true },
-        { href: '/main/advertiser/influencers', icon: Search, label: 'KOL' },
-        { href: '/main/advertiser/analytics', icon: BarChart3, label: '분석' },
+        { href: '/main/advertiser/influencers', icon: Search, label: t.nav.kol },
+        { href: '/main/advertiser/analytics', icon: BarChart3, label: t.nav.analytics },
         { href: '/main/advertiser/profile', icon: User, label: t.nav.profile },
       ];
 
   return (
-    <nav className="bottom-nav">
+    <nav className="bottom-nav" role="navigation" aria-label="Main navigation">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -51,15 +51,18 @@ export default function BottomNav({ userType }: BottomNavProps) {
                 'bottom-nav-item relative',
                 isActive && 'bottom-nav-item-active'
               )}
+              aria-label={item.label}
+              aria-current={isActive ? 'page' : undefined}
             >
               {/* 상점 강조 뱃지 */}
               {isHighlight && !isActive && (
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-pulse" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-pulse" aria-hidden="true" />
               )}
               <Icon
                 size={24}
                 strokeWidth={isActive ? 2.5 : 2}
                 className={isHighlight && !isActive ? 'text-warning' : ''}
+                aria-hidden="true"
               />
               <span className={cn(
                 "text-[10px] font-medium",

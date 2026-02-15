@@ -108,12 +108,14 @@ export default function HomePage() {
               <Link
                 href="/auth/register"
                 className="block w-full text-center py-5 font-bold bg-gradient-to-r from-primary to-secondary text-white rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                aria-label="Sign up for Exfluencer VN"
               >
                 {t.homepage.signupText}
               </Link>
               <Link
                 href="/auth/login"
                 className="block w-full text-center py-5 font-semibold bg-transparent text-white rounded-2xl border-2 border-gray-600 hover:border-primary hover:bg-primary/10 transition-all"
+                aria-label="Login to your account"
               >
                 {t.homepage.loginText}
               </Link>
@@ -122,18 +124,18 @@ export default function HomePage() {
             {/* Supported Platforms */}
             <div className="pt-4">
               <p className="text-center text-xs text-gray-500 mb-4">{t.homepage.platformsSubtitle}</p>
-              <div className="flex justify-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <FaInstagram size={24} className="text-white" />
+              <div className="flex justify-center gap-4" role="list" aria-label="Supported social media platforms">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center" role="listitem" aria-label="Instagram">
+                  <FaInstagram size={24} className="text-white" aria-hidden="true" />
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10">
-                  <FaTiktok size={24} className="text-white" />
+                <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center border border-white/10" role="listitem" aria-label="TikTok">
+                  <FaTiktok size={24} className="text-white" aria-hidden="true" />
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center">
-                  <FaYoutube size={24} className="text-white" />
+                <div className="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center" role="listitem" aria-label="YouTube">
+                  <FaYoutube size={24} className="text-white" aria-hidden="true" />
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center">
-                  <FaFacebook size={24} className="text-white" />
+                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center" role="listitem" aria-label="Facebook">
+                  <FaFacebook size={24} className="text-white" aria-hidden="true" />
                 </div>
               </div>
             </div>
@@ -210,6 +212,7 @@ export default function HomePage() {
             <Link
               href="/auth/register"
               className="inline-block px-12 py-5 text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent text-white rounded-full shadow-2xl shadow-primary/40 hover:shadow-primary/60 transition-all transform hover:scale-105"
+              aria-label="Join Exfluencer VN now"
             >
               {t.homepage.joinNow}
             </Link>

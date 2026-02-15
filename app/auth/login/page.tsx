@@ -172,15 +172,17 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label htmlFor="email" className="text-sm font-medium text-gray-300">
                   {t.auth.login.email}
                 </label>
                 <div className="relative">
                   <Mail
                     size={20}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    aria-hidden="true"
                   />
                   <input
+                    id="email"
                     type="email"
                     required
                     value={formData.email}
@@ -189,21 +191,25 @@ export default function LoginPage() {
                     }
                     placeholder="your@email.com"
                     className="input pl-12"
+                    aria-label="Email address"
+                    autoComplete="email"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label htmlFor="password" className="text-sm font-medium text-gray-300">
                   {t.auth.login.password}
                 </label>
                 <div className="relative">
                   <Lock
                     size={20}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    aria-hidden="true"
                   />
                   <input
+                    id="password"
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={formData.password}
@@ -212,13 +218,16 @@ export default function LoginPage() {
                     }
                     placeholder="••••••••"
                     className="input pl-12 pr-12"
+                    aria-label="Password"
+                    autoComplete="current-password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
                   </button>
                 </div>
               </div>
@@ -263,10 +272,11 @@ export default function LoginPage() {
                 type="submit"
                 disabled={loading}
                 className="btn btn-primary w-full text-base mt-6"
+                aria-label="Login to your account"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
-                    <div className="spinner" />
+                    <div className="spinner" aria-hidden="true" />
                     {t.auth.login.loggingIn}
                   </div>
                 ) : (

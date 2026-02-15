@@ -99,11 +99,24 @@ export default function AdvertiserProfilePage() {
       <MobileHeader title={text.title} showBack />
 
       <main className="container-mobile pb-24 pt-20">
+        {/* BUSINESS ACCOUNT BANNER */}
+        <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl p-4 mb-4 shadow-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <Building2 size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-white font-black text-sm">🏢 BUSINESS ACCOUNT</h3>
+              <p className="text-white/80 text-xs font-medium">{language === 'ko' ? '브랜드/기업 계정' : 'Tài khoản doanh nghiệp'}</p>
+            </div>
+          </div>
+        </div>
+
         {/* Profile Header */}
-        <div className="bg-dark-600 rounded-2xl p-6 mb-6 border border-dark-500">
+        <div className="bg-gradient-to-br from-orange-500/20 via-amber-500/10 to-dark-600 rounded-2xl p-6 mb-6 border-2 border-orange-500/30 shadow-xl">
           <div className="flex items-start gap-4">
             {/* Avatar */}
-            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-secondary to-secondary-dark flex items-center justify-center text-white flex-shrink-0">
+            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white flex-shrink-0 shadow-lg">
               <Building2 size={32} />
             </div>
 
@@ -147,22 +160,25 @@ export default function AdvertiserProfilePage() {
 
         {/* Stats Cards */}
         <div className="mb-6">
-          <h3 className="text-lg font-bold text-white mb-4">{text.stats.title}</h3>
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 size={20} className="text-orange-400" />
+            <h3 className="text-lg font-bold text-white">{text.stats.title}</h3>
+          </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl p-4 border border-primary/30">
+            <div className="bg-gradient-to-br from-orange-500/20 to-orange-500/5 rounded-xl p-4 border-2 border-orange-500/40 shadow-lg">
               <div className="flex items-center gap-2 mb-2">
-                <Package size={20} className="text-primary" />
+                <Package size={20} className="text-orange-400" />
                 <span className="text-xs text-gray-400">{text.stats.totalCampaigns}</span>
               </div>
-              <div className="text-2xl font-bold text-white">{advertiser.totalCampaigns}</div>
+              <div className="text-2xl font-bold text-orange-400">{advertiser.totalCampaigns}</div>
             </div>
 
-            <div className="bg-gradient-to-br from-accent/20 to-accent/5 rounded-xl p-4 border border-accent/30">
+            <div className="bg-gradient-to-br from-amber-500/20 to-amber-500/5 rounded-xl p-4 border-2 border-amber-500/40 shadow-lg">
               <div className="flex items-center gap-2 mb-2">
-                <BarChart3 size={20} className="text-accent" />
+                <BarChart3 size={20} className="text-amber-400" />
                 <span className="text-xs text-gray-400">{text.stats.activeCampaigns}</span>
               </div>
-              <div className="text-2xl font-bold text-white">{advertiser.activeCampaigns}</div>
+              <div className="text-2xl font-bold text-amber-400">{advertiser.activeCampaigns}</div>
             </div>
           </div>
 
@@ -178,44 +194,62 @@ export default function AdvertiserProfilePage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-secondary/20 to-accent/20 rounded-xl p-4 border border-secondary/30 mt-4">
-            <div className="text-xs text-gray-400 mb-1">{text.stats.totalBudget}</div>
-            <div className="text-2xl font-bold text-white">{formatPoints(advertiser.totalBudget)} VND</div>
+          <div className="bg-gradient-to-r from-yellow-500/30 via-orange-500/20 to-amber-500/30 rounded-xl p-5 border-2 border-yellow-500/50 mt-4 shadow-xl">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-2xl">💰</span>
+              <div className="text-xs text-gray-300 font-bold">{text.stats.totalBudget}</div>
+            </div>
+            <div className="text-3xl font-black text-yellow-400">{formatPoints(advertiser.totalBudget)} VND</div>
+            <div className="text-xs text-yellow-300/60 mt-1 font-medium">{language === 'ko' ? '총 광고 집행 금액' : 'Tổng chi tiêu quảng cáo'}</div>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-2 px-1">
+            <Building2 size={18} className="text-orange-400" />
+            <h3 className="text-sm font-bold text-gray-400">{language === 'ko' ? '기업 계정 관리' : 'Quản lý tài khoản'}</h3>
+          </div>
+
           <Link
             href="/main/advertiser/profile/edit"
-            className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-primary/50 transition-all"
+            className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border-2 border-orange-500/30 hover:border-orange-500/60 transition-all shadow-lg"
           >
             <div className="flex items-center gap-3">
-              <Edit size={20} className="text-primary" />
+              <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                <Edit size={20} className="text-orange-400" />
+              </div>
               <span className="text-white font-medium">{text.actions.edit}</span>
             </div>
-            <span className="text-gray-400">›</span>
+            <span className="text-orange-400">›</span>
           </Link>
 
           {!advertiser.verified && (
             <Link
               href="/main/advertiser/verification"
-              className="flex items-center justify-between bg-accent/10 rounded-xl p-4 border border-accent/30 hover:border-accent/50 transition-all"
+              className="flex items-center justify-between bg-gradient-to-r from-orange-500/20 to-amber-500/20 rounded-xl p-4 border-2 border-orange-500/50 hover:border-orange-500/80 transition-all shadow-lg animate-pulse"
             >
               <div className="flex items-center gap-3">
-                <Building2 size={20} className="text-accent" />
-                <span className="text-white font-medium">{text.actions.verification}</span>
+                <div className="w-10 h-10 bg-orange-500/30 rounded-lg flex items-center justify-center">
+                  <Building2 size={20} className="text-orange-400" />
+                </div>
+                <div>
+                  <span className="text-white font-bold block">{text.actions.verification}</span>
+                  <span className="text-xs text-orange-300">{language === 'ko' ? '신뢰도 향상' : 'Tăng độ tin cậy'}</span>
+                </div>
               </div>
-              <span className="text-accent">›</span>
+              <span className="text-orange-400 font-bold">›</span>
             </Link>
           )}
 
           <Link
             href="/settings"
-            className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-gray-500 transition-all"
+            className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-gray-400 transition-all"
           >
             <div className="flex items-center gap-3">
-              <Settings size={20} className="text-gray-400" />
+              <div className="w-10 h-10 bg-gray-500/20 rounded-lg flex items-center justify-center">
+                <Settings size={20} className="text-gray-400" />
+              </div>
               <span className="text-white font-medium">{text.actions.settings}</span>
             </div>
             <span className="text-gray-400">›</span>
@@ -226,7 +260,9 @@ export default function AdvertiserProfilePage() {
             className="w-full flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-red-500/50 transition-all"
           >
             <div className="flex items-center gap-3">
-              <LogOut size={20} className="text-red-400" />
+              <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
+                <LogOut size={20} className="text-red-400" />
+              </div>
               <span className="text-white font-medium">{text.actions.logout}</span>
             </div>
             <span className="text-gray-400">›</span>

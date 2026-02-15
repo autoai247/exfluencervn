@@ -163,7 +163,7 @@ export default function CreateCampaignPage() {
             </button>
             <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
           </div>
-          <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-gray-900 rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
+          <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
             <Save size={18} />
             생성
           </button>
@@ -330,7 +330,7 @@ export default function CreateCampaignPage() {
                       <X size={14} className="text-gray-900" />
                     </button>
                     {/* Type Badge */}
-                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-gray-900">
+                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-white">
                       {item.type === 'image' ? '📷' : '🎥'} {item.file.name.length > 10 ? item.file.name.substring(0, 10) + '...' : item.file.name}
                     </div>
                   </div>
@@ -467,7 +467,7 @@ export default function CreateCampaignPage() {
                       key={platform}
                       className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all ${
                         formData.platforms.includes(platform)
-                          ? 'bg-gray-900 text-gray-900'
+                          ? 'bg-gray-900 text-white'
                           : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                       }`}
                     >
@@ -493,7 +493,7 @@ export default function CreateCampaignPage() {
                     key={category}
                     className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
                       formData.categories.includes(category)
-                        ? 'bg-gray-900 text-gray-900'
+                        ? 'bg-gray-900 text-white'
                         : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
                     }`}
                   >

@@ -118,7 +118,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setFormData({ email: 'influencer@test.com', password: 'test1234' });
+                    setFormData({ email: 'influencer@demo.com', password: 'test1234' });
                   }}
                   className="btn btn-secondary text-sm py-3 flex flex-col items-center gap-1"
                 >
@@ -128,7 +128,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setFormData({ email: 'advertiser@test.com', password: 'test1234' });
+                    setFormData({ email: 'advertiser@demo.com', password: 'test1234' });
                   }}
                   className="btn btn-primary text-sm py-3 flex flex-col items-center gap-1"
                 >

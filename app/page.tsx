@@ -343,13 +343,6 @@ export default function HomePage() {
                 {t.homepage.agreeBySigningUp}
               </p>
             </div>
-
-            {/* Admin Link */}
-            <div className="text-center pt-4">
-              <Link href="/auth/admin/login" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">
-                {t.homepage.adminLogin}
-              </Link>
-            </div>
           </div>
         </section>
       </div>

@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -39,6 +40,13 @@ export default function LoginPage() {
       }
 
       if (data.user) {
+        // 자동 로그인 설정
+        if (rememberMe) {
+          localStorage.setItem('exfluencer_remember', 'true');
+        } else {
+          localStorage.removeItem('exfluencer_remember');
+        }
+
         // 프로필 정보 가져오기
         const { data: profile } = await supabase
           .from('profiles')
@@ -191,14 +199,32 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Forgot Password */}
-              <div className="flex justify-end">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-primary hover:text-primary-light"
-                >
-                  {t.auth.login.forgotPassword}
-                </Link>
+              {/* Remember Me & Links */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-600 text-primary focus:ring-primary"
+                  />
+                  <span className="text-sm text-gray-400">{t.auth.login.rememberMe}</span>
+                </label>
+                <div className="flex gap-3 text-sm">
+                  <Link
+                    href="/auth/find-email"
+                    className="text-gray-400 hover:text-primary"
+                  >
+                    {t.auth.login.findEmail}
+                  </Link>
+                  <span className="text-gray-600">|</span>
+                  <Link
+                    href="/auth/forgot-password"
+                    className="text-gray-400 hover:text-primary"
+                  >
+                    {t.auth.login.forgotPassword}
+                  </Link>
+                </div>
               </div>
 
               {/* Error Message */}

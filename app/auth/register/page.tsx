@@ -12,9 +12,9 @@ import { createClient } from '@/lib/supabase/client';
 export default function RegisterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const userType = (searchParams.get('type') as UserType) || 'influencer';
   const { t } = useLanguage();
 
+  const [userType, setUserType] = useState<UserType>((searchParams.get('type') as UserType) || null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -162,17 +162,88 @@ export default function RegisterPage() {
         {/* Content */}
         <div className="flex-1 flex flex-col px-4 py-6 pb-safe-bottom overflow-y-auto">
           <div className="space-y-6 animate-fade-in">
-            {/* Title */}
-            <div className="text-center space-y-2">
-              <h1 className="text-3xl font-bold text-white">
-                {userType === 'influencer' ? t.auth.register.influencerTitle : t.auth.register.brandTitle}
-              </h1>
-              <p className="text-gray-400">
-                {userType === 'influencer'
-                  ? t.auth.register.influencerSubtitle
-                  : t.auth.register.brandSubtitle}
-              </p>
-            </div>
+            {!userType ? (
+              /* Role Selection */
+              <>
+                <div className="text-center space-y-2">
+                  <h1 className="text-3xl font-bold text-white">{t.auth.register.title}</h1>
+                  <p className="text-gray-400">{t.auth.register.selectRole}</p>
+                </div>
+
+                <div className="space-y-4 mt-8">
+                  {/* Influencer Card */}
+                  <button
+                    onClick={() => setUserType('influencer')}
+                    className="card-hover w-full p-6 transition-all border-2 border-transparent hover:border-primary"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center flex-shrink-0">
+                        <User size={28} className="text-white" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <h3 className="text-xl font-bold text-white">{t.homepage.influencerRole}</h3>
+                        <p className="text-sm text-gray-400 mt-2">
+                          {t.homepage.influencerDesc}
+                        </p>
+                        <div className="flex gap-2 mt-3 flex-wrap">
+                          <span className="badge badge-primary text-xs">{t.homepage.avgMonthlyEarning}</span>
+                          <span className="badge badge-secondary text-xs">{t.homepage.free}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Advertiser Card */}
+                  <button
+                    onClick={() => setUserType('advertiser')}
+                    className="card-hover w-full p-6 transition-all border-2 border-transparent hover:border-secondary"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-secondary to-secondary-dark rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Building2 size={28} className="text-white" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <h3 className="text-xl font-bold text-white">{t.homepage.advertiserRole}</h3>
+                        <p className="text-sm text-gray-400 mt-2">
+                          {t.homepage.advertiserDesc}
+                        </p>
+                        <div className="flex gap-2 mt-3 flex-wrap">
+                          <span className="badge badge-secondary text-xs">{t.homepage.avgROI}</span>
+                          <span className="badge badge-success text-xs">{t.homepage.verifiedKOL}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Login Link */}
+                <div className="text-center pt-4">
+                  <span className="text-gray-400">{t.auth.register.alreadyHaveAccount} </span>
+                  <Link href="/auth/login" className="text-primary font-semibold hover:text-primary-light">
+                    {t.auth.register.loginNow}
+                  </Link>
+                </div>
+              </>
+            ) : (
+              /* Registration Form */
+              <>
+                {/* Title */}
+                <div className="text-center space-y-2">
+                  <h1 className="text-3xl font-bold text-white">
+                    {userType === 'influencer' ? t.auth.register.influencerTitle : t.auth.register.brandTitle}
+                  </h1>
+                  <p className="text-gray-400">
+                    {userType === 'influencer'
+                      ? t.auth.register.influencerSubtitle
+                      : t.auth.register.brandSubtitle}
+                  </p>
+                  <button
+                    onClick={() => setUserType(null)}
+                    className="text-sm text-primary hover:text-primary-light"
+                  >
+                    ← {t.common.back}
+                  </button>
+                </div>
 
             {/* Social Login */}
             <div className="space-y-3">
@@ -518,6 +589,8 @@ export default function RegisterPage() {
                 {t.auth.register.loginNow}
               </Link>
             </div>
+            </>
+            )}
           </div>
         </div>
       </div>

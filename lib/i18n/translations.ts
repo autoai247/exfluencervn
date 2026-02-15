@@ -1041,6 +1041,8 @@ export interface Translations {
       languageInfo: string;
       email: string;
       password: string;
+      rememberMe: string;
+      findEmail: string;
       forgotPassword: string;
       loggingIn: string;
       loginButton: string;
@@ -1049,6 +1051,7 @@ export interface Translations {
     };
     register: {
       title: string;
+      selectRole: string;
       createAccount: string;
       name: string;
       email: string;
@@ -1107,6 +1110,24 @@ export interface Translations {
         termsRequired: string;
         privacyRequired: string;
       };
+    };
+    forgotPassword: {
+      title: string;
+      subtitle: string;
+      sending: string;
+      sendButton: string;
+      successTitle: string;
+      successMessage: string;
+    };
+    findEmail: {
+      title: string;
+      subtitle: string;
+      phoneHint: string;
+      searching: string;
+      searchButton: string;
+      notFound: string;
+      foundTitle: string;
+      foundMessage: string;
     };
   };
 
@@ -1636,6 +1657,8 @@ export const translations: Record<Language, Translations> = {
         languageInfo: 'Tiếng Việt Vietnamese | 한국어 Korean | English',
         email: 'Email',
         password: 'Mật khẩu',
+        rememberMe: 'Ghi nhớ đăng nhập',
+        findEmail: 'Tìm email',
         forgotPassword: 'Quên mật khẩu?',
         loggingIn: 'Đang đăng nhập...',
         loginButton: 'Đăng nhập',
@@ -1644,6 +1667,7 @@ export const translations: Record<Language, Translations> = {
       },
       register: {
         title: 'Đăng ký',
+        selectRole: 'Chọn loại tài khoản của bạn',
         createAccount: 'Tạo tài khoản mới',
         name: 'Tên đầy đủ',
         email: 'Email',
@@ -1702,6 +1726,24 @@ export const translations: Record<Language, Translations> = {
           termsRequired: 'Vui lòng đồng ý với Điều khoản dịch vụ',
           privacyRequired: 'Vui lòng đồng ý với Chính sách bảo mật',
         },
+      },
+      forgotPassword: {
+        title: 'Quên mật khẩu',
+        subtitle: 'Nhập email của bạn để nhận liên kết đặt lại mật khẩu',
+        sending: 'Đang gửi...',
+        sendButton: 'Gửi liên kết đặt lại',
+        successTitle: 'Email đã được gửi!',
+        successMessage: 'Vui lòng kiểm tra hộp thư email của bạn để đặt lại mật khẩu.',
+      },
+      findEmail: {
+        title: 'Tìm Email',
+        subtitle: 'Nhập số điện thoại để tìm email đã đăng ký',
+        phoneHint: 'Nhập số điện thoại bạn đã dùng khi đăng ký',
+        searching: 'Đang tìm...',
+        searchButton: 'Tìm email',
+        notFound: 'Không tìm thấy tài khoản với số điện thoại này',
+        foundTitle: 'Tìm thấy email!',
+        foundMessage: 'Hãy sử dụng email này để đăng nhập',
       },
     },
     settings: {
@@ -3162,6 +3204,8 @@ export const translations: Record<Language, Translations> = {
         languageInfo: '한국어 Korean | Tiếng Việt Vietnamese | English',
         email: '이메일',
         password: '비밀번호',
+        rememberMe: '자동 로그인',
+        findEmail: '이메일 찾기',
         forgotPassword: '비밀번호를 잊으셨나요?',
         loggingIn: '로그인 중...',
         loginButton: '로그인',
@@ -3170,6 +3214,7 @@ export const translations: Record<Language, Translations> = {
       },
       register: {
         title: '회원가입',
+        selectRole: '계정 유형을 선택하세요',
         createAccount: '새 계정 만들기',
         name: '이름',
         email: '이메일',
@@ -3228,6 +3273,24 @@ export const translations: Record<Language, Translations> = {
           termsRequired: '서비스 약관에 동의해주세요',
           privacyRequired: '개인정보 처리방침에 동의해주세요',
         },
+      },
+      forgotPassword: {
+        title: '비밀번호 찾기',
+        subtitle: '가입한 이메일을 입력하시면 비밀번호 재설정 링크를 보내드립니다',
+        sending: '전송 중...',
+        sendButton: '재설정 링크 보내기',
+        successTitle: '이메일 전송 완료!',
+        successMessage: '이메일을 확인하여 비밀번호를 재설정하세요.',
+      },
+      findEmail: {
+        title: '이메일 찾기',
+        subtitle: '가입 시 등록한 전화번호를 입력하세요',
+        phoneHint: '회원가입 시 등록한 전화번호를 입력하세요',
+        searching: '검색 중...',
+        searchButton: '이메일 찾기',
+        notFound: '해당 전화번호로 등록된 계정을 찾을 수 없습니다',
+        foundTitle: '이메일을 찾았습니다!',
+        foundMessage: '이 이메일로 로그인하세요',
       },
     },
     settings: {

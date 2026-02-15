@@ -127,78 +127,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Role Selection */}
-          <div className="space-y-4 mt-12 animate-slide-up">
-            <div className="text-center space-y-1">
-              <h2 className="text-lg font-semibold text-white">
-                {t.homepage.howToStart}
-              </h2>
-            </div>
-
-            {/* Influencer Card */}
-            <button
-              onClick={() => setSelectedRole('influencer')}
-              className={`card-hover w-full p-6 transition-all ${
-                selectedRole === 'influencer'
-                  ? 'border-primary shadow-xl shadow-primary/20'
-                  : ''
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Users size={24} className="text-white" />
-                </div>
-                <div className="flex-1 text-left">
-                  <h3 className="text-lg font-bold text-white">{t.homepage.influencerRole}</h3>
-                  <p className="text-sm text-gray-400 mt-1">
-                    {t.homepage.influencerDesc}
-                  </p>
-                  <div className="flex gap-2 mt-3 flex-wrap">
-                    <span className="badge badge-primary text-xs">{t.homepage.avgMonthlyEarning}</span>
-                    <span className="badge badge-secondary text-xs">{t.homepage.free}</span>
-                    <span className="badge badge-success text-xs">{t.homepage.activeCampaigns}</span>
-                  </div>
-                </div>
-              </div>
-            </button>
-
-            {/* Advertiser Card */}
-            <button
-              onClick={() => setSelectedRole('advertiser')}
-              className={`card-hover w-full p-6 transition-all ${
-                selectedRole === 'advertiser'
-                  ? 'border-secondary shadow-xl shadow-secondary/20'
-                  : ''
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-secondary to-secondary-dark rounded-xl flex items-center justify-center flex-shrink-0">
-                  <DollarSign size={24} className="text-white" />
-                </div>
-                <div className="flex-1 text-left">
-                  <h3 className="text-lg font-bold text-white">{t.homepage.advertiserRole}</h3>
-                  <p className="text-sm text-gray-400 mt-1">
-                    {t.homepage.advertiserDesc}
-                  </p>
-                  <div className="flex gap-2 mt-3 flex-wrap">
-                    <span className="badge badge-secondary text-xs">{t.homepage.avgROI}</span>
-                    <span className="badge badge-success text-xs">{t.homepage.verifiedKOL}</span>
-                    <span className="badge badge-accent text-xs">{t.homepage.realtimeAnalysis}</span>
-                  </div>
-                </div>
-              </div>
-            </button>
-          </div>
-
           {/* CTA Buttons */}
-          <div className="space-y-3 mt-8">
+          <div className="space-y-3 mt-12">
             <Link
-              href={selectedRole ? `/auth/register?type=${selectedRole}` : '/auth/register'}
+              href="/auth/register"
               className="btn btn-primary w-full text-base py-3"
             >
-              {selectedRole
-                ? t.homepage.startNowFree
-                : t.homepage.signupText || '회원가입'}
+              {t.homepage.signupText}
             </Link>
             <Link
               href="/auth/login"

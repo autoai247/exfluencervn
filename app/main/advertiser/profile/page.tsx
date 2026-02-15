@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Building2, Mail, Phone, Globe, Edit, Settings, LogOut, BarChart3, Users, Package } from 'lucide-react';
+import { Building2, Mail, Phone, Globe, Edit, Settings, LogOut, BarChart3, Package } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -10,76 +10,71 @@ import { formatPoints } from '@/lib/points';
 
 export default function AdvertiserProfilePage() {
   const { language } = useLanguage();
-  const [advertiser, setAdvertiser] = useState({
+
+  const [advertiser] = useState({
     name: 'Demo Brand Company',
     email: 'advertiser@demo.com',
     phone: '+84 909 876 543',
     company_name: 'Demo Brand VN',
     website: 'https://demobrand.com',
-    avatar_url: null,
-    bio: 'Leading fashion brand in Vietnam. Specialized in youth fashion and streetwear.',
+    bio: language === 'ko'
+      ? '베트남을 대표하는 패션 브랜드. 청년 패션과 스트릿웨어 전문.'
+      : 'Thương hiệu thời trang hàng đầu Việt Nam. Chuyên về thời trang trẻ và streetwear.',
     created_at: '2024-01-15',
     verified: true,
-    // Advertiser stats
     totalCampaigns: 12,
     activeCampaigns: 5,
     completedCampaigns: 7,
-    totalBudget: 150000000, // VND
+    totalBudget: 150000000,
     totalInfluencers: 45,
   });
 
   const t = {
     ko: {
       title: '프로필',
-      subtitle: '광고주 정보 관리',
-      companyInfo: '회사 정보',
-      companyName: '회사명',
-      website: '웹사이트',
-      email: '이메일',
-      phone: '전화번호',
-      bio: '회사 소개',
+      businessAccount: '비즈니스 계정',
+      businessSubtitle: '브랜드/기업 계정',
       verified: '인증됨',
-      notVerified: '미인증',
       stats: {
         title: '활동 통계',
         totalCampaigns: '전체 캠페인',
         activeCampaigns: '진행 중',
         completedCampaigns: '완료',
         totalBudget: '총 광고비',
+        totalBudgetDesc: '총 광고 집행 금액',
         totalInfluencers: '협업 인플루언서',
       },
       actions: {
+        title: '기업 계정 관리',
         edit: '프로필 수정',
+        verification: '사업자 인증',
+        verificationDesc: '신뢰도 향상',
         settings: '설정',
         logout: '로그아웃',
-        verification: '사업자 인증',
       },
       memberSince: '가입일',
     },
     vi: {
       title: 'Hồ sơ',
-      subtitle: 'Quản lý thông tin nhà quảng cáo',
-      companyInfo: 'Thông tin công ty',
-      companyName: 'Tên công ty',
-      website: 'Website',
-      email: 'Email',
-      phone: 'Điện thoại',
-      bio: 'Giới thiệu công ty',
+      businessAccount: 'Tài khoản doanh nghiệp',
+      businessSubtitle: 'Tài khoản thương hiệu/doanh nghiệp',
       verified: 'Đã xác minh',
-      notVerified: 'Chưa xác minh',
       stats: {
         title: 'Thống kê hoạt động',
         totalCampaigns: 'Tổng chiến dịch',
         activeCampaigns: 'Đang hoạt động',
         completedCampaigns: 'Đã hoàn thành',
         totalBudget: 'Tổng ngân sách',
+        totalBudgetDesc: 'Tổng chi tiêu quảng cáo',
         totalInfluencers: 'Influencer hợp tác',
       },
       actions: {
+        title: 'Quản lý tài khoản',
         edit: 'Chỉnh sửa hồ sơ',
+        verification: 'Xác minh doanh nghiệp',
+        verificationDesc: 'Tăng độ tin cậy',
         settings: 'Cài đặt',
         logout: 'Đăng xuất',
-        verification: 'Xác minh doanh nghiệp',
       },
       memberSince: 'Ngày tham gia',
     },
@@ -106,8 +101,8 @@ export default function AdvertiserProfilePage() {
               <Building2 size={24} className="text-white" />
             </div>
             <div>
-              <h3 className="text-white font-black text-sm">🏢 BUSINESS ACCOUNT</h3>
-              <p className="text-white/80 text-xs font-medium">{language === 'ko' ? '브랜드/기업 계정' : 'Tài khoản doanh nghiệp'}</p>
+              <h3 className="text-white font-black text-sm">🏢 {text.businessAccount.toUpperCase()}</h3>
+              <p className="text-white/80 text-xs font-medium">{text.businessSubtitle}</p>
             </div>
           </div>
         </div>
@@ -115,7 +110,7 @@ export default function AdvertiserProfilePage() {
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-orange-500/20 via-amber-500/10 to-dark-600 rounded-2xl p-6 mb-6 border-2 border-orange-500/30 shadow-xl">
           <div className="flex items-start gap-4">
-            {/* Avatar */}
+            {/* Company Icon */}
             <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white flex-shrink-0 shadow-lg">
               <Building2 size={32} />
             </div>
@@ -164,6 +159,8 @@ export default function AdvertiserProfilePage() {
             <BarChart3 size={20} className="text-orange-400" />
             <h3 className="text-lg font-bold text-white">{text.stats.title}</h3>
           </div>
+
+          {/* Top Stats */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-gradient-to-br from-orange-500/20 to-orange-500/5 rounded-xl p-4 border-2 border-orange-500/40 shadow-lg">
               <div className="flex items-center gap-2 mb-2">
@@ -182,7 +179,8 @@ export default function AdvertiserProfilePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* Bottom Stats */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
               <div className="text-xs text-gray-400 mb-1">{text.stats.completedCampaigns}</div>
               <div className="text-xl font-bold text-white">{advertiser.completedCampaigns}</div>
@@ -194,13 +192,14 @@ export default function AdvertiserProfilePage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-yellow-500/30 via-orange-500/20 to-amber-500/30 rounded-xl p-5 border-2 border-yellow-500/50 mt-4 shadow-xl">
+          {/* Total Budget - Highlighted */}
+          <div className="bg-gradient-to-r from-yellow-500/30 via-orange-500/20 to-amber-500/30 rounded-xl p-5 border-2 border-yellow-500/50 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">💰</span>
               <div className="text-xs text-gray-300 font-bold">{text.stats.totalBudget}</div>
             </div>
             <div className="text-3xl font-black text-yellow-400">{formatPoints(advertiser.totalBudget)} VND</div>
-            <div className="text-xs text-yellow-300/60 mt-1 font-medium">{language === 'ko' ? '총 광고 집행 금액' : 'Tổng chi tiêu quảng cáo'}</div>
+            <div className="text-xs text-yellow-300/60 mt-1 font-medium">{text.stats.totalBudgetDesc}</div>
           </div>
         </div>
 
@@ -208,9 +207,10 @@ export default function AdvertiserProfilePage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-2 px-1">
             <Building2 size={18} className="text-orange-400" />
-            <h3 className="text-sm font-bold text-gray-400">{language === 'ko' ? '기업 계정 관리' : 'Quản lý tài khoản'}</h3>
+            <h3 className="text-sm font-bold text-gray-400">{text.actions.title}</h3>
           </div>
 
+          {/* Edit Profile */}
           <Link
             href="/main/advertiser/profile/edit"
             className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border-2 border-orange-500/30 hover:border-orange-500/60 transition-all shadow-lg"
@@ -224,6 +224,7 @@ export default function AdvertiserProfilePage() {
             <span className="text-orange-400">›</span>
           </Link>
 
+          {/* Verification (if not verified) */}
           {!advertiser.verified && (
             <Link
               href="/main/advertiser/verification"
@@ -235,13 +236,14 @@ export default function AdvertiserProfilePage() {
                 </div>
                 <div>
                   <span className="text-white font-bold block">{text.actions.verification}</span>
-                  <span className="text-xs text-orange-300">{language === 'ko' ? '신뢰도 향상' : 'Tăng độ tin cậy'}</span>
+                  <span className="text-xs text-orange-300">{text.actions.verificationDesc}</span>
                 </div>
               </div>
               <span className="text-orange-400 font-bold">›</span>
             </Link>
           )}
 
+          {/* Settings */}
           <Link
             href="/settings"
             className="flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-gray-400 transition-all"
@@ -255,6 +257,7 @@ export default function AdvertiserProfilePage() {
             <span className="text-gray-400">›</span>
           </Link>
 
+          {/* Logout */}
           <button
             onClick={handleLogout}
             className="w-full flex items-center justify-between bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-red-500/50 transition-all"

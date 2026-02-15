@@ -24,6 +24,7 @@ import {
   Utensils,
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
+import Breadcrumb from '@/components/common/Breadcrumb';
 import type { Platform, Category } from '@/types';
 
 const platformIcons = {
@@ -176,7 +177,7 @@ export default function CreateCampaignPage() {
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
         <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
                 <ArrowLeft size={24} />
@@ -191,6 +192,13 @@ export default function CreateCampaignPage() {
               생성
             </button>
           </div>
+          <Breadcrumb
+            items={[
+              { label: '캠페인', href: '/main/advertiser/campaigns' },
+              { label: '새 캠페인 만들기' },
+            ]}
+            className="ml-9"
+          />
         </div>
         {/* Progress Bar */}
         <div className="h-1 bg-gray-100">

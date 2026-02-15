@@ -20,6 +20,7 @@ import {
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import EmptyState from '@/components/common/EmptyState';
 import { formatCash } from '@/lib/points';
 import type { Platform, Category } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -1312,9 +1313,29 @@ export default function CampaignsPage() {
         })}
 
         {filteredCampaigns.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-300">{t.campaignFilters.noResults}</p>
-          </div>
+          <EmptyState
+            icon={Search}
+            title={t.campaignFilters.noResults || '검색 결과가 없습니다'}
+            description={language === 'ko'
+              ? '선택한 필터 조건과 일치하는 캠페인이 없습니다. 다른 조건으로 다시 시도해보세요.'
+              : 'No campaigns match your selected filters. Try different criteria.'}
+            action={{
+              label: language === 'ko' ? '필터 초기화' : 'Reset Filters',
+              onClick: () => {
+                setFilters({
+                  platforms: [],
+                  categories: [],
+                  eligibleOnly: false,
+                  requiresVehicle: false,
+                  requiresParent: false,
+                  requiresPet: false,
+                  maritalStatus: undefined,
+                });
+                setSearchQuery('');
+              },
+            }}
+            dark
+          />
         )}
       </div>
 

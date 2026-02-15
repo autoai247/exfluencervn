@@ -22,6 +22,7 @@ import {
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import Breadcrumb from '@/components/common/Breadcrumb';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function InfluencerProfilePage() {
@@ -518,6 +519,15 @@ export default function InfluencerProfilePage() {
   return (
     <div className="min-h-screen bg-white pb-20">
       <MobileHeader title="" showBack />
+
+      <div className="container-mobile pt-4">
+        <Breadcrumb
+          items={[
+            { label: language === 'ko' ? '인플루언서' : 'Influencers', href: '/main/advertiser/influencers' },
+            { label: influencer.name },
+          ]}
+        />
+      </div>
 
       <div className="container-mobile py-6 space-y-6">
         {/* Profile Header */}

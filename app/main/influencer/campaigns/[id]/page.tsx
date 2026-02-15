@@ -7,6 +7,7 @@ import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, Upload
 import { FaFacebook } from 'react-icons/fa';
 import { formatPoints } from '@/lib/points';
 import BottomNav from '@/components/common/BottomNav';
+import Breadcrumb from '@/components/common/Breadcrumb';
 import ContractProtectionModal from '@/components/ContractProtectionModal';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { getMockCampaigns } from '@/lib/mockData';
@@ -669,12 +670,20 @@ export default function CampaignDetailPage() {
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mb-2">
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-bold text-white">{t.campaignDetail.title}</h1>
         </div>
+        <Breadcrumb
+          items={[
+            { label: t.campaignDetail.campaigns || 'Campaigns', href: '/main/influencer/campaigns' },
+            { label: campaign?.title || 'Campaign Detail' },
+          ]}
+          className="ml-9"
+          dark
+        />
       </div>
 
       {/* ADMIN ONLY: Demo Campaign Info Panel */}

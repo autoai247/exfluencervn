@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import { ListSkeleton } from '@/components/common/Skeleton';
 import CampaignsClient from './CampaignsClient';
 
 export default function AdvertiserCampaignsPage() {
@@ -10,9 +11,7 @@ export default function AdvertiserCampaignsPage() {
 
       <Suspense fallback={
         <div className="container-mobile py-6">
-          <div className="flex items-center justify-center py-12">
-            <div className="text-gray-400">Loading...</div>
-          </div>
+          <ListSkeleton count={5} type="campaign" />
         </div>
       }>
         <CampaignsClient />

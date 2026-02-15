@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X, User, Star } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import Breadcrumb from '@/components/common/Breadcrumb';
 
 // Mock campaign detail data
 const mockCampaignDetail = {
@@ -281,12 +282,19 @@ export default function CampaignDetailPage() {
     <div className="min-h-screen bg-white pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mb-2">
           <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-bold text-gray-900">캠페인 상세</h1>
         </div>
+        <Breadcrumb
+          items={[
+            { label: '캠페인', href: '/main/advertiser/campaigns' },
+            { label: mockCampaignDetail.title },
+          ]}
+          className="ml-9"
+        />
       </div>
 
       <div className="container-mobile space-y-6 py-6">

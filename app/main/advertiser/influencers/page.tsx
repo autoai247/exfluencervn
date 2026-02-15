@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import AdvancedInfluencerFilter, { type AdvancedFilters } from '@/components/advertiser/AdvancedInfluencerFilter';
+import EmptyState from '@/components/common/EmptyState';
 import {
   calculateMatchScore,
   rankInfluencers,
@@ -633,11 +634,19 @@ export default function InfluencerSearchPage() {
 
         {/* Empty State */}
         {sortedInfluencers.length === 0 && (
-          <div className="text-center py-16">
-            <Users size={48} className="mx-auto text-gray-300 mb-3" />
-            <p className="text-gray-900 font-semibold mb-1">검색 결과가 없습니다</p>
-            <p className="text-sm text-gray-500">다른 필터 조건으로 시도해보세요</p>
-          </div>
+          <EmptyState
+            icon={Users}
+            title="검색 결과가 없습니다"
+            description="선택한 필터 조건과 일치하는 인플루언서가 없습니다. 다른 조건으로 다시 시도해보세요."
+            action={{
+              label: '필터 초기화',
+              onClick: () => {
+                setSearchQuery('');
+                setAdvancedFilters({});
+                setShowAdvancedFilter(false);
+              },
+            }}
+          />
         )}
       </div>
 

@@ -28,6 +28,25 @@
   .container-mobile {
     @apply w-full max-w-mobile mx-auto px-4;
   }
+
+  /* Responsive container for tablet and desktop */
+  @media (min-width: 640px) {
+    .container-mobile {
+      @apply max-w-2xl px-6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-mobile {
+      @apply max-w-4xl px-8;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container-mobile {
+      @apply max-w-6xl px-12;
+    }
+  }
 }
 
 @layer components {

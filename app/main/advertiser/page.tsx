@@ -107,7 +107,7 @@ export default function AdvertiserDashboard() {
         </Link>
 
         {/* Quick Stats - Clickable */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Link href="/main/advertiser/campaigns?status=active">
             <div className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer">
               <TrendingUp size={24} className="text-gray-700 mx-auto mb-2" />

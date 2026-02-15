@@ -140,9 +140,8 @@ export default function AdvertiserProfileEditPage() {
       ecommerceLicenseDesc: '온라인 판매업 신고증 (있는 경우)',
       otherDocuments: '기타 인증서',
       otherDocumentsDesc: '품질인증서, 특허증 등 추가 서류',
-      uploadDocument: '서류 업로드',
-      changeDocument: '서류 변경',
-      addDocument: '서류 추가',
+      selectFile: '파일 선택',
+      changeFile: '파일 변경',
       removeDocument: '삭제',
       documentNote: '최대 10MB (PDF, JPG, PNG)',
       uploaded: '업로드됨',
@@ -223,9 +222,8 @@ export default function AdvertiserProfileEditPage() {
       ecommerceLicenseDesc: 'Giấy phép thương mại điện tử (nếu có)',
       otherDocuments: 'Chứng chỉ khác',
       otherDocumentsDesc: 'Chứng chỉ chất lượng, bằng sáng chế, v.v.',
-      uploadDocument: 'Tải giấy tờ lên',
-      changeDocument: 'Đổi giấy tờ',
-      addDocument: 'Thêm giấy tờ',
+      selectFile: 'Chọn file',
+      changeFile: 'Đổi file',
       removeDocument: 'Xóa',
       documentNote: 'Tối đa 10MB (PDF, JPG, PNG)',
       uploaded: 'Đã tải lên',
@@ -551,6 +549,130 @@ export default function AdvertiserProfileEditPage() {
                 />
               </div>
             </div>
+
+            {/* 사업자 등록증 */}
+            <div className="card bg-secondary/5 border-secondary/30">
+              <label className="block mb-3">
+                <span className="text-sm font-semibold text-white">{text.businessLicense}</span>
+                <span className="text-red-400 ml-1">*</span>
+                <p className="text-xs text-gray-400 mt-1">{text.businessLicenseDesc}</p>
+              </label>
+
+              {businessLicense ? (
+                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <CheckCircle size={20} className="text-success flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white font-semibold truncate">{businessLicense.name}</p>
+                      <p className="text-xs text-gray-400">{text.uploaded}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBusinessLicense(null)}
+                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ) : (
+                <label className="inline-flex items-center justify-center w-full btn btn-secondary cursor-pointer">
+                  <Upload size={18} className="mr-2" />
+                  {text.selectFile}
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={(e) => handleDocumentUpload(e, 'business')}
+                    className="hidden"
+                  />
+                </label>
+              )}
+              <p className="text-xs text-gray-500 mt-2">{text.documentNote}</p>
+            </div>
+
+            {/* 통신판매업 신고증 */}
+            <div className="card bg-secondary/5 border-secondary/30">
+              <label className="block mb-3">
+                <span className="text-sm font-semibold text-white">{text.ecommerceLicense}</span>
+                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
+                <p className="text-xs text-gray-400 mt-1">{text.ecommerceLicenseDesc}</p>
+              </label>
+
+              {ecommerceLicense ? (
+                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <CheckCircle size={20} className="text-success flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white font-semibold truncate">{ecommerceLicense.name}</p>
+                      <p className="text-xs text-gray-400">{text.uploaded}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEcommerceLicense(null)}
+                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ) : (
+                <label className="inline-flex items-center justify-center w-full btn btn-ghost cursor-pointer">
+                  <Upload size={18} className="mr-2" />
+                  {text.selectFile}
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={(e) => handleDocumentUpload(e, 'ecommerce')}
+                    className="hidden"
+                  />
+                </label>
+              )}
+            </div>
+
+            {/* 기타 인증서 */}
+            <div className="card bg-secondary/5 border-secondary/30">
+              <label className="block mb-3">
+                <span className="text-sm font-semibold text-white">{text.otherDocuments}</span>
+                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
+                <p className="text-xs text-gray-400 mt-1">{text.otherDocumentsDesc}</p>
+              </label>
+
+              {/* 업로드된 서류 목록 */}
+              {otherDocs.length > 0 && (
+                <div className="space-y-2 mb-3">
+                  {otherDocs.map((doc, index) => (
+                    <div key={index} className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <CheckCircle size={20} className="text-success flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white font-semibold truncate">{doc.name}</p>
+                          <p className="text-xs text-gray-400">{text.uploaded}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setOtherDocs(otherDocs.filter((_, i) => i !== index))}
+                        className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <label className="inline-flex items-center justify-center w-full btn btn-ghost cursor-pointer">
+                <Upload size={18} className="mr-2" />
+                {text.selectFile}
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={(e) => handleDocumentUpload(e, 'other')}
+                  className="hidden"
+                  multiple
+                />
+              </label>
+            </div>
           </div>
 
           {/* ===== 연락처 정보 ===== */}
@@ -693,138 +815,6 @@ export default function AdvertiserProfileEditPage() {
               <div className="text-xs text-gray-400 text-right mt-1">
                 {formData.bio.length}/500
               </div>
-            </div>
-          </div>
-
-          {/* ===== 사업자 서류 ===== */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <FileText size={18} className="text-warning" />
-              <h3 className="text-sm font-bold text-gray-300">{text.documentsSection}</h3>
-            </div>
-
-            {/* 사업자 등록증 */}
-            <div className="card">
-              <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.businessLicense}</span>
-                <span className="text-red-400 ml-1">*</span>
-                <p className="text-xs text-gray-400 mt-1">{text.businessLicenseDesc}</p>
-              </label>
-
-              {businessLicense ? (
-                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <CheckCircle size={20} className="text-success flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white font-semibold truncate">{businessLicense.name}</p>
-                      <p className="text-xs text-gray-400">{text.uploaded}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setBusinessLicense(null)}
-                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ) : (
-                <label className="btn btn-secondary w-full cursor-pointer">
-                  <Upload size={18} className="mr-2" />
-                  {text.uploadDocument}
-                  <input
-                    type="file"
-                    accept="image/*,application/pdf"
-                    onChange={(e) => handleDocumentUpload(e, 'business')}
-                    className="hidden"
-                  />
-                </label>
-              )}
-              <p className="text-xs text-gray-500 mt-2">{text.documentNote}</p>
-            </div>
-
-            {/* 통신판매업 신고증 */}
-            <div className="card">
-              <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.ecommerceLicense}</span>
-                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-400 mt-1">{text.ecommerceLicenseDesc}</p>
-              </label>
-
-              {ecommerceLicense ? (
-                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <CheckCircle size={20} className="text-success flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white font-semibold truncate">{ecommerceLicense.name}</p>
-                      <p className="text-xs text-gray-400">{text.uploaded}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEcommerceLicense(null)}
-                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ) : (
-                <label className="btn btn-ghost w-full cursor-pointer">
-                  <Upload size={18} className="mr-2" />
-                  {text.uploadDocument}
-                  <input
-                    type="file"
-                    accept="image/*,application/pdf"
-                    onChange={(e) => handleDocumentUpload(e, 'ecommerce')}
-                    className="hidden"
-                  />
-                </label>
-              )}
-            </div>
-
-            {/* 기타 인증서 */}
-            <div className="card">
-              <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.otherDocuments}</span>
-                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-400 mt-1">{text.otherDocumentsDesc}</p>
-              </label>
-
-              {/* 업로드된 서류 목록 */}
-              {otherDocs.length > 0 && (
-                <div className="space-y-2 mb-3">
-                  {otherDocs.map((doc, index) => (
-                    <div key={index} className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <CheckCircle size={20} className="text-success flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white font-semibold truncate">{doc.name}</p>
-                          <p className="text-xs text-gray-400">{text.uploaded}</p>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setOtherDocs(otherDocs.filter((_, i) => i !== index))}
-                        className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <label className="btn btn-ghost w-full cursor-pointer">
-                <Upload size={18} className="mr-2" />
-                {text.addDocument}
-                <input
-                  type="file"
-                  accept="image/*,application/pdf"
-                  onChange={(e) => handleDocumentUpload(e, 'other')}
-                  className="hidden"
-                  multiple
-                />
-              </label>
             </div>
           </div>
 

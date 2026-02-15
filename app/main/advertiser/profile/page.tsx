@@ -94,15 +94,18 @@ export default function AdvertiserProfilePage() {
       <MobileHeader title={text.title} showBack />
 
       <main className="container-mobile pb-24 pt-20">
-        {/* BUSINESS ACCOUNT BANNER */}
-        <div className="bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl p-4 mb-4 shadow-lg">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-              <Building2 size={24} className="text-white" />
+        {/* BUSINESS ACCOUNT BANNER - ALWAYS VISIBLE */}
+        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-2xl p-5 mb-6 shadow-2xl border-2 border-yellow-400 animate-pulse">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-white/30 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl ring-2 ring-white/50">
+              <Building2 size={32} className="text-white" />
             </div>
-            <div>
-              <h3 className="text-white font-black text-sm">🏢 {text.businessAccount.toUpperCase()}</h3>
-              <p className="text-white/80 text-xs font-medium">{text.businessSubtitle}</p>
+            <div className="flex-1">
+              <h3 className="text-white font-black text-lg mb-1 tracking-wide">
+                🏢 {text.businessAccount.toUpperCase()}
+              </h3>
+              <p className="text-white font-bold text-sm">{text.businessSubtitle}</p>
+              <p className="text-yellow-200 text-xs mt-1">✓ {language === 'ko' ? '기업 전용 계정입니다' : 'Tài khoản doanh nghiệp'}</p>
             </div>
           </div>
         </div>

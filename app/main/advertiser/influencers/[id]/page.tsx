@@ -22,7 +22,7 @@ export default function InfluencerProfilePage() {
   const { language } = useLanguage();
   const [showContactModal, setShowContactModal] = useState(false);
 
-  // Mock data
+  // Mock data - 다중 SNS 플랫폼 지원
   const influencer = {
     id: params.id,
     name: '김민지',
@@ -31,32 +31,59 @@ export default function InfluencerProfilePage() {
       : 'Beauty & Lifestyle Creator. Sharing natural daily life and honest product reviews.',
     avatar: 'https://ui-avatars.com/api/?name=Kim+Minji&background=E5E7EB&color=1F2937&size=200',
     categories: ['beauty', 'lifestyle'],
-    followers: 125000,
-    engagement: 4.8,
+    platforms: [
+      {
+        platform: 'instagram',
+        followers: 85000,
+        engagement: 5.2,
+        avgViews: 18000,
+        username: '@minji_beauty',
+        url: 'https://instagram.com/minji_beauty'
+      },
+      {
+        platform: 'tiktok',
+        followers: 40000,
+        engagement: 4.1,
+        avgViews: 7000,
+        username: '@minji_official',
+        url: 'https://tiktok.com/@minji_official'
+      },
+    ],
+    followers: 125000, // 총합
+    engagement: 4.8, // 평균
+    platform: 'instagram', // 주력 플랫폼
+    avgViews: 25000,
     rating: 4.9,
     completedCampaigns: 45,
     location: '호치민',
-    platform: 'instagram',
-    avgViews: 25000,
     verified: true,
+    // 추가 정보
+    gender: 'female',
+    ageRange: '25-34',
+    skinType: 'combination',
+    skinTone: 'light',
+    hasVehicle: false,
     recentWorks: [
       {
         id: '1',
         thumbnail: 'https://picsum.photos/seed/1/400/400',
         title: '스킨케어 루틴',
         views: 32000,
+        platform: 'instagram',
       },
       {
         id: '2',
         thumbnail: 'https://picsum.photos/seed/2/400/400',
         title: '메이크업 튜토리얼',
         views: 28000,
+        platform: 'instagram',
       },
       {
         id: '3',
         thumbnail: 'https://picsum.photos/seed/3/400/400',
         title: '일상 브이로그',
         views: 25000,
+        platform: 'tiktok',
       },
     ],
   };
@@ -64,6 +91,7 @@ export default function InfluencerProfilePage() {
   const t = {
     ko: {
       followers: '팔로워',
+      totalFollowers: '총 팔로워',
       engagement: '참여율',
       avgViews: '평균 조회수',
       completed: '완료 캠페인',
@@ -71,15 +99,27 @@ export default function InfluencerProfilePage() {
       verified: '인증됨',
       categories: '카테고리',
       location: '위치',
+      snsChannels: 'SNS 채널',
       recentWorks: '최근 작업물',
       views: '조회수',
       contact: '제안하기',
       contactTitle: '캠페인 제안',
       sendProposal: '제안 보내기',
       cancel: '취소',
+      profileInfo: '프로필 정보',
+      gender: '성별',
+      age: '연령대',
+      skinType: '피부 타입',
+      skinTone: '피부 톤',
+      hasVehicle: '차량 보유',
+      yes: '예',
+      no: '아니오',
+      male: '남성',
+      female: '여성',
     },
     vi: {
       followers: 'Người theo dõi',
+      totalFollowers: 'Tổng người theo dõi',
       engagement: 'Tương tác',
       avgViews: 'Lượt xem TB',
       completed: 'Chiến dịch hoàn thành',
@@ -87,12 +127,23 @@ export default function InfluencerProfilePage() {
       verified: 'Đã xác minh',
       categories: 'Danh mục',
       location: 'Vị trí',
+      snsChannels: 'Kênh mạng xã hội',
       recentWorks: 'Công việc gần đây',
       views: 'Lượt xem',
       contact: 'Đề xuất',
       contactTitle: 'Đề xuất chiến dịch',
       sendProposal: 'Gửi đề xuất',
       cancel: 'Hủy',
+      profileInfo: 'Thông tin hồ sơ',
+      gender: 'Giới tính',
+      age: 'Độ tuổi',
+      skinType: 'Loại da',
+      skinTone: 'Màu da',
+      hasVehicle: 'Có xe',
+      yes: 'Có',
+      no: 'Không',
+      male: 'Nam',
+      female: 'Nữ',
     },
   };
 
@@ -157,7 +208,7 @@ export default function InfluencerProfilePage() {
             <div className="text-2xl font-bold text-gray-900">
               {(influencer.followers / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-500 mt-1">{text.followers}</div>
+            <div className="text-xs text-gray-500 mt-1">{text.totalFollowers}</div>
           </div>
           <div className="bg-gray-50 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">{influencer.engagement}%</div>
@@ -168,6 +219,43 @@ export default function InfluencerProfilePage() {
               {(influencer.avgViews / 1000).toFixed(0)}K
             </div>
             <div className="text-xs text-gray-500 mt-1">{text.avgViews}</div>
+          </div>
+        </div>
+
+        {/* SNS Channels */}
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            {text.snsChannels} ({influencer.platforms.length}개)
+          </h3>
+          <div className="space-y-3">
+            {influencer.platforms.map((platData: any) => {
+              const icon = getPlatformIcon(platData.platform);
+              return (
+                <a
+                  key={platData.platform}
+                  href={platData.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-gray-200">
+                      {icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900 capitalize">{platData.platform}</p>
+                      <p className="text-xs text-gray-500">{platData.username}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-gray-900">
+                      {(platData.followers / 1000).toFixed(1)}K
+                    </p>
+                    <p className="text-xs text-gray-500">{platData.engagement}% 참여율</p>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
 
@@ -183,6 +271,47 @@ export default function InfluencerProfilePage() {
                 {cat}
               </span>
             ))}
+          </div>
+        </div>
+
+        {/* Profile Information */}
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.profileInfo}</h3>
+          <div className="space-y-3">
+            {influencer.gender && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{text.gender}</span>
+                <span className="text-sm font-semibold text-gray-900">
+                  {influencer.gender === 'male' ? text.male : text.female}
+                </span>
+              </div>
+            )}
+            {influencer.ageRange && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{text.age}</span>
+                <span className="text-sm font-semibold text-gray-900">{influencer.ageRange}</span>
+              </div>
+            )}
+            {influencer.skinType && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{text.skinType}</span>
+                <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinType}</span>
+              </div>
+            )}
+            {influencer.skinTone && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{text.skinTone}</span>
+                <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinTone}</span>
+              </div>
+            )}
+            {influencer.hasVehicle !== undefined && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{text.hasVehicle}</span>
+                <span className="text-sm font-semibold text-gray-900">
+                  {influencer.hasVehicle ? text.yes : text.no}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

@@ -74,6 +74,12 @@ export default function CreateCampaignPage() {
     },
   });
 
+  const [uploadedFiles, setUploadedFiles] = useState<Array<{
+    file: File;
+    preview: string;
+    type: 'image' | 'video';
+  }>>([]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Save to API
@@ -97,6 +103,43 @@ export default function CreateCampaignPage() {
         ? formData.categories.filter(c => c !== category)
         : [...formData.categories, category],
     });
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+
+    files.forEach(file => {
+      const isImage = file.type.startsWith('image/');
+      const isVideo = file.type.startsWith('video/');
+
+      if (!isImage && !isVideo) {
+        alert('이미지 또는 비디오 파일만 업로드 가능합니다.');
+        return;
+      }
+
+      // 파일 크기 체크 (100MB 제한)
+      if (file.size > 100 * 1024 * 1024) {
+        alert(`${file.name}: 파일이 너무 큽니다 (최대 100MB)`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUploadedFiles(prev => [...prev, {
+          file,
+          preview: event.target?.result as string,
+          type: isImage ? 'image' : 'video',
+        }]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input
+    e.target.value = '';
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -152,6 +195,35 @@ export default function CreateCampaignPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  <Users size={14} className="inline mr-1" />
+                  모집 인원 *
+                </label>
+                <input
+                  type="number"
+                  placeholder="10"
+                  className="input"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">선발할 인플루언서 수</p>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  <FileText size={14} className="inline mr-1" />
+                  제출물 개수
+                </label>
+                <input
+                  type="number"
+                  placeholder="3"
+                  className="input"
+                />
+                <p className="text-xs text-gray-500 mt-1">필요한 포스트/영상 수</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
                   <DollarSign size={14} className="inline mr-1" />
                   예산 (VND) *
                 </label>
@@ -194,6 +266,84 @@ export default function CreateCampaignPage() {
           </div>
         </div>
 
+        {/* Media Upload */}
+        <div className="card">
+          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <Upload size={16} className="text-primary" />
+            사진 / 영상 업로드
+          </h3>
+
+          <div className="space-y-4">
+            {/* Upload Button */}
+            <label className="block">
+              <input
+                type="file"
+                multiple
+                accept="image/*,video/*"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+              <div className="border-2 border-dashed border-primary/50 rounded-xl p-8 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all">
+                <Upload size={40} className="text-primary mx-auto mb-3" />
+                <p className="text-white font-semibold mb-1">파일 선택 또는 드래그 & 드롭</p>
+                <p className="text-xs text-gray-400">이미지 (JPG, PNG, GIF) 또는 비디오 (MP4, MOV)</p>
+                <p className="text-xs text-gray-500 mt-1">최대 100MB, 다중 선택 가능</p>
+              </div>
+            </label>
+
+            {/* Preview Grid */}
+            {uploadedFiles.length > 0 && (
+              <div className="grid grid-cols-3 gap-3">
+                {uploadedFiles.map((item, index) => (
+                  <div key={index} className="relative group">
+                    <div className="aspect-square rounded-lg overflow-hidden bg-dark-600">
+                      {item.type === 'image' ? (
+                        <img
+                          src={item.preview}
+                          alt={`Upload ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={item.preview}
+                          className="w-full h-full object-cover"
+                          muted
+                        />
+                      )}
+                    </div>
+                    {/* Remove Button */}
+                    <button
+                      type="button"
+                      onClick={() => removeFile(index)}
+                      className="absolute top-1 right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={14} className="text-white" />
+                    </button>
+                    {/* Type Badge */}
+                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-white">
+                      {item.type === 'image' ? '📷' : '🎥'} {item.file.name.length > 10 ? item.file.name.substring(0, 10) + '...' : item.file.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {uploadedFiles.length > 0 && (
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-gray-400">{uploadedFiles.length}개 파일 업로드됨</span>
+                <span className="text-gray-500">
+                  {(uploadedFiles.reduce((sum, item) => sum + item.file.size, 0) / 1024 / 1024).toFixed(2)} MB
+                </span>
+              </div>
+            )}
+
+            <p className="text-xs text-gray-500 bg-info/10 border border-info/30 rounded-lg p-3">
+              💡 <strong>팁:</strong> 캠페인 이미지는 인플루언서들이 어떤 제품/서비스인지 이해하는데 도움을 줍니다.
+              고품질 이미지를 업로드하면 지원률이 높아집니다!
+            </p>
+          </div>
+        </div>
+
         {/* Dates */}
         <div className="card">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
@@ -231,6 +381,61 @@ export default function CreateCampaignPage() {
               className="input"
               required
             />
+          </div>
+        </div>
+
+        {/* Campaign Details */}
+        <div className="card">
+          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <FileText size={16} className="text-primary" />
+            캠페인 세부 정보
+          </h3>
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                #️⃣ 필수 해시태그
+              </label>
+              <input
+                type="text"
+                placeholder="#beauty #skincare #kbeauty (스페이스로 구분)"
+                className="input"
+              />
+              <p className="text-xs text-gray-500 mt-1">인플루언서가 반드시 사용해야 할 해시태그</p>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                📋 상세 가이드라인
+              </label>
+              <textarea
+                placeholder="• 제품 사용 후 솔직한 리뷰 작성&#10;• 제품의 장단점 모두 언급&#10;• 사용 전/후 비교 사진 포함&#10;• 24시간 이상 게시물 유지"
+                className="input min-h-[120px]"
+              />
+              <p className="text-xs text-gray-500 mt-1">인플루언서가 따라야 할 구체적인 지침</p>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                📦 제공 사항
+              </label>
+              <textarea
+                placeholder="• 제품 1세트 무료 제공&#10;• 배송비 지원&#10;• 추가 샘플 5종 제공"
+                className="input min-h-[80px]"
+              />
+              <p className="text-xs text-gray-500 mt-1">인플루언서에게 제공할 제품/서비스</p>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                🎁 보너스 조건 (선택)
+              </label>
+              <textarea
+                placeholder="• 조회수 10만 이상 달성 시 +50% 보너스&#10;• 좋아요 1만 개 이상 시 +30% 보너스"
+                className="input min-h-[60px]"
+              />
+              <p className="text-xs text-gray-500 mt-1">성과에 따른 추가 보상</p>
+            </div>
           </div>
         </div>
 

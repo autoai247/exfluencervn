@@ -22,6 +22,7 @@ const mockCampaignDetail = {
   endDate: '2026-03-15',
   deadline: '2026-03-15',
   createdAt: '2026-02-01',
+  deliveryType: 'product' as 'product' | 'service' | 'visit', // product=제품발송, service=매장방문, visit=직접방문
 
   requirements: {
     minFollowers: 10000,
@@ -466,45 +467,143 @@ export default function CampaignDetailPage() {
                     </div>
                   </div>
 
-                  {/* Product Shipping */}
-                  <div>
-                    <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                      </svg>
-                      제품 발송
-                    </h5>
-                    <div className="bg-gray-50 rounded-lg p-3 space-y-2">
-                      <div className="space-y-2">
-                        <label className="text-xs text-gray-600">택배사</label>
-                        <select className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none">
-                          <option>Viettel Post</option>
-                          <option>Vietnam Post (EMS)</option>
-                          <option>Giao Hàng Nhanh (GHN)</option>
-                          <option>Giao Hàng Tiết Kiệm (GHTK)</option>
-                          <option>J&T Express</option>
-                          <option>Grab Express</option>
-                        </select>
+                  {/* Delivery/Visit Information - conditional based on deliveryType */}
+                  {mockCampaignDetail.deliveryType === 'product' && (
+                    <div>
+                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        </svg>
+                        제품 발송
+                      </h5>
+                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">택배사</label>
+                          <select className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none">
+                            <option>Viettel Post</option>
+                            <option>Vietnam Post (EMS)</option>
+                            <option>Giao Hàng Nhanh (GHN)</option>
+                            <option>Giao Hàng Tiết Kiệm (GHTK)</option>
+                            <option>J&T Express</option>
+                            <option>Grab Express</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">송장번호</label>
+                          <input
+                            type="text"
+                            placeholder="VTP123456789"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <button
+                          onClick={() => alert('발송 정보 저장됨 (데모)')}
+                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                        >
+                          발송 완료
+                        </button>
+                        <p className="text-xs text-gray-500">
+                          💡 송장번호를 입력하면 인플루언서가 배송 추적을 할 수 있습니다
+                        </p>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-xs text-gray-600">송장번호</label>
-                        <input
-                          type="text"
-                          placeholder="VTP123456789"
-                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
-                        />
-                      </div>
-                      <button
-                        onClick={() => alert('발송 정보 저장됨 (데모)')}
-                        className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
-                      >
-                        발송 완료
-                      </button>
-                      <p className="text-xs text-gray-500">
-                        💡 송장번호를 입력하면 인플루언서가 배송 추적을 할 수 있습니다
-                      </p>
                     </div>
-                  </div>
+                  )}
+
+                  {mockCampaignDetail.deliveryType === 'service' && (
+                    <div>
+                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        매장 방문 정보
+                      </h5>
+                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">매장 주소</label>
+                          <input
+                            type="text"
+                            placeholder="123 Nguyen Hue, District 1, HCMC"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">영업 시간</label>
+                          <input
+                            type="text"
+                            placeholder="월-금 10:00-20:00, 주말 10:00-22:00"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">담당자 연락처</label>
+                          <input
+                            type="text"
+                            placeholder="+84 90 123 4567"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <button
+                          onClick={() => alert('매장 정보 저장됨 (데모)')}
+                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                        >
+                          정보 저장
+                        </button>
+                        <p className="text-xs text-gray-500">
+                          💡 인플루언서가 매장을 방문하여 서비스/제품을 체험합니다
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {mockCampaignDetail.deliveryType === 'visit' && (
+                    <div>
+                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <Calendar size={14} />
+                        방문 일정 조율
+                      </h5>
+                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">방문 날짜</label>
+                          <input
+                            type="date"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">방문 시간</label>
+                          <input
+                            type="time"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">방문 장소</label>
+                          <input
+                            type="text"
+                            placeholder="오피스, 이벤트 장소 등"
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs text-gray-600">특이사항</label>
+                          <textarea
+                            placeholder="주차 정보, 준비물 등"
+                            rows={2}
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
+                          />
+                        </div>
+                        <button
+                          onClick={() => alert('방문 일정 저장됨 (데모)')}
+                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                        >
+                          일정 확정
+                        </button>
+                        <p className="text-xs text-gray-500">
+                          💡 인플루언서와 일정을 조율하여 직접 만나 제품/서비스를 전달합니다
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -625,7 +724,10 @@ export default function CampaignDetailPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 mb-3">
+                <div
+                  className="flex items-start gap-3 mb-3 cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-lg transition-colors"
+                  onClick={() => router.push(`/main/advertiser/influencers/${applicant.id}`)}
+                >
                   <img
                     src={applicant.avatar}
                     alt={applicant.name}

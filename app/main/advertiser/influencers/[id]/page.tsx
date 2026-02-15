@@ -386,7 +386,6 @@ export default function InfluencerProfilePage() {
       overallRating: '종합 평점',
       basedOnReviews: '개 리뷰 기준',
       viewAll: '전체 보기',
-      recentWorks: '최근 작업물',
       workStyle: '작업 스타일',
     },
     vi: {
@@ -475,7 +474,6 @@ export default function InfluencerProfilePage() {
       overallRating: 'Đánh giá tổng thể',
       basedOnReviews: 'dựa trên',
       viewAll: 'Xem tất cả',
-      recentWorks: 'Công việc gần đây',
       workStyle: 'Phong cách làm việc',
     },
   };

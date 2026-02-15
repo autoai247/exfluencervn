@@ -1,16 +1,26 @@
 // AI 기반 인플루언서 매칭 알고리즘
 
+export interface PlatformData {
+  platform: 'instagram' | 'tiktok' | 'youtube' | 'facebook';
+  followers: number;
+  engagement: number;
+  avgViews: number;
+  username?: string;
+}
+
 export interface Influencer {
   id: string;
   name: string;
   categories: string[];
-  followers: number;
-  engagement: number;
+  platforms: PlatformData[]; // 다중 플랫폼 지원
+  // 하위 호환성을 위한 필드 (가장 큰 플랫폼 기준)
+  followers: number; // 총 팔로워 수
+  engagement: number; // 평균 참여율
+  platform: string; // 주력 플랫폼
+  avgViews: number; // 평균 조회수
   rating: number;
   completedCampaigns: number;
   location: string;
-  platform: string;
-  avgViews: number;
   skinType?: string;
   skinTone?: string;
   hasVehicle?: boolean;

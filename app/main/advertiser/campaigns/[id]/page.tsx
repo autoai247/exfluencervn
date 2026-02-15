@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, MessageCircle, X } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -172,6 +173,42 @@ export default function CampaignDetailPage() {
   const router = useRouter();
   const { t } = useLanguage();
 
+  // State management for applicants
+  const [pendingApplicants, setPendingApplicants] = useState(mockCampaignDetail.pendingApplicants);
+  const [acceptedInfluencers, setAcceptedInfluencers] = useState(mockCampaignDetail.acceptedInfluencersList);
+
+  // Handle approve applicant
+  const handleApprove = (applicant: any) => {
+    // Remove from pending
+    setPendingApplicants(prev => prev.filter(a => a.id !== applicant.id));
+
+    // Add to accepted list
+    const newInfluencer = {
+      id: applicant.id,
+      name: applicant.name,
+      avatar: applicant.avatar,
+      followers: applicant.followers,
+      engagement: applicant.engagement,
+      platform: applicant.platform,
+      status: 'in_progress' as const,
+      acceptedAt: new Date().toISOString().split('T')[0],
+      submittedContent: [],
+    };
+    setAcceptedInfluencers(prev => [...prev, newInfluencer]);
+
+    alert(`${applicant.name}님을 승인했습니다!`);
+  };
+
+  // Handle reject applicant
+  const handleReject = (applicant: any) => {
+    const reason = prompt(`${applicant.name}님의 지원을 거절하는 이유를 입력하세요 (선택사항):`);
+
+    // Remove from pending
+    setPendingApplicants(prev => prev.filter(a => a.id !== applicant.id));
+
+    alert(`${applicant.name}님의 지원을 거절했습니다.${reason ? `\n사유: ${reason}` : ''}`);
+  };
+
   // Calculate matching percentage for an applicant
   const calculateApplicantMatch = (applicant: any) => {
     const requirements = mockCampaignDetail.requirements;
@@ -225,47 +262,47 @@ export default function CampaignDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-700 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="btn-icon text-white">
+          <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-white">{t.campaignDetail.title}</h1>
+          <h1 className="text-lg font-bold text-gray-900">캠페인 상세</h1>
         </div>
       </div>
 
       <div className="container-mobile space-y-6 py-6">
         {/* Campaign Header */}
-        <div className="card">
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
           <div className="flex items-start justify-between mb-3">
-            <h2 className="text-xl font-bold text-white">{mockCampaignDetail.title}</h2>
-            <span className="px-3 py-1 bg-secondary/20 text-secondary text-xs rounded-full">
-              {t.dashboard.inProgress}
+            <h2 className="text-xl font-bold text-gray-900">{mockCampaignDetail.title}</h2>
+            <span className="px-3 py-1 bg-gray-900 text-white text-xs rounded-full font-medium">
+              진행중
             </span>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed">{mockCampaignDetail.description}</p>
+          <p className="text-sm text-gray-600 leading-relaxed">{mockCampaignDetail.description}</p>
         </div>
 
         {/* Budget Progress */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-gray-400 mb-3">예산 사용 현황</h3>
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">예산 사용 현황</h3>
           <div className="mb-3">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-400">사용된 예산</span>
-              <span className="text-white font-semibold">
+              <span className="text-gray-600">사용된 예산</span>
+              <span className="text-gray-900 font-semibold">
                 {((mockCampaignDetail.spent / mockCampaignDetail.budget) * 100).toFixed(0)}%
               </span>
             </div>
-            <div className="w-full h-3 bg-dark-600 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-secondary to-primary rounded-full"
+                className="h-full bg-gray-900 rounded-full"
                 style={{ width: `${(mockCampaignDetail.spent / mockCampaignDetail.budget) * 100}%` }}
               />
             </div>
             <div className="flex justify-between text-sm mt-2">
-              <span className="text-accent font-semibold">
+              <span className="text-gray-900 font-semibold">
                 {formatPoints(mockCampaignDetail.spent)}
               </span>
               <span className="text-gray-500">
@@ -360,9 +397,9 @@ export default function CampaignDetailPage() {
 
         {/* Accepted Influencers */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-white">승인된 인플루언서 ({mockCampaignDetail.acceptedInfluencersList.length})</h3>
+          <h3 className="text-sm font-semibold text-white">승인된 인플루언서 ({acceptedInfluencers.length})</h3>
 
-          {mockCampaignDetail.acceptedInfluencersList.map((influencer) => (
+          {acceptedInfluencers.map((influencer) => (
             <div key={influencer.id} className="card">
               <div className="flex items-start gap-3 mb-3">
                 <img
@@ -566,9 +603,9 @@ export default function CampaignDetailPage() {
 
         {/* Pending Applicants */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-white">대기 중인 지원자 ({mockCampaignDetail.pendingApplicants.length})</h3>
+          <h3 className="text-sm font-semibold text-white">대기 중인 지원자 ({pendingApplicants.length})</h3>
 
-          {mockCampaignDetail.pendingApplicants.map((applicant) => {
+          {pendingApplicants.map((applicant) => {
             const matchResult = calculateApplicantMatch(applicant);
 
             return (
@@ -613,10 +650,18 @@ export default function CampaignDetailPage() {
               </div>
 
               <div className="flex gap-2">
-                <button className="flex-1 btn bg-success/20 text-success hover:bg-success/30 text-xs">
+                <button
+                  onClick={() => handleApprove(applicant)}
+                  className="flex-1 btn bg-success/20 text-success hover:bg-success/30 text-xs"
+                >
+                  <CheckCircle size={14} className="mr-1" />
                   승인
                 </button>
-                <button className="flex-1 btn bg-error/20 text-error hover:bg-error/30 text-xs">
+                <button
+                  onClick={() => handleReject(applicant)}
+                  className="flex-1 btn bg-error/20 text-error hover:bg-error/30 text-xs"
+                >
+                  <X size={14} className="mr-1" />
                   거절
                 </button>
               </div>

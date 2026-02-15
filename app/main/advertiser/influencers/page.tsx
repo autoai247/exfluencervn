@@ -26,19 +26,23 @@ import {
   type Campaign
 } from '@/lib/ai/influencerMatching';
 
-// Mock influencer data - Updated to match Influencer interface
+// Mock influencer data - 다중 SNS 플랫폼 지원
 const mockInfluencers: Influencer[] = [
   {
     id: '1',
     name: '김민지',
     categories: ['beauty', 'lifestyle'],
-    followers: 125000,
-    engagement: 4.8,
+    platforms: [
+      { platform: 'instagram', followers: 85000, engagement: 5.2, avgViews: 18000, username: '@minji_beauty' },
+      { platform: 'tiktok', followers: 40000, engagement: 4.1, avgViews: 7000, username: '@minji_official' },
+    ],
+    followers: 125000, // 총합
+    engagement: 4.8, // 평균
+    platform: 'instagram', // 주력
+    avgViews: 25000,
     rating: 4.9,
     completedCampaigns: 45,
     location: '호치민',
-    platform: 'instagram',
-    avgViews: 25000,
     skinType: 'combination',
     skinTone: 'light',
     hasVehicle: false,
@@ -50,13 +54,17 @@ const mockInfluencers: Influencer[] = [
     id: '2',
     name: '이서연',
     categories: ['fashion', 'beauty'],
+    platforms: [
+      { platform: 'instagram', followers: 52000, engagement: 4.8, avgViews: 12000, username: '@seoyeon_style' },
+      { platform: 'tiktok', followers: 46000, engagement: 5.6, avgViews: 23000, username: '@seoyeon_ootd' },
+    ],
     followers: 98000,
     engagement: 5.2,
+    platform: 'tiktok',
+    avgViews: 35000,
     rating: 4.7,
     completedCampaigns: 32,
     location: '하노이',
-    platform: 'tiktok',
-    avgViews: 35000,
     skinType: 'dry',
     skinTone: 'medium',
     hasVehicle: true,
@@ -68,13 +76,18 @@ const mockInfluencers: Influencer[] = [
     id: '3',
     name: '박지훈',
     categories: ['tech', 'gaming'],
+    platforms: [
+      { platform: 'youtube', followers: 98000, engagement: 4.5, avgViews: 35000, username: '@jihoon_tech' },
+      { platform: 'instagram', followers: 38000, engagement: 3.8, avgViews: 8000, username: '@jihoon_daily' },
+      { platform: 'tiktok', followers: 20000, engagement: 4.2, avgViews: 6000, username: '@jihoon_shorts' },
+    ],
     followers: 156000,
     engagement: 4.3,
+    platform: 'youtube',
+    avgViews: 42000,
     rating: 4.8,
     completedCampaigns: 58,
     location: '호치민',
-    platform: 'youtube',
-    avgViews: 42000,
     skinType: 'oily',
     hasVehicle: true,
     gender: 'male',
@@ -85,13 +98,17 @@ const mockInfluencers: Influencer[] = [
     id: '4',
     name: '최유리',
     categories: ['beauty', 'skincare'],
+    platforms: [
+      { platform: 'instagram', followers: 145000, engagement: 5.8, avgViews: 42000, username: '@yuri_skincare' },
+      { platform: 'youtube', followers: 65000, engagement: 5.1, avgViews: 28000, username: '@유리뷰티' },
+    ],
     followers: 210000,
     engagement: 5.5,
+    platform: 'instagram',
+    avgViews: 55000,
     rating: 4.95,
     completedCampaigns: 72,
     location: '호치민',
-    platform: 'instagram',
-    avgViews: 55000,
     skinType: 'sensitive',
     skinTone: 'light',
     hasVehicle: true,
@@ -103,13 +120,17 @@ const mockInfluencers: Influencer[] = [
     id: '5',
     name: '정민수',
     categories: ['fitness', 'health'],
+    platforms: [
+      { platform: 'instagram', followers: 62000, engagement: 4.2, avgViews: 14000, username: '@minsu_fitness' },
+      { platform: 'youtube', followers: 25000, engagement: 3.1, avgViews: 5500, username: '@민수PT' },
+    ],
     followers: 87000,
     engagement: 3.8,
+    platform: 'instagram',
+    avgViews: 18000,
     rating: 4.6,
     completedCampaigns: 28,
     location: '다낭',
-    platform: 'instagram',
-    avgViews: 18000,
     hasVehicle: true,
     gender: 'male',
     ageRange: '25-34',
@@ -119,13 +140,17 @@ const mockInfluencers: Influencer[] = [
     id: '6',
     name: '황수진',
     categories: ['food', 'travel'],
+    platforms: [
+      { platform: 'tiktok', followers: 88000, engagement: 4.5, avgViews: 28000, username: '@sujin_foodie' },
+      { platform: 'instagram', followers: 54000, engagement: 3.8, avgViews: 12000, username: '@sujin_eats' },
+    ],
     followers: 142000,
     engagement: 4.2,
+    platform: 'tiktok',
+    avgViews: 38000,
     rating: 4.75,
     completedCampaigns: 51,
     location: '호치민',
-    platform: 'tiktok',
-    avgViews: 38000,
     hasVehicle: false,
     gender: 'female',
     ageRange: '20-24',
@@ -454,18 +479,41 @@ export default function InfluencerSearchPage() {
                   </div>
                 </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-4 gap-2 mb-3">
-                  <div className="text-center py-2 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-0.5">팔로워</p>
-                    <p className="text-gray-900 font-semibold text-sm">
-                      {(influencer.followers / 1000).toFixed(0)}K
-                    </p>
+                {/* Multi-Platform Display */}
+                <div className="mb-3 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-xs text-gray-600 font-medium mb-2">SNS 채널 ({influencer.platforms.length}개)</p>
+                  <div className="space-y-2">
+                    {influencer.platforms.map((platData) => {
+                      const Icon = platformIcons[platData.platform];
+                      return (
+                        <div key={platData.platform} className="flex items-center justify-between text-xs">
+                          <div className="flex items-center gap-2">
+                            <Icon className="w-4 h-4 text-gray-700" />
+                            <span className="text-gray-700 font-medium capitalize">{platData.platform}</span>
+                            <span className="text-gray-500">{platData.username}</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-gray-900 font-semibold">
+                              {(platData.followers / 1000).toFixed(1)}K
+                            </span>
+                            <span className="text-gray-600">{platData.engagement}%</span>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
+                  <div className="mt-2 pt-2 border-t border-gray-200 flex items-center justify-between text-xs">
+                    <span className="text-gray-600 font-semibold">총 팔로워</span>
+                    <span className="text-gray-900 font-bold">{(influencer.followers / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-3 gap-2 mb-3">
                   <div className="text-center py-2 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-0.5">참여율</p>
+                    <p className="text-xs text-gray-500 mb-0.5">평균 조회수</p>
                     <p className="text-gray-900 font-semibold text-sm">
-                      {influencer.engagement}%
+                      {(influencer.avgViews / 1000).toFixed(0)}K
                     </p>
                   </div>
                   <div className="text-center py-2 bg-gray-50 rounded-lg">

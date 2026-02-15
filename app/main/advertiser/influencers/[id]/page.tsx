@@ -86,25 +86,103 @@ export default function InfluencerProfilePage() {
     recentWorks: [
       {
         id: '1',
-        thumbnail: 'https://picsum.photos/seed/1/400/400',
-        title: '스킨케어 루틴',
+        thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop',
+        title: language === 'ko' ? '아침 스킨케어 루틴 & 제품 추천' : 'Quy trình chăm sóc da buổi sáng',
+        description: language === 'ko' ? '건조한 겨울철 피부 관리 팁' : 'Mẹo chăm sóc da mùa đông',
         views: 32000,
+        likes: 2400,
+        comments: 156,
         platform: 'instagram',
+        date: '2026-02-10',
+        contentType: 'Reel'
       },
       {
         id: '2',
-        thumbnail: 'https://picsum.photos/seed/2/400/400',
-        title: '메이크업 튜토리얼',
+        thumbnail: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=400&fit=crop',
+        title: language === 'ko' ? '데일리 메이크업 튜토리얼' : 'Hướng dẫn trang điểm hàng ngày',
+        description: language === 'ko' ? '자연스러운 직장인 메이크업' : 'Makeup tự nhiên cho công sở',
         views: 28000,
+        likes: 2100,
+        comments: 89,
         platform: 'instagram',
+        date: '2026-02-08',
+        contentType: 'Post'
       },
       {
         id: '3',
-        thumbnail: 'https://picsum.photos/seed/3/400/400',
-        title: '일상 브이로그',
+        thumbnail: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=400&fit=crop',
+        title: language === 'ko' ? '주말 브이로그 | 카페 투어' : 'Vlog cuối tuần | Tour cafe',
+        description: language === 'ko' ? '호치민 숨은 카페 탐방' : 'Khám phá cafe ẩn HCM',
         views: 25000,
+        likes: 1800,
+        comments: 124,
         platform: 'tiktok',
+        date: '2026-02-05',
+        contentType: 'Video'
       },
+    ],
+    // 광고주 리뷰 목록
+    reviews: [
+      {
+        id: 'r1',
+        advertiser: 'Demo Brand VN',
+        advertiserLogo: 'https://ui-avatars.com/api/?name=Demo+Brand&background=FF6B6B&color=fff',
+        rating: 5.0,
+        comment: language === 'ko'
+          ? '매우 성실하게 작업해주셨고, 소통도 원활했습니다. 콘텐츠 퀄리티가 기대 이상이었어요! 다음에도 꼭 함께 하고 싶습니다.'
+          : 'Rất chuyên nghiệp và nhiệt tình. Chất lượng nội dung vượt mong đợi! Mong được hợp tác tiếp.',
+        date: '2026-02-12',
+        campaignTitle: language === 'ko' ? '겨울 스킨케어 루틴 캠페인' : 'Chiến dịch chăm sóc da mùa đông',
+        tags: language === 'ko' ? ['성실함', '소통 원활', '퀄리티 우수'] : ['Chuyên nghiệp', 'Giao tiếp tốt', 'Chất lượng cao']
+      },
+      {
+        id: 'r2',
+        advertiser: 'Fashion Hub',
+        advertiserLogo: 'https://ui-avatars.com/api/?name=Fashion+Hub&background=4ECDC4&color=fff',
+        rating: 4.8,
+        comment: language === 'ko'
+          ? '창의적인 아이디어와 트렌디한 스타일링이 돋보였습니다. 기한도 정확히 지켜주셔서 좋았어요.'
+          : 'Ý tưởng sáng tạo và phong cách trendy. Đúng thời hạn cam kết.',
+        date: '2026-01-27',
+        campaignTitle: language === 'ko' ? '봄 패션 룩북 콜라보' : 'Chiến dịch lookbook thời trang xuân',
+        tags: language === 'ko' ? ['창의적', '트렌디', '기한 준수'] : ['Sáng tạo', 'Trendy', 'Đúng hạn']
+      },
+      {
+        id: 'r3',
+        advertiser: 'HealthCare Plus',
+        advertiserLogo: 'https://ui-avatars.com/api/?name=Health+Care&background=6C5CE7&color=fff',
+        rating: 4.9,
+        comment: language === 'ko'
+          ? '제품에 대한 이해도가 높고, 솔직한 리뷰를 작성해주셔서 감사합니다. 팔로워 반응도 매우 좋았습니다.'
+          : 'Hiểu sâu về sản phẩm và đánh giá trung thực. Phản hồi từ người theo dõi rất tốt.',
+        date: '2026-01-17',
+        campaignTitle: language === 'ko' ? '건강 보조식품 리뷰' : 'Đánh giá thực phẩm chức năng',
+        tags: language === 'ko' ? ['전문성', '솔직함', '높은 반응'] : ['Chuyên môn', 'Trung thực', 'Phản hồi cao']
+      },
+      {
+        id: 'r4',
+        advertiser: 'Travel Vietnam',
+        advertiserLogo: 'https://ui-avatars.com/api/?name=Travel+VN&background=00B894&color=fff',
+        rating: 5.0,
+        comment: language === 'ko'
+          ? '영상 편집 실력이 뛰어나고, 스토리텔링이 매우 자연스러웠습니다. 최고의 파트너였어요!'
+          : 'Kỹ năng dựng video xuất sắc và kể chuyện rất tự nhiên. Đối tác tuyệt vời!',
+        date: '2025-12-22',
+        campaignTitle: language === 'ko' ? '여행 브이로그 시리즈' : 'Chuỗi vlog du lịch',
+        tags: language === 'ko' ? ['편집 우수', '스토리텔링', '적극 추천'] : ['Dựng video tốt', 'Kể chuyện hay', 'Khuyên dùng']
+      },
+      {
+        id: 'r5',
+        advertiser: 'FitLife',
+        advertiserLogo: 'https://ui-avatars.com/api/?name=FitLife&background=FFA502&color=fff',
+        rating: 4.7,
+        comment: language === 'ko'
+          ? '에너지 넘치는 콘텐츠로 많은 사람들에게 영감을 주었습니다. 약간의 피드백 수정이 있었지만 전체적으로 만족합니다.'
+          : 'Nội dung tràn đầy năng lượng và truyền cảm hứng. Có chỉnh sửa nhỏ nhưng tổng thể rất hài lòng.',
+        date: '2025-12-07',
+        campaignTitle: language === 'ko' ? '홈 피트니스 챌린지' : 'Thử thách fitness tại nhà',
+        tags: language === 'ko' ? ['에너지 넘침', '영감', '적극적'] : ['Năng động', 'Truyền cảm hứng', 'Tích cực']
+      }
     ],
     completedCampaignsList: [
       {
@@ -123,7 +201,14 @@ export default function InfluencerProfilePage() {
           comments: 156,
           saves: 890
         },
-        thumbnail: 'https://picsum.photos/seed/c1/400/400'
+        thumbnail: 'https://picsum.photos/seed/c1/400/400',
+        advertiserReview: {
+          rating: 5.0,
+          comment: language === 'ko'
+            ? '매우 성실하게 작업해주셨고, 소통도 원활했습니다. 콘텐츠 퀄리티가 기대 이상이었어요!'
+            : 'Rất chuyên nghiệp và nhiệt tình. Chất lượng nội dung vượt mong đợi!',
+          wouldRecommend: true
+        }
       },
       {
         id: 'c2',
@@ -141,7 +226,14 @@ export default function InfluencerProfilePage() {
           comments: 234,
           saves: 1200
         },
-        thumbnail: 'https://picsum.photos/seed/c2/400/400'
+        thumbnail: 'https://picsum.photos/seed/c2/400/400',
+        advertiserReview: {
+          rating: 4.8,
+          comment: language === 'ko'
+            ? '창의적인 아이디어와 트렌디한 스타일링이 돋보였습니다. 기한도 정확히 지켜주셔서 좋았어요.'
+            : 'Ý tưởng sáng tạo và phong cách trendy. Đúng thời hạn cam kết.',
+          wouldRecommend: true
+        }
       },
       {
         id: 'c3',
@@ -159,7 +251,14 @@ export default function InfluencerProfilePage() {
           comments: 189,
           saves: 750
         },
-        thumbnail: 'https://picsum.photos/seed/c3/400/400'
+        thumbnail: 'https://picsum.photos/seed/c3/400/400',
+        advertiserReview: {
+          rating: 4.9,
+          comment: language === 'ko'
+            ? '제품에 대한 이해도가 높고, 솔직한 리뷰를 작성해주셔서 감사합니다.'
+            : 'Hiểu sâu về sản phẩm và đánh giá trung thực.',
+          wouldRecommend: true
+        }
       },
       {
         id: 'c4',
@@ -280,6 +379,15 @@ export default function InfluencerProfilePage() {
       never: '안함',
       occasionally: '가끔',
       regularly: '자주',
+      // 리뷰
+      reviews: '광고주 리뷰',
+      reviewsCount: '개 리뷰',
+      wouldRecommend: '추천함',
+      overallRating: '종합 평점',
+      basedOnReviews: '개 리뷰 기준',
+      viewAll: '전체 보기',
+      recentWorks: '최근 작업물',
+      workStyle: '작업 스타일',
     },
     vi: {
       followers: 'Người theo dõi',
@@ -360,6 +468,15 @@ export default function InfluencerProfilePage() {
       never: 'Không bao giờ',
       occasionally: 'Thỉnh thoảng',
       regularly: 'Thường xuyên',
+      // 리뷰
+      reviews: 'Đánh giá từ nhà quảng cáo',
+      reviewsCount: 'đánh giá',
+      wouldRecommend: 'Khuyên dùng',
+      overallRating: 'Đánh giá tổng thể',
+      basedOnReviews: 'dựa trên',
+      viewAll: 'Xem tất cả',
+      recentWorks: 'Công việc gần đây',
+      workStyle: 'Phong cách làm việc',
     },
   };
 
@@ -504,6 +621,64 @@ export default function InfluencerProfilePage() {
               </span>
             ))}
           </div>
+        </div>
+
+        {/* Reviews Section - 광고주 리뷰 */}
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900">{text.reviews}</h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {influencer.reviews.length} {text.reviewsCount}
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center gap-1">
+                <Star size={18} className="text-yellow-500 fill-yellow-500" />
+                <span className="text-xl font-bold text-gray-900">{influencer.rating}</span>
+              </div>
+              <p className="text-xs text-gray-500">{text.overallRating}</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {influencer.reviews.slice(0, 3).map((review: any) => (
+              <div key={review.id} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                <div className="flex items-start gap-3 mb-2">
+                  <img
+                    src={review.advertiserLogo}
+                    alt={review.advertiser}
+                    className="w-10 h-10 rounded-full border border-gray-200"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="text-sm font-semibold text-gray-900">{review.advertiser}</h4>
+                      <div className="flex items-center gap-1">
+                        <Star size={14} className="text-yellow-500 fill-yellow-500" />
+                        <span className="text-sm font-bold text-gray-900">{review.rating.toFixed(1)}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-2">{review.campaignTitle}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed mb-2">{review.comment}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {review.tags.map((tag: string, idx: number) => (
+                        <span key={idx} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full border border-green-200">
+                          ✓ {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-400">{formatDate(review.date)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {influencer.reviews.length > 3 && (
+            <button className="w-full mt-4 py-2 text-sm text-gray-700 hover:text-gray-900 font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              {text.viewAll} ({influencer.reviews.length})
+            </button>
+          )}
         </div>
 
         {/* Profile Information - 기본 정보 */}
@@ -656,26 +831,57 @@ export default function InfluencerProfilePage() {
           </div>
         </div>
 
-        {/* Recent Works */}
-        <div>
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.recentWorks}</h3>
-          <div className="grid grid-cols-3 gap-2">
-            {influencer.recentWorks.map((work) => (
-              <div key={work.id} className="relative aspect-square rounded-lg overflow-hidden">
-                <img
-                  src={work.thumbnail}
-                  alt={work.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
-                  <div className="flex items-center gap-1 text-white text-xs">
-                    <Eye size={12} />
-                    <span>{(work.views / 1000).toFixed(0)}K</span>
+        {/* Recent Works - 개선된 버전 */}
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            {text.recentWorks}
+            <span className="text-xs text-gray-500 font-normal ml-2">
+              ({language === 'ko' ? '콘텐츠 스타일 확인용' : 'Kiểm tra phong cách nội dung'})
+            </span>
+          </h3>
+          <div className="space-y-3">
+            {influencer.recentWorks.map((work: any) => (
+              <div key={work.id} className="flex gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
+                  <img
+                    src={work.thumbnail}
+                    alt={work.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-1 left-1">
+                    {getPlatformIcon(work.platform)}
                   </div>
+                  <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/70 rounded text-[10px] text-white">
+                    {work.contentType}
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">{work.title}</h4>
+                  <p className="text-xs text-gray-600 mb-2 line-clamp-1">{work.description}</p>
+                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Eye size={12} />
+                      <span>{(work.views / 1000).toFixed(1)}K</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Heart size={12} />
+                      <span>{(work.likes / 1000).toFixed(1)}K</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MessageCircle size={12} />
+                      <span>{work.comments}</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">{formatDate(work.date)}</p>
                 </div>
               </div>
             ))}
           </div>
+          <p className="text-xs text-gray-500 mt-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
+            💡 {language === 'ko'
+              ? '최근 작업물을 통해 인플루언서의 콘텐츠 스타일, 편집 퀄리티, 톤앤매너를 확인하세요'
+              : 'Xem phong cách nội dung, chất lượng chỉnh sửa và tone của influencer qua các công việc gần đây'}
+          </p>
         </div>
 
         {/* 완료한 캠페인 */}
@@ -891,6 +1097,45 @@ export default function InfluencerProfilePage() {
                   </div>
                 </div>
               </div>
+
+              {/* 광고주 평가 */}
+              {selectedCampaign.advertiserReview && (
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Star size={18} className="text-green-600 fill-green-600" />
+                    <h4 className="text-sm font-semibold text-gray-900">
+                      {language === 'ko' ? '광고주 평가' : 'Đánh giá từ nhà quảng cáo'}
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={16}
+                          className={
+                            star <= selectedCampaign.advertiserReview.rating
+                              ? 'text-yellow-500 fill-yellow-500'
+                              : 'text-gray-300'
+                          }
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm font-bold text-gray-900">
+                      {selectedCampaign.advertiserReview.rating.toFixed(1)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                    "{selectedCampaign.advertiserReview.comment}"
+                  </p>
+                  {selectedCampaign.advertiserReview.wouldRecommend && (
+                    <div className="flex items-center gap-1 text-xs text-green-700">
+                      <CheckCircle size={14} />
+                      <span className="font-medium">{text.wouldRecommend}</span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* 닫기 버튼 */}
               <button

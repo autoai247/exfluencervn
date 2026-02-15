@@ -96,7 +96,7 @@ export default function AdvertiserProfilePage() {
 
   return (
     <div className="min-h-screen bg-dark-700">
-      <MobileHeader title={text.title} subtitle={text.subtitle} />
+      <MobileHeader title={text.title} showBack />
 
       <main className="container-mobile pb-24 pt-20">
         {/* Profile Header */}

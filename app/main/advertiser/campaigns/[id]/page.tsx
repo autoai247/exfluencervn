@@ -314,82 +314,82 @@ export default function CampaignDetailPage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card text-center">
-            <Users size={24} className="text-primary mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <Users size={24} className="text-gray-700 mx-auto mb-2" />
+            <div className="text-xl font-bold text-gray-900">
               {mockCampaignDetail.acceptedInfluencersList.length}/{mockCampaignDetail.targetInfluencers}
             </div>
-            <div className="text-xs text-gray-400 mt-1">승인된 인플루언서</div>
+            <div className="text-xs text-gray-500 mt-1">승인된 인플루언서</div>
           </div>
-          <div className="card text-center">
-            <Clock size={24} className="text-warning mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">{mockCampaignDetail.applicants}</div>
-            <div className="text-xs text-gray-400 mt-1">총 지원자</div>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <Clock size={24} className="text-gray-700 mx-auto mb-2" />
+            <div className="text-xl font-bold text-gray-900">{mockCampaignDetail.applicants}</div>
+            <div className="text-xs text-gray-500 mt-1">총 지원자</div>
           </div>
-          <div className="card text-center">
-            <Eye size={24} className="text-info mx-auto mb-2" />
-            <div className="text-xl font-bold text-white">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <Eye size={24} className="text-gray-700 mx-auto mb-2" />
+            <div className="text-xl font-bold text-gray-900">
               {(mockCampaignDetail.views / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-400 mt-1">조회수</div>
+            <div className="text-xs text-gray-500 mt-1">조회수</div>
           </div>
-          <div className="card text-center">
-            <DollarSign size={24} className="text-accent mx-auto mb-2" />
-            <div className="text-lg font-bold text-white">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <DollarSign size={24} className="text-gray-700 mx-auto mb-2" />
+            <div className="text-lg font-bold text-gray-900">
               {formatPoints(mockCampaignDetail.budgetPerInfluencer)}
             </div>
-            <div className="text-xs text-gray-400 mt-1">인플루언서당</div>
+            <div className="text-xs text-gray-500 mt-1">인플루언서당</div>
           </div>
         </div>
 
         {/* Campaign Info */}
-        <div className="card space-y-3">
-          <h3 className="text-sm font-semibold text-white mb-3">캠페인 정보</h3>
+        <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">캠페인 정보</h3>
 
           <div className="flex items-center gap-3 text-sm">
-            <Calendar size={16} className="text-gray-400" />
-            <span className="text-gray-400">기간:</span>
-            <span className="text-white">{mockCampaignDetail.startDate} ~ {mockCampaignDetail.endDate}</span>
+            <Calendar size={16} className="text-gray-600" />
+            <span className="text-gray-600">기간:</span>
+            <span className="text-gray-900">{mockCampaignDetail.startDate} ~ {mockCampaignDetail.endDate}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
-            <Clock size={16} className="text-gray-400" />
-            <span className="text-gray-400">지원 마감:</span>
-            <span className="text-white">{mockCampaignDetail.deadline}</span>
+            <Clock size={16} className="text-gray-600" />
+            <span className="text-gray-600">지원 마감:</span>
+            <span className="text-gray-900">{mockCampaignDetail.deadline}</span>
           </div>
         </div>
 
         {/* Requirements */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-3">지원 요건</h3>
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">지원 요건</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">최소 팔로워:</span>
-              <span className="text-white">{mockCampaignDetail.requirements.minFollowers.toLocaleString()}명</span>
+              <span className="text-gray-600">최소 팔로워:</span>
+              <span className="text-gray-900">{mockCampaignDetail.requirements.minFollowers.toLocaleString()}명</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">최소 참여율:</span>
-              <span className="text-white">{mockCampaignDetail.requirements.minEngagement}%</span>
+              <span className="text-gray-600">최소 참여율:</span>
+              <span className="text-gray-900">{mockCampaignDetail.requirements.minEngagement}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">플랫폼:</span>
-              <span className="text-white">{mockCampaignDetail.requirements.platforms.join(', ')}</span>
+              <span className="text-gray-600">플랫폼:</span>
+              <span className="text-gray-900">{mockCampaignDetail.requirements.platforms.join(', ')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">카테고리:</span>
-              <span className="text-white">{mockCampaignDetail.requirements.categories.join(', ')}</span>
+              <span className="text-gray-600">카테고리:</span>
+              <span className="text-gray-900">{mockCampaignDetail.requirements.categories.join(', ')}</span>
             </div>
           </div>
         </div>
 
         {/* Deliverables */}
-        <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-3">제출물 요구사항</h3>
+        <div className="bg-white border border-gray-200 rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">제출물 요구사항</h3>
           <ul className="space-y-2">
             {mockCampaignDetail.deliverables.map((item, index) => (
               <li key={index} className="flex items-start gap-2 text-sm">
-                <CheckCircle size={16} className="text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">{item}</span>
+                <CheckCircle size={16} className="text-gray-700 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600">{item}</span>
               </li>
             ))}
           </ul>
@@ -397,10 +397,10 @@ export default function CampaignDetailPage() {
 
         {/* Accepted Influencers */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-white">승인된 인플루언서 ({acceptedInfluencers.length})</h3>
+          <h3 className="text-sm font-semibold text-gray-900">승인된 인플루언서 ({acceptedInfluencers.length})</h3>
 
           {acceptedInfluencers.map((influencer) => (
-            <div key={influencer.id} className="card">
+            <div key={influencer.id} className="bg-white border border-gray-200 rounded-xl p-4">
               <div className="flex items-start gap-3 mb-3">
                 <img
                   src={influencer.avatar}
@@ -408,55 +408,55 @@ export default function CampaignDetailPage() {
                   className="w-12 h-12 rounded-full"
                 />
                 <div className="flex-1">
-                  <h4 className="font-semibold text-white">{influencer.name}</h4>
-                  <p className="text-xs text-gray-400">{influencer.platform}</p>
+                  <h4 className="font-semibold text-gray-900">{influencer.name}</h4>
+                  <p className="text-xs text-gray-500">{influencer.platform}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs ${
                   influencer.status === 'completed'
-                    ? 'bg-success/20 text-success'
-                    : 'bg-warning/20 text-warning'
+                    ? 'bg-green-50 text-green-700'
+                    : 'bg-yellow-50 text-yellow-700'
                 }`}>
                   {influencer.status === 'completed' ? '완료' : '진행 중'}
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-dark-700 rounded-lg p-2">
-                  <p className="text-gray-400">팔로워</p>
-                  <p className="text-white font-semibold">{(influencer.followers / 1000).toFixed(1)}K</p>
+                <div className="bg-gray-50 rounded-lg p-2">
+                  <p className="text-gray-600">팔로워</p>
+                  <p className="text-gray-900 font-semibold">{(influencer.followers / 1000).toFixed(1)}K</p>
                 </div>
-                <div className="bg-dark-700 rounded-lg p-2">
-                  <p className="text-gray-400">참여율</p>
-                  <p className="text-white font-semibold">{influencer.engagement}%</p>
+                <div className="bg-gray-50 rounded-lg p-2">
+                  <p className="text-gray-600">참여율</p>
+                  <p className="text-gray-900 font-semibold">{influencer.engagement}%</p>
                 </div>
               </div>
 
               {/* Payment & Product Shipping */}
               {influencer.status !== 'completed' && influencer.status !== 'in_progress' && (
-                <div className="mt-3 pt-3 border-t border-dark-500 space-y-3">
+                <div className="mt-3 pt-3 border-t border-gray-200 space-y-3">
                   {/* Payment Confirmation */}
                   <div>
-                    <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                    <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
                       <DollarSign size={14} />
                       결제 정보
                     </h5>
-                    <div className="bg-dark-700 rounded-lg p-3 space-y-2">
+                    <div className="bg-gray-50 rounded-lg p-3 space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400">지급 금액:</span>
-                        <span className="text-white font-semibold">{mockCampaignDetail.budgetPerInfluencer.toLocaleString()} VND</span>
+                        <span className="text-gray-600">지급 금액:</span>
+                        <span className="text-gray-900 font-semibold">{mockCampaignDetail.budgetPerInfluencer.toLocaleString()} VND</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
                           id={`payment-${influencer.id}`}
-                          className="w-4 h-4 rounded border-gray-600 text-success focus:ring-success"
+                          className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                           onChange={(e) => {
                             if (e.target.checked) {
                               alert('결제 완료로 표시됨 (데모)');
                             }
                           }}
                         />
-                        <label htmlFor={`payment-${influencer.id}`} className="text-xs text-gray-300 cursor-pointer">
+                        <label htmlFor={`payment-${influencer.id}`} className="text-xs text-gray-700 cursor-pointer">
                           결제 완료했습니다
                         </label>
                       </div>
@@ -468,16 +468,16 @@ export default function CampaignDetailPage() {
 
                   {/* Product Shipping */}
                   <div>
-                    <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                    <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                       </svg>
                       제품 발송
                     </h5>
-                    <div className="bg-dark-700 rounded-lg p-3 space-y-2">
+                    <div className="bg-gray-50 rounded-lg p-3 space-y-2">
                       <div className="space-y-2">
-                        <label className="text-xs text-gray-400">택배사</label>
-                        <select className="w-full bg-dark-600 border border-dark-500 rounded-lg px-3 py-2 text-xs text-white focus:border-primary focus:outline-none">
+                        <label className="text-xs text-gray-600">택배사</label>
+                        <select className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none">
                           <option>Viettel Post</option>
                           <option>Vietnam Post (EMS)</option>
                           <option>Giao Hàng Nhanh (GHN)</option>
@@ -487,16 +487,16 @@ export default function CampaignDetailPage() {
                         </select>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs text-gray-400">송장번호</label>
+                        <label className="text-xs text-gray-600">송장번호</label>
                         <input
                           type="text"
                           placeholder="VTP123456789"
-                          className="w-full bg-dark-600 border border-dark-500 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary focus:outline-none"
+                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
                         />
                       </div>
                       <button
                         onClick={() => alert('발송 정보 저장됨 (데모)')}
-                        className="w-full btn bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 text-xs py-2"
+                        className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
                       >
                         발송 완료
                       </button>
@@ -509,36 +509,36 @@ export default function CampaignDetailPage() {
               )}
 
               {influencer.status === 'completed' && (
-                <div className="mt-3 pt-3 border-t border-dark-500 grid grid-cols-2 gap-2 text-xs">
+                <div className="mt-3 pt-3 border-t border-gray-200 grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <p className="text-gray-400">조회수</p>
-                    <p className="text-white font-semibold">{influencer.views?.toLocaleString()}</p>
+                    <p className="text-gray-600">조회수</p>
+                    <p className="text-gray-900 font-semibold">{influencer.views?.toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400">좋아요</p>
-                    <p className="text-white font-semibold">{influencer.likes?.toLocaleString()}</p>
+                    <p className="text-gray-600">좋아요</p>
+                    <p className="text-gray-900 font-semibold">{influencer.likes?.toLocaleString()}</p>
                   </div>
                 </div>
               )}
 
               <button
                 onClick={() => router.push(`/main/messages?userId=${influencer.id}&userName=${influencer.name}`)}
-                className="btn btn-ghost w-full mt-3 text-xs"
+                className="w-full mt-3 bg-gray-100 text-gray-900 hover:bg-gray-200 rounded-lg py-2 flex items-center justify-center gap-1 text-xs"
               >
-                <MessageCircle size={14} className="mr-1" />
+                <MessageCircle size={14} />
                 메시지 보내기
               </button>
 
               {/* Submitted Content Review */}
               {influencer.submittedContent && influencer.submittedContent.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-dark-500">
-                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <Eye size={16} />
                     제출된 콘텐츠 ({influencer.submittedContent.length})
                   </h4>
                   <div className="space-y-3">
                     {influencer.submittedContent.map((content: any) => (
-                      <div key={content.id} className="bg-dark-700 rounded-lg p-3">
+                      <div key={content.id} className="bg-gray-50 rounded-lg p-3">
                         <div className="flex gap-3 mb-2">
                           <img
                             src={content.thumbnail}
@@ -546,12 +546,12 @@ export default function CampaignDetailPage() {
                             className="w-20 h-20 rounded-lg object-cover"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-white mb-1">{content.description}</p>
+                            <p className="text-xs font-medium text-gray-900 mb-1">{content.description}</p>
                             <a
                               href={content.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-xs text-primary hover:underline block truncate"
+                              className="text-xs text-gray-700 hover:underline block truncate"
                             >
                               {content.url}
                             </a>
@@ -565,9 +565,9 @@ export default function CampaignDetailPage() {
                           <div className="flex gap-2 mt-2">
                             <button
                               onClick={() => alert('콘텐츠 승인됨 (데모)')}
-                              className="flex-1 btn bg-success/20 text-success hover:bg-success/30 text-xs py-2"
+                              className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
                             >
-                              <CheckCircle size={14} className="mr-1" />
+                              <CheckCircle size={14} />
                               승인
                             </button>
                             <button
@@ -575,20 +575,20 @@ export default function CampaignDetailPage() {
                                 const reason = prompt('반려 사유를 입력하세요:');
                                 if (reason) alert(`반려됨: ${reason} (데모)`);
                               }}
-                              className="flex-1 btn bg-error/20 text-error hover:bg-error/30 text-xs py-2"
+                              className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2"
                             >
                               반려
                             </button>
                           </div>
                         ) : content.status === 'approved' ? (
                           <div className="mt-2 flex items-center gap-2 text-xs">
-                            <CheckCircle size={14} className="text-success" />
-                            <span className="text-success">승인됨</span>
+                            <CheckCircle size={14} className="text-green-700" />
+                            <span className="text-green-700">승인됨</span>
                             <span className="text-gray-500">({content.reviewedAt})</span>
                           </div>
                         ) : (
                           <div className="mt-2 flex items-center gap-2 text-xs">
-                            <span className="text-error">반려됨</span>
+                            <span className="text-red-700">반려됨</span>
                             <span className="text-gray-500">({content.reviewedAt})</span>
                           </div>
                         )}
@@ -603,22 +603,22 @@ export default function CampaignDetailPage() {
 
         {/* Pending Applicants */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-white">대기 중인 지원자 ({pendingApplicants.length})</h3>
+          <h3 className="text-sm font-semibold text-gray-900">대기 중인 지원자 ({pendingApplicants.length})</h3>
 
           {pendingApplicants.map((applicant) => {
             const matchResult = calculateApplicantMatch(applicant);
 
             return (
-              <div key={applicant.id} className={`card ${
-                matchResult.isGoodMatch ? 'border-2 border-success/50' : 'border-2 border-dark-500'
+              <div key={applicant.id} className={`bg-white rounded-xl p-4 ${
+                matchResult.isGoodMatch ? 'border-2 border-green-200' : 'border-2 border-gray-200'
               }`}>
                 {/* Matching Badge */}
                 <div className="absolute top-3 right-3">
                   <div className={`px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${
-                    matchResult.percentage >= 90 ? 'bg-success text-white' :
-                    matchResult.percentage >= 70 ? 'bg-primary text-white' :
-                    matchResult.percentage >= 50 ? 'bg-warning text-white' :
-                    'bg-error text-white'
+                    matchResult.percentage >= 90 ? 'bg-green-700 text-white' :
+                    matchResult.percentage >= 70 ? 'bg-gray-900 text-white' :
+                    matchResult.percentage >= 50 ? 'bg-yellow-600 text-white' :
+                    'bg-red-700 text-white'
                   }`}>
                     <CheckCircle size={12} />
                     매칭 {matchResult.percentage}%
@@ -632,55 +632,55 @@ export default function CampaignDetailPage() {
                     className="w-12 h-12 rounded-full"
                   />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-white">{applicant.name}</h4>
-                    <p className="text-xs text-gray-400">{applicant.platform}</p>
+                    <h4 className="font-semibold text-gray-900">{applicant.name}</h4>
+                    <p className="text-xs text-gray-500">{applicant.platform}</p>
                     <p className="text-xs text-gray-500 mt-1">지원일: {applicant.appliedAt}</p>
                   </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                <div className="bg-dark-700 rounded-lg p-2">
-                  <p className="text-gray-400">팔로워</p>
-                  <p className="text-white font-semibold">{(applicant.followers / 1000).toFixed(1)}K</p>
+                <div className="bg-gray-50 rounded-lg p-2">
+                  <p className="text-gray-600">팔로워</p>
+                  <p className="text-gray-900 font-semibold">{(applicant.followers / 1000).toFixed(1)}K</p>
                 </div>
-                <div className="bg-dark-700 rounded-lg p-2">
-                  <p className="text-gray-400">참여율</p>
-                  <p className="text-white font-semibold">{applicant.engagement}%</p>
+                <div className="bg-gray-50 rounded-lg p-2">
+                  <p className="text-gray-600">참여율</p>
+                  <p className="text-gray-900 font-semibold">{applicant.engagement}%</p>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <button
                   onClick={() => handleApprove(applicant)}
-                  className="flex-1 btn bg-success/20 text-success hover:bg-success/30 text-xs"
+                  className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
                 >
-                  <CheckCircle size={14} className="mr-1" />
+                  <CheckCircle size={14} />
                   승인
                 </button>
                 <button
                   onClick={() => handleReject(applicant)}
-                  className="flex-1 btn bg-error/20 text-error hover:bg-error/30 text-xs"
+                  className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
                 >
-                  <X size={14} className="mr-1" />
+                  <X size={14} />
                   거절
                 </button>
               </div>
 
               {/* Matching Details Dropdown */}
               <details className="mt-3 text-xs">
-                <summary className="cursor-pointer text-gray-400 hover:text-white transition-colors">
+                <summary className="cursor-pointer text-gray-600 hover:text-gray-900 transition-colors">
                   매칭 세부 정보 보기
                 </summary>
-                <div className="mt-2 pt-2 border-t border-dark-500 space-y-1">
+                <div className="mt-2 pt-2 border-t border-gray-200 space-y-1">
                   {matchResult.criteria.map((criterion, index) => (
                     <div key={index} className="flex items-center justify-between">
-                      <span className="text-gray-400">{criterion.name}</span>
+                      <span className="text-gray-600">{criterion.name}</span>
                       <div className="flex items-center gap-2">
                         <span className="text-gray-500">{criterion.weight}점</span>
                         {criterion.match ? (
-                          <CheckCircle size={12} className="text-success" />
+                          <CheckCircle size={12} className="text-green-700" />
                         ) : (
-                          <span className="text-error">✗</span>
+                          <span className="text-red-700">✗</span>
                         )}
                       </div>
                     </div>

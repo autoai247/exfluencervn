@@ -389,6 +389,8 @@ function CampaignsPageContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
+  const lastScrollY = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize filters from URL params
@@ -425,13 +427,25 @@ function CampaignsPageContent() {
     localStorage.setItem('campaign_favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Scroll detection for sticky header optimization
+  // Scroll detection for hiding/showing header
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+
+      // 스크롤 방향 감지
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        // 아래로 스크롤 중 & 100px 이상 내려감 → 헤더 숨김
+        setHideHeader(true);
+      } else if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
+        // 위로 스크롤 중 또는 상단 근처 → 헤더 표시
+        setHideHeader(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+      setIsScrolled(currentScrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -693,16 +707,24 @@ function CampaignsPageContent() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      {/* Header */}
-      <MobileHeader
-        title={t.campaign.title}
-        showNotification
-        onNotification={() => router.push('/main/influencer/notifications')}
-      />
+      {/* Header - 스크롤 시 숨김 */}
+      <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
+        hideHeader ? '-translate-y-full' : 'translate-y-0'
+      }`}>
+        <MobileHeader
+          title={t.campaign.title}
+          showNotification
+          onNotification={() => router.push('/main/influencer/notifications')}
+        />
+      </div>
+      {/* Header 공간 확보 */}
+      <div className="h-14"></div>
 
-      {/* ADMIN MODE TOGGLE (only visible to admins) */}
+      {/* ADMIN MODE TOGGLE (only visible to admins) - 스크롤 시 숨김 */}
       {isAdmin && (
-        <div className="sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500">
+        <div className={`fixed top-14 left-0 right-0 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500 transition-transform duration-300 ${
+          hideHeader ? '-translate-y-full' : 'translate-y-0'
+        }`}>
           <div className="px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 font-mono">🔐 Admin Panel</span>
@@ -728,73 +750,63 @@ function CampaignsPageContent() {
         </div>
       )}
 
-      {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 축소 */}
-      <div className={`sticky top-14 z-30 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
-        isScrolled ? 'shadow-lg' : ''
+      {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 숨김 */}
+      <div className={`fixed top-14 left-0 right-0 z-30 bg-dark-700 border-b border-dark-500 transition-transform duration-300 ${
+        hideHeader ? '-translate-y-full' : 'translate-y-0'
       }`}>
         <Link href="/main/influencer/korea-dream">
-          <div className={`mx-4 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] transition-all duration-300 ${
-            isScrolled ? 'my-2 animate-none' : 'my-3 animate-pulse'
-          }`}>
-            <div className={`bg-dark-700 rounded-xl relative overflow-hidden transition-all duration-300 ${
-              isScrolled ? 'px-3 py-2' : 'px-4 py-3'
-            }`}>
+          <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] animate-pulse">
+            <div className="bg-dark-700 rounded-xl px-4 py-3 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-xl"></div>
 
               <div className="relative z-10 flex items-center justify-between">
-                <div className="flex items-center gap-2 flex-1">
-                  <div className={`bg-gradient-to-br from-red-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                    isScrolled ? 'w-8 h-8' : 'w-10 h-10'
-                  }`}>
-                    <Plane size={isScrolled ? 16 : 20} className="text-white" />
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Plane size={20} className="text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className={`transition-all duration-300 ${isScrolled ? 'text-sm' : 'text-lg'}`}>🇰🇷</span>
-                      <span className={`font-bold text-white transition-all duration-300 ${isScrolled ? 'text-xs' : 'text-sm'}`}>KOREA DREAM</span>
-                      {!isScrolled && <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] rounded-full font-bold">HOT</span>}
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">🇰🇷</span>
+                      <span className="font-bold text-white text-sm">KOREA DREAM</span>
+                      <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] rounded-full font-bold">HOT</span>
                     </div>
-                    {!isScrolled && <div className="text-xs text-gray-300 mt-1">{t.koreaDream.koreanBeautyExperience}</div>}
+                    <div className="text-xs text-gray-300">{t.koreaDream.koreanBeautyExperience}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <div className="text-right">
-                    {!isScrolled && <div className="text-xs text-gray-300">{t.koreaDream.myTickets}</div>}
+                    <div className="text-xs text-gray-300">{t.koreaDream.myTickets}</div>
                     <div className="flex items-center gap-1">
-                      <Ticket size={isScrolled ? 12 : 14} className="text-primary" />
-                      <span className={`font-bold text-white transition-all duration-300 ${isScrolled ? 'text-xs' : 'text-sm'}`}>0{t.koreaDream.ticketsUnit}</span>
+                      <Ticket size={14} className="text-primary" />
+                      <span className="font-bold text-white text-sm">0{t.koreaDream.ticketsUnit}</span>
                     </div>
                   </div>
-                  <div className={`bg-primary rounded-lg flex items-center justify-center transition-all duration-300 ${
-                    isScrolled ? 'w-6 h-6' : 'w-8 h-8'
-                  }`}>
-                    <span className={`text-white transition-all duration-300 ${isScrolled ? 'text-sm' : 'text-lg'}`}>→</span>
+                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                    <span className="text-white text-lg">→</span>
                   </div>
                 </div>
               </div>
 
-              {/* Progress bar - 스크롤 시 숨김 */}
-              {!isScrolled && (
-                <div className="mt-2 relative z-10">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-gray-300">{t.koreaDream.targetTickets}</span>
-                    <span className="text-[10px] font-bold text-white">78,432 / 100,000{t.koreaDream.ticketsUnit}</span>
-                  </div>
-                  <div className="w-full bg-dark-600 rounded-full h-1.5">
-                    <div className="bg-gradient-to-r from-red-500 to-blue-500 h-1.5 rounded-full" style={{width: '78.4%'}}></div>
-                  </div>
+              {/* Progress bar */}
+              <div className="mt-2 relative z-10">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] text-gray-300">{t.koreaDream.targetTickets}</span>
+                  <span className="text-[10px] font-bold text-white">78,432 / 100,000{t.koreaDream.ticketsUnit}</span>
                 </div>
-              )}
+                <div className="w-full bg-dark-600 rounded-full h-1.5">
+                  <div className="bg-gradient-to-r from-red-500 to-blue-500 h-1.5 rounded-full" style={{width: '78.4%'}}></div>
+                </div>
+              </div>
             </div>
           </div>
         </Link>
       </div>
 
-      {/* Search Bar - 스크롤 시 위치 조정 */}
-      <div className={`sticky z-20 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
-        isScrolled ? 'top-[110px] p-3 shadow-md' : 'top-[200px] p-4'
-      }`}>
+      {/* Search Bar - 스크롤 시 숨김 */}
+      <div className={`fixed left-0 right-0 z-20 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
+        hideHeader ? '-translate-y-full' : 'translate-y-0 top-[120px]'
+      } p-4`}>
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Search
@@ -1126,6 +1138,9 @@ function CampaignsPageContent() {
           </div>
         )}
       </div>
+
+      {/* Search Bar 공간 확보 - hideHeader가 false일 때만 */}
+      {!hideHeader && <div className="h-[240px]"></div>}
 
       {/* Results Count */}
       <div className="px-4 py-3 text-sm text-gray-300">

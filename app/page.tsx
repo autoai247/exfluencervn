@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { TrendingUp, Users, DollarSign } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import type { UserType } from '@/types';
 import { useLanguage, LanguageSelector } from '@/lib/i18n/LanguageContext';
@@ -72,7 +71,7 @@ export default function HomePage() {
             <div className="text-center space-y-6">
               <div className="flex justify-center animate-scale-in">
                 <div className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-3xl flex items-center justify-center shadow-2xl shadow-primary/20 transform hover:scale-110 transition-transform duration-300">
-                  <TrendingUp size={48} className="text-white" />
+                  <span className="text-5xl">🚀</span>
                 </div>
               </div>
 
@@ -162,7 +161,7 @@ export default function HomePage() {
               {/* Step 1 */}
               <div className="bg-dark-600/40 backdrop-blur-sm rounded-3xl p-8 border border-dark-500/40 hover:border-primary/40 transition-all transform hover:scale-105">
                 <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
-                  <Users size={32} className="text-white" />
+                  <span className="text-4xl">👤</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{t.homepage.step1Title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{t.homepage.step1Desc}</p>
@@ -171,7 +170,7 @@ export default function HomePage() {
               {/* Step 2 */}
               <div className="bg-dark-600/40 backdrop-blur-sm rounded-3xl p-8 border border-dark-500/40 hover:border-secondary/40 transition-all transform hover:scale-105">
                 <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary-dark rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-secondary/30">
-                  <TrendingUp size={32} className="text-white" />
+                  <span className="text-4xl">🔍</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{t.homepage.step2Title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{t.homepage.step2Desc}</p>
@@ -180,7 +179,7 @@ export default function HomePage() {
               {/* Step 3 */}
               <div className="bg-dark-600/40 backdrop-blur-sm rounded-3xl p-8 border border-dark-500/40 hover:border-accent/40 transition-all transform hover:scale-105">
                 <div className="w-16 h-16 bg-gradient-to-br from-accent to-green-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-accent/30">
-                  <DollarSign size={32} className="text-white" />
+                  <span className="text-4xl">💰</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{t.homepage.step3Title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{t.homepage.step3Desc}</p>

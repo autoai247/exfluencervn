@@ -107,57 +107,49 @@ export default function MyCampaignsPage() {
       />
 
       <div className="w-full max-w-[430px] mx-auto">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-primary/20 via-mint/10 to-dark px-4 py-6 border-b border-dark-200">
-          <p className="text-sm text-gray-400 mb-4">{text.subtitle}</p>
+        {/* Hero Section - 개선된 통계 */}
+        <div className="bg-gradient-to-br from-primary/10 to-dark px-6 py-8 border-b border-dark-500">
+          <p className="text-base text-gray-300 mb-6 font-medium">{text.subtitle}</p>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-dark-700/50 backdrop-blur-sm rounded-xl p-3 border border-primary/20">
-              <div className="flex items-center gap-2 mb-1">
-                <Clock size={16} className="text-primary" />
-                <span className="text-xs text-gray-400">{text.stats.active}</span>
+          {/* Stats Grid - 간격 및 크기 개선 */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-primary/30 hover:border-primary/50 transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">⏱️</span>
+                <span className="text-sm text-gray-400 font-medium">{text.stats.active}</span>
               </div>
-              <p className="text-2xl font-black text-white">{getActiveCampaignsCount()}</p>
+              <p className="text-3xl font-bold text-white">{getActiveCampaignsCount()}</p>
             </div>
 
-            <div className="bg-dark-700/50 backdrop-blur-sm rounded-xl p-3 border border-mint/20">
-              <div className="flex items-center gap-2 mb-1">
-                <CheckCircle size={16} className="text-mint" />
-                <span className="text-xs text-gray-400">{text.stats.completed}</span>
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-mint/30 hover:border-mint/50 transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">✅</span>
+                <span className="text-sm text-gray-400 font-medium">{text.stats.completed}</span>
               </div>
-              <p className="text-2xl font-black text-white">{getCompletedCampaignsCount()}</p>
+              <p className="text-3xl font-bold text-white">{getCompletedCampaignsCount()}</p>
             </div>
 
-            <div className="bg-dark-700/50 backdrop-blur-sm rounded-xl p-3 border border-green-500/20">
-              <div className="flex items-center gap-2 mb-1">
-                <DollarSign size={16} className="text-green-500" />
-                <span className="text-xs text-gray-400">{text.stats.totalEarnings}</span>
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-green-500/30 hover:border-green-500/50 transition-all col-span-2">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">💵</span>
+                <span className="text-sm text-gray-400 font-medium">{text.stats.totalEarnings}</span>
               </div>
-              <p className="text-lg font-black text-green-500">{formatPoints(totalEarnings)} VND</p>
-            </div>
-
-            <div className="bg-dark-700/50 backdrop-blur-sm rounded-xl p-3 border border-yellow-500/20">
-              <div className="flex items-center gap-2 mb-1">
-                <TrendingUp size={16} className="text-yellow-500" />
-                <span className="text-xs text-gray-400">{text.stats.pending}</span>
-              </div>
-              <p className="text-lg font-black text-yellow-500">{formatPoints(pendingPayments)} VND</p>
+              <p className="text-2xl font-bold text-green-500">{formatPoints(totalEarnings)} VND</p>
             </div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="sticky top-14 z-30 bg-dark border-b border-dark-200">
-          <div className="flex gap-1 p-2">
+        {/* Tabs - 크기 및 간격 개선 */}
+        <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500 shadow-lg">
+          <div className="flex gap-2 p-3">
             {(['all', 'active', 'completed', 'rejected'] as TabType[]).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${
                   activeTab === tab
-                    ? 'bg-mint text-black shadow-lg shadow-mint/20'
-                    : 'bg-dark-700 text-gray-400 hover:bg-dark-600'
+                    ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/30'
+                    : 'bg-dark-600 text-gray-400 hover:bg-dark-500 hover:text-gray-300'
                 }`}
               >
                 {text.tabs[tab]}

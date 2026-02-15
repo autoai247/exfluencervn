@@ -1004,8 +1004,6 @@ export interface Translations {
     loading: string;
     platformName: string;
     tagline: string;
-    taglineEn: string;
-    taglineVi: string;
     kols: string;
     brands: string;
     campaigns: string;
@@ -1013,17 +1011,13 @@ export interface Translations {
     fastMatching: string;
     securePayment: string;
     howToStart: string;
-    howToStartEn: string;
-    howToStartVi: string;
     influencerRole: string;
     influencerDesc: string;
-    influencerDescEn: string;
     avgMonthlyEarning: string;
     free: string;
     activeCampaigns: string;
     advertiserRole: string;
     advertiserDesc: string;
-    advertiserDescEn: string;
     avgROI: string;
     verifiedKOL: string;
     realtimeAnalysis: string;
@@ -1666,8 +1660,6 @@ export const translations: Record<Language, Translations> = {
       loading: 'Đang tải...',
       platformName: 'Exfluencer VN',
       tagline: 'Nền tảng tiếp thị KOL hàng đầu Việt Nam',
-      taglineEn: "Vietnam's #1 Influencer Marketing Platform",
-      taglineVi: 'Nền tảng tiếp thị KOL hàng đầu Việt Nam',
       kols: 'KOLs',
       brands: 'Thương hiệu',
       campaigns: 'Chiến dịch',
@@ -1675,17 +1667,13 @@ export const translations: Record<Language, Translations> = {
       fastMatching: '⚡ Ghép nối nhanh trong 24h',
       securePayment: '📊 Theo dõi hiệu quả realtime',
       howToStart: 'Bạn muốn bắt đầu như thế nào?',
-      howToStartEn: 'How would you like to start?',
-      howToStartVi: 'Bạn muốn bắt đầu như thế nào?',
       influencerRole: 'Influencer / KOL',
       influencerDesc: 'Tìm chiến dịch & kiếm tiền từ nội dung của bạn',
-      influencerDescEn: 'Find campaigns & earn money from your content',
       avgMonthlyEarning: 'Trung bình 5 triệu VND/tháng',
       free: 'Miễn phí',
       activeCampaigns: '1000+ chiến dịch đang hoạt động',
       advertiserRole: 'Nhà quảng cáo / Brand',
       advertiserDesc: 'Tìm KOL đã xác minh & phát triển thương hiệu',
-      advertiserDescEn: 'Find verified KOLs & grow your brand with data',
       avgROI: 'ROI trung bình 300%',
       verifiedKOL: 'KOL đã xác minh',
       realtimeAnalysis: 'Phân tích thời gian thực',
@@ -1749,7 +1737,7 @@ export const translations: Record<Language, Translations> = {
         welcomeBack: 'Chào mừng trở lại',
         continueLogin: 'Đăng nhập để tiếp tục',
         quickDemo: 'Dùng thử nhanh (Quick Demo)',
-        languageInfo: 'Tiếng Việt Vietnamese | 한국어 Korean | English',
+        languageInfo: 'Tiếng Việt',
         email: 'Email',
         password: 'Mật khẩu',
         rememberMe: 'Ghi nhớ đăng nhập',
@@ -1804,8 +1792,8 @@ export const translations: Record<Language, Translations> = {
         namePlaceholder: 'Nguyễn Văn A',
         phonePlaceholder: '+84 90 123 4567',
         zaloPlaceholder: '+84 90 123 4567 (Số điện thoại VN VN number)',
-        zaloLabel: 'Zalo * (Ứng dụng nhắn tin VN Vietnam messenger)',
-        zaloHint: '💡 Ứng dụng nhắn tin phổ biến nhất Việt Nam Most popular messenger in Vietnam',
+        zaloLabel: 'Zalo * (Ứng dụng nhắn tin VN)',
+        zaloHint: '💡 Ứng dụng nhắn tin phổ biến nhất Việt Nam',
         facebookPlaceholder: 'fb.com/yourname',
         signingUp: 'Đang đăng ký...',
         errors: {
@@ -1869,8 +1857,8 @@ export const translations: Record<Language, Translations> = {
       },
       languageModal: {
         title: 'Chọn ngôn ngữ',
-        korean: '한국어 Korean',
-        vietnamese: 'Tiếng Việt Vietnamese',
+        korean: '한국어',
+        vietnamese: 'Tiếng Việt',
         english: 'English',
         cancel: 'Hủy',
         confirm: 'Xác nhận',
@@ -3264,8 +3252,6 @@ export const translations: Record<Language, Translations> = {
       loading: '로딩 중...',
       platformName: 'Exfluencer VN',
       tagline: '베트남 #1 인플루언서 매칭 플랫폼',
-      taglineEn: "Vietnam's #1 Influencer Marketing Platform",
-      taglineVi: 'Nền tảng tiếp thị KOL hàng đầu Việt Nam',
       kols: 'KOL',
       brands: '브랜드',
       campaigns: '캠페인',
@@ -3273,17 +3259,13 @@ export const translations: Record<Language, Translations> = {
       fastMatching: '⚡ 24시간 빠른 매칭',
       securePayment: '📊 실시간 성과 추적',
       howToStart: '어떻게 시작하시겠어요?',
-      howToStartEn: 'How would you like to start?',
-      howToStartVi: 'Bạn muốn bắt đầu như thế nào?',
       influencerRole: '인플루언서 / KOL',
       influencerDesc: '캠페인을 찾고 콘텐츠로 수익을 창출하세요',
-      influencerDescEn: 'Find campaigns & earn money from your content',
       avgMonthlyEarning: '월 평균 500만 VND',
       free: '무료',
       activeCampaigns: '1000+ 활성 캠페인',
       advertiserRole: '광고주 / 브랜드',
       advertiserDesc: '검증된 KOL을 찾고 브랜드를 성장시키세요',
-      advertiserDescEn: 'Find verified KOLs & grow your brand with data',
       avgROI: '평균 ROI 300%',
       verifiedKOL: '검증된 KOL',
       realtimeAnalysis: '실시간 분석',
@@ -3347,7 +3329,7 @@ export const translations: Record<Language, Translations> = {
         welcomeBack: '다시 오신 것을 환영합니다',
         continueLogin: '계속하려면 로그인하세요',
         quickDemo: '빠른 데모 체험 (Quick Demo)',
-        languageInfo: '한국어 Korean | Tiếng Việt Vietnamese | English',
+        languageInfo: '한국어',
         email: '이메일',
         password: '비밀번호',
         rememberMe: '자동 로그인',
@@ -3402,8 +3384,8 @@ export const translations: Record<Language, Translations> = {
         namePlaceholder: '홍길동',
         phonePlaceholder: '+84 90 123 4567',
         zaloPlaceholder: '+84 90 123 4567 (베트남 번호 VN number)',
-        zaloLabel: 'Zalo * (베트남 메신저 Vietnam messenger)',
-        zaloHint: '💡 베트남에서 가장 인기 있는 메신저입니다 Most popular messenger in Vietnam',
+        zaloLabel: 'Zalo * (베트남 메신저)',
+        zaloHint: '💡 베트남에서 가장 인기 있는 메신저입니다',
         facebookPlaceholder: 'fb.com/yourname',
         signingUp: '가입 중...',
         errors: {
@@ -3467,8 +3449,8 @@ export const translations: Record<Language, Translations> = {
       },
       languageModal: {
         title: '언어 선택',
-        korean: '한국어 Korean',
-        vietnamese: 'Tiếng Việt Vietnamese',
+        korean: '한국어',
+        vietnamese: 'Tiếng Việt',
         english: 'English',
         cancel: '취소',
         confirm: '확인',

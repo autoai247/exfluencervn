@@ -10,46 +10,30 @@ import { useLanguage, LanguageSelector } from '@/lib/i18n/LanguageContext';
 export default function HomePage() {
   const router = useRouter();
   const { t, language } = useLanguage();
-  const [checking, setChecking] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     // Check for auto-login
-    const checkAuth = () => {
-      try {
-        const userData = localStorage.getItem('exfluencer_user');
-
-        if (userData) {
-          const user = JSON.parse(userData);
-          // Redirect based on user type
-          if (user.userType === 'advertiser') {
-            router.push('/main/advertiser');
-            return;
-          } else if (user.userType === 'influencer') {
-            router.push('/main/influencer/campaigns');
-            return;
-          }
+    try {
+      const userData = localStorage.getItem('exfluencer_user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.userType === 'advertiser') {
+          router.push('/main/advertiser');
+        } else if (user.userType === 'influencer') {
+          router.push('/main/influencer/campaigns');
         }
-      } catch (e) {
-        // Invalid data, clear it
-        localStorage.removeItem('exfluencer_user');
       }
-
-      // Always set checking to false after check
-      setChecking(false);
-    };
-
-    checkAuth();
+    } catch (e) {
+      localStorage.removeItem('exfluencer_user');
+    }
   }, [router]);
 
-  if (checking) {
-    return (
-      <div className="min-h-screen bg-dark-700 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-400">{t.homepage.loading}</p>
-        </div>
-      </div>
-    );
+  // Show nothing until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return null;
   }
 
   return (

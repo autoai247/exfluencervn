@@ -869,14 +869,15 @@ export default function CampaignDetailPage() {
       {/* Accepted Influencers Modal */}
       {showAcceptedModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowAcceptedModal(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
               <h3 className="text-lg font-bold text-gray-900">승인된 인플루언서 ({acceptedInfluencers.length}명)</h3>
               <button onClick={() => setShowAcceptedModal(false)} className="text-gray-500 hover:text-gray-900">
                 <X size={24} />
               </button>
             </div>
-            <div className="space-y-3">
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
+              <div className="space-y-3">
               {acceptedInfluencers.map((influencer) => (
                 <div key={influencer.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                   <img src={influencer.avatar} alt={influencer.name} className="w-12 h-12 rounded-full" />
@@ -899,6 +900,7 @@ export default function CampaignDetailPage() {
                   </button>
                 </div>
               ))}
+              </div>
             </div>
           </div>
         </div>
@@ -907,45 +909,46 @@ export default function CampaignDetailPage() {
       {/* All Applicants Modal */}
       {showApplicantsModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowApplicantsModal(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
               <h3 className="text-lg font-bold text-gray-900">전체 지원자 ({acceptedInfluencers.length + pendingApplicants.length}명)</h3>
               <button onClick={() => setShowApplicantsModal(false)} className="text-gray-500 hover:text-gray-900">
                 <X size={24} />
               </button>
             </div>
-
-            {/* 승인된 인플루언서 */}
-            <div className="mb-6">
-              <h4 className="text-sm font-semibold text-gray-900 mb-3">승인됨 ({acceptedInfluencers.length}명)</h4>
-              <div className="space-y-2">
-                {acceptedInfluencers.map((influencer) => (
-                  <div key={influencer.id} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <img src={influencer.avatar} alt={influencer.name} className="w-10 h-10 rounded-full" />
-                    <div className="flex-1">
-                      <h5 className="text-sm font-semibold text-gray-900">{influencer.name}</h5>
-                      <p className="text-xs text-gray-500">{(influencer.followers / 1000).toFixed(1)}K · {influencer.engagement}%</p>
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
+              {/* 승인된 인플루언서 */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">승인됨 ({acceptedInfluencers.length}명)</h4>
+                <div className="space-y-2">
+                  {acceptedInfluencers.map((influencer) => (
+                    <div key={influencer.id} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                      <img src={influencer.avatar} alt={influencer.name} className="w-10 h-10 rounded-full" />
+                      <div className="flex-1">
+                        <h5 className="text-sm font-semibold text-gray-900">{influencer.name}</h5>
+                        <p className="text-xs text-gray-500">{(influencer.followers / 1000).toFixed(1)}K · {influencer.engagement}%</p>
+                      </div>
+                      <span className="px-2 py-1 bg-green-600 text-white text-xs rounded-full">승인</span>
                     </div>
-                    <span className="px-2 py-1 bg-green-600 text-white text-xs rounded-full">승인</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* 대기 중인 지원자 */}
-            <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-3">대기 중 ({pendingApplicants.length}명)</h4>
-              <div className="space-y-2">
-                {pendingApplicants.map((applicant) => (
-                  <div key={applicant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <img src={applicant.avatar} alt={applicant.name} className="w-10 h-10 rounded-full" />
-                    <div className="flex-1">
-                      <h5 className="text-sm font-semibold text-gray-900">{applicant.name}</h5>
-                      <p className="text-xs text-gray-500">{(applicant.followers / 1000).toFixed(1)}K · {applicant.engagement}%</p>
+              {/* 대기 중인 지원자 */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">대기 중 ({pendingApplicants.length}명)</h4>
+                <div className="space-y-2">
+                  {pendingApplicants.map((applicant) => (
+                    <div key={applicant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <img src={applicant.avatar} alt={applicant.name} className="w-10 h-10 rounded-full" />
+                      <div className="flex-1">
+                        <h5 className="text-sm font-semibold text-gray-900">{applicant.name}</h5>
+                        <p className="text-xs text-gray-500">{(applicant.followers / 1000).toFixed(1)}K · {applicant.engagement}%</p>
+                      </div>
+                      <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">대기</span>
                     </div>
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">대기</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -955,41 +958,43 @@ export default function CampaignDetailPage() {
       {/* Budget Breakdown Modal */}
       {showBudgetModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowBudgetModal(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
               <h3 className="text-lg font-bold text-gray-900">예산 분배 상세</h3>
               <button onClick={() => setShowBudgetModal(false)} className="text-gray-500 hover:text-gray-900">
                 <X size={24} />
               </button>
             </div>
-            <div className="space-y-4">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600">총 예산</span>
-                  <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budget)}</span>
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm text-gray-600">총 예산</span>
+                    <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budget)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm text-gray-600">목표 인플루언서 수</span>
+                    <span className="text-sm font-bold text-gray-900">{mockCampaignDetail.targetInfluencers}명</span>
+                  </div>
+                  <div className="flex justify-between mb-2 pb-2 border-b border-gray-200">
+                    <span className="text-sm text-gray-600">인플루언서당 예산</span>
+                    <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budgetPerInfluencer)}</span>
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    <span className="text-sm text-gray-600">현재 사용</span>
+                    <span className="text-sm font-bold text-green-700">{formatPoints(mockCampaignDetail.spent)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">남은 예산</span>
+                    <span className="text-sm font-bold text-blue-700">{formatPoints(mockCampaignDetail.budget - mockCampaignDetail.spent)}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-600">목표 인플루언서 수</span>
-                  <span className="text-sm font-bold text-gray-900">{mockCampaignDetail.targetInfluencers}명</span>
-                </div>
-                <div className="flex justify-between mb-2 pb-2 border-b border-gray-200">
-                  <span className="text-sm text-gray-600">인플루언서당 예산</span>
-                  <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budgetPerInfluencer)}</span>
-                </div>
-                <div className="flex justify-between mt-2">
-                  <span className="text-sm text-gray-600">현재 사용</span>
-                  <span className="text-sm font-bold text-green-700">{formatPoints(mockCampaignDetail.spent)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">남은 예산</span>
-                  <span className="text-sm font-bold text-blue-700">{formatPoints(mockCampaignDetail.budget - mockCampaignDetail.spent)}</span>
-                </div>
-              </div>
 
-              <div className="bg-blue-50 rounded-lg p-3">
-                <p className="text-xs text-blue-700">
-                  💡 승인된 인플루언서 {acceptedInfluencers.length}명 × {formatPoints(mockCampaignDetail.budgetPerInfluencer)} = {formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}
-                </p>
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <p className="text-xs text-blue-700">
+                    💡 승인된 인플루언서 {acceptedInfluencers.length}명 × {formatPoints(mockCampaignDetail.budgetPerInfluencer)} = {formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -999,111 +1004,112 @@ export default function CampaignDetailPage() {
       {/* Review Modal */}
       {showReviewModal && reviewInfluencer && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowReviewModal(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
               <h3 className="text-lg font-bold text-gray-900">인플루언서 리뷰 작성</h3>
               <button onClick={() => setShowReviewModal(false)} className="text-gray-500 hover:text-gray-900">
                 <X size={24} />
               </button>
             </div>
-
-            {/* Influencer Info */}
-            <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-              <img src={reviewInfluencer.avatar} alt={reviewInfluencer.name} className="w-12 h-12 rounded-full" />
-              <div>
-                <h4 className="font-semibold text-gray-900">{reviewInfluencer.name}</h4>
-                <p className="text-xs text-gray-500">{reviewInfluencer.platform}</p>
+            <div className="flex-1 overflow-y-auto p-6 pt-4">
+              {/* Influencer Info */}
+              <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                <img src={reviewInfluencer.avatar} alt={reviewInfluencer.name} className="w-12 h-12 rounded-full" />
+                <div>
+                  <h4 className="font-semibold text-gray-900">{reviewInfluencer.name}</h4>
+                  <p className="text-xs text-gray-500">{reviewInfluencer.platform}</p>
+                </div>
               </div>
-            </div>
 
-            {/* Rating */}
-            <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-900 mb-2 block">평점</label>
-              <div className="flex items-center gap-2">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    onClick={() => setReviewData({ ...reviewData, rating: star })}
-                    className="transition-transform hover:scale-110"
-                  >
-                    <Star
-                      size={32}
-                      className={star <= reviewData.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
-                    />
-                  </button>
-                ))}
-                <span className="ml-2 text-lg font-bold text-gray-900">{reviewData.rating.toFixed(1)}</span>
+              {/* Rating */}
+              <div className="mb-4">
+                <label className="text-sm font-semibold text-gray-900 mb-2 block">평점</label>
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setReviewData({ ...reviewData, rating: star })}
+                      className="transition-transform hover:scale-110"
+                    >
+                      <Star
+                        size={32}
+                        className={star <= reviewData.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
+                      />
+                    </button>
+                  ))}
+                  <span className="ml-2 text-lg font-bold text-gray-900">{reviewData.rating.toFixed(1)}</span>
+                </div>
               </div>
-            </div>
 
-            {/* Comment */}
-            <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-900 mb-2 block">리뷰 내용</label>
-              <textarea
-                value={reviewData.comment}
-                onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
-                placeholder="인플루언서와의 협업 경험을 공유해주세요..."
-                rows={4}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
-              />
-            </div>
-
-            {/* Tags */}
-            <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-900 mb-2 block">태그 선택</label>
-              <div className="flex flex-wrap gap-2">
-                {['성실함', '소통 원활', '퀄리티 우수', '창의적', '기한 준수', '전문성', '적극적'].map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => {
-                      if (reviewData.tags.includes(tag)) {
-                        setReviewData({ ...reviewData, tags: reviewData.tags.filter(t => t !== tag) });
-                      } else {
-                        setReviewData({ ...reviewData, tags: [...reviewData.tags, tag] });
-                      }
-                    }}
-                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                      reviewData.tags.includes(tag)
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {reviewData.tags.includes(tag) ? '✓ ' : ''}{tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Would Recommend */}
-            <div className="mb-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={reviewData.wouldRecommend}
-                  onChange={(e) => setReviewData({ ...reviewData, wouldRecommend: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+              {/* Comment */}
+              <div className="mb-4">
+                <label className="text-sm font-semibold text-gray-900 mb-2 block">리뷰 내용</label>
+                <textarea
+                  value={reviewData.comment}
+                  onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
+                  placeholder="인플루언서와의 협업 경험을 공유해주세요..."
+                  rows={4}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
                 />
-                <span className="text-sm text-gray-700">다른 광고주에게 추천합니다</span>
-              </label>
-            </div>
+              </div>
 
-            {/* Submit Button */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowReviewModal(false)}
-                className="flex-1 py-3 border border-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
-              >
-                취소
-              </button>
-              <button
-                onClick={() => {
-                  alert(`리뷰가 저장되었습니다!\n평점: ${reviewData.rating}\n태그: ${reviewData.tags.join(', ')}\n추천: ${reviewData.wouldRecommend ? '예' : '아니오'}`);
-                  setShowReviewModal(false);
-                }}
-                className="flex-1 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800"
-              >
-                리뷰 제출
-              </button>
+              {/* Tags */}
+              <div className="mb-4">
+                <label className="text-sm font-semibold text-gray-900 mb-2 block">태그 선택</label>
+                <div className="flex flex-wrap gap-2">
+                  {['성실함', '소통 원활', '퀄리티 우수', '창의적', '기한 준수', '전문성', '적극적'].map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => {
+                        if (reviewData.tags.includes(tag)) {
+                          setReviewData({ ...reviewData, tags: reviewData.tags.filter(t => t !== tag) });
+                        } else {
+                          setReviewData({ ...reviewData, tags: [...reviewData.tags, tag] });
+                        }
+                      }}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                        reviewData.tags.includes(tag)
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {reviewData.tags.includes(tag) ? '✓ ' : ''}{tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Would Recommend */}
+              <div className="mb-6">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={reviewData.wouldRecommend}
+                    onChange={(e) => setReviewData({ ...reviewData, wouldRecommend: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                  />
+                  <span className="text-sm text-gray-700">다른 광고주에게 추천합니다</span>
+                </label>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowReviewModal(false)}
+                  className="flex-1 py-3 border border-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
+                >
+                  취소
+                </button>
+                <button
+                  onClick={() => {
+                    alert(`리뷰가 저장되었습니다!\n평점: ${reviewData.rating}\n태그: ${reviewData.tags.join(', ')}\n추천: ${reviewData.wouldRecommend ? '예' : '아니오'}`);
+                    setShowReviewModal(false);
+                  }}
+                  className="flex-1 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800"
+                >
+                  리뷰 제출
+                </button>
+              </div>
             </div>
           </div>
         </div>

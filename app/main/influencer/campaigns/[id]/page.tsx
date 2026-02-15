@@ -773,15 +773,15 @@ export default function CampaignDetailPage() {
               >
                 <div className="flex items-center gap-2 mb-1">
                   <Users size={16} className="text-warning" />
-                  <p className="text-xs text-gray-400">{t.campaignDetail.urgency.slotsRemaining || '남은 자리'}</p>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.slotsRemaining || '남은 자리'}</p>
                 </div>
                 <p className="text-2xl font-bold text-warning">{mockCampaign.urgency.remainingSlots}/{mockCampaign.urgency.totalSlots}</p>
-                <p className="text-xs text-gray-400 mt-1">👆 {language === 'ko' ? '지원자 보기' : 'Xem ứng viên'}</p>
+                <p className="text-xs text-gray-300 mt-1">👆 {language === 'ko' ? '지원자 보기' : 'Xem ứng viên'}</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 border-2 border-error/50">
                 <div className="flex items-center gap-2 mb-1">
                   <Clock size={16} className="text-error" />
-                  <p className="text-xs text-gray-400">{t.campaignDetail.urgency.timeLeft || '마감까지'}</p>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.timeLeft || '마감까지'}</p>
                 </div>
                 <p className="text-2xl font-bold text-error">{mockCampaign.urgency.hoursRemaining}{t.campaignDetail.urgency.hours || '시간'}</p>
               </div>
@@ -796,7 +796,7 @@ export default function CampaignDetailPage() {
               <Users size={20} className="text-primary" />
               <h3 className="text-lg font-bold text-white">최근 지원자</h3>
             </div>
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-gray-300">
               총 <span className="text-primary font-bold">{mockCampaign.urgency.recentApplications}</span>명
             </span>
           </div>
@@ -837,7 +837,7 @@ export default function CampaignDetailPage() {
                   <div className="text-[10px] text-white font-semibold truncate w-full">
                     {avatar.name.split(' ')[0]}
                   </div>
-                  <div className="text-[9px] text-gray-500">
+                  <div className="text-[9px] text-gray-300">
                     {(avatar.followers / 1000).toFixed(1)}K
                   </div>
                   {/* 지원 시간 표시 */}
@@ -864,7 +864,7 @@ export default function CampaignDetailPage() {
                     key={idx}
                     className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 border-2 border-dark-600 flex items-center justify-center"
                   >
-                    <Users size={12} className="text-gray-400" />
+                    <Users size={12} className="text-gray-300" />
                   </div>
                 ))}
               </div>
@@ -908,7 +908,7 @@ export default function CampaignDetailPage() {
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-400">{mockCampaign.company}</p>
+              <p className="text-sm text-gray-300">{mockCampaign.company}</p>
             </div>
             <div className="flex flex-col gap-2 items-end">
               <span className={`px-3 py-1 rounded-full text-xs whitespace-nowrap ${
@@ -962,7 +962,7 @@ export default function CampaignDetailPage() {
         <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-accent/30">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">{t.campaignDetail.expectedEarnings}</p>
+              <p className="text-sm text-gray-300 mb-1">{t.campaignDetail.expectedEarnings}</p>
               <p className="text-2xl font-bold text-accent">{formatPoints(mockCampaign.budget)}</p>
             </div>
             <DollarSign size={40} className="text-accent/50" />
@@ -979,7 +979,7 @@ export default function CampaignDetailPage() {
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.difficulty.difficultyLevel || '난이도'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.difficultyLevel || '난이도'}</p>
                 <div className={`text-lg font-bold ${
                   mockCampaign.difficulty.level === 'easy' ? 'text-success' :
                   mockCampaign.difficulty.level === 'medium' ? 'text-warning' : 'text-error'
@@ -990,13 +990,13 @@ export default function CampaignDetailPage() {
                 </div>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.difficulty.timeRequired || '소요시간'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.timeRequired || '소요시간'}</p>
                 <div className="text-lg font-bold text-primary">
                   {mockCampaign.difficulty.estimatedHours}{t.campaignDetail.difficulty.hoursUnit || '시간'}
                 </div>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.difficulty.successRate || '선정률'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.successRate || '선정률'}</p>
                 <div className="text-lg font-bold text-success">
                   {mockCampaign.difficulty.successRate}%
                 </div>
@@ -1027,7 +1027,7 @@ export default function CampaignDetailPage() {
                 <span className="text-xl">💰</span>
                 <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || '수익 계산기'}</h3>
               </div>
-              <span className="text-xs text-gray-400">👆 {language === 'ko' ? '상세 보기' : 'Xem chi tiết'}</span>
+              <span className="text-xs text-gray-300">👆 {language === 'ko' ? '상세 보기' : 'Xem chi tiết'}</span>
             </div>
 
             <div className="space-y-3">
@@ -1061,7 +1061,7 @@ export default function CampaignDetailPage() {
                       <div key={idx} className="flex items-center justify-between text-xs">
                         <div>
                           <p className="text-white font-semibold">{bonus.type}</p>
-                          <p className="text-gray-400">{bonus.condition}</p>
+                          <p className="text-gray-300">{bonus.condition}</p>
                         </div>
                         <span className="text-accent font-bold">+{formatPoints(bonus.amount)}</span>
                       </div>
@@ -1101,11 +1101,11 @@ export default function CampaignDetailPage() {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.socialProof.completionRate || '캠페인 완료율'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.completionRate || '캠페인 완료율'}</p>
                 <p className="text-2xl font-bold text-success">{mockCampaign.socialProof.completionRate}%</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.socialProof.avgResponseTime || '평균 응답시간'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || '평균 응답시간'}</p>
                 <p className="text-lg font-bold text-primary">{mockCampaign.qualityAssurance?.avgResponseTime || '2시간'}</p>
               </div>
             </div>
@@ -1125,7 +1125,7 @@ export default function CampaignDetailPage() {
                           ))}
                         </div>
                       </div>
-                      <span className="text-xs text-gray-400">{review.hours}{t.campaignDetail.socialProof.hoursAgo || '시간 전'}</span>
+                      <span className="text-xs text-gray-300">{review.hours}{t.campaignDetail.socialProof.hoursAgo || '시간 전'}</span>
                     </div>
                     <p className="text-sm text-gray-300">{review.comment}</p>
                   </div>
@@ -1198,15 +1198,15 @@ export default function CampaignDetailPage() {
 
           {/* Detailed Breakdown */}
           <details className="text-xs">
-            <summary className="cursor-pointer text-gray-400 hover:text-white transition-colors mb-2">
+            <summary className="cursor-pointer text-gray-300 hover:text-white transition-colors mb-2">
               📊 {t.campaignDetail.viewDetails}
             </summary>
             <div className="space-y-1.5 mt-2 pt-2 border-t border-dark-500">
               {matchingResult.criteria.map((criterion, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <span className="text-gray-400">{criterion.name}</span>
+                  <span className="text-gray-300">{criterion.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-500 text-xs">{criterion.weight}점</span>
+                    <span className="text-gray-300 text-xs">{criterion.weight}점</span>
                     {criterion.match ? (
                       <CheckCircle size={14} className="text-success" />
                     ) : (
@@ -1228,11 +1228,11 @@ export default function CampaignDetailPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-dark-600 rounded-lg p-3">
-              <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.minFollowers}</p>
+              <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.minFollowers}</p>
               <p className="text-lg font-bold text-white">{mockCampaign.requirements.minFollowers.toLocaleString()}</p>
             </div>
             <div className="bg-dark-600 rounded-lg p-3">
-              <p className="text-xs text-gray-400 mb-1">{t.campaignDetail.minEngagement}</p>
+              <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.minEngagement}</p>
               <p className="text-lg font-bold text-white">{mockCampaign.requirements.minEngagement}%</p>
             </div>
           </div>
@@ -1241,21 +1241,21 @@ export default function CampaignDetailPage() {
             <div className="flex items-start gap-2 text-sm">
               <span className="text-primary mt-0.5">📱</span>
               <div>
-                <span className="text-gray-400">{t.campaignDetail.platform} </span>
+                <span className="text-gray-300">{t.campaignDetail.platform} </span>
                 <span className="text-white font-semibold">{mockCampaign.requirements.platforms.join(', ')}</span>
               </div>
             </div>
             <div className="flex items-start gap-2 text-sm">
               <span className="text-primary mt-0.5">🎯</span>
               <div>
-                <span className="text-gray-400">{t.campaignDetail.category} </span>
+                <span className="text-gray-300">{t.campaignDetail.category} </span>
                 <span className="text-white font-semibold">{mockCampaign.requirements.categories.join(', ')}</span>
               </div>
             </div>
             <div className="flex items-start gap-2 text-sm">
               <span className="text-primary mt-0.5">👤</span>
               <div>
-                <span className="text-gray-400">{t.campaignDetail.target} </span>
+                <span className="text-gray-300">{t.campaignDetail.target} </span>
                 <span className="text-white font-semibold">
                   {mockCampaign.requirements.gender === 'female' ? t.profile.female : mockCampaign.requirements.gender === 'male' ? t.profile.male : t.profile.any}, {mockCampaign.requirements.ageRange}{t.profile.years}
                 </span>
@@ -1264,7 +1264,7 @@ export default function CampaignDetailPage() {
             <div className="flex items-start gap-2 text-sm">
               <span className="text-primary mt-0.5">📍</span>
               <div>
-                <span className="text-gray-400">{t.campaignDetail.location} </span>
+                <span className="text-gray-300">{t.campaignDetail.location} </span>
                 <span className="text-white font-semibold">{mockCampaign.requirements.location.join(', ')}</span>
               </div>
             </div>
@@ -1274,7 +1274,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">✨</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.skinType} </span>
+                  <span className="text-gray-300">{t.campaignDetail.skinType} </span>
                   <span className="text-white font-semibold">
                     {mockCampaign.requirements.skinType.map((type: string) => ({
                       dry: t.profile.drySkin,
@@ -1292,7 +1292,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🎨</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.skinTone} </span>
+                  <span className="text-gray-300">{t.campaignDetail.skinTone} </span>
                   <span className="text-white font-semibold">
                     {mockCampaign.requirements.skinTone.map((tone: string) => ({
                       fair: t.profile.veryFair,
@@ -1311,7 +1311,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">👶</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.childRequired} </span>
+                  <span className="text-gray-300">{t.campaignDetail.childRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasChildren}
                     {mockCampaign.requirements.childAgeRange && Array.isArray(mockCampaign.requirements.childAgeRange) && mockCampaign.requirements.childAgeRange.length > 0 && (
@@ -1333,7 +1333,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🚗</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.vehicleRequired} </span>
+                  <span className="text-gray-300">{t.campaignDetail.vehicleRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasVehicle}
                     {mockCampaign.requirements.vehicleTypes && mockCampaign.requirements.vehicleTypes.length > 0 && (
@@ -1357,7 +1357,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">👕</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.clothingSize} </span>
+                  <span className="text-gray-300">{t.campaignDetail.clothingSize} </span>
                   <span className="text-white font-semibold">
                     {mockCampaign.requirements.clothingSizes.top && mockCampaign.requirements.clothingSizes.top.length > 0 && (
                       <span>{t.campaignDetail.topSize} {mockCampaign.requirements.clothingSizes.top.join(', ')}</span>
@@ -1375,7 +1375,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🐾</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.petRequired} </span>
+                  <span className="text-gray-300">{t.campaignDetail.petRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasPets}
                     {mockCampaign.requirements.petTypes && mockCampaign.requirements.petTypes.length > 0 && (
@@ -1397,7 +1397,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">💑</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.maritalStatus} </span>
+                  <span className="text-gray-300">{t.campaignDetail.maritalStatus} </span>
                   <span className="text-white font-semibold">
                     {mockCampaign.requirements.maritalStatus.map((status: string) => ({
                       single: t.profile.single,
@@ -1415,7 +1415,7 @@ export default function CampaignDetailPage() {
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🏠</span>
                 <div>
-                  <span className="text-gray-400">{t.campaignDetail.housingType} </span>
+                  <span className="text-gray-300">{t.campaignDetail.housingType} </span>
                   <span className="text-white font-semibold">
                     {mockCampaign.requirements.housingTypes.map((h: string) => ({
                       apartment: t.profile.apartment,
@@ -1450,7 +1450,7 @@ export default function CampaignDetailPage() {
                     </span>
                     <div>
                       <p className="text-sm text-white font-medium">{product.name}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-300">
                         {product.type === 'fullsize' ? t.campaignDetail.fullsize : t.campaignDetail.sample}
                       </p>
                     </div>
@@ -1555,7 +1555,7 @@ export default function CampaignDetailPage() {
                       {format.count}개
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400">{format.requirement}</p>
+                  <p className="text-xs text-gray-300">{format.requirement}</p>
                 </div>
               ))}
             </div>
@@ -1604,7 +1604,7 @@ export default function CampaignDetailPage() {
             />
             <div className="flex-1">
               <h3 className="text-lg font-bold text-white mb-1">{mockCampaign.brandInfo.name}</h3>
-              <p className="text-xs text-gray-400">{t.campaignDetail.founded} {mockCampaign.brandInfo.founded}</p>
+              <p className="text-xs text-gray-300">{t.campaignDetail.founded} {mockCampaign.brandInfo.founded}</p>
             </div>
           </div>
 
@@ -1620,15 +1620,15 @@ export default function CampaignDetailPage() {
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xl font-bold text-primary">{mockCampaign.brandInfo.previousCampaigns}</div>
-              <div className="text-xs text-gray-400">{t.campaignDetail.previousCampaigns}</div>
+              <div className="text-xs text-gray-300">{t.campaignDetail.previousCampaigns}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xl font-bold text-accent">{mockCampaign.brandInfo.averageRating}</div>
-              <div className="text-xs text-gray-400">{t.campaignDetail.averageRating}</div>
+              <div className="text-xs text-gray-300">{t.campaignDetail.averageRating}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xl font-bold text-success">{mockCampaign.brandInfo.totalInfluencers}</div>
-              <div className="text-xs text-gray-400">{t.campaignDetail.collaboratedInfluencers}</div>
+              <div className="text-xs text-gray-300">{t.campaignDetail.collaboratedInfluencers}</div>
             </div>
           </div>
 
@@ -1665,7 +1665,7 @@ export default function CampaignDetailPage() {
                 <span className="text-xl font-bold text-success">{mockCampaign.brandInfo.trustScore}</span>
               </div>
               <div className="text-right">
-                <div className="text-xs text-gray-400">신뢰점수</div>
+                <div className="text-xs text-gray-300">신뢰점수</div>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < Math.floor(mockCampaign.brandInfo.trustScore / 20) ? 'bg-success' : 'bg-gray-600'}`} />
@@ -1697,7 +1697,7 @@ export default function CampaignDetailPage() {
               <h4 className="text-sm font-bold text-white">다른 인플루언서들의 평가</h4>
               <div className="flex items-center gap-1">
                 <div className="text-yellow-400 text-lg font-bold">{mockCampaign.brandInfo.averageRating}</div>
-                <div className="text-gray-400 text-xs">/ 5.0</div>
+                <div className="text-gray-300 text-xs">/ 5.0</div>
               </div>
             </div>
 
@@ -1719,7 +1719,7 @@ export default function CampaignDetailPage() {
                           ))}
                         </div>
                       </div>
-                      <p className="text-xs text-gray-400 mb-2">{review.campaignTitle}</p>
+                      <p className="text-xs text-gray-300 mb-2">{review.campaignTitle}</p>
                       <p className="text-sm text-gray-300 leading-relaxed mb-2">"{review.comment}"</p>
 
                       {/* 태그 */}
@@ -1745,7 +1745,7 @@ export default function CampaignDetailPage() {
                             재협업 의향
                           </span>
                         )}
-                        <span className="text-gray-500">{review.date}</span>
+                        <span className="text-gray-300">{review.date}</span>
                       </div>
                     </div>
                   </div>
@@ -1754,7 +1754,7 @@ export default function CampaignDetailPage() {
             </div>
 
             {mockCampaign.advertiserReviews.length > 3 && (
-              <button className="w-full mt-3 py-2 text-sm text-gray-400 hover:text-white border border-dark-500 rounded-lg hover:bg-dark-600 transition-colors">
+              <button className="w-full mt-3 py-2 text-sm text-gray-300 hover:text-white border border-dark-500 rounded-lg hover:bg-dark-600 transition-colors">
                 전체 리뷰 보기 ({mockCampaign.advertiserReviews.length}개)
               </button>
             )}
@@ -1782,15 +1782,15 @@ export default function CampaignDetailPage() {
 
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xs text-gray-400 mb-1">{t.campaignDetail.expectedApplicants}</div>
+              <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.expectedApplicants}</div>
               <div className="text-lg font-bold text-white">{mockCampaign.selectionCriteria.expectedApplicants}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xs text-gray-400 mb-1">{t.campaignDetail.selectedInfluencers}</div>
+              <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.selectedInfluencers}</div>
               <div className="text-lg font-bold text-primary">{mockCampaign.selectionCriteria.selectedInfluencers}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xs text-gray-400 mb-1">{t.campaignDetail.expectedCompetition}</div>
+              <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.expectedCompetition}</div>
               <div className="text-lg font-bold text-accent">{mockCampaign.selectionCriteria.selectionRate}</div>
             </div>
           </div>
@@ -1872,7 +1872,7 @@ export default function CampaignDetailPage() {
                   <>{t.campaignDetail.shareDescription.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')}</>
                 )}
               </p>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-gray-300 mt-1">
                 {campaignShareCount > 0 ? `${campaignShareCount} shares submitted` : 'Share to Facebook & earn bonus points'}
               </p>
             </div>
@@ -1896,19 +1896,19 @@ export default function CampaignDetailPage() {
                       {approvedCount > 0 && (
                         <div className="bg-success/10 rounded p-2">
                           <div className="text-success text-lg font-bold">{approvedCount}</div>
-                          <div className="text-xs text-gray-400">{t.campaignDetail.shareApproved}</div>
+                          <div className="text-xs text-gray-300">{t.campaignDetail.shareApproved}</div>
                         </div>
                       )}
                       {pendingCount > 0 && (
                         <div className="bg-warning/10 rounded p-2">
                           <div className="text-warning text-lg font-bold">{pendingCount}</div>
-                          <div className="text-xs text-gray-400">{t.campaignDetail.sharePending}</div>
+                          <div className="text-xs text-gray-300">{t.campaignDetail.sharePending}</div>
                         </div>
                       )}
                       {rejectedCount > 0 && (
                         <div className="bg-error/10 rounded p-2">
                           <div className="text-error text-lg font-bold">{rejectedCount}</div>
-                          <div className="text-xs text-gray-400">{t.campaignDetail.shareRejected}</div>
+                          <div className="text-xs text-gray-300">{t.campaignDetail.shareRejected}</div>
                         </div>
                       )}
                     </div>
@@ -1986,7 +1986,7 @@ export default function CampaignDetailPage() {
 
               {totalShareEarnings > 0 && (
                 <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/30 rounded-lg p-3 mt-3">
-                  <p className="text-xs text-gray-400 text-center">
+                  <p className="text-xs text-gray-300 text-center">
                     💰 <strong className="text-white">{t.campaignDetail.totalShareEarnings}</strong>: {formatPoints(totalShareEarnings)} VND
                   </p>
                 </div>
@@ -2001,7 +2001,7 @@ export default function CampaignDetailPage() {
             <h3 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.progress}</h3>
             <div className="mb-3">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">{t.campaignDetail.completedTasks}</span>
+                <span className="text-gray-300">{t.campaignDetail.completedTasks}</span>
                 <span className="text-white font-semibold">
                   {completedCount}/{mockCampaign.deliverables.length}
                 </span>
@@ -2038,7 +2038,7 @@ export default function CampaignDetailPage() {
                 ) : (
                   <div className="w-4 h-4 border-2 border-gray-600 rounded flex-shrink-0 mt-0.5" />
                 )}
-                <span className={item.submitted ? 'text-gray-400 line-through' : 'text-gray-300'}>
+                <span className={item.submitted ? 'text-gray-300 line-through' : 'text-gray-300'}>
                   {item.title}
                 </span>
               </li>
@@ -2075,7 +2075,7 @@ export default function CampaignDetailPage() {
                      work.status === 'rejected' ? t.campaignDetail.rejected : t.campaignDetail.reviewing}
                   </span>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-400">
+                <div className="flex items-center gap-4 text-sm text-gray-300">
                   <div className="flex items-center gap-1">
                     <Eye size={14} />
                     {(work.views / 1000).toFixed(1)}K
@@ -2093,14 +2093,14 @@ export default function CampaignDetailPage() {
           <h3 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.campaignInfo}</h3>
 
           <div className="flex items-center gap-3 text-sm">
-            <Calendar size={16} className="text-gray-400" />
-            <span className="text-gray-400">{t.campaignDetail.period}</span>
+            <Calendar size={16} className="text-gray-300" />
+            <span className="text-gray-300">{t.campaignDetail.period}</span>
             <span className="text-white">{mockCampaign.startDate} ~ {mockCampaign.deadline}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
-            <Clock size={16} className="text-gray-400" />
-            <span className="text-gray-400">{t.campaignDetail.deadline}</span>
+            <Clock size={16} className="text-gray-300" />
+            <span className="text-gray-300">{t.campaignDetail.deadline}</span>
             <span className="text-white">{mockCampaign.deadline}</span>
           </div>
         </div>
@@ -2116,15 +2116,15 @@ export default function CampaignDetailPage() {
                 <h4 className="font-semibold text-white mb-2">{mockCampaign.title}</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">{t.campaignDetail.applyModal.advertiser}</span>
+                    <span className="text-gray-300">{t.campaignDetail.applyModal.advertiser}</span>
                     <span className="text-white">{mockCampaign.company}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">{t.campaignDetail.applyModal.expectedEarnings}</span>
+                    <span className="text-gray-300">{t.campaignDetail.applyModal.expectedEarnings}</span>
                     <span className="text-accent font-bold">{formatPoints(mockCampaign.budget)}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">{t.campaignDetail.applyModal.deadline}</span>
+                    <span className="text-gray-300">{t.campaignDetail.applyModal.deadline}</span>
                     <span className="text-white">{mockCampaign.deadline}</span>
                   </div>
                 </div>
@@ -2210,7 +2210,7 @@ export default function CampaignDetailPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-dark-600 rounded-xl w-full max-w-md p-6 my-8">
             <h3 className="text-xl font-bold text-white mb-2">{t.campaignDetail.shareLinkModal.title}</h3>
-            <p className="text-sm text-gray-400 mb-4" dangerouslySetInnerHTML={{ __html: t.campaignDetail.shareLinkModal.description.replace(formatPoints(SHARE_BONUS_AMOUNT) + ' VND', `<strong class="text-accent">${formatPoints(SHARE_BONUS_AMOUNT)} VND</strong>`) }} />
+            <p className="text-sm text-gray-300 mb-4" dangerouslySetInnerHTML={{ __html: t.campaignDetail.shareLinkModal.description.replace(formatPoints(SHARE_BONUS_AMOUNT) + ' VND', `<strong class="text-accent">${formatPoints(SHARE_BONUS_AMOUNT)} VND</strong>`) }} />
 
             <div className="space-y-4">
               {/* Where can I share? */}
@@ -2223,7 +2223,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-white font-semibold">{t.campaignDetail.shareLinkModal.facebookGroups}</p>
-                      <p className="text-xs text-gray-400">{t.campaignDetail.shareLinkModal.facebookGroupsDesc}</p>
+                      <p className="text-xs text-gray-300">{t.campaignDetail.shareLinkModal.facebookGroupsDesc}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
@@ -2232,7 +2232,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-white font-semibold">{t.campaignDetail.shareLinkModal.personalTimeline}</p>
-                      <p className="text-xs text-gray-400">{t.campaignDetail.shareLinkModal.personalTimelineDesc}</p>
+                      <p className="text-xs text-gray-300">{t.campaignDetail.shareLinkModal.personalTimelineDesc}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
@@ -2241,7 +2241,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-white font-semibold">{t.campaignDetail.shareLinkModal.facebookPages}</p>
-                      <p className="text-xs text-gray-400">{t.campaignDetail.shareLinkModal.facebookPagesDesc}</p>
+                      <p className="text-xs text-gray-300">{t.campaignDetail.shareLinkModal.facebookPagesDesc}</p>
                     </div>
                   </div>
                 </div>
@@ -2264,7 +2264,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-sm text-white font-semibold">{t.campaignDetail.shareLinkModal.step1}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-300 mt-1">
                         {t.campaignDetail.shareLinkModal.step1Desc}
                       </p>
                     </div>
@@ -2276,7 +2276,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-sm text-white font-semibold">{t.campaignDetail.shareLinkModal.step2}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-300 mt-1">
                         {t.campaignDetail.shareLinkModal.step2Desc}
                       </p>
                     </div>
@@ -2288,7 +2288,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-sm text-white font-semibold">{t.campaignDetail.shareLinkModal.step3}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-300 mt-1">
                         {t.campaignDetail.shareLinkModal.step3Desc}
                       </p>
                     </div>
@@ -2300,7 +2300,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-sm text-white font-semibold">{t.campaignDetail.shareLinkModal.step4}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-300 mt-1">
                         {t.campaignDetail.shareLinkModal.step4Desc}
                       </p>
                     </div>
@@ -2312,7 +2312,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <p className="text-sm text-white font-semibold">{t.campaignDetail.shareLinkModal.step5}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-300 mt-1">
                         {t.campaignDetail.shareLinkModal.step5Desc}
                       </p>
                     </div>
@@ -2322,7 +2322,7 @@ export default function CampaignDetailPage() {
 
               {/* Recommended share content */}
               <div className="bg-dark-700 rounded-lg p-4 border border-dark-500">
-                <h4 className="text-xs font-semibold text-gray-400 mb-2 flex items-center gap-2">
+                <h4 className="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-2">
                   {t.campaignDetail.shareLinkModal.recommendedContent}
                   <span className="px-2 py-0.5 bg-primary text-white text-xs rounded-full">{t.campaignDetail.shareContent.stepBadge1}</span>
                 </h4>
@@ -2373,7 +2373,7 @@ export default function CampaignDetailPage() {
                   required
                 />
                 <div className="mt-2 space-y-1">
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-300">
                     {t.campaignDetail.shareContent.linkCopyMethod}
                   </p>
                   <p className="text-xs text-warning">
@@ -2388,19 +2388,19 @@ export default function CampaignDetailPage() {
                 <div className="text-xs text-gray-300 space-y-2">
                   <div>
                     <p className="text-white font-semibold mb-1">{t.campaignDetail.shareLinkModal.groupPost}</p>
-                    <p className="font-mono text-gray-400">facebook.com/groups/123/posts/456/</p>
+                    <p className="font-mono text-gray-300">facebook.com/groups/123/posts/456/</p>
                   </div>
                   <div>
                     <p className="text-white font-semibold mb-1">{t.campaignDetail.shareLinkModal.timelinePost}</p>
-                    <p className="font-mono text-gray-400">facebook.com/username/posts/123456</p>
+                    <p className="font-mono text-gray-300">facebook.com/username/posts/123456</p>
                   </div>
                   <div>
                     <p className="text-white font-semibold mb-1">{t.campaignDetail.shareLinkModal.pagePost}</p>
-                    <p className="font-mono text-gray-400">facebook.com/pagename/posts/123456</p>
+                    <p className="font-mono text-gray-300">facebook.com/pagename/posts/123456</p>
                   </div>
                   <div>
                     <p className="text-white font-semibold mb-1">{t.campaignDetail.shareLinkModal.permalink}</p>
-                    <p className="font-mono text-gray-400">facebook.com/permalink.php?story_fbid=...</p>
+                    <p className="font-mono text-gray-300">facebook.com/permalink.php?story_fbid=...</p>
                   </div>
                 </div>
               </div>
@@ -2446,7 +2446,7 @@ export default function CampaignDetailPage() {
                 </div>
                 <button
                   onClick={() => setShowPaymentGuaranteeModal(false)}
-                  className="btn-icon text-gray-400 hover:text-white"
+                  className="btn-icon text-gray-300 hover:text-white"
                 >
                   <X size={24} />
                 </button>
@@ -2477,7 +2477,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <h5 className="text-sm font-semibold text-white mb-1">은행 이체 (권장)</h5>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-300">
                         가장 안전하고 추적 가능합니다.
                         Vietcombank, Techcombank, VPBank, BIDV 등
                       </p>
@@ -2492,7 +2492,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <h5 className="text-sm font-semibold text-white mb-1">모바일 월렛</h5>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-300">
                         빠르고 편리합니다.
                         Momo, Zalo Pay, ViettelPay, ShopeePay
                       </p>
@@ -2507,7 +2507,7 @@ export default function CampaignDetailPage() {
                     </div>
                     <div>
                       <h5 className="text-sm font-semibold text-white mb-1">국제 송금</h5>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-300">
                         해외 광고주의 경우 PayPal, Wise (구 TransferWise) 등
                       </p>
                     </div>
@@ -2528,7 +2528,7 @@ export default function CampaignDetailPage() {
                       </div>
                       <div className="flex-1 pt-1">
                         <h5 className="text-sm font-semibold text-white">선정 후 협의</h5>
-                        <p className="text-xs text-gray-400">메시징으로 금액, 결제 방법, 일정 협의</p>
+                        <p className="text-xs text-gray-300">메시징으로 금액, 결제 방법, 일정 협의</p>
                       </div>
                     </div>
 
@@ -2538,7 +2538,7 @@ export default function CampaignDetailPage() {
                       </div>
                       <div className="flex-1 pt-1">
                         <h5 className="text-sm font-semibold text-white">직접 결제</h5>
-                        <p className="text-xs text-gray-400">광고주가 인플루언서에게 직접 송금</p>
+                        <p className="text-xs text-gray-300">광고주가 인플루언서에게 직접 송금</p>
                       </div>
                     </div>
 
@@ -2548,7 +2548,7 @@ export default function CampaignDetailPage() {
                       </div>
                       <div className="flex-1 pt-1">
                         <h5 className="text-sm font-semibold text-white">양측 확인</h5>
-                        <p className="text-xs text-gray-400">플랫폼에서 결제 완료 확인 체크</p>
+                        <p className="text-xs text-gray-300">플랫폼에서 결제 완료 확인 체크</p>
                       </div>
                     </div>
                   </div>
@@ -2595,7 +2595,7 @@ export default function CampaignDetailPage() {
                 <Users size={20} className="text-primary" />
                 {language === 'ko' ? '최근 지원자 목록' : 'Danh sách ứng viên gần đây'}
               </h3>
-              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-400 hover:text-white">
+              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-300 hover:text-white">
                 <X size={24} />
               </button>
             </div>
@@ -2636,16 +2636,16 @@ export default function CampaignDetailPage() {
                         </span>
                       )}
                     </h4>
-                    <p className="text-xs text-gray-400">{(avatar.followers / 1000).toFixed(1)}K {language === 'ko' ? '팔로워' : 'người theo dõi'}</p>
+                    <p className="text-xs text-gray-300">{(avatar.followers / 1000).toFixed(1)}K {language === 'ko' ? '팔로워' : 'người theo dõi'}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-gray-500">{avatar.applyTime}</p>
+                    <p className="text-xs text-gray-300">{avatar.applyTime}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <p className="text-xs text-gray-400 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
+            <p className="text-xs text-gray-300 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
               💡 {language === 'ko'
                 ? '다른 인플루언서들도 이 캠페인에 관심을 갖고 있습니다. 서둘러 지원하세요!'
                 : 'Các influencer khác cũng quan tâm đến chiến dịch này. Hãy nhanh tay ứng tuyển!'}
@@ -2663,7 +2663,7 @@ export default function CampaignDetailPage() {
                 <DollarSign size={20} className="text-success" />
                 {language === 'ko' ? '수익 상세 내역' : 'Chi tiết thu nhập'}
               </h3>
-              <button onClick={() => setShowEarningsModal(false)} className="text-gray-400 hover:text-white">
+              <button onClick={() => setShowEarningsModal(false)} className="text-gray-300 hover:text-white">
                 <X size={24} />
               </button>
             </div>
@@ -2678,7 +2678,7 @@ export default function CampaignDetailPage() {
                   </div>
                   <span className="text-xl font-bold text-success">{formatPoints(mockCampaign.earningsBreakdown.basePayment)}</span>
                 </div>
-                <p className="text-xs text-gray-400">{language === 'ko' ? '캠페인 완료 시 보장' : 'Đảm bảo khi hoàn thành'}</p>
+                <p className="text-xs text-gray-300">{language === 'ko' ? '캠페인 완료 시 보장' : 'Đảm bảo khi hoàn thành'}</p>
               </div>
 
               {/* 제품 가치 */}
@@ -2690,7 +2690,7 @@ export default function CampaignDetailPage() {
                   </div>
                   <span className="text-xl font-bold text-primary">{formatPoints(mockCampaign.earningsBreakdown.productValue)}</span>
                 </div>
-                <p className="text-xs text-gray-400">{language === 'ko' ? '무료로 제공되는 제품' : 'Sản phẩm miễn phí'}</p>
+                <p className="text-xs text-gray-300">{language === 'ko' ? '무료로 제공되는 제품' : 'Sản phẩm miễn phí'}</p>
               </div>
 
               {/* 보너스 기회 */}
@@ -2705,7 +2705,7 @@ export default function CampaignDetailPage() {
                       <div key={idx} className="flex items-start justify-between text-xs">
                         <div className="flex-1">
                           <p className="text-white font-medium">{bonus.type}</p>
-                          <p className="text-gray-400">{bonus.condition}</p>
+                          <p className="text-gray-300">{bonus.condition}</p>
                         </div>
                         <span className="text-warning font-bold">+{formatPoints(bonus.amount)}</span>
                       </div>
@@ -2726,13 +2726,13 @@ export default function CampaignDetailPage() {
                     )}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-gray-300 mt-2">
                   {language === 'ko' ? '보너스 포함 최대 수익' : 'Thu nhập tối đa bao gồm thưởng'}
                 </p>
               </div>
             </div>
 
-            <p className="text-xs text-gray-400 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
+            <p className="text-xs text-gray-300 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
               💡 {language === 'ko'
                 ? '보너스는 성과 목표 달성 시 지급됩니다'
                 : 'Tiền thưởng được trả khi đạt mục tiêu hiệu suất'}

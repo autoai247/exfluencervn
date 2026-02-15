@@ -615,7 +615,7 @@ export default function CampaignsPage() {
 
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <div className="text-right">
-                    <div className="text-xs text-gray-400">{t.koreaDream.myTickets}</div>
+                    <div className="text-xs text-gray-300">{t.koreaDream.myTickets}</div>
                     <div className="flex items-center gap-1">
                       <Ticket size={14} className="text-primary" />
                       <span className="font-bold text-white text-sm">0{t.koreaDream.ticketsUnit}</span>
@@ -630,7 +630,7 @@ export default function CampaignsPage() {
               {/* Progress bar */}
               <div className="mt-2 relative z-10">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-gray-400">{t.koreaDream.targetTickets}</span>
+                  <span className="text-[10px] text-gray-300">{t.koreaDream.targetTickets}</span>
                   <span className="text-[10px] font-bold text-white">78,432 / 100,000{t.koreaDream.ticketsUnit}</span>
                 </div>
                 <div className="w-full bg-dark-600 rounded-full h-1.5">
@@ -648,7 +648,7 @@ export default function CampaignsPage() {
           <div className="flex-1 relative">
             <Search
               size={20}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"
             />
             <input
               type="text"
@@ -679,7 +679,7 @@ export default function CampaignsPage() {
                 <Users size={18} className="text-success" />
                 <div>
                   <div className="text-sm font-semibold text-white">{t.campaignFilters.eligibleOnly}</div>
-                  <div className="text-xs text-gray-400">{t.campaignFilters.eligibleOnlyDesc}</div>
+                  <div className="text-xs text-gray-300">{t.campaignFilters.eligibleOnlyDesc}</div>
                 </div>
               </div>
               <button
@@ -711,7 +711,7 @@ export default function CampaignsPage() {
                         className={`py-2 px-3 rounded-lg border transition-all ${
                           isActive
                             ? 'bg-primary border-primary text-white'
-                            : 'bg-dark-700 border-dark-500 text-gray-400'
+                            : 'bg-dark-700 border-dark-500 text-gray-300'
                         }`}
                       >
                         <Icon size={20} className="mx-auto" />
@@ -738,7 +738,7 @@ export default function CampaignsPage() {
                         className={`py-2 px-3 rounded-lg border text-xs transition-all ${
                           isActive
                             ? 'bg-secondary border-secondary text-white font-semibold'
-                            : 'bg-dark-700 border-dark-500 text-gray-400'
+                            : 'bg-dark-700 border-dark-500 text-gray-300'
                         }`}
                       >
                         {t.campaignFilters[category as keyof typeof t.campaignFilters]}
@@ -760,7 +760,7 @@ export default function CampaignsPage() {
                   className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                     filters.type === ''
                       ? 'bg-primary border-primary text-white font-semibold'
-                      : 'bg-dark-700 border-dark-500 text-gray-400'
+                      : 'bg-dark-700 border-dark-500 text-gray-300'
                   }`}
                 >
                   {t.campaignFilters.all}
@@ -770,7 +770,7 @@ export default function CampaignsPage() {
                   className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                     filters.type === 'cash'
                       ? 'bg-green-500 border-green-500 text-white font-semibold'
-                      : 'bg-dark-700 border-dark-500 text-gray-400'
+                      : 'bg-dark-700 border-dark-500 text-gray-300'
                   }`}
                 >
                   {t.campaignFilters.cash}
@@ -780,7 +780,7 @@ export default function CampaignsPage() {
                   className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                     filters.type === 'points'
                       ? 'bg-blue-500 border-blue-500 text-white font-semibold'
-                      : 'bg-dark-700 border-dark-500 text-gray-400'
+                      : 'bg-dark-700 border-dark-500 text-gray-300'
                   }`}
                 >
                   {t.campaignFilters.points}
@@ -817,7 +817,7 @@ export default function CampaignsPage() {
                   placeholder={t.campaignFilters.minBudget}
                   className="input flex-1 text-sm"
                 />
-                <span className="text-gray-400 self-center">-</span>
+                <span className="text-gray-300 self-center">-</span>
                 <input
                   type="number"
                   value={filters.maxBudget}
@@ -887,14 +887,14 @@ export default function CampaignsPage() {
 
                 {/* Marital status filter */}
                 <div>
-                  <label className="text-sm font-medium text-gray-400 mb-2 block">{t.campaignFilters.maritalStatusLabel}</label>
+                  <label className="text-sm font-medium text-gray-300 mb-2 block">{t.campaignFilters.maritalStatusLabel}</label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       onClick={() => setFilters({ ...filters, maritalStatus: '' })}
                       className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                         filters.maritalStatus === ''
                           ? 'bg-primary border-primary text-white font-semibold'
-                          : 'bg-dark-700 border-dark-500 text-gray-400'
+                          : 'bg-dark-700 border-dark-500 text-gray-300'
                       }`}
                     >
                       {t.campaignFilters.all}
@@ -904,7 +904,7 @@ export default function CampaignsPage() {
                       className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                         filters.maritalStatus === 'single'
                           ? 'bg-primary border-primary text-white font-semibold'
-                          : 'bg-dark-700 border-dark-500 text-gray-400'
+                          : 'bg-dark-700 border-dark-500 text-gray-300'
                       }`}
                     >
                       {t.campaignFilters.single}
@@ -914,7 +914,7 @@ export default function CampaignsPage() {
                       className={`py-2 px-3 rounded-lg border text-sm transition-all ${
                         filters.maritalStatus === 'married'
                           ? 'bg-primary border-primary text-white font-semibold'
-                          : 'bg-dark-700 border-dark-500 text-gray-400'
+                          : 'bg-dark-700 border-dark-500 text-gray-300'
                       }`}
                     >
                       {t.campaignFilters.married}
@@ -970,7 +970,7 @@ export default function CampaignsPage() {
       </div>
 
       {/* Results Count */}
-      <div className="px-4 py-3 text-sm text-gray-400">
+      <div className="px-4 py-3 text-sm text-gray-300">
         {filteredCampaigns.length}{t.campaignFilters.totalCampaigns}
       </div>
 
@@ -1031,7 +1031,7 @@ export default function CampaignsPage() {
                     {/* Content */}
                     <div className="p-3">
                       <h3 className="text-sm font-bold text-white mb-1 line-clamp-1">{campaign.title}</h3>
-                      <p className="text-xs text-gray-400 mb-2">{campaign.company}</p>
+                      <p className="text-xs text-gray-300 mb-2">{campaign.company}</p>
 
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -1039,7 +1039,7 @@ export default function CampaignsPage() {
                             {(campaign.minBudget / 1000).toFixed(0)}K - {(campaign.maxBudget / 1000).toFixed(0)}K VND
                           </span>
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-300">
                           {t.campaign.deadline}: {campaign.deadline}
                         </span>
                       </div>
@@ -1058,7 +1058,7 @@ export default function CampaignsPage() {
                               />
                             ))}
                           </div>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-gray-300">
                             {campaign.applicants > 4 && `+${campaign.applicants - 4}명 `}지원함
                           </span>
                         </div>
@@ -1144,7 +1144,7 @@ export default function CampaignsPage() {
               {/* Content */}
               <div className="p-4">
                 {/* Description */}
-                <p className="text-sm text-gray-400 mb-3 line-clamp-2">
+                <p className="text-sm text-gray-300 mb-3 line-clamp-2">
                   {campaign.description}
                 </p>
 
@@ -1172,16 +1172,16 @@ export default function CampaignsPage() {
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <Calendar size={16} className="text-gray-400" />
-                    <span className="text-gray-400">{campaign.deadline}</span>
+                    <Calendar size={16} className="text-gray-300" />
+                    <span className="text-gray-300">{campaign.deadline}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <MapPin size={16} className="text-gray-400" />
-                    <span className="text-gray-400">{campaign.location}</span>
+                    <MapPin size={16} className="text-gray-300" />
+                    <span className="text-gray-300">{campaign.location}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <TrendingUp size={16} className="text-gray-400" />
-                    <span className="text-gray-400">{campaign.applicants}{t.campaignFilters.applicationsCount}</span>
+                    <TrendingUp size={16} className="text-gray-300" />
+                    <span className="text-gray-300">{campaign.applicants}{t.campaignFilters.applicationsCount}</span>
                   </div>
                 </div>
 
@@ -1211,7 +1211,7 @@ export default function CampaignsPage() {
                         <div className="text-sm font-semibold text-white">
                           {campaign.applicants}명이 지원했습니다
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-gray-300">
                           {campaign.applicants > 6 ? `+${campaign.applicants - 6}명 더 보기` : '최근 지원자'}
                         </div>
                       </div>
@@ -1225,67 +1225,67 @@ export default function CampaignsPage() {
                     <div className="text-xs font-semibold text-warning mb-1">{t.campaignFilters.requirementsNotMet}</div>
                     <div className="space-y-1">
                       {!eligibility.followers && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.followers}: {mockUserProfile.followers.toLocaleString()} ({campaign.requiredFollowers.toLocaleString()}+)
                         </div>
                       )}
                       {!eligibility.engagement && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.engagement}: {mockUserProfile.engagementRate}% ({campaign.requiredEngagement}%+)
                         </div>
                       )}
                       {!eligibility.platform && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.platform}
                         </div>
                       )}
                       {!eligibility.location && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.location}
                         </div>
                       )}
                       {!eligibility.vehicle && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.vehicle}
                         </div>
                       )}
                       {!eligibility.parent && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.parent}
                         </div>
                       )}
                       {!eligibility.pet && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.pet}
                         </div>
                       )}
                       {!eligibility.maritalStatus && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.maritalStatus}
                         </div>
                       )}
                       {!eligibility.skinType && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.skinType}
                         </div>
                       )}
                       {!eligibility.skinTone && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.skinTone}
                         </div>
                       )}
                       {!eligibility.clothingSize && (
-                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                        <div className="text-xs text-gray-300 flex items-center gap-1">
                           <X size={12} className="text-error" />
                           {t.campaign.failureReasons.clothingSize}
                         </div>
@@ -1296,11 +1296,11 @@ export default function CampaignsPage() {
 
                 {/* Action Info */}
                 <div className="flex items-center justify-between pt-3 border-t border-dark-500">
-                  <span className="text-xs text-gray-400">{t.campaignFilters.clickToView}</span>
+                  <span className="text-xs text-gray-300">{t.campaignFilters.clickToView}</span>
                   <div className={`text-sm px-4 py-2 rounded-lg font-semibold ${
                     eligibility.eligible
                       ? 'bg-primary text-white'
-                      : 'bg-dark-600 text-gray-400'
+                      : 'bg-dark-600 text-gray-300'
                   }`}>
                     {t.campaignFilters.viewDetails}
                   </div>
@@ -1313,7 +1313,7 @@ export default function CampaignsPage() {
 
         {filteredCampaigns.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-400">{t.campaignFilters.noResults}</p>
+            <p className="text-gray-300">{t.campaignFilters.noResults}</p>
           </div>
         )}
       </div>

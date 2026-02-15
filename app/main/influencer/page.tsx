@@ -169,7 +169,7 @@ export default function InfluencerDashboard() {
               <div className="text-3xl font-bold text-green-400 mb-1">
                 {formatCash(mockData.cash.available)}
               </div>
-              <div className="text-xs text-gray-400">{t.dashboard.withdrawable}</div>
+              <div className="text-xs text-gray-300">{t.dashboard.withdrawable}</div>
               <div className="text-xs text-green-500 mt-2 font-semibold">{t.dashboard.tapToWithdraw}</div>
             </div>
           </Link>
@@ -183,7 +183,7 @@ export default function InfluencerDashboard() {
               <div className="text-3xl font-bold text-blue-400 mb-1">
                 {formatShoppingPoints(mockData.shoppingPoints.available)}
               </div>
-              <div className="text-xs text-gray-400">{t.dashboard.useInShop}</div>
+              <div className="text-xs text-gray-300">{t.dashboard.useInShop}</div>
               <div className="text-xs text-blue-500 mt-2 font-semibold">{t.dashboard.tapToShop}</div>
             </div>
           </Link>
@@ -207,7 +207,7 @@ export default function InfluencerDashboard() {
                         <span className="text-2xl">🇰🇷</span>
                         <span className="font-bold text-white text-lg">{t.koreaDream.title}</span>
                       </div>
-                      <div className="text-xs text-gray-400">{t.koreaDream.subtitle}</div>
+                      <div className="text-xs text-gray-300">{t.koreaDream.subtitle}</div>
                     </div>
                   </div>
                   <div className="px-3 py-1 bg-red-500 text-white text-xs rounded-full font-bold animate-bounce">
@@ -217,17 +217,17 @@ export default function InfluencerDashboard() {
 
                 <div className="space-y-2 mb-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{t.koreaDream.flightAndHotel}</span>
+                    <span className="text-gray-300">{t.koreaDream.flightAndHotel}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">{t.koreaDream.beautyAndShopping}</span>
+                    <span className="text-gray-300">{t.koreaDream.beautyAndShopping}</span>
                   </div>
                   <div className="text-xs text-accent font-bold">{t.koreaDream.totalValue}</div>
                 </div>
 
                 <div className="bg-dark-600 rounded-lg p-3 mb-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-gray-400">{t.koreaDream.targetGoal}</span>
+                    <span className="text-xs text-gray-300">{t.koreaDream.targetGoal}</span>
                     <span className="text-sm font-bold text-white">78,432{t.koreaDream.ticketsUnit} / 100,000{t.koreaDream.ticketsUnit}</span>
                   </div>
                   <div className="w-full bg-dark-500 rounded-full h-2">
@@ -292,7 +292,7 @@ export default function InfluencerDashboard() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-green-400">💰 CASH</div>
-                      <div className="text-xs text-gray-400">{t.dashboard.cashAvailable}</div>
+                      <div className="text-xs text-gray-300">{t.dashboard.cashAvailable}</div>
                     </div>
                   </div>
                   <ChevronRight size={24} className="text-green-400" />
@@ -303,7 +303,7 @@ export default function InfluencerDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between pt-3 border-t border-green-500/20">
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-300">
                     {t.dashboard.pendingAmount}: <span className="text-yellow-500 font-semibold">{formatCash(mockData.cash.locked)}</span>
                   </div>
                   <div className="px-3 py-1 bg-green-500/20 rounded-full">
@@ -326,7 +326,7 @@ export default function InfluencerDashboard() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-blue-400">🛍️ SHOPPING POINTS</div>
-                      <div className="text-xs text-gray-400">{t.dashboard.shoppingPoints}</div>
+                      <div className="text-xs text-gray-300">{t.dashboard.shoppingPoints}</div>
                     </div>
                   </div>
                   <ChevronRight size={24} className="text-blue-400" />
@@ -337,7 +337,7 @@ export default function InfluencerDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between pt-3 border-t border-blue-500/20">
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-300">
                     {t.dashboard.convertToTickets}
                   </div>
                   <div className="px-3 py-1 bg-blue-500/20 rounded-full">
@@ -351,28 +351,28 @@ export default function InfluencerDashboard() {
 
         {/* Quick Stats - 2x3 그리드 */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">📊 {t.dashboard.overview}</h3>
+          <h3 className="text-sm font-semibold text-gray-300 px-1">📊 {t.dashboard.overview}</h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-green-500/20">
               <BadgeDollarSign size={28} className="text-green-400 mx-auto mb-2" />
               <div className="text-lg font-bold text-green-400">
                 {formatCash(mockData.stats.totalCashEarnings)}
               </div>
-              <div className="text-xs text-gray-400 mt-1">{t.dashboard.totalEarnings} 💰</div>
+              <div className="text-xs text-gray-300 mt-1">{t.dashboard.totalEarnings} 💰</div>
             </div>
             <div className="card text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
               <ShoppingCart size={28} className="text-blue-400 mx-auto mb-2" />
               <div className="text-lg font-bold text-blue-400">
                 {formatShoppingPoints(mockData.stats.totalShoppingPoints)}
               </div>
-              <div className="text-xs text-gray-400 mt-1">{t.dashboard.totalShoppingPoints} 🛍️</div>
+              <div className="text-xs text-gray-300 mt-1">{t.dashboard.totalShoppingPoints} 🛍️</div>
             </div>
             <Link href="/main/influencer/completed" className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer">
               <CheckCircle size={28} className="text-green-500 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.completedCampaigns}
               </div>
-              <div className="text-xs text-gray-400 mt-1">{t.dashboard.completedCampaigns}</div>
+              <div className="text-xs text-gray-300 mt-1">{t.dashboard.completedCampaigns}</div>
               <div className="text-xs text-green-500 mt-1 font-semibold">{t.dashboard.checkDetails} →</div>
             </Link>
             <Link href="/main/influencer/jobs" className="card text-center bg-gradient-to-br from-warning/10 to-transparent border-warning/30 hover:border-warning/50 transition-all cursor-pointer">
@@ -380,7 +380,7 @@ export default function InfluencerDashboard() {
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.inProgressCampaigns}
               </div>
-              <div className="text-xs text-gray-400 mt-1">{t.dashboard.inProgress}</div>
+              <div className="text-xs text-gray-300 mt-1">{t.dashboard.inProgress}</div>
               <div className="text-xs text-warning mt-1 font-semibold">{t.dashboard.checkDetails} →</div>
             </Link>
             <Link href="/main/influencer/campaigns/applications" className="card text-center bg-gradient-to-br from-info/10 to-transparent border-info/30 hover:border-info/50 transition-all cursor-pointer">
@@ -388,13 +388,13 @@ export default function InfluencerDashboard() {
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.pendingApplications}
               </div>
-              <div className="text-xs text-gray-400 mt-1">{t.dashboard.pendingApproval}</div>
+              <div className="text-xs text-gray-300 mt-1">{t.dashboard.pendingApproval}</div>
               <div className="text-xs text-info mt-1 font-semibold">{t.dashboard.applicationHistory} →</div>
             </Link>
             <Link href="/main/influencer/my-raffles" className="card text-center bg-gradient-to-br from-red-500/10 via-blue-500/10 to-red-500/10 border-red-500/30 hover:border-red-500/50 transition-all cursor-pointer">
               <Ticket size={28} className="text-red-400 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
-                {myRaffleTickets}<span className="text-sm text-gray-400">{t.dashboard.ticketsCount}</span>
+                {myRaffleTickets}<span className="text-sm text-gray-300">{t.dashboard.ticketsCount}</span>
               </div>
               <div className="text-xs text-red-400 mt-1 font-semibold">{t.dashboard.myTickets} →</div>
             </Link>
@@ -403,7 +403,7 @@ export default function InfluencerDashboard() {
 
         {/* 🎯 진행 중인 캠페인 타임라인 */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Clock size={16} />
             {t.dashboard.inProgressCampaignsTitle} (3{t.dashboard.campaigns.toLowerCase()})
           </h3>
@@ -474,18 +474,18 @@ export default function InfluencerDashboard() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-white text-sm mb-1 truncate">{campaign.title}</h4>
-                    <p className="text-xs text-gray-400">{campaign.company}</p>
+                    <p className="text-xs text-gray-300">{campaign.company}</p>
                   </div>
                   <div className="text-right flex-shrink-0 ml-2">
                     <div className="text-sm font-bold text-accent">{formatCash(campaign.reward)}</div>
-                    <div className="text-xs text-gray-400">{campaign.daysLeft}{t.dashboard.daysLeft}</div>
+                    <div className="text-xs text-gray-300">{campaign.daysLeft}{t.dashboard.daysLeft}</div>
                   </div>
                 </div>
 
                 {/* Progress Bar */}
                 <div className="mb-2">
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-gray-400">{campaign.currentStep}</span>
+                    <span className="text-gray-300">{campaign.currentStep}</span>
                     <span className="text-primary font-semibold">{campaign.stage + 1}/{steps.length}</span>
                   </div>
                   <div className="relative h-2 bg-dark-500 rounded-full overflow-hidden">
@@ -503,12 +503,12 @@ export default function InfluencerDashboard() {
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                         stepIdx <= campaign.stage
                           ? 'bg-primary text-white'
-                          : 'bg-dark-500 text-gray-500'
+                          : 'bg-dark-500 text-gray-300'
                       }`}>
                         {stepIdx < campaign.stage ? '✓' : stepIdx + 1}
                       </div>
                       <div className={`text-[9px] mt-1 text-center ${
-                        stepIdx <= campaign.stage ? 'text-primary font-semibold' : 'text-gray-500'
+                        stepIdx <= campaign.stage ? 'text-primary font-semibold' : 'text-gray-300'
                       }`}>
                         {step}
                       </div>
@@ -536,19 +536,19 @@ export default function InfluencerDashboard() {
           {/* Summary Cards */}
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2.5 text-center">
-              <div className="text-[10px] text-gray-400 mb-1">✅ {t.dashboard.completedAndPaid}</div>
+              <div className="text-[10px] text-gray-300 mb-1">✅ {t.dashboard.completedAndPaid}</div>
               <div className="text-base font-bold text-green-400">1.2M</div>
-              <div className="text-[10px] text-gray-500">VND</div>
+              <div className="text-[10px] text-gray-300">VND</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2.5 text-center">
-              <div className="text-[10px] text-gray-400 mb-1">⏳ {t.dashboard.inProgressExpected}</div>
+              <div className="text-[10px] text-gray-300 mb-1">⏳ {t.dashboard.inProgressExpected}</div>
               <div className="text-base font-bold text-warning">800K</div>
-              <div className="text-[10px] text-gray-500">VND</div>
+              <div className="text-[10px] text-gray-300">VND</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2.5 text-center">
-              <div className="text-[10px] text-gray-400 mb-1">📅 {t.dashboard.waitingStatus}</div>
+              <div className="text-[10px] text-gray-300 mb-1">📅 {t.dashboard.waitingStatus}</div>
               <div className="text-base font-bold text-info">500K</div>
-              <div className="text-[10px] text-gray-500">VND</div>
+              <div className="text-[10px] text-gray-300">VND</div>
             </div>
           </div>
 
@@ -556,7 +556,7 @@ export default function InfluencerDashboard() {
           <div className="bg-gradient-to-r from-accent/20 to-accent/10 rounded-lg p-3 border border-accent/30">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs text-gray-400 mb-1">{t.dashboard.expectedTotalEarnings}</div>
+                <div className="text-xs text-gray-300 mb-1">{t.dashboard.expectedTotalEarnings}</div>
                 <div className="text-2xl font-bold text-accent">2.5M VND</div>
               </div>
               <div className="flex items-center gap-1 text-success text-sm">
@@ -568,7 +568,7 @@ export default function InfluencerDashboard() {
 
           {/* Mini Chart */}
           <div className="mt-3">
-            <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+            <div className="flex items-center justify-between text-xs text-gray-300 mb-2">
               <span>{t.dashboard.monthlyTrend}</span>
               <span>{t.dashboard.lastSixMonths}</span>
             </div>
@@ -581,7 +581,7 @@ export default function InfluencerDashboard() {
                 ></div>
               ))}
             </div>
-            <div className="flex items-center justify-between text-[9px] text-gray-500 mt-1">
+            <div className="flex items-center justify-between text-[9px] text-gray-300 mt-1">
               <span>{t.dashboard.september}</span>
               <span>{t.dashboard.october}</span>
               <span>{t.dashboard.november}</span>
@@ -598,9 +598,9 @@ export default function InfluencerDashboard() {
             <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <p className="text-sm text-gray-400 mb-1">📣 {t.dashboard.snsSharingBonus}</p>
+                  <p className="text-sm text-gray-300 mb-1">📣 {t.dashboard.snsSharingBonus}</p>
                   <p className="text-2xl font-bold text-primary">+{formatShoppingPoints(totalShareEarnings)}</p>
-                  <p className="text-xs text-gray-500 mt-1">{shareCount}{t.dashboard.campaignsShared}</p>
+                  <p className="text-xs text-gray-300 mt-1">{shareCount}{t.dashboard.campaignsShared}</p>
                   <p className="text-xs text-primary mt-2">{t.dashboard.viewHistory} →</p>
                 </div>
                 <div className="text-right">
@@ -615,7 +615,7 @@ export default function InfluencerDashboard() {
 
         {/* Quick Actions */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">{t.common.search}</h3>
+          <h3 className="text-sm font-semibold text-gray-300 px-1">{t.common.search}</h3>
           <div className="grid grid-cols-2 gap-3">
             <Link href="/main/influencer/campaigns" className="btn btn-primary">
               <TrendingUp size={18} className="mr-2" />
@@ -653,20 +653,20 @@ export default function InfluencerDashboard() {
 
                 <div className="bg-dark-600/50 backdrop-blur rounded-lg p-3 mb-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-gray-400">{t.dashboard.myShoppingPoints}</span>
+                    <span className="text-xs text-gray-300">{t.dashboard.myShoppingPoints}</span>
                     <span className="text-lg font-bold text-warning">{formatShoppingPoints(mockData.shoppingPoints.available)}</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="bg-dark-700/80 rounded-lg p-2">
-                      <div className="text-[10px] text-gray-400 mb-1">🇰🇷 {t.dashboard.koreaTicket}</div>
+                      <div className="text-[10px] text-gray-300 mb-1">🇰🇷 {t.dashboard.koreaTicket}</div>
                       <div className="text-xs font-bold text-white">100K SP</div>
                     </div>
                     <div className="bg-dark-700/80 rounded-lg p-2">
-                      <div className="text-[10px] text-gray-400 mb-1">🎁 {t.dashboard.giftCard}</div>
+                      <div className="text-[10px] text-gray-300 mb-1">🎁 {t.dashboard.giftCard}</div>
                       <div className="text-xs font-bold text-white">50K SP</div>
                     </div>
                     <div className="bg-dark-700/80 rounded-lg p-2">
-                      <div className="text-[10px] text-gray-400 mb-1">💎 {t.dashboard.premium}</div>
+                      <div className="text-[10px] text-gray-300 mb-1">💎 {t.dashboard.premium}</div>
                       <div className="text-xs font-bold text-white">200K SP</div>
                     </div>
                   </div>
@@ -684,7 +684,7 @@ export default function InfluencerDashboard() {
         {/* Rewards & Benefits - 바로가기 */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-400">🎯 {t.dashboard.growthAndRewards}</h3>
+            <h3 className="text-sm font-semibold text-gray-300">🎯 {t.dashboard.growthAndRewards}</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -696,7 +696,7 @@ export default function InfluencerDashboard() {
                     <Calendar size={24} className="text-white" />
                   </div>
                   <div className="text-sm font-bold text-white">🔥 {t.dashboard.attendanceCheck}</div>
-                  <div className="text-xs text-gray-400 mt-1">{t.dashboard.consecutiveDays} 23{t.attendance.days}</div>
+                  <div className="text-xs text-gray-300 mt-1">{t.dashboard.consecutiveDays} 23{t.attendance.days}</div>
                   <div className="text-xs text-orange-400 font-semibold mt-1">185K SP {t.dashboard.canEarn}</div>
                 </div>
               </div>
@@ -710,7 +710,7 @@ export default function InfluencerDashboard() {
                     <Trophy size={24} className="text-white" />
                   </div>
                   <div className="text-sm font-bold text-white">🏆 {t.dashboard.ranking}</div>
-                  <div className="text-xs text-gray-400 mt-1">15{t.dashboard.rankingPosition} / 2,847{t.dashboard.peopleCount}</div>
+                  <div className="text-xs text-gray-300 mt-1">15{t.dashboard.rankingPosition} / 2,847{t.dashboard.peopleCount}</div>
                   <div className="text-xs text-yellow-400 font-semibold mt-1">TOP 10 {t.dashboard.topReward} 100K</div>
                 </div>
               </div>
@@ -724,7 +724,7 @@ export default function InfluencerDashboard() {
                     <Users size={24} className="text-white" />
                   </div>
                   <div className="text-sm font-bold text-white">💚 {t.dashboard.inviteFriends}</div>
-                  <div className="text-xs text-gray-400 mt-1">12{t.dashboard.peopleInvited}</div>
+                  <div className="text-xs text-gray-300 mt-1">12{t.dashboard.peopleInvited}</div>
                   <div className="text-xs text-green-400 font-semibold mt-1">{t.dashboard.lifetimeCommission}</div>
                 </div>
               </div>
@@ -741,7 +741,7 @@ export default function InfluencerDashboard() {
                     <Building2 size={24} className="text-white" />
                   </div>
                   <div className="text-sm font-bold text-white">💼 {t.dashboard.inviteAdvertiser}</div>
-                  <div className="text-xs text-gray-400 mt-1">{t.dashboard.priorityMatching}</div>
+                  <div className="text-xs text-gray-300 mt-1">{t.dashboard.priorityMatching}</div>
                   <div className="text-xs text-purple-400 font-semibold mt-1">1{t.dashboard.perPerson} 100K VND</div>
                 </div>
               </div>
@@ -752,7 +752,7 @@ export default function InfluencerDashboard() {
         {/* Recent Campaigns */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-400">{t.dashboard.recentActivities}</h3>
+            <h3 className="text-sm font-semibold text-gray-300">{t.dashboard.recentActivities}</h3>
             <Link href="/main/influencer/jobs" className="text-sm text-primary">
               {t.dashboard.viewAll}
             </Link>
@@ -800,16 +800,16 @@ export default function InfluencerDashboard() {
                         <h4 className="font-semibold text-white mb-1">
                           {campaign.title}
                         </h4>
-                        <p className="text-sm text-gray-400">{campaign.company}</p>
+                        <p className="text-sm text-gray-300">{campaign.company}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between mt-3 pt-3 border-t border-dark-500">
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-300">
                         {t.dashboard.deadline}: {campaign.deadline}
                       </div>
                       <div className="text-right">
-                        <div className="text-xs text-gray-500 mb-1">
+                        <div className="text-xs text-gray-300 mb-1">
                           {campaign.status === 'completed' ? t.dashboard.earnedReward : t.dashboard.expectedReward}
                         </div>
                         <div className="text-success font-bold text-lg">

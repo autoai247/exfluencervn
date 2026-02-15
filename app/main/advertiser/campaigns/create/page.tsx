@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -35,6 +35,8 @@ const platformIcons = {
 
 export default function CreateCampaignPage() {
   const router = useRouter();
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -79,6 +81,23 @@ export default function CreateCampaignPage() {
     preview: string;
     type: 'image' | 'video';
   }>>([]);
+
+  // Track scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY;
+      const scrollableHeight = documentHeight - windowHeight;
+      const progress = scrollableHeight > 0 ? (scrollTop / scrollableHeight) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial calculation
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,18 +174,30 @@ export default function CreateCampaignPage() {
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
-              <ArrowLeft size={24} />
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
+                <ArrowLeft size={24} />
+              </button>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
+                <p className="text-xs text-gray-500 mt-0.5">{Math.round(scrollProgress)}% 완료</p>
+              </div>
+            </div>
+            <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
+              <Save size={18} />
+              생성
             </button>
-            <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
           </div>
-          <button onClick={handleSubmit} className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm flex items-center gap-1">
-            <Save size={18} />
-            생성
-          </button>
+        </div>
+        {/* Progress Bar */}
+        <div className="h-1 bg-gray-100">
+          <div
+            className="h-full bg-gray-900 transition-all duration-300 ease-out"
+            style={{ width: `${scrollProgress}%` }}
+          />
         </div>
       </div>
 

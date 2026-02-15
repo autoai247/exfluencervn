@@ -346,45 +346,45 @@ export default function AdvertiserProfileEditPage() {
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    alert(`✅ ${text.successTitle}\n\n${text.successMessage}`);
+    alert(`${text.successTitle}\n\n${text.successMessage}`);
     setLoading(false);
     router.push('/main/advertiser/profile');
   };
 
   return (
-    <div className="min-h-screen bg-dark-700">
+    <div className="min-h-screen bg-white">
       <MobileHeader title={text.title} showBack />
 
       <main className="container-mobile pb-24 pt-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Business Account Banner */}
-          <div className="bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 rounded-xl p-4">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-orange-500/30 rounded-xl flex items-center justify-center">
-                <Building2 size={24} className="text-orange-400" />
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <Building2 size={24} className="text-gray-600" />
               </div>
               <div>
-                <h3 className="text-white font-bold text-sm">
+                <h3 className="text-gray-900 font-bold text-sm">
                   {language === 'ko' ? '기업 계정 정보 관리' : 'Quản lý thông tin doanh nghiệp'}
                 </h3>
-                <p className="text-orange-300 text-xs mt-0.5">
+                <p className="text-gray-500 text-xs mt-0.5">
                   {language === 'ko' ? '정확한 정보 입력으로 신뢰도를 높이세요' : 'Tăng độ tin cậy bằng thông tin chính xác'}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* ===== 로고 업로드 ===== */}
+          {/* Logo Upload */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Camera size={18} className="text-orange-400" />
-              <h3 className="text-sm font-bold text-gray-300">{text.logo}</h3>
+              <Camera size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.logo}</h3>
             </div>
 
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <div className="flex flex-col items-center gap-4">
                 {/* Logo Preview */}
-                <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white overflow-hidden border-4 border-orange-500/30 shadow-xl">
+                <div className="w-32 h-32 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 overflow-hidden border-2 border-gray-200">
                   {logoPreview ? (
                     <img src={logoPreview} alt="Logo" className="w-full h-full object-cover" />
                   ) : (
@@ -394,7 +394,7 @@ export default function AdvertiserProfileEditPage() {
 
                 {/* Upload Button */}
                 <div className="w-full">
-                  <label className="btn btn-secondary w-full cursor-pointer flex items-center justify-center">
+                  <label className="w-full py-2.5 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center font-semibold text-sm">
                     <Upload size={18} className="mr-2" />
                     {logoPreview ? text.changeLogo : text.uploadLogo}
                     <input
@@ -404,53 +404,53 @@ export default function AdvertiserProfileEditPage() {
                       className="hidden"
                     />
                   </label>
-                  <p className="text-xs text-gray-400 text-center mt-2">{text.logoNote}</p>
+                  <p className="text-xs text-gray-500 text-center mt-2">{text.logoNote}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ===== 기본 정보 ===== */}
+          {/* Basic Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <User size={18} className="text-primary" />
-              <h3 className="text-sm font-bold text-gray-300">{text.basicInfo}</h3>
+              <User size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.basicInfo}</h3>
             </div>
 
-            {/* 국가 선택 */}
-            <div className="card bg-primary/5 border-primary/30">
+            {/* Country Select */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.country}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.country}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <select
                 required
                 value={formData.country}
                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               >
                 <option value="">{text.selectCountry}</option>
-                <option value="VN">🇻🇳 Việt Nam (베트남)</option>
-                <option value="KR">🇰🇷 한국 (Hàn Quốc)</option>
-                <option value="US">🇺🇸 United States</option>
-                <option value="JP">🇯🇵 日本 (Nhật Bản)</option>
-                <option value="CN">🇨🇳 中国 (Trung Quốc)</option>
-                <option value="TH">🇹🇭 ประเทศไทย (Thái Lan)</option>
-                <option value="SG">🇸🇬 Singapore</option>
-                <option value="OTHER">{language === 'ko' ? '기타' : 'Khác'}</option>
+                <option value="VN">Viet Nam</option>
+                <option value="KR">Han Quoc</option>
+                <option value="US">United States</option>
+                <option value="JP">Nhat Ban</option>
+                <option value="CN">Trung Quoc</option>
+                <option value="TH">Thai Lan</option>
+                <option value="SG">Singapore</option>
+                <option value="OTHER">{language === 'ko' ? '기타' : 'Khac'}</option>
               </select>
-              <p className="text-xs text-gray-400 mt-2">
+              <p className="text-xs text-gray-500 mt-2">
                 {language === 'ko'
                   ? '회사가 등록된 국가를 선택하세요. 사업자 정보 양식이 국가에 맞게 조정됩니다.'
                   : 'Chọn quốc gia đăng ký công ty. Mẫu thông tin doanh nghiệp sẽ được điều chỉnh theo quốc gia.'}
               </p>
             </div>
 
-            {/* 회사명 */}
-            <div className="card">
+            {/* Company Name */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.companyName}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.companyName}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
                 <Building2 size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -460,16 +460,16 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                   placeholder={text.companyNamePlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* 대표자명 */}
-            <div className="card">
+            {/* CEO Name */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.ceoName}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.ceoName}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 type="text"
@@ -477,15 +477,15 @@ export default function AdvertiserProfileEditPage() {
                 value={formData.ceo_name}
                 onChange={(e) => setFormData({ ...formData, ceo_name: e.target.value })}
                 placeholder={text.ceoNamePlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
 
-            {/* 담당자명 */}
-            <div className="card">
+            {/* Contact Person */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.contactPerson}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.contactPerson}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 type="text"
@@ -493,23 +493,23 @@ export default function AdvertiserProfileEditPage() {
                 value={formData.contact_person}
                 onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
                 placeholder={text.contactPersonPlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
           </div>
 
-          {/* ===== 사업자 정보 ===== */}
+          {/* Business Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Briefcase size={18} className="text-secondary" />
-              <h3 className="text-sm font-bold text-gray-300">{text.businessInfo}</h3>
+              <Briefcase size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.businessInfo}</h3>
             </div>
 
-            {/* 사업자 등록 번호 */}
-            <div className="card">
+            {/* Business Registration Number */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.businessRegNumber}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.businessRegNumber}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 type="text"
@@ -517,30 +517,30 @@ export default function AdvertiserProfileEditPage() {
                 value={formData.business_registration_number}
                 onChange={(e) => setFormData({ ...formData, business_registration_number: e.target.value })}
                 placeholder={text.businessRegNumberPlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
 
-            {/* 납세자 번호 */}
-            <div className="card">
+            {/* Tax Code */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.taxCode}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.taxCode}</span>
               </label>
               <input
                 type="text"
                 value={formData.tax_code}
                 onChange={(e) => setFormData({ ...formData, tax_code: e.target.value })}
                 placeholder={text.taxCodePlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
 
-            {/* 업종 & 업태 */}
+            {/* Business Type & Category */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.businessType}</span>
-                  <span className="text-red-400 ml-1">*</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.businessType}</span>
+                  <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
                   type="text"
@@ -548,13 +548,13 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.business_type}
                   onChange={(e) => setFormData({ ...formData, business_type: e.target.value })}
                   placeholder={text.businessTypePlaceholder}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.businessCategory}</span>
-                  <span className="text-red-400 ml-1">*</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.businessCategory}</span>
+                  <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
                   type="text"
@@ -562,16 +562,16 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.business_category}
                   onChange={(e) => setFormData({ ...formData, business_category: e.target.value })}
                   placeholder={text.businessCategoryPlaceholder}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* 설립일 */}
-            <div className="card">
+            {/* Establishment Date */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.establishmentDate}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.establishmentDate}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
                 <Calendar size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -580,16 +580,16 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.establishment_date}
                   onChange={(e) => setFormData({ ...formData, establishment_date: e.target.value })}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* 직원 수 & 자본금 */}
+            {/* Employee Count & Capital */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.employeeCount}</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.employeeCount}</span>
                 </label>
                 <div className="relative">
                   <Users size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -598,51 +598,51 @@ export default function AdvertiserProfileEditPage() {
                     value={formData.employee_count}
                     onChange={(e) => setFormData({ ...formData, employee_count: e.target.value })}
                     placeholder={text.employeeCountPlaceholder}
-                    className="input pl-12"
+                    className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
               </div>
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.capital}</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.capital}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.capital}
                   onChange={(e) => setFormData({ ...formData, capital: e.target.value })}
                   placeholder={text.capitalPlaceholder}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* 사업자 등록증 */}
-            <div className="card bg-secondary/5 border-secondary/30">
+            {/* Business License */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.businessLicense}</span>
-                <span className="text-red-400 ml-1">*</span>
-                <p className="text-xs text-gray-400 mt-1">{text.businessLicenseDesc}</p>
+                <span className="text-sm font-semibold text-gray-900">{text.businessLicense}</span>
+                <span className="text-red-500 ml-1">*</span>
+                <p className="text-xs text-gray-500 mt-1">{text.businessLicenseDesc}</p>
               </label>
 
               {businessLicense ? (
-                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                <div className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <CheckCircle size={20} className="text-success flex-shrink-0" />
+                    <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white font-semibold truncate">{businessLicense.name}</p>
-                      <p className="text-xs text-gray-400">{text.uploaded}</p>
+                      <p className="text-sm text-gray-900 font-semibold truncate">{businessLicense.name}</p>
+                      <p className="text-xs text-gray-500">{text.uploaded}</p>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setBusinessLicense(null)}
-                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                    className="ml-2 p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
               ) : (
-                <label className="inline-flex items-center justify-center w-full btn btn-secondary cursor-pointer">
+                <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors cursor-pointer font-semibold text-sm">
                   <Upload size={18} className="mr-2" />
                   {text.selectFile}
                   <input
@@ -656,33 +656,33 @@ export default function AdvertiserProfileEditPage() {
               <p className="text-xs text-gray-500 mt-2">{text.documentNote}</p>
             </div>
 
-            {/* 통신판매업 신고증 */}
-            <div className="card bg-secondary/5 border-secondary/30">
+            {/* E-commerce License */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.ecommerceLicense}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.ecommerceLicense}</span>
                 <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-400 mt-1">{text.ecommerceLicenseDesc}</p>
+                <p className="text-xs text-gray-500 mt-1">{text.ecommerceLicenseDesc}</p>
               </label>
 
               {ecommerceLicense ? (
-                <div className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                <div className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <CheckCircle size={20} className="text-success flex-shrink-0" />
+                    <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white font-semibold truncate">{ecommerceLicense.name}</p>
-                      <p className="text-xs text-gray-400">{text.uploaded}</p>
+                      <p className="text-sm text-gray-900 font-semibold truncate">{ecommerceLicense.name}</p>
+                      <p className="text-xs text-gray-500">{text.uploaded}</p>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setEcommerceLicense(null)}
-                    className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                    className="ml-2 p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
               ) : (
-                <label className="inline-flex items-center justify-center w-full btn btn-ghost cursor-pointer">
+                <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer font-semibold text-sm">
                   <Upload size={18} className="mr-2" />
                   {text.selectFile}
                   <input
@@ -695,30 +695,30 @@ export default function AdvertiserProfileEditPage() {
               )}
             </div>
 
-            {/* 기타 인증서 */}
-            <div className="card bg-secondary/5 border-secondary/30">
+            {/* Other Documents */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-white">{text.otherDocuments}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.otherDocuments}</span>
                 <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-400 mt-1">{text.otherDocumentsDesc}</p>
+                <p className="text-xs text-gray-500 mt-1">{text.otherDocumentsDesc}</p>
               </label>
 
-              {/* 업로드된 서류 목록 */}
+              {/* Uploaded Documents List */}
               {otherDocs.length > 0 && (
                 <div className="space-y-2 mb-3">
                   {otherDocs.map((doc, index) => (
-                    <div key={index} className="bg-dark-600 rounded-lg p-3 flex items-center justify-between">
+                    <div key={index} className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <CheckCircle size={20} className="text-success flex-shrink-0" />
+                        <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white font-semibold truncate">{doc.name}</p>
-                          <p className="text-xs text-gray-400">{text.uploaded}</p>
+                          <p className="text-sm text-gray-900 font-semibold truncate">{doc.name}</p>
+                          <p className="text-xs text-gray-500">{text.uploaded}</p>
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => setOtherDocs(otherDocs.filter((_, i) => i !== index))}
-                        className="ml-2 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                        className="ml-2 p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -727,7 +727,7 @@ export default function AdvertiserProfileEditPage() {
                 </div>
               )}
 
-              <label className="inline-flex items-center justify-center w-full btn btn-ghost cursor-pointer">
+              <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer font-semibold text-sm">
                 <Upload size={18} className="mr-2" />
                 {text.selectFile}
                 <input
@@ -741,18 +741,18 @@ export default function AdvertiserProfileEditPage() {
             </div>
           </div>
 
-          {/* ===== 연락처 정보 ===== */}
+          {/* Contact Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Phone size={18} className="text-accent" />
-              <h3 className="text-sm font-bold text-gray-300">{text.contactInfo}</h3>
+              <Phone size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.contactInfo}</h3>
             </div>
 
             {/* Email */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.email}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.email}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
                 <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -762,17 +762,17 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder={text.emailPlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Phone & Fax */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.phone}</span>
-                  <span className="text-red-400 ml-1">*</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.phone}</span>
+                  <span className="text-red-500 ml-1">*</span>
                 </label>
                 <div className="relative">
                   <Phone size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -782,28 +782,28 @@ export default function AdvertiserProfileEditPage() {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder={text.phonePlaceholder}
-                    className="input pl-12"
+                    className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
               </div>
-              <div className="card">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-white">{text.fax}</span>
+                  <span className="text-sm font-semibold text-gray-900">{text.fax}</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.fax}
                   onChange={(e) => setFormData({ ...formData, fax: e.target.value })}
                   placeholder={text.faxPlaceholder}
-                  className="input"
+                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Website */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.website}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.website}</span>
               </label>
               <div className="relative">
                 <Globe size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -812,24 +812,24 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.website}
                   onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                   placeholder={text.websitePlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
-          {/* ===== SNS 계정 ===== */}
+          {/* SNS Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Share2 size={18} className="text-info" />
-              <h3 className="text-sm font-bold text-gray-300">{text.snsInfo}</h3>
+              <Share2 size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.snsInfo}</h3>
               <span className="text-xs text-gray-500">({text.optional})</span>
             </div>
 
             {/* Facebook */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.facebook}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.facebook}</span>
               </label>
               <div className="relative">
                 <Facebook size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -838,15 +838,15 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.facebook}
                   onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
                   placeholder={text.facebookPlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Instagram */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.instagram}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.instagram}</span>
               </label>
               <div className="relative">
                 <Instagram size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -855,29 +855,29 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.instagram}
                   onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
                   placeholder={text.instagramPlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* TikTok */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.tiktok}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.tiktok}</span>
               </label>
               <input
                 type="text"
                 value={formData.tiktok}
                 onChange={(e) => setFormData({ ...formData, tiktok: e.target.value })}
                 placeholder={text.tiktokPlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
 
             {/* YouTube */}
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.youtube}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.youtube}</span>
               </label>
               <div className="relative">
                 <Youtube size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -886,24 +886,24 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.youtube}
                   onChange={(e) => setFormData({ ...formData, youtube: e.target.value })}
                   placeholder={text.youtubePlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
-          {/* ===== 주소 정보 ===== */}
+          {/* Address Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <MapPin size={18} className="text-success" />
-              <h3 className="text-sm font-bold text-gray-300">{text.addressInfo}</h3>
+              <MapPin size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.addressInfo}</h3>
             </div>
 
-            {/* 본사 주소 */}
-            <div className="card">
+            {/* Address */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.address}</span>
-                <span className="text-red-400 ml-1">*</span>
+                <span className="text-sm font-semibold text-gray-900">{text.address}</span>
+                <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
                 <MapPin size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -913,36 +913,36 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder={text.addressPlaceholder}
-                  className="input pl-12"
+                  className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
             </div>
 
-            {/* 상세 주소 */}
-            <div className="card">
+            {/* Address Detail */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.addressDetail}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.addressDetail}</span>
               </label>
               <input
                 type="text"
                 value={formData.address_detail}
                 onChange={(e) => setFormData({ ...formData, address_detail: e.target.value })}
                 placeholder={text.addressDetailPlaceholder}
-                className="input"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
           </div>
 
-          {/* ===== 회사 소개 ===== */}
+          {/* Company Intro */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <FileText size={18} className="text-info" />
-              <h3 className="text-sm font-bold text-gray-300">{text.companyIntro}</h3>
+              <FileText size={18} className="text-gray-600" />
+              <h3 className="text-sm font-bold text-gray-700">{text.companyIntro}</h3>
             </div>
 
-            <div className="card">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-white">{text.bio}</span>
+                <span className="text-sm font-semibold text-gray-900">{text.bio}</span>
               </label>
               <textarea
                 value={formData.bio}
@@ -950,9 +950,9 @@ export default function AdvertiserProfileEditPage() {
                 placeholder={text.bioPlaceholder}
                 maxLength={500}
                 rows={6}
-                className="input resize-none"
+                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none"
               />
-              <div className="text-xs text-gray-400 text-right mt-1">
+              <div className="text-xs text-gray-500 text-right mt-1">
                 {formData.bio.length}/500
               </div>
             </div>
@@ -963,7 +963,7 @@ export default function AdvertiserProfileEditPage() {
             <button
               type="button"
               onClick={() => router.back()}
-              className="flex-1 btn btn-ghost"
+              className="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-semibold text-sm flex items-center justify-center"
               disabled={loading}
             >
               <X size={18} className="mr-2" />
@@ -971,12 +971,12 @@ export default function AdvertiserProfileEditPage() {
             </button>
             <button
               type="submit"
-              className="flex-1 btn btn-primary bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700"
+              className="flex-1 py-2.5 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-sm flex items-center justify-center"
               disabled={loading}
             >
               {loading ? (
                 <>
-                  <div className="spinner mr-2" />
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                   {text.saving}
                 </>
               ) : (

@@ -98,7 +98,7 @@ export default function AdvertiserCampaignsPage() {
       views: '조회수',
       deadline: '마감',
       noCampaigns: '캠페인이 없습니다',
-      createFirst: '첫 번째 캠페인을 만들어보세요!',
+      createFirst: '첫 번째 캠페인을 만들어보세요',
     },
     vi: {
       title: 'Quản lý chiến dịch',
@@ -115,7 +115,7 @@ export default function AdvertiserCampaignsPage() {
       views: 'Lượt xem',
       deadline: 'Hạn chót',
       noCampaigns: 'Không có chiến dịch',
-      createFirst: 'Tạo chiến dịch đầu tiên của bạn!',
+      createFirst: 'Tạo chiến dịch đầu tiên của bạn',
     },
   };
 
@@ -137,13 +137,13 @@ export default function AdvertiserCampaignsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
-        return 'bg-secondary/20 text-secondary';
+        return 'bg-gray-900 text-white';
       case 'completed':
-        return 'bg-success/20 text-success';
+        return 'bg-gray-100 text-gray-700';
       case 'draft':
-        return 'bg-gray-500/20 text-gray-400';
+        return 'bg-gray-100 text-gray-500';
       default:
-        return 'bg-primary/20 text-primary';
+        return 'bg-gray-100 text-gray-700';
     }
   };
 
@@ -161,15 +161,15 @@ export default function AdvertiserCampaignsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-700 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       <MobileHeader title={text.title} showBack />
 
       <div className="container-mobile py-6 space-y-6">
         {/* Create Campaign Button */}
         <Link href="/main/advertiser/campaigns/create">
-          <button className="btn btn-primary w-full text-base py-4 bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark">
+          <button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center">
             <Plus size={20} className="mr-2" />
-            🚀 {text.createCampaign}
+            {text.createCampaign}
           </button>
         </Link>
 
@@ -181,7 +181,7 @@ export default function AdvertiserCampaignsPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={text.search}
-            className="input pl-12"
+            className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 transition-colors"
           />
         </div>
 
@@ -191,10 +191,10 @@ export default function AdvertiserCampaignsPage() {
             <button
               key={status}
               onClick={() => setActiveTab(status)}
-              className={`px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
                 activeTab === status
-                  ? 'bg-primary text-white'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               {text[status]} ({stats[status]})
@@ -205,12 +205,12 @@ export default function AdvertiserCampaignsPage() {
         {/* Campaigns List */}
         <div className="space-y-3">
           {filteredCampaigns.length === 0 ? (
-            <div className="card text-center py-12">
-              <TrendingUp size={48} className="text-gray-600 mx-auto mb-3" />
-              <h3 className="text-lg font-bold text-white mb-2">{text.noCampaigns}</h3>
-              <p className="text-sm text-gray-400 mb-4">{text.createFirst}</p>
+            <div className="bg-white border border-gray-200 rounded-lg text-center py-12 px-6">
+              <TrendingUp size={48} className="text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{text.noCampaigns}</h3>
+              <p className="text-sm text-gray-500 mb-6">{text.createFirst}</p>
               <Link href="/main/advertiser/campaigns/create">
-                <button className="btn btn-primary">
+                <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors inline-flex items-center">
                   <Plus size={18} className="mr-2" />
                   {text.createCampaign}
                 </button>
@@ -219,62 +219,62 @@ export default function AdvertiserCampaignsPage() {
           ) : (
             filteredCampaigns.map((campaign) => (
               <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-                <div className="card-hover">
+                <div className="bg-white border border-gray-200 hover:border-gray-900 rounded-lg p-4 transition-all cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">{campaign.title}</h4>
-                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
                         <Clock size={12} />
                         {text.deadline}: {campaign.deadline}
                       </div>
                     </div>
-                    <span className={`px-3 py-1 ${getStatusColor(campaign.status)} text-xs rounded-full whitespace-nowrap ml-2`}>
+                    <span className={`px-3 py-1 ${getStatusColor(campaign.status)} text-xs font-medium rounded-full whitespace-nowrap ml-2`}>
                       {getStatusText(campaign.status)}
                     </span>
                   </div>
 
                   {/* Progress Bar */}
                   {campaign.status !== 'draft' && (
-                    <div className="mb-3">
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-400">{text.budget} {language === 'ko' ? '사용' : 'sử dụng'}</span>
-                        <span className="text-white font-semibold">
+                    <div className="mb-4">
+                      <div className="flex justify-between text-xs mb-1.5">
+                        <span className="text-gray-500">{text.budget} {language === 'ko' ? '사용' : 'sử dụng'}</span>
+                        <span className="text-gray-900 font-semibold">
                           {((campaign.spent / campaign.budget) * 100).toFixed(0)}%
                         </span>
                       </div>
-                      <div className="w-full h-2 bg-dark-600 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-secondary to-primary rounded-full"
+                          className="h-full bg-gray-900 rounded-full transition-all"
                           style={{ width: `${(campaign.spent / campaign.budget) * 100}%` }}
                         />
                       </div>
-                      <div className="flex justify-between text-xs mt-1">
-                        <span className="text-gray-500">{formatPoints(campaign.spent)}</span>
-                        <span className="text-gray-500">{formatPoints(campaign.budget)}</span>
+                      <div className="flex justify-between text-xs mt-1.5">
+                        <span className="text-gray-400">{formatPoints(campaign.spent)}</span>
+                        <span className="text-gray-400">{formatPoints(campaign.budget)}</span>
                       </div>
                     </div>
                   )}
 
                   {/* Stats Grid */}
                   <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div className="text-center p-2 bg-dark-600 rounded-lg">
-                      <div className="font-semibold text-white">{campaign.applicants}</div>
-                      <div className="text-gray-400">{text.applicants}</div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                      <div className="font-semibold text-gray-900">{campaign.applicants}</div>
+                      <div className="text-gray-500 mt-1">{text.applicants}</div>
                     </div>
-                    <div className="text-center p-2 bg-dark-600 rounded-lg">
-                      <div className="font-semibold text-white">{campaign.accepted}</div>
-                      <div className="text-gray-400">{text.accepted}</div>
+                    <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                      <div className="font-semibold text-gray-900">{campaign.accepted}</div>
+                      <div className="text-gray-500 mt-1">{text.accepted}</div>
                     </div>
-                    <div className="text-center p-2 bg-dark-600 rounded-lg">
-                      <div className="font-semibold text-white">
+                    <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                      <div className="font-semibold text-gray-900">
                         {campaign.views > 0 ? `${(campaign.views / 1000).toFixed(0)}K` : '0'}
                       </div>
-                      <div className="text-gray-400">{text.views}</div>
+                      <div className="text-gray-500 mt-1">{text.views}</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-dark-500">
-                    <span className="text-xs text-gray-500">
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                    <span className="text-xs text-gray-500 font-medium">
                       {language === 'ko' ? '상세 정보 보기' : 'Xem chi tiết'}
                     </span>
                     <ChevronRight size={16} className="text-gray-400" />

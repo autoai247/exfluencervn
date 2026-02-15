@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   MapPin,
   Star,
@@ -26,6 +26,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function InfluencerProfilePage() {
   const params = useParams();
+  const router = useRouter();
   const { language } = useLanguage();
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
@@ -125,6 +126,7 @@ export default function InfluencerProfilePage() {
     reviews: [
       {
         id: 'r1',
+        advertiserId: 'adv1',
         advertiser: 'Demo Brand VN',
         advertiserLogo: 'https://ui-avatars.com/api/?name=Demo+Brand&background=FF6B6B&color=fff',
         rating: 5.0,
@@ -137,6 +139,7 @@ export default function InfluencerProfilePage() {
       },
       {
         id: 'r2',
+        advertiserId: 'adv2',
         advertiser: 'Fashion Hub',
         advertiserLogo: 'https://ui-avatars.com/api/?name=Fashion+Hub&background=4ECDC4&color=fff',
         rating: 4.8,
@@ -149,6 +152,7 @@ export default function InfluencerProfilePage() {
       },
       {
         id: 'r3',
+        advertiserId: 'adv3',
         advertiser: 'HealthCare Plus',
         advertiserLogo: 'https://ui-avatars.com/api/?name=Health+Care&background=6C5CE7&color=fff',
         rating: 4.9,
@@ -161,6 +165,7 @@ export default function InfluencerProfilePage() {
       },
       {
         id: 'r4',
+        advertiserId: 'adv4',
         advertiser: 'Travel Vietnam',
         advertiserLogo: 'https://ui-avatars.com/api/?name=Travel+VN&background=00B894&color=fff',
         rating: 5.0,
@@ -173,6 +178,7 @@ export default function InfluencerProfilePage() {
       },
       {
         id: 'r5',
+        advertiserId: 'adv5',
         advertiser: 'FitLife',
         advertiserLogo: 'https://ui-avatars.com/api/?name=FitLife&background=FFA502&color=fff',
         rating: 4.7,
@@ -646,11 +652,17 @@ export default function InfluencerProfilePage() {
                   <img
                     src={review.advertiserLogo}
                     alt={review.advertiser}
-                    className="w-10 h-10 rounded-full border border-gray-200"
+                    className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all"
+                    onClick={() => router.push(`/main/influencer/advertisers/${review.advertiserId}`)}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <h4 className="text-sm font-semibold text-gray-900">{review.advertiser}</h4>
+                      <h4
+                        className="text-sm font-semibold text-gray-900 cursor-pointer hover:text-gray-600 transition-colors"
+                        onClick={() => router.push(`/main/influencer/advertisers/${review.advertiserId}`)}
+                      >
+                        {review.advertiser}
+                      </h4>
                       <div className="flex items-center gap-1">
                         <Star size={14} className="text-yellow-500 fill-yellow-500" />
                         <span className="text-sm font-bold text-gray-900">{review.rating.toFixed(1)}</span>

@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
 // 추첨 결과 조회
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const raffleId = searchParams.get('raffleId');
 
     const draws = db.getRaffleDraws();

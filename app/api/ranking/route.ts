@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const category = searchParams.get('category') as 'points' | 'tickets' | 'earnings' | 'referrals' | 'attendance' || 'points';
     const limit = parseInt(searchParams.get('limit') || '100');
 

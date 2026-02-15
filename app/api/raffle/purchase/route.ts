@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
 // 사용자의 응모권 조회
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const userId = searchParams.get('userId');
 
     if (!userId) {

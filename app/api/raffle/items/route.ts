@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 // 응모 상품 목록 조회
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const activeOnly = searchParams.get('activeOnly') === 'true';
 
     let items = db.getRaffleItems();

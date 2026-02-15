@@ -19,12 +19,14 @@ export default function CompletedCampaignsPage() {
   const campaigns = getMockCompletedCampaigns(language);
 
   const handleDownloadReceipt = (campaign: MockCompletedCampaign) => {
+    const campaignLabel = language === 'ko' ? '캠페인명' : 'Tên chiến dịch';
     const statusText = language === 'ko' ? '지급 완료' : 'Đã thanh toán';
+    const statusLabel = language === 'ko' ? '상태' : 'Trạng thái';
     const noteText = language === 'ko'
       ? '※ 실제 운영 시 PDF 파일로 다운로드됩니다.'
       : '※ Trong vận hành thực tế sẽ tải xuống file PDF.';
 
-    alert(`📄 ${campaign.title}\n\n${t.completed.downloadReceipt}\n\n- ${t.campaigns.title}: ${campaign.title}\n- ${t.completed.earned}: ${formatCash(campaign.reward)}\n- ${t.completed.completedOn}: ${campaign.completedDate}\n- ${t.campaigns.status.completed}: ${statusText}\n\n${noteText}`);
+    alert(`📄 ${campaign.title}\n\n${t.completed.downloadReceipt}\n\n- ${campaignLabel}: ${campaign.title}\n- ${t.completed.earned}: ${formatCash(campaign.reward)}\n- ${t.completed.completedOn}: ${campaign.completedDate}\n- ${statusLabel}: ${statusText}\n\n${noteText}`);
   };
 
   const filteredCampaigns = campaigns.filter(c => {

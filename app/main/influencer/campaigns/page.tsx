@@ -708,23 +708,19 @@ function CampaignsPageContent() {
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header - 스크롤 시 숨김 */}
-      <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
-        hideHeader ? '-translate-y-full' : 'translate-y-0'
-      }`}>
-        <MobileHeader
-          title={t.campaign.title}
-          showNotification
-          onNotification={() => router.push('/main/influencer/notifications')}
-        />
-      </div>
-      {/* Header 공간 확보 */}
-      <div className="h-14"></div>
+      {!hideHeader && (
+        <div className="animate-slide-down">
+          <MobileHeader
+            title={t.campaign.title}
+            showNotification
+            onNotification={() => router.push('/main/influencer/notifications')}
+          />
+        </div>
+      )}
 
       {/* ADMIN MODE TOGGLE (only visible to admins) - 스크롤 시 숨김 */}
-      {isAdmin && (
-        <div className={`fixed top-14 left-0 right-0 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500 transition-transform duration-300 ${
-          hideHeader ? '-translate-y-full' : 'translate-y-0'
-        }`}>
+      {isAdmin && !hideHeader && (
+        <div className="sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500">
           <div className="px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 font-mono">🔐 Admin Panel</span>
@@ -751,9 +747,8 @@ function CampaignsPageContent() {
       )}
 
       {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 숨김 */}
-      <div className={`fixed top-14 left-0 right-0 z-30 bg-dark-700 border-b border-dark-500 transition-transform duration-300 ${
-        hideHeader ? '-translate-y-full' : 'translate-y-0'
-      }`}>
+      {!hideHeader && (
+        <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500">
         <Link href="/main/influencer/korea-dream">
           <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] animate-pulse">
             <div className="bg-dark-700 rounded-xl px-4 py-3 relative overflow-hidden">
@@ -802,11 +797,11 @@ function CampaignsPageContent() {
           </div>
         </Link>
       </div>
+      )}
 
       {/* Search Bar - 스크롤 시 숨김 */}
-      <div className={`fixed left-0 right-0 z-20 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
-        hideHeader ? '-translate-y-full' : 'translate-y-0 top-[120px]'
-      } p-4`}>
+      {!hideHeader && (
+        <div className="sticky top-[120px] z-20 bg-dark-700 border-b border-dark-500 p-4">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Search
@@ -1138,9 +1133,7 @@ function CampaignsPageContent() {
           </div>
         )}
       </div>
-
-      {/* Search Bar 공간 확보 - hideHeader가 false일 때만 */}
-      {!hideHeader && <div className="h-[240px]"></div>}
+      )}
 
       {/* Results Count */}
       <div className="px-4 py-3 text-sm text-gray-300">

@@ -14,27 +14,31 @@ export default function HomePage() {
 
   useEffect(() => {
     // Check for auto-login
-    if (typeof window !== 'undefined') {
-      const userData = localStorage.getItem('exfluencer_user');
+    const checkAuth = () => {
+      try {
+        const userData = localStorage.getItem('exfluencer_user');
 
-      if (userData) {
-        try {
+        if (userData) {
           const user = JSON.parse(userData);
           // Redirect based on user type
           if (user.userType === 'advertiser') {
             router.push('/main/advertiser');
-          } else {
+            return;
+          } else if (user.userType === 'influencer') {
             router.push('/main/influencer/campaigns');
+            return;
           }
-        } catch (e) {
-          // Invalid data, clear it
-          localStorage.removeItem('exfluencer_user');
-          setChecking(false);
         }
-      } else {
-        setChecking(false);
+      } catch (e) {
+        // Invalid data, clear it
+        localStorage.removeItem('exfluencer_user');
       }
-    }
+
+      // Always set checking to false after check
+      setChecking(false);
+    };
+
+    checkAuth();
   }, [router]);
 
   if (checking) {

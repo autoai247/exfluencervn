@@ -375,16 +375,63 @@ export default function CampaignDetailPage() {
     setUploadData({ url: '', description: '' });
   };
 
-  // Facebook share handler - direct link input (manual verification)
-  const handleFacebookShare = () => {
+  // Facebook share handler - share campaign content with Web Share API
+  const handleFacebookShare = async () => {
     // Check daily limit only (multiple shares per campaign allowed)
     if (dailyShareCount >= MAX_DAILY_SHARES) {
       alert(t.campaignDetail.alerts.dailyLimitExceeded.replace(/\$\{MAX_DAILY_SHARES\}/g, MAX_DAILY_SHARES.toString()));
       return;
     }
 
-    // Directly open link input modal (user manually shares first)
-    setShowShareLinkModal(true);
+    if (!campaign) return;
+
+    // Campaign URL for sharing
+    const campaignUrl = `${window.location.origin}/main/influencer/campaigns/${id}`;
+
+    // Prepare share content
+    const shareTitle = campaign.title;
+    const shareText = `${campaign.title}\n\n${campaign.description}\n\n💰 Ngân sách: ${formatPoints(campaign.budget_min)} - ${formatPoints(campaign.budget_max)} VND\n📅 Hạn chót: ${new Date(campaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
+
+    // Try Web Share API first (works on mobile)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: campaignUrl,
+        });
+
+        // After successful share, show modal to submit Facebook post link
+        setTimeout(() => {
+          setShowShareLinkModal(true);
+        }, 500);
+      } catch (err: any) {
+        // User cancelled or error occurred
+        if (err.name !== 'AbortError') {
+          console.error('Share failed:', err);
+          // Fallback to Facebook share dialog
+          openFacebookShareDialog(campaignUrl, shareTitle, shareText);
+        }
+      }
+    } else {
+      // Fallback: Open Facebook share dialog
+      openFacebookShareDialog(campaignUrl, shareTitle, shareText);
+    }
+  };
+
+  // Open Facebook share dialog (fallback for desktop)
+  const openFacebookShareDialog = (url: string, title: string, text: string) => {
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title + '\n\n' + text)}`;
+
+    // Open in new window
+    const shareWindow = window.open(facebookShareUrl, '_blank', 'width=600,height=400');
+
+    // After user shares, show modal to input the post link
+    if (shareWindow) {
+      setTimeout(() => {
+        setShowShareLinkModal(true);
+      }, 2000);
+    }
   };
 
   // Validate Facebook post URL

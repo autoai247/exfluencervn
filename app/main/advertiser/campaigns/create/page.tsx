@@ -138,9 +138,7 @@ export default function CreateCampaignPage() {
       errors.push('지원 마감일을 선택해주세요');
     }
 
-    if (formData.deliverables.length === 0) {
-      errors.push('결과물 요구사항을 최소 1개 추가해주세요');
-    }
+    // Note: Deliverables field to be added in future update
 
     // Show validation errors
     if (errors.length > 0) {

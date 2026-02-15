@@ -707,20 +707,22 @@ function CampaignsPageContent() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      {/* Header - 스크롤 시 숨김 */}
-      {!hideHeader && (
-        <div className="animate-slide-down">
-          <MobileHeader
-            title={t.campaign.title}
-            showNotification
-            onNotification={() => router.push('/main/influencer/notifications')}
-          />
-        </div>
-      )}
+      {/* Header - 스크롤 시 숨김 (부드러운 전환) */}
+      <div className={`overflow-hidden transition-all duration-300 ${
+        hideHeader ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'
+      }`}>
+        <MobileHeader
+          title={t.campaign.title}
+          showNotification
+          onNotification={() => router.push('/main/influencer/notifications')}
+        />
+      </div>
 
       {/* ADMIN MODE TOGGLE (only visible to admins) - 스크롤 시 숨김 */}
-      {isAdmin && !hideHeader && (
-        <div className="sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500">
+      {isAdmin && (
+        <div className={`sticky top-14 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500 overflow-hidden transition-all duration-300 ${
+          hideHeader ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'
+        }`}>
           <div className="px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500 font-mono">🔐 Admin Panel</span>
@@ -746,9 +748,10 @@ function CampaignsPageContent() {
         </div>
       )}
 
-      {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 숨김 */}
-      {!hideHeader && (
-        <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500">
+      {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 숨김 (부드러운 전환) */}
+      <div className={`sticky top-14 z-30 bg-dark-700 border-b border-dark-500 overflow-hidden transition-all duration-300 ${
+        hideHeader ? 'max-h-0 opacity-0' : 'max-h-40 opacity-100'
+      }`}>
         <Link href="/main/influencer/korea-dream">
           <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px]">
             <div className="bg-dark-700 rounded-xl px-4 py-3 relative overflow-hidden">
@@ -797,11 +800,11 @@ function CampaignsPageContent() {
           </div>
         </Link>
       </div>
-      )}
 
-      {/* Search Bar - 스크롤 시 숨김 */}
-      {!hideHeader && (
-        <div className="sticky top-[120px] z-20 bg-dark-700 border-b border-dark-500 p-4">
+      {/* Search Bar - 스크롤 시 숨김 (부드러운 전환) */}
+      <div className={`sticky top-[120px] z-20 bg-dark-700 border-b border-dark-500 overflow-hidden transition-all duration-300 ${
+        hideHeader ? 'max-h-0 opacity-0 p-0' : 'max-h-96 opacity-100 p-4'
+      }`}>
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Search
@@ -1133,7 +1136,6 @@ function CampaignsPageContent() {
           </div>
         )}
       </div>
-      )}
 
       {/* Results Count */}
       <div className="px-4 py-3 text-sm text-gray-300">
@@ -1243,7 +1245,7 @@ function CampaignsPageContent() {
       )}
 
       {/* Campaign List */}
-      <div className="container-mobile space-y-4 pb-6">
+      <div className="container-mobile space-y-6 pb-6">
         {filteredCampaigns.map((campaign) => {
           const eligibility = checkEligibility(campaign);
           const campaignUrl = `/main/influencer/campaigns/${campaign.id}${isAdminMode ? '?admin=true' : ''}`;

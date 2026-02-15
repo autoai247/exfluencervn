@@ -43,7 +43,7 @@ export default function CampaignCard({
 }: CampaignCardProps) {
   return (
     <Link href={campaignUrl}>
-      <div className="card-hover overflow-hidden p-0 cursor-pointer">
+      <div className="card-hover overflow-hidden p-0 cursor-pointer border-2 border-dark-500/50 hover:border-primary/50 shadow-xl">
         {/* Thumbnail Image */}
         {campaign.thumbnail && (
           <div className="relative w-full h-48 overflow-hidden">

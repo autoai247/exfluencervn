@@ -226,7 +226,74 @@ const mockCampaign = {
     previousCampaigns: 5,
     averageRating: 4.8,
     totalInfluencers: 127,
+    verified: true,
+    trustScore: 95, // 신뢰도 점수 (0-100)
+    badges: ['결제 신뢰', '빠른 응답', '명확한 가이드'],
   },
+
+  // 광고주에 대한 인플루언서 리뷰 (중요!)
+  advertiserReviews: [
+    {
+      id: 'ar1',
+      influencer: 'Nguyen T.',
+      influencerAvatar: 'https://ui-avatars.com/api/?name=Nguyen+T&background=4ECDC4&color=fff',
+      rating: 5.0,
+      comment: '제품도 좋고 정산도 빨라요! 가이드라인이 명확해서 작업하기 편했습니다. 다음에도 꼭 함께하고 싶어요.',
+      date: '2026-02-08',
+      campaignTitle: '겨울 스킨케어 캠페인',
+      tags: ['정산 빠름', '소통 원활', '가이드 명확'],
+      wasPaymentOnTime: true,
+      wouldWorkAgain: true
+    },
+    {
+      id: 'ar2',
+      influencer: 'Tran M.',
+      influencerAvatar: 'https://ui-avatars.com/api/?name=Tran+M&background=FF6B6B&color=fff',
+      rating: 4.8,
+      comment: '광고주 응대가 친절하고 전문적입니다. 제품 퀄리티도 우수해서 자신있게 리뷰할 수 있었어요.',
+      date: '2026-02-05',
+      campaignTitle: '신제품 리뷰 캠페인',
+      tags: ['친절함', '전문적', '제품 우수'],
+      wasPaymentOnTime: true,
+      wouldWorkAgain: true
+    },
+    {
+      id: 'ar3',
+      influencer: 'Le H.',
+      influencerAvatar: 'https://ui-avatars.com/api/?name=Le+H&background=6C5CE7&color=fff',
+      rating: 5.0,
+      comment: '재작업 요청이 거의 없고, 크리에이티브를 존중해주셔서 좋았습니다. 적극 추천합니다!',
+      date: '2026-01-28',
+      campaignTitle: '뷰티 루틴 캠페인',
+      tags: ['크리에이티브 존중', '재작업 거의 없음', '추천'],
+      wasPaymentOnTime: true,
+      wouldWorkAgain: true
+    },
+    {
+      id: 'ar4',
+      influencer: 'Pham N.',
+      influencerAvatar: 'https://ui-avatars.com/api/?name=Pham+N&background=00B894&color=fff',
+      rating: 4.9,
+      comment: '계약서가 명확하고, 피드백도 신속합니다. 신뢰할 수 있는 광고주예요.',
+      date: '2026-01-20',
+      campaignTitle: '메이크업 튜토리얼 캠페인',
+      tags: ['계약 명확', '피드백 신속', '신뢰'],
+      wasPaymentOnTime: true,
+      wouldWorkAgain: true
+    },
+    {
+      id: 'ar5',
+      influencer: 'Hoang V.',
+      influencerAvatar: 'https://ui-avatars.com/api/?name=Hoang+V&background=FFA502&color=fff',
+      rating: 5.0,
+      comment: '처음부터 끝까지 완벽했습니다. 제품 배송도 빠르고, 응답도 빨라서 스트레스 없이 작업했어요.',
+      date: '2026-01-15',
+      campaignTitle: '스킨케어 리뷰 캠페인',
+      tags: ['완벽함', '배송 빠름', '스트레스 없음'],
+      wasPaymentOnTime: true,
+      wouldWorkAgain: true
+    }
+  ],
 
   // 선정 기준
   selectionCriteria: {
@@ -1569,6 +1636,126 @@ export default function CampaignDetailPage() {
             >
               📷 Instagram
             </a>
+          </div>
+        </div>
+
+        {/* 광고주 신뢰도 & 인플루언서 리뷰 - 가장 중요! */}
+        <div className="card bg-gradient-to-br from-success/10 to-success/5 border-success/30">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle size={20} className="text-success" />
+              <h3 className="text-lg font-bold text-white">광고주 신뢰도</h3>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
+                <span className="text-xl font-bold text-success">{mockCampaign.brandInfo.trustScore}</span>
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-gray-400">신뢰점수</div>
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < Math.floor(mockCampaign.brandInfo.trustScore / 20) ? 'bg-success' : 'bg-gray-600'}`} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 신뢰 배지 */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {mockCampaign.brandInfo.badges.map((badge: string, idx: number) => (
+              <span key={idx} className="px-3 py-1.5 bg-success/20 text-success border border-success/30 rounded-full text-xs font-semibold flex items-center gap-1">
+                <CheckCircle size={12} />
+                {badge}
+              </span>
+            ))}
+            {mockCampaign.brandInfo.verified && (
+              <span className="px-3 py-1.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-semibold flex items-center gap-1">
+                <CheckCircle size={12} />
+                인증된 광고주
+              </span>
+            )}
+          </div>
+
+          {/* 인플루언서 리뷰 */}
+          <div className="bg-dark-600 rounded-xl p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-bold text-white">다른 인플루언서들의 평가</h4>
+              <div className="flex items-center gap-1">
+                <div className="text-yellow-400 text-lg font-bold">{mockCampaign.brandInfo.averageRating}</div>
+                <div className="text-gray-400 text-xs">/ 5.0</div>
+              </div>
+            </div>
+
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {mockCampaign.advertiserReviews.slice(0, 3).map((review: any) => (
+                <div key={review.id} className="bg-dark-700 rounded-lg p-3 border border-dark-500">
+                  <div className="flex items-start gap-3 mb-2">
+                    <img
+                      src={review.influencerAvatar}
+                      alt={review.influencer}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h5 className="text-sm font-semibold text-white">{review.influencer}</h5>
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <div key={i} className={`text-xs ${i < review.rating ? 'text-yellow-400' : 'text-gray-600'}`}>★</div>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-400 mb-2">{review.campaignTitle}</p>
+                      <p className="text-sm text-gray-300 leading-relaxed mb-2">"{review.comment}"</p>
+
+                      {/* 태그 */}
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {review.tags.map((tag: string, idx: number) => (
+                          <span key={idx} className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full border border-success/30">
+                            ✓ {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* 중요 정보 */}
+                      <div className="flex items-center gap-3 text-xs">
+                        {review.wasPaymentOnTime && (
+                          <span className="text-success flex items-center gap-1">
+                            <CheckCircle size={12} />
+                            정산 제때
+                          </span>
+                        )}
+                        {review.wouldWorkAgain && (
+                          <span className="text-primary flex items-center gap-1">
+                            <CheckCircle size={12} />
+                            재협업 의향
+                          </span>
+                        )}
+                        <span className="text-gray-500">{review.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {mockCampaign.advertiserReviews.length > 3 && (
+              <button className="w-full mt-3 py-2 text-sm text-gray-400 hover:text-white border border-dark-500 rounded-lg hover:bg-dark-600 transition-colors">
+                전체 리뷰 보기 ({mockCampaign.advertiserReviews.length}개)
+              </button>
+            )}
+          </div>
+
+          {/* 결제 보장 안내 */}
+          <div className="bg-success/10 border border-success/30 rounded-lg p-3 flex items-start gap-3">
+            <CheckCircle size={20} className="text-success flex-shrink-0 mt-0.5" />
+            <div>
+              <h4 className="text-sm font-bold text-white mb-1">플랫폼 결제 보장</h4>
+              <p className="text-xs text-gray-300 leading-relaxed">
+                이 캠페인은 플랫폼이 결제를 보장합니다. 작업 완료 후 광고주가 정산하지 않을 경우,
+                플랫폼이 대신 지급합니다. 안심하고 지원하세요!
+              </p>
+            </div>
           </div>
         </div>
 

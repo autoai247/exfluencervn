@@ -54,8 +54,32 @@ export default function LoginPage() {
           .eq('id', data.user.id)
           .single();
 
+        // ✅ user_type 결정 (이메일 기반 fallback)
+        let userType = profile?.user_type || 'influencer';
+
+        // 🔧 Demo 계정 강제 설정
+        if (formData.email === 'advertiser@demo.com') {
+          userType = 'advertiser';
+          // DB 업데이트
+          await supabase
+            .from('profiles')
+            .update({ user_type: 'advertiser' })
+            .eq('id', data.user.id);
+        } else if (formData.email === 'influencer@demo.com') {
+          userType = 'influencer';
+          // DB 업데이트
+          await supabase
+            .from('profiles')
+            .update({ user_type: 'influencer' })
+            .eq('id', data.user.id);
+        }
+
+        // localStorage에 저장
+        localStorage.setItem('exfluencer_user_type', userType);
+        console.log('✅ Logged in as:', userType, '- Email:', formData.email);
+
         // user_type에 따라 리다이렉트
-        if (profile?.user_type === 'advertiser' || profile?.user_type === 'venue') {
+        if (userType === 'advertiser' || userType === 'venue') {
           router.push('/main/advertiser');
         } else {
           router.push('/main/influencer/campaigns');

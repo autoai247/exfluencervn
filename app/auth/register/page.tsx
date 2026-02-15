@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const searchParams = useSearchParams();
   const { t } = useLanguage();
 
-  const [userType, setUserType] = useState<UserType>((searchParams.get('type') as UserType) || null);
+  const [userType, setUserType] = useState<UserType | null>((searchParams.get('type') as UserType) || null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);

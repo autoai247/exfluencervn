@@ -178,6 +178,11 @@ export default function CampaignDetailPage() {
   const [pendingApplicants, setPendingApplicants] = useState(mockCampaignDetail.pendingApplicants);
   const [acceptedInfluencers, setAcceptedInfluencers] = useState(mockCampaignDetail.acceptedInfluencersList);
 
+  // Modal states for stats
+  const [showAcceptedModal, setShowAcceptedModal] = useState(false);
+  const [showApplicantsModal, setShowApplicantsModal] = useState(false);
+  const [showBudgetModal, setShowBudgetModal] = useState(false);
+
   // Handle approve applicant
   const handleApprove = (applicant: any) => {
     // Remove from pending
@@ -313,19 +318,27 @@ export default function CampaignDetailPage() {
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {/* Stats Grid - Clickable */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+          <div
+            onClick={() => setShowAcceptedModal(true)}
+            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+          >
             <Users size={24} className="text-gray-700 mx-auto mb-2" />
             <div className="text-xl font-bold text-gray-900">
-              {mockCampaignDetail.acceptedInfluencersList.length}/{mockCampaignDetail.targetInfluencers}
+              {acceptedInfluencers.length}/{mockCampaignDetail.targetInfluencers}
             </div>
             <div className="text-xs text-gray-500 mt-1">승인된 인플루언서</div>
+            <div className="text-xs text-gray-400 mt-1">👆 클릭하여 보기</div>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+          <div
+            onClick={() => setShowApplicantsModal(true)}
+            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+          >
             <Clock size={24} className="text-gray-700 mx-auto mb-2" />
             <div className="text-xl font-bold text-gray-900">{mockCampaignDetail.applicants}</div>
             <div className="text-xs text-gray-500 mt-1">총 지원자</div>
+            <div className="text-xs text-gray-400 mt-1">👆 클릭하여 보기</div>
           </div>
           <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
             <Eye size={24} className="text-gray-700 mx-auto mb-2" />
@@ -334,12 +347,16 @@ export default function CampaignDetailPage() {
             </div>
             <div className="text-xs text-gray-500 mt-1">조회수</div>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+          <div
+            onClick={() => setShowBudgetModal(true)}
+            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+          >
             <DollarSign size={24} className="text-gray-700 mx-auto mb-2" />
             <div className="text-lg font-bold text-gray-900">
               {formatPoints(mockCampaignDetail.budgetPerInfluencer)}
             </div>
             <div className="text-xs text-gray-500 mt-1">인플루언서당</div>
+            <div className="text-xs text-gray-400 mt-1">👆 클릭하여 보기</div>
           </div>
         </div>
 
@@ -818,6 +835,138 @@ export default function CampaignDetailPage() {
           })}
         </div>
       </div>
+
+      {/* Modals */}
+
+      {/* Accepted Influencers Modal */}
+      {showAcceptedModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowAcceptedModal(false)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">승인된 인플루언서 ({acceptedInfluencers.length}명)</h3>
+              <button onClick={() => setShowAcceptedModal(false)} className="text-gray-500 hover:text-gray-900">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="space-y-3">
+              {acceptedInfluencers.map((influencer) => (
+                <div key={influencer.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <img src={influencer.avatar} alt={influencer.name} className="w-12 h-12 rounded-full" />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">{influencer.name}</h4>
+                    <p className="text-xs text-gray-500">{influencer.platform}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-gray-900">{(influencer.followers / 1000).toFixed(1)}K</p>
+                    <p className="text-xs text-gray-500">{influencer.engagement}% 참여율</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowAcceptedModal(false);
+                      router.push(`/main/advertiser/influencers/${influencer.id}`);
+                    }}
+                    className="px-3 py-1 bg-gray-900 text-white text-xs rounded-lg hover:bg-gray-800"
+                  >
+                    보기
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* All Applicants Modal */}
+      {showApplicantsModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowApplicantsModal(false)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">전체 지원자 ({acceptedInfluencers.length + pendingApplicants.length}명)</h3>
+              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-500 hover:text-gray-900">
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* 승인된 인플루언서 */}
+            <div className="mb-6">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">승인됨 ({acceptedInfluencers.length}명)</h4>
+              <div className="space-y-2">
+                {acceptedInfluencers.map((influencer) => (
+                  <div key={influencer.id} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <img src={influencer.avatar} alt={influencer.name} className="w-10 h-10 rounded-full" />
+                    <div className="flex-1">
+                      <h5 className="text-sm font-semibold text-gray-900">{influencer.name}</h5>
+                      <p className="text-xs text-gray-500">{(influencer.followers / 1000).toFixed(1)}K · {influencer.engagement}%</p>
+                    </div>
+                    <span className="px-2 py-1 bg-green-600 text-white text-xs rounded-full">승인</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 대기 중인 지원자 */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">대기 중 ({pendingApplicants.length}명)</h4>
+              <div className="space-y-2">
+                {pendingApplicants.map((applicant) => (
+                  <div key={applicant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <img src={applicant.avatar} alt={applicant.name} className="w-10 h-10 rounded-full" />
+                    <div className="flex-1">
+                      <h5 className="text-sm font-semibold text-gray-900">{applicant.name}</h5>
+                      <p className="text-xs text-gray-500">{(applicant.followers / 1000).toFixed(1)}K · {applicant.engagement}%</p>
+                    </div>
+                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">대기</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Budget Breakdown Modal */}
+      {showBudgetModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowBudgetModal(false)}>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">예산 분배 상세</h3>
+              <button onClick={() => setShowBudgetModal(false)} className="text-gray-500 hover:text-gray-900">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-gray-600">총 예산</span>
+                  <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budget)}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-gray-600">목표 인플루언서 수</span>
+                  <span className="text-sm font-bold text-gray-900">{mockCampaignDetail.targetInfluencers}명</span>
+                </div>
+                <div className="flex justify-between mb-2 pb-2 border-b border-gray-200">
+                  <span className="text-sm text-gray-600">인플루언서당 예산</span>
+                  <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budgetPerInfluencer)}</span>
+                </div>
+                <div className="flex justify-between mt-2">
+                  <span className="text-sm text-gray-600">현재 사용</span>
+                  <span className="text-sm font-bold text-green-700">{formatPoints(mockCampaignDetail.spent)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">남은 예산</span>
+                  <span className="text-sm font-bold text-blue-700">{formatPoints(mockCampaignDetail.budget - mockCampaignDetail.spent)}</span>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-3">
+                <p className="text-xs text-blue-700">
+                  💡 승인된 인플루언서 {acceptedInfluencers.length}명 × {formatPoints(mockCampaignDetail.budgetPerInfluencer)} = {formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

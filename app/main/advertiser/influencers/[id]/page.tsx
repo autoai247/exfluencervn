@@ -556,12 +556,26 @@ export default function InfluencerProfilePage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="bg-gray-50 rounded-xl p-4 text-center">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-gray-50 rounded-xl p-4">
+            <div className="text-xs text-gray-500 mb-1">{text.totalFollowers}</div>
             <div className="text-2xl font-bold text-gray-900">
               {(influencer.followers / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-500 mt-1">{text.totalFollowers}</div>
+            <div className="text-xs text-gray-400 mt-1">
+              {language === 'ko' ? '전체 플랫폼 합계' : 'Tổng tất cả nền tảng'}
+            </div>
+          </div>
+          <div className="bg-gray-50 rounded-xl p-4">
+            <div className="text-xs text-gray-500 mb-1">
+              {language === 'ko' ? '평균 팔로워' : 'TB người theo dõi'}
+            </div>
+            <div className="text-2xl font-bold text-gray-900">
+              {(influencer.followers / influencer.platforms.length / 1000).toFixed(0)}K
+            </div>
+            <div className="text-xs text-gray-400 mt-1">
+              {language === 'ko' ? '플랫폼당 평균' : 'Trung bình mỗi nền tảng'}
+            </div>
           </div>
           <div className="bg-gray-50 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">{influencer.engagement}%</div>
@@ -653,13 +667,13 @@ export default function InfluencerProfilePage() {
                     src={review.advertiserLogo}
                     alt={review.advertiser}
                     className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all"
-                    onClick={() => router.push(`/main/influencer/advertisers/${review.advertiserId}`)}
+                    onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h4
                         className="text-sm font-semibold text-gray-900 cursor-pointer hover:text-gray-600 transition-colors"
-                        onClick={() => router.push(`/main/influencer/advertisers/${review.advertiserId}`)}
+                        onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                       >
                         {review.advertiser}
                       </h4>

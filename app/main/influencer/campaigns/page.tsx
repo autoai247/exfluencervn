@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, Suspense, lazy } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Search,
   Filter,
@@ -16,6 +17,7 @@ import {
   Plane,
   Ticket,
   Trophy,
+  Heart,
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import MobileHeader from '@/components/common/MobileHeader';
@@ -26,6 +28,23 @@ import type { Platform, Category } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { getMockCampaigns, getMockUserProfile } from '@/lib/mockData';
 import { checkAndGenerateCampaigns } from '@/lib/demoCampaignGenerator';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import CampaignCard from '@/components/campaign/CampaignCard';
+
+// Dynamic import for FilterPanel (Code Splitting)
+const FilterPanel = dynamic(() => import('@/components/campaign/FilterPanel'), {
+  loading: () => (
+    <div className="bg-dark-600 rounded-xl p-5 mb-4 border border-dark-500 animate-pulse">
+      <div className="h-8 bg-dark-500 rounded mb-4"></div>
+      <div className="space-y-3">
+        <div className="h-20 bg-dark-500 rounded"></div>
+        <div className="h-20 bg-dark-500 rounded"></div>
+        <div className="h-12 bg-dark-500 rounded"></div>
+      </div>
+    </div>
+  ),
+  ssr: false,
+});
 
 // Mock user profile - DEPRECATED: Now using getMockUserProfile() from @/lib/mockData
 /*const mockUserProfile = {
@@ -340,6 +359,7 @@ const generateApplicantAvatars = (campaignId: string, applicantsCount: number, s
 
 export default function CampaignsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t, language } = useLanguage();
 
   // ADMIN MODE: Toggle to see demo campaign indicators (only for platform owner)
@@ -368,24 +388,85 @@ export default function CampaignsPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({
-    platforms: [] as Platform[],
-    categories: [] as Category[],
-    minBudget: '',
-    maxBudget: '',
-    location: '',
-    type: '' as '' | 'cash' | 'points',
-    eligibleOnly: false, // 지원 가능한 캠페인만 보기
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-    // Extended filters
-    requiresVehicle: false, // 차량 소유 필수 캠페인만
-    requiresParent: false, // 자녀 있는 사람 필수 캠페인만
-    requiresPet: false, // 반려동물 있는 사람 필수 캠페인만
-    maritalStatus: '' as '' | 'single' | 'married',
+  // Initialize filters from URL params
+  const [filters, setFilters] = useState(() => {
+    const platforms = searchParams.get('platforms')?.split(',').filter(Boolean) as Platform[] || [];
+    const categories = searchParams.get('categories')?.split(',').filter(Boolean) as Category[] || [];
+
+    return {
+      platforms,
+      categories,
+      minBudget: searchParams.get('minBudget') || '',
+      maxBudget: searchParams.get('maxBudget') || '',
+      location: searchParams.get('location') || '',
+      type: (searchParams.get('type') || '') as '' | 'cash' | 'points',
+      eligibleOnly: searchParams.get('eligibleOnly') === 'true',
+      requiresVehicle: searchParams.get('requiresVehicle') === 'true',
+      requiresParent: searchParams.get('requiresParent') === 'true',
+      requiresPet: searchParams.get('requiresPet') === 'true',
+      maritalStatus: (searchParams.get('maritalStatus') || '') as '' | 'single' | 'married',
+    };
   });
 
-  // 자격 체크 함수
-  const checkEligibility = (campaign: typeof mockCampaigns[0]) => {
+  // Favorites state (persisted in localStorage)
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('campaign_favorites');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+
+  // Persist favorites to localStorage
+  useEffect(() => {
+    localStorage.setItem('campaign_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  // Toggle favorite
+  const toggleFavorite = (e: React.MouseEvent, campaignId: string) => {
+    e.preventDefault(); // Prevent navigation to campaign details
+    e.stopPropagation();
+
+    setFavorites(prev =>
+      prev.includes(campaignId)
+        ? prev.filter(id => id !== campaignId)
+        : [...prev, campaignId]
+    );
+  };
+
+  // Sync filters to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    // Only add non-empty values to URL
+    if (filters.platforms.length > 0) {
+      params.set('platforms', filters.platforms.join(','));
+    }
+    if (filters.categories.length > 0) {
+      params.set('categories', filters.categories.join(','));
+    }
+    if (filters.minBudget) params.set('minBudget', filters.minBudget);
+    if (filters.maxBudget) params.set('maxBudget', filters.maxBudget);
+    if (filters.location) params.set('location', filters.location);
+    if (filters.type) params.set('type', filters.type);
+    if (filters.eligibleOnly) params.set('eligibleOnly', 'true');
+    if (filters.requiresVehicle) params.set('requiresVehicle', 'true');
+    if (filters.requiresParent) params.set('requiresParent', 'true');
+    if (filters.requiresPet) params.set('requiresPet', 'true');
+    if (filters.maritalStatus) params.set('maritalStatus', filters.maritalStatus);
+
+    // Update URL without reload
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+
+    window.history.replaceState({}, '', newUrl);
+  }, [filters]);
+
+  // 자격 체크 함수 (Optimized with useCallback)
+  const checkEligibility = useCallback((campaign: typeof mockCampaigns[0]) => {
     const checks = {
       followers: mockUserProfile.followers >= campaign.requiredFollowers,
       engagement: mockUserProfile.engagementRate >= campaign.requiredEngagement,
@@ -414,10 +495,10 @@ export default function CampaignsPage() {
       ...checks,
       eligible: Object.values(checks).every(v => v),
     };
-  };
+  }, [mockUserProfile]);
 
-  // Calculate recommendation score for campaigns (0-100)
-  const calculateRecommendationScore = (campaign: typeof mockCampaigns[0]) => {
+  // Calculate recommendation score for campaigns (0-100) (Optimized with useCallback)
+  const calculateRecommendationScore = useCallback((campaign: typeof mockCampaigns[0]) => {
     let score = 0;
     const criteria = checkEligibility(campaign);
 
@@ -454,19 +535,22 @@ export default function CampaignsPage() {
     if (daysUntilDeadline < 7) score -= 5;
 
     return Math.max(0, Math.min(100, score));
-  };
+  }, [checkEligibility, mockUserProfile]);
 
-  // Get recommended campaigns (top 3 by score)
-  const recommendedCampaigns = mockCampaigns
-    .map(campaign => ({
-      campaign,
-      score: calculateRecommendationScore(campaign),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-    .filter(item => item.score >= 60); // Only show if score is 60% or higher
+  // Get recommended campaigns (top 3 by score) (Optimized with useMemo)
+  const recommendedCampaigns = useMemo(() =>
+    mockCampaigns
+      .map(campaign => ({
+        campaign,
+        score: calculateRecommendationScore(campaign),
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .filter(item => item.score >= 60) // Only show if score is 60% or higher
+  , [mockCampaigns, calculateRecommendationScore]);
 
-  const filteredCampaigns = mockCampaigns.filter((campaign) => {
+  // Filter campaigns based on search and filters (Optimized with useMemo)
+  const filteredCampaigns = useMemo(() => mockCampaigns.filter((campaign) => {
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -545,25 +629,56 @@ export default function CampaignsPage() {
     }
 
     return true;
-  });
+  }), [mockCampaigns, searchQuery, filters, checkEligibility, mockUserProfile]);
 
-  const togglePlatform = (platform: Platform) => {
-    setFilters({
-      ...filters,
-      platforms: filters.platforms.includes(platform)
-        ? filters.platforms.filter((p) => p !== platform)
-        : [...filters.platforms, platform],
-    });
-  };
+  const togglePlatform = useCallback((platform: Platform) => {
+    setFilters(prev => ({
+      ...prev,
+      platforms: prev.platforms.includes(platform)
+        ? prev.platforms.filter((p) => p !== platform)
+        : [...prev.platforms, platform],
+    }));
+  }, []);
 
-  const toggleCategory = (category: Category) => {
-    setFilters({
-      ...filters,
-      categories: filters.categories.includes(category)
-        ? filters.categories.filter((c) => c !== category)
-        : [...filters.categories, category],
-    });
-  };
+  const toggleCategory = useCallback((category: Category) => {
+    setFilters(prev => ({
+      ...prev,
+      categories: prev.categories.includes(category)
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category],
+    }));
+  }, []);
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: '/',
+      action: () => {
+        searchInputRef.current?.focus();
+      },
+      description: 'Focus search input'
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (showFilters) {
+          setShowFilters(false);
+        } else if (searchQuery) {
+          setSearchQuery('');
+          searchInputRef.current?.blur();
+        }
+      },
+      description: 'Close filters or clear search'
+    },
+    {
+      key: 'f',
+      ctrl: true,
+      action: () => {
+        setShowFilters(!showFilters);
+      },
+      description: 'Toggle filters'
+    }
+  ]);
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
@@ -662,6 +777,7 @@ export default function CampaignsPage() {
               className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"
             />
             <input
+              ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -1027,6 +1143,8 @@ export default function CampaignsPage() {
                           src={campaign.thumbnail}
                           alt={campaign.title}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
@@ -1072,6 +1190,7 @@ export default function CampaignsPage() {
                                 alt={avatar.name}
                                 className="w-6 h-6 rounded-full border-2 border-dark-600 hover:z-10 hover:scale-110 transition-transform"
                                 title={avatar.name}
+                                loading="lazy"
                               />
                             ))}
                           </div>
@@ -1106,6 +1225,8 @@ export default function CampaignsPage() {
                       src={campaign.thumbnail}
                       alt={campaign.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
@@ -1144,13 +1265,29 @@ export default function CampaignsPage() {
                       </div>
                     </div>
 
-                    <div className="absolute bottom-3 left-3 right-3">
+                    {/* Favorite Button */}
+                    <button
+                      onClick={(e) => toggleFavorite(e, campaign.id)}
+                      className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-dark-800/90 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center hover:scale-110 hover:bg-dark-700 transition-all shadow-lg group"
+                    >
+                      <Heart
+                        size={20}
+                        className={`transition-all ${
+                          favorites.includes(campaign.id)
+                            ? 'fill-red-500 text-red-500'
+                            : 'text-white group-hover:fill-red-500/30'
+                        }`}
+                      />
+                    </button>
+
+                    <div className="absolute bottom-3 left-3 right-14">
                       <h4 className="text-lg font-bold text-white drop-shadow-lg mb-1">{campaign.title}</h4>
                       <div className="flex items-center gap-2">
                         <img
                           src={campaign.companyLogo}
                           alt={campaign.company}
                           className="w-6 h-6 rounded-full border-2 border-white/50"
+                          loading="lazy"
                         />
                         <span className="text-sm text-white/90 drop-shadow">{campaign.company}</span>
                       </div>
@@ -1216,6 +1353,7 @@ export default function CampaignsPage() {
                               src={avatar.url}
                               alt={avatar.name}
                               className="w-10 h-10 rounded-full border-3 border-dark-700 hover:z-10 hover:scale-125 transition-all cursor-pointer shadow-lg"
+                              loading="lazy"
                             />
                             {/* 호버 시 이름 표시 */}
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
@@ -1341,11 +1479,15 @@ export default function CampaignsPage() {
                 setFilters({
                   platforms: [],
                   categories: [],
+                  minBudget: '',
+                  maxBudget: '',
+                  location: '',
+                  type: '',
                   eligibleOnly: false,
                   requiresVehicle: false,
                   requiresParent: false,
                   requiresPet: false,
-                  maritalStatus: undefined,
+                  maritalStatus: '',
                 });
                 setSearchQuery('');
               },

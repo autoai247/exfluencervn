@@ -643,17 +643,23 @@ export default function InfluencerSearchPage() {
               onClick: () => {
                 setSearchQuery('');
                 setFilters({
-                  platforms: [],
                   categories: [],
-                  minFollowers: undefined,
-                  maxFollowers: undefined,
-                  minEngagement: undefined,
-                  location: undefined,
-                  verified: undefined,
+                  minFollowers: '',
+                  maxFollowers: '',
+                  location: '',
+                  minEngagement: '',
+                  maxEngagement: '',
+                  platform: 'all',
+                  gender: 'all',
+                  ageRange: [],
+                  verified: false,
                   skinType: [],
                   skinTone: [],
-                  hasVehicle: undefined,
-                  gender: undefined,
+                  hasVehicle: null,
+                  minRating: '',
+                  minCompletedCampaigns: '',
+                  minAvgViews: '',
+                  maxAvgViews: '',
                 });
                 setShowFilters(false);
               },

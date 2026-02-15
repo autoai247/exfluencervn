@@ -1,14 +1,29 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag } from 'lucide-react';
+import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag, LucideIcon } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
+// Shop item type definition
+interface ShopItem {
+  id: string;
+  name: string;
+  nameEn: string;
+  description: string;
+  descriptionEn: string;
+  price: number;
+  icon: LucideIcon;
+  color: string;
+  featured?: boolean;
+  popular?: boolean;
+  benefits?: string[];
+}
+
 // Mock shop items
-const shopCategories = {
+const shopCategories: Record<'premium' | 'boost' | 'training', ShopItem[]> = {
   premium: [
     {
       id: 'premium-1',
@@ -93,7 +108,7 @@ export default function InfluencerShopPage() {
     { id: 'training', label: language === 'ko' ? '교육' : 'Training', icon: Award },
   ];
 
-  const handlePurchase = (item: any) => {
+  const handlePurchase = (item: ShopItem) => {
     alert(
       language === 'ko'
         ? `"${item.name}" 구매 기능은 곧 출시됩니다!\n\n가격: ${formatPoints(item.price)} VND`
@@ -101,12 +116,11 @@ export default function InfluencerShopPage() {
     );
   };
 
-  const renderItems = () => {
-    const items = selectedCategory === 'all'
-      ? [...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training]
-      : shopCategories[selectedCategory as keyof typeof shopCategories];
-
-    return items;
+  const renderItems = (): ShopItem[] => {
+    if (selectedCategory === 'all') {
+      return [...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
+    }
+    return shopCategories[selectedCategory];
   };
 
   return (

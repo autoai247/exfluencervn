@@ -1,13 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingBag, Star, Zap, TrendingUp, Target, BarChart3, Users, Crown, Gift, Tag } from 'lucide-react';
+import { ShoppingBag, Star, Zap, TrendingUp, Target, BarChart3, Users, Crown, Gift, Tag, LucideIcon } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatPoints } from '@/lib/points';
 
+// Shop item type definition
+interface ShopItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  icon: LucideIcon;
+  color: string;
+  featured?: boolean;
+  popular?: boolean;
+  bonus?: string;
+  benefits?: string[];
+}
+
 // Mock shop items for advertisers
-const shopCategories = {
+const shopCategories: Record<'campaigns' | 'analytics' | 'credits', ShopItem[]> = {
   campaigns: [
     {
       id: 'campaign-1',
@@ -83,16 +97,15 @@ export default function AdvertiserShopPage() {
     { id: 'credits', label: '크레딧', icon: Gift },
   ];
 
-  const handlePurchase = (item: any) => {
+  const handlePurchase = (item: ShopItem) => {
     alert(`"${item.name}" 구매 기능은 곧 출시됩니다!\n\n가격: ${formatPoints(item.price)} VND`);
   };
 
-  const renderItems = () => {
-    const items = selectedCategory === 'all'
-      ? [...shopCategories.campaigns, ...shopCategories.analytics, ...shopCategories.credits]
-      : shopCategories[selectedCategory as keyof typeof shopCategories];
-
-    return items;
+  const renderItems = (): ShopItem[] => {
+    if (selectedCategory === 'all') {
+      return [...shopCategories.campaigns, ...shopCategories.analytics, ...shopCategories.credits];
+    }
+    return shopCategories[selectedCategory];
   };
 
   return (

@@ -678,8 +678,8 @@ export default function CampaignDetailPage() {
         </div>
         <Breadcrumb
           items={[
-            { label: t.campaignDetail.campaigns || 'Campaigns', href: '/main/influencer/campaigns' },
-            { label: campaign?.title || 'Campaign Detail' },
+            { label: t.nav.campaigns, href: '/main/influencer/campaigns' },
+            { label: currentCampaign?.title || mockCampaign.title },
           ]}
           className="ml-9"
           dark

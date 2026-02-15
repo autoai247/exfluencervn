@@ -388,6 +388,7 @@ function CampaignsPageContent() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize filters from URL params
@@ -423,6 +424,16 @@ function CampaignsPageContent() {
   useEffect(() => {
     localStorage.setItem('campaign_favorites', JSON.stringify(favorites));
   }, [favorites]);
+
+  // Scroll detection for sticky header optimization
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Toggle favorite
   const toggleFavorite = (e: React.MouseEvent, campaignId: string) => {
@@ -717,59 +728,73 @@ function CampaignsPageContent() {
         </div>
       )}
 
-      {/* 🇰🇷 KOREA DREAM 고정 배너 */}
-      <div className="sticky top-14 z-30 bg-dark-700 border-b border-dark-500">
+      {/* 🇰🇷 KOREA DREAM 고정 배너 - 스크롤 시 축소 */}
+      <div className={`sticky top-14 z-30 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
+        isScrolled ? 'shadow-lg' : ''
+      }`}>
         <Link href="/main/influencer/korea-dream">
-          <div className="mx-4 my-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] animate-pulse">
-            <div className="bg-dark-700 rounded-xl px-4 py-3 relative overflow-hidden">
+          <div className={`mx-4 relative overflow-hidden rounded-xl bg-gradient-to-br from-red-500 via-blue-500 to-red-500 p-[2px] transition-all duration-300 ${
+            isScrolled ? 'my-2 animate-none' : 'my-3 animate-pulse'
+          }`}>
+            <div className={`bg-dark-700 rounded-xl relative overflow-hidden transition-all duration-300 ${
+              isScrolled ? 'px-3 py-2' : 'px-4 py-3'
+            }`}>
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-xl"></div>
 
               <div className="relative z-10 flex items-center justify-between">
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Plane size={20} className="text-white" />
+                <div className="flex items-center gap-2 flex-1">
+                  <div className={`bg-gradient-to-br from-red-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                    isScrolled ? 'w-8 h-8' : 'w-10 h-10'
+                  }`}>
+                    <Plane size={isScrolled ? 16 : 20} className="text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">🇰🇷</span>
-                      <span className="font-bold text-white text-sm">KOREA DREAM</span>
-                      <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] rounded-full font-bold">HOT</span>
+                    <div className="flex items-center gap-2">
+                      <span className={`transition-all duration-300 ${isScrolled ? 'text-sm' : 'text-lg'}`}>🇰🇷</span>
+                      <span className={`font-bold text-white transition-all duration-300 ${isScrolled ? 'text-xs' : 'text-sm'}`}>KOREA DREAM</span>
+                      {!isScrolled && <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] rounded-full font-bold">HOT</span>}
                     </div>
-                    <div className="text-xs text-gray-300">{t.koreaDream.koreanBeautyExperience}</div>
+                    {!isScrolled && <div className="text-xs text-gray-300 mt-1">{t.koreaDream.koreanBeautyExperience}</div>}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <div className="text-right">
-                    <div className="text-xs text-gray-300">{t.koreaDream.myTickets}</div>
+                    {!isScrolled && <div className="text-xs text-gray-300">{t.koreaDream.myTickets}</div>}
                     <div className="flex items-center gap-1">
-                      <Ticket size={14} className="text-primary" />
-                      <span className="font-bold text-white text-sm">0{t.koreaDream.ticketsUnit}</span>
+                      <Ticket size={isScrolled ? 12 : 14} className="text-primary" />
+                      <span className={`font-bold text-white transition-all duration-300 ${isScrolled ? 'text-xs' : 'text-sm'}`}>0{t.koreaDream.ticketsUnit}</span>
                     </div>
                   </div>
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="text-white text-lg">→</span>
+                  <div className={`bg-primary rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    isScrolled ? 'w-6 h-6' : 'w-8 h-8'
+                  }`}>
+                    <span className={`text-white transition-all duration-300 ${isScrolled ? 'text-sm' : 'text-lg'}`}>→</span>
                   </div>
                 </div>
               </div>
 
-              {/* Progress bar */}
-              <div className="mt-2 relative z-10">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-gray-300">{t.koreaDream.targetTickets}</span>
-                  <span className="text-[10px] font-bold text-white">78,432 / 100,000{t.koreaDream.ticketsUnit}</span>
+              {/* Progress bar - 스크롤 시 숨김 */}
+              {!isScrolled && (
+                <div className="mt-2 relative z-10">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] text-gray-300">{t.koreaDream.targetTickets}</span>
+                    <span className="text-[10px] font-bold text-white">78,432 / 100,000{t.koreaDream.ticketsUnit}</span>
+                  </div>
+                  <div className="w-full bg-dark-600 rounded-full h-1.5">
+                    <div className="bg-gradient-to-r from-red-500 to-blue-500 h-1.5 rounded-full" style={{width: '78.4%'}}></div>
+                  </div>
                 </div>
-                <div className="w-full bg-dark-600 rounded-full h-1.5">
-                  <div className="bg-gradient-to-r from-red-500 to-blue-500 h-1.5 rounded-full" style={{width: '78.4%'}}></div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </Link>
       </div>
 
-      {/* Search Bar */}
-      <div className="sticky top-[200px] z-20 bg-dark-700 border-b border-dark-500 p-4">
+      {/* Search Bar - 스크롤 시 위치 조정 */}
+      <div className={`sticky z-20 bg-dark-700 border-b border-dark-500 transition-all duration-300 ${
+        isScrolled ? 'top-[110px] p-3 shadow-md' : 'top-[200px] p-4'
+      }`}>
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Search

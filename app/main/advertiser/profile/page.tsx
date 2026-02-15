@@ -168,47 +168,62 @@ export default function AdvertiserProfilePage() {
             <h3 className="text-lg font-bold text-white">{text.stats.title}</h3>
           </div>
 
-          {/* Top Stats */}
+          {/* Top Stats - Clickable */}
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-gradient-to-br from-orange-500/20 to-orange-500/5 rounded-xl p-4 border-2 border-orange-500/40 shadow-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <Package size={20} className="text-orange-400" />
-                <span className="text-xs text-gray-400">{text.stats.totalCampaigns}</span>
+            <Link href="/main/advertiser/campaigns">
+              <div className="bg-gradient-to-br from-orange-500/20 to-orange-500/5 rounded-xl p-4 border-2 border-orange-500/40 shadow-lg hover:border-orange-500/70 transition-all cursor-pointer">
+                <div className="flex items-center gap-2 mb-2">
+                  <Package size={20} className="text-orange-400" />
+                  <span className="text-xs text-gray-400">{text.stats.totalCampaigns}</span>
+                </div>
+                <div className="text-2xl font-bold text-orange-400">{advertiser.totalCampaigns}</div>
+                <div className="text-xs text-orange-300 mt-2">👆 {language === 'ko' ? '전체 보기' : 'Xem tất cả'}</div>
               </div>
-              <div className="text-2xl font-bold text-orange-400">{advertiser.totalCampaigns}</div>
-            </div>
+            </Link>
 
-            <div className="bg-gradient-to-br from-amber-500/20 to-amber-500/5 rounded-xl p-4 border-2 border-amber-500/40 shadow-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <BarChart3 size={20} className="text-amber-400" />
-                <span className="text-xs text-gray-400">{text.stats.activeCampaigns}</span>
+            <Link href="/main/advertiser/campaigns?status=active">
+              <div className="bg-gradient-to-br from-amber-500/20 to-amber-500/5 rounded-xl p-4 border-2 border-amber-500/40 shadow-lg hover:border-amber-500/70 transition-all cursor-pointer">
+                <div className="flex items-center gap-2 mb-2">
+                  <BarChart3 size={20} className="text-amber-400" />
+                  <span className="text-xs text-gray-400">{text.stats.activeCampaigns}</span>
+                </div>
+                <div className="text-2xl font-bold text-amber-400">{advertiser.activeCampaigns}</div>
+                <div className="text-xs text-amber-300 mt-2">👆 {language === 'ko' ? '진행 중 보기' : 'Xem đang tiến hành'}</div>
               </div>
-              <div className="text-2xl font-bold text-amber-400">{advertiser.activeCampaigns}</div>
-            </div>
+            </Link>
           </div>
 
-          {/* Bottom Stats */}
+          {/* Bottom Stats - Clickable */}
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-              <div className="text-xs text-gray-400 mb-1">{text.stats.completedCampaigns}</div>
-              <div className="text-xl font-bold text-white">{advertiser.completedCampaigns}</div>
-            </div>
+            <Link href="/main/advertiser/campaigns?status=completed">
+              <div className="bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-green-500/50 transition-all cursor-pointer">
+                <div className="text-xs text-gray-400 mb-1">{text.stats.completedCampaigns}</div>
+                <div className="text-xl font-bold text-white">{advertiser.completedCampaigns}</div>
+                <div className="text-xs text-green-400 mt-2">👆 {language === 'ko' ? '완료 목록' : 'Danh sách hoàn thành'}</div>
+              </div>
+            </Link>
 
-            <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-              <div className="text-xs text-gray-400 mb-1">{text.stats.totalInfluencers}</div>
-              <div className="text-xl font-bold text-white">{advertiser.totalInfluencers}</div>
-            </div>
+            <Link href="/main/advertiser/influencers">
+              <div className="bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-primary/50 transition-all cursor-pointer">
+                <div className="text-xs text-gray-400 mb-1">{text.stats.totalInfluencers}</div>
+                <div className="text-xl font-bold text-white">{advertiser.totalInfluencers}</div>
+                <div className="text-xs text-primary mt-2">👆 {language === 'ko' ? '인플루언서 보기' : 'Xem KOLs'}</div>
+              </div>
+            </Link>
           </div>
 
-          {/* Total Budget - Highlighted */}
-          <div className="bg-gradient-to-r from-yellow-500/30 via-orange-500/20 to-amber-500/30 rounded-xl p-5 border-2 border-yellow-500/50 shadow-xl">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">💰</span>
-              <div className="text-xs text-gray-300 font-bold">{text.stats.totalBudget}</div>
+          {/* Total Budget - Highlighted & Clickable */}
+          <Link href="/main/advertiser/analytics">
+            <div className="bg-gradient-to-r from-yellow-500/30 via-orange-500/20 to-amber-500/30 rounded-xl p-5 border-2 border-yellow-500/50 shadow-xl hover:border-yellow-500/80 transition-all cursor-pointer">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">💰</span>
+                <div className="text-xs text-gray-300 font-bold">{text.stats.totalBudget}</div>
+              </div>
+              <div className="text-3xl font-black text-yellow-400">{formatPoints(advertiser.totalBudget)} VND</div>
+              <div className="text-xs text-yellow-300/60 mt-1 font-medium">{text.stats.totalBudgetDesc}</div>
+              <div className="text-xs text-yellow-200 mt-2">👆 {language === 'ko' ? '예산 분석 보기' : 'Xem phân tích ngân sách'}</div>
             </div>
-            <div className="text-3xl font-black text-yellow-400">{formatPoints(advertiser.totalBudget)} VND</div>
-            <div className="text-xs text-yellow-300/60 mt-1 font-medium">{text.stats.totalBudgetDesc}</div>
-          </div>
+          </Link>
         </div>
 
         {/* Action Buttons */}

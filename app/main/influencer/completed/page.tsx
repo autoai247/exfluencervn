@@ -8,115 +8,23 @@ import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatCash, formatShoppingPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { getMockCompletedCampaigns, type MockCompletedCampaign } from '@/lib/mockData';
 
-type CampaignType = 'cash' | 'points';
 type TabType = 'all' | 'cash' | 'points';
-
-interface CompletedCampaign {
-  id: string;
-  title: string;
-  company: string;
-  thumbnail: string;
-  type: CampaignType;
-  reward: number;
-  completedDate: string;
-  rating?: number;
-  reviewText?: string;
-  location: string;
-  platform: string;
-  status: 'paid' | 'pending_payment';
-}
-
-// Mock data
-const mockCompletedCampaigns: CompletedCampaign[] = [
-  {
-    id: '1',
-    title: '신규 스킨케어 제품 리뷰 캠페인',
-    company: 'K-Beauty Co.',
-    thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
-    type: 'cash',
-    reward: 500000,
-    completedDate: '2024-02-10',
-    rating: 5,
-    reviewText: '매우 만족스러운 협업이었습니다!',
-    location: '서울, 한국',
-    platform: 'Instagram',
-    status: 'paid',
-  },
-  {
-    id: '2',
-    title: '베트남 레스토랑 체험 리뷰',
-    company: 'Pho House Vietnam',
-    thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
-    type: 'cash',
-    reward: 300000,
-    completedDate: '2024-02-08',
-    rating: 4,
-    location: '호치민, 베트남',
-    platform: 'TikTok',
-    status: 'paid',
-  },
-  {
-    id: '3',
-    title: '스마트폰 언박싱 & 리뷰',
-    company: 'Tech World',
-    thumbnail: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
-    type: 'cash',
-    reward: 800000,
-    completedDate: '2024-02-05',
-    rating: 5,
-    location: '서울, 한국',
-    platform: 'YouTube',
-    status: 'pending_payment',
-  },
-  {
-    id: '4',
-    title: '출석 체크 보너스 - 7일 연속 달성',
-    company: 'Exfluencer VN',
-    thumbnail: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=300&fit=crop',
-    type: 'points',
-    reward: 10000,
-    completedDate: '2024-02-12',
-    location: '온라인',
-    platform: 'Platform',
-    status: 'paid',
-  },
-  {
-    id: '5',
-    title: 'SNS 공유 이벤트',
-    company: 'Exfluencer VN',
-    thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop',
-    type: 'points',
-    reward: 5000,
-    completedDate: '2024-02-11',
-    location: '온라인',
-    platform: 'Multi-platform',
-    status: 'paid',
-  },
-  {
-    id: '6',
-    title: '친구 추천 보너스',
-    company: 'Exfluencer VN',
-    thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop',
-    type: 'points',
-    reward: 30000,
-    completedDate: '2024-02-09',
-    location: '온라인',
-    platform: 'Platform',
-    status: 'paid',
-  },
-];
 
 export default function CompletedCampaignsPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const [campaigns] = useState(mockCompletedCampaigns);
+  const campaigns = getMockCompletedCampaigns(language);
 
-  // 증빙서류 다운로드
-  const handleDownloadReceipt = (campaign: CompletedCampaign) => {
-    // TODO: 실제로는 서버에서 PDF 생성하여 다운로드
-    alert(`📄 ${campaign.title}\n\n증빙서류를 다운로드합니다.\n\n- 캠페인명: ${campaign.title}\n- 수익: ${formatCash(campaign.reward)}\n- 완료일: ${campaign.completedDate}\n- 상태: 지급 완료\n\n※ 실제 운영 시 PDF 파일로 다운로드됩니다.`);
+  const handleDownloadReceipt = (campaign: MockCompletedCampaign) => {
+    const statusText = language === 'ko' ? '지급 완료' : 'Đã thanh toán';
+    const noteText = language === 'ko'
+      ? '※ 실제 운영 시 PDF 파일로 다운로드됩니다.'
+      : '※ Trong vận hành thực tế sẽ tải xuống file PDF.';
+
+    alert(`📄 ${campaign.title}\n\n${t.completed.downloadReceipt}\n\n- ${t.campaigns.title}: ${campaign.title}\n- ${t.completed.earned}: ${formatCash(campaign.reward)}\n- ${t.completed.completedOn}: ${campaign.completedDate}\n- ${t.campaigns.status.completed}: ${statusText}\n\n${noteText}`);
   };
 
   const filteredCampaigns = campaigns.filter(c => {
@@ -293,7 +201,7 @@ export default function CompletedCampaignsPage() {
                     className="flex-1 btn btn-primary text-sm py-2"
                   >
                     <Download size={14} className="mr-1" />
-                    증빙서류
+                    {t.completed.downloadReceipt}
                   </button>
                 )}
               </div>
@@ -306,9 +214,8 @@ export default function CompletedCampaignsPage() {
           <div className="card text-center py-12">
             <CheckCircle size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.completed.noCampaigns}</h3>
-            <p className="text-sm text-gray-400 mb-4">
-              캠페인을 완료하고<br />
-              수익을 확인하세요
+            <p className="text-sm text-gray-400 mb-4 whitespace-pre-line">
+              {t.completed.emptyDescription}
             </p>
             <Link href="/main/influencer/campaigns">
               <button className="btn btn-primary">
@@ -320,12 +227,12 @@ export default function CompletedCampaignsPage() {
 
         {/* 안내 */}
         <div className="card bg-info/10 border-info/30">
-          <h4 className="font-semibold text-white mb-2 text-sm">💡 완료 캠페인 안내</h4>
+          <h4 className="font-semibold text-white mb-2 text-sm">{t.completed.infoTitle}</h4>
           <ul className="text-xs text-gray-300 space-y-1">
-            <li>• 현금 수익: 캠페인 완료 후 2-5일 내 지급</li>
-            <li>• 쇼핑 포인트: 즉시 적립 (상점에서 사용 가능)</li>
-            <li>• 평점 & 리뷰: 광고주 만족도 평가</li>
-            <li>• 증빙서류: 세금 신고 시 활용 가능</li>
+            <li>• {t.completed.infoCash}</li>
+            <li>• {t.completed.infoPoints}</li>
+            <li>• {t.completed.infoRating}</li>
+            <li>• {t.completed.infoReceipt}</li>
           </ul>
         </div>
       </div>

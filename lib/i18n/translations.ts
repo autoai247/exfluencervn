@@ -853,6 +853,13 @@ export interface Translations {
     completedOn: string;
     earned: string;
     viewDetails: string;
+    downloadReceipt: string;
+    emptyDescription: string;
+    infoTitle: string;
+    infoCash: string;
+    infoPoints: string;
+    infoRating: string;
+    infoReceipt: string;
   };
 
   // Raffle
@@ -2899,6 +2906,13 @@ export const translations: Record<Language, Translations> = {
       completedOn: 'Hoàn thành vào',
       earned: 'Đã kiếm',
       viewDetails: 'Xem chi tiết',
+      downloadReceipt: 'Chứng từ',
+      emptyDescription: 'Hoàn thành chiến dịch và\nkiểm tra thu nhập của bạn',
+      infoTitle: '💡 Hướng dẫn chiến dịch đã hoàn thành',
+      infoCash: 'Điểm tiền mặt: Thanh toán trong 2-5 ngày sau khi hoàn thành chiến dịch',
+      infoPoints: 'Điểm mua sắm: Được cộng ngay lập tức (có thể sử dụng tại cửa hàng)',
+      infoRating: 'Đánh giá & nhận xét: Đánh giá mức độ hài lòng của nhà quảng cáo',
+      infoReceipt: 'Chứng từ: Có thể sử dụng khi khai báo thuế',
     },
     raffle: {
       myTickets: 'Vé của tôi',
@@ -4490,6 +4504,13 @@ export const translations: Record<Language, Translations> = {
       completedOn: '완료일',
       earned: '획득',
       viewDetails: '상세 보기',
+      downloadReceipt: '증빙서류',
+      emptyDescription: '캠페인을 완료하고\n수익을 확인하세요',
+      infoTitle: '💡 완료 캠페인 안내',
+      infoCash: '현금 수익: 캠페인 완료 후 2-5일 내 지급',
+      infoPoints: '쇼핑 포인트: 즉시 적립 (상점에서 사용 가능)',
+      infoRating: '평점 & 리뷰: 광고주 만족도 평가',
+      infoReceipt: '증빙서류: 세금 신고 시 활용 가능',
     },
     raffle: {
       myTickets: '내 응모권',

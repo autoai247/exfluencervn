@@ -51,11 +51,11 @@ export default function ReviewsPage() {
   const overallAverage = calculateOverallAverage(categoryAverages);
 
   const ratingCategories = [
-    { key: 'professionalism', label: t.review.professionalism || '전문성', icon: Award, color: 'text-primary' },
-    { key: 'punctuality', label: t.review.punctuality || '일정 준수', icon: Calendar, color: 'text-success' },
-    { key: 'communication', label: t.review.communication || '소통', icon: MessageCircle, color: 'text-info' },
-    { key: 'creativity', label: t.review.creativity || '창의성', icon: Lightbulb, color: 'text-warning' },
-    { key: 'performance', label: t.review.performance || '성과', icon: TrendingUp, color: 'text-secondary' },
+    { key: 'professionalism', label: t.review.professionalism, icon: Award, color: 'text-primary' },
+    { key: 'punctuality', label: t.review.punctuality, icon: Calendar, color: 'text-success' },
+    { key: 'communication', label: t.review.communication, icon: MessageCircle, color: 'text-info' },
+    { key: 'creativity', label: t.review.creativity, icon: Lightbulb, color: 'text-warning' },
+    { key: 'performance', label: t.review.performance, icon: TrendingUp, color: 'text-secondary' },
   ];
 
   return (
@@ -84,13 +84,13 @@ export default function ReviewsPage() {
                 />
               ))}
             </div>
-            <p className="text-sm text-gray-400">{t.review.overallRating || '종합 평점'} - {mockReviews.length}{t.review.reviewsCount || '개의 리뷰'}</p>
+            <p className="text-sm text-gray-400">{t.review.overallRating} - {mockReviews.length}{t.review.reviewsCount}</p>
           </div>
         </div>
 
         {/* Category Ratings */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-4">{t.review.categoryRatings || '평가 항목별 점수'}</h3>
+          <h3 className="text-sm font-semibold text-white mb-4">{t.review.categoryRatings}</h3>
           <div className="space-y-4">
             {ratingCategories.map((category) => {
               const Icon = category.icon;
@@ -121,7 +121,7 @@ export default function ReviewsPage() {
 
         {/* Reviews List */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">{t.review.allReviews || '전체 리뷰'} ({mockReviews.length})</h3>
+          <h3 className="text-sm font-semibold text-gray-400 px-1">{t.review.allReviews} ({mockReviews.length})</h3>
 
           {mockReviews.map((review) => {
             const avgRating = calculateOverallAverage(review.ratings);
@@ -174,7 +174,7 @@ export default function ReviewsPage() {
                 <div className="flex items-center gap-2 pt-3 border-t border-dark-500">
                   <button className="text-xs text-gray-400 hover:text-primary flex items-center gap-1 transition-colors">
                     <ThumbsUp size={14} />
-                    {t.review.helpful || '도움됨'} ({review.helpful})
+                    {t.review.helpful} ({review.helpful})
                   </button>
                 </div>
               </div>

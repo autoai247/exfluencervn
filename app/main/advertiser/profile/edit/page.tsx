@@ -19,6 +19,10 @@ import {
   CheckCircle,
   Trash2,
   User,
+  Facebook,
+  Instagram,
+  Youtube,
+  Share2,
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
@@ -62,6 +66,12 @@ export default function AdvertiserProfileEditPage() {
     fax: '+84 28 1234 5678',
     website: 'https://demobrand.com',
 
+    // SNS
+    facebook: 'https://facebook.com/demobrand',
+    instagram: 'https://instagram.com/demobrand',
+    tiktok: '@demobrand',
+    youtube: 'https://youtube.com/@demobrand',
+
     // 주소
     address: language === 'ko'
       ? '123 Nguyen Hue Street, District 1, Ho Chi Minh City'
@@ -82,6 +92,7 @@ export default function AdvertiserProfileEditPage() {
       basicInfo: '기본 정보',
       businessInfo: '사업자 정보',
       contactInfo: '연락처 정보',
+      snsInfo: 'SNS 계정',
       addressInfo: '주소 정보',
       companyIntro: '회사 소개',
       documentsSection: '사업자 서류',
@@ -122,6 +133,16 @@ export default function AdvertiserProfileEditPage() {
       faxPlaceholder: '+84 28 XXXX XXXX',
       website: '웹사이트',
       websitePlaceholder: 'https://yourcompany.com',
+
+      // SNS
+      facebook: 'Facebook',
+      facebookPlaceholder: 'https://facebook.com/yourcompany',
+      instagram: 'Instagram',
+      instagramPlaceholder: 'https://instagram.com/yourcompany',
+      tiktok: 'TikTok',
+      tiktokPlaceholder: '@yourcompany',
+      youtube: 'YouTube',
+      youtubePlaceholder: 'https://youtube.com/@yourcompany',
 
       // 주소
       address: '본사 주소',
@@ -164,6 +185,7 @@ export default function AdvertiserProfileEditPage() {
       basicInfo: 'Thông tin cơ bản',
       businessInfo: 'Thông tin doanh nghiệp',
       contactInfo: 'Thông tin liên hệ',
+      snsInfo: 'Tài khoản mạng xã hội',
       addressInfo: 'Địa chỉ',
       companyIntro: 'Giới thiệu công ty',
       documentsSection: 'Giấy tờ doanh nghiệp',
@@ -204,6 +226,16 @@ export default function AdvertiserProfileEditPage() {
       faxPlaceholder: '+84 28 XXXX XXXX',
       website: 'Website',
       websitePlaceholder: 'https://yourcompany.com',
+
+      // SNS
+      facebook: 'Facebook',
+      facebookPlaceholder: 'https://facebook.com/yourcompany',
+      instagram: 'Instagram',
+      instagramPlaceholder: 'https://instagram.com/yourcompany',
+      tiktok: 'TikTok',
+      tiktokPlaceholder: '@yourcompany',
+      youtube: 'YouTube',
+      youtubePlaceholder: 'https://youtube.com/@yourcompany',
 
       // 주소
       address: 'Địa chỉ trụ sở',
@@ -746,6 +778,80 @@ export default function AdvertiserProfileEditPage() {
                   value={formData.website}
                   onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                   placeholder={text.websitePlaceholder}
+                  className="input pl-12"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ===== SNS 계정 ===== */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Share2 size={18} className="text-info" />
+              <h3 className="text-sm font-bold text-gray-300">{text.snsInfo}</h3>
+              <span className="text-xs text-gray-500">({text.optional})</span>
+            </div>
+
+            {/* Facebook */}
+            <div className="card">
+              <label className="block mb-2">
+                <span className="text-sm font-semibold text-white">{text.facebook}</span>
+              </label>
+              <div className="relative">
+                <Facebook size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="url"
+                  value={formData.facebook}
+                  onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
+                  placeholder={text.facebookPlaceholder}
+                  className="input pl-12"
+                />
+              </div>
+            </div>
+
+            {/* Instagram */}
+            <div className="card">
+              <label className="block mb-2">
+                <span className="text-sm font-semibold text-white">{text.instagram}</span>
+              </label>
+              <div className="relative">
+                <Instagram size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="url"
+                  value={formData.instagram}
+                  onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
+                  placeholder={text.instagramPlaceholder}
+                  className="input pl-12"
+                />
+              </div>
+            </div>
+
+            {/* TikTok */}
+            <div className="card">
+              <label className="block mb-2">
+                <span className="text-sm font-semibold text-white">{text.tiktok}</span>
+              </label>
+              <input
+                type="text"
+                value={formData.tiktok}
+                onChange={(e) => setFormData({ ...formData, tiktok: e.target.value })}
+                placeholder={text.tiktokPlaceholder}
+                className="input"
+              />
+            </div>
+
+            {/* YouTube */}
+            <div className="card">
+              <label className="block mb-2">
+                <span className="text-sm font-semibold text-white">{text.youtube}</span>
+              </label>
+              <div className="relative">
+                <Youtube size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="url"
+                  value={formData.youtube}
+                  onChange={(e) => setFormData({ ...formData, youtube: e.target.value })}
+                  placeholder={text.youtubePlaceholder}
                   className="input pl-12"
                 />
               </div>

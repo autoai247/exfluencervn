@@ -357,7 +357,7 @@ const generateApplicantAvatars = (campaignId: string, applicantsCount: number, s
   return avatars;
 };
 
-export default function CampaignsPage() {
+function CampaignsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t, language } = useLanguage();
@@ -1500,5 +1500,18 @@ export default function CampaignsPage() {
       {/* Bottom Navigation */}
       <BottomNav userType="influencer" />
     </div>
+  );
+}
+
+// Wrapper component with Suspense boundary for useSearchParams
+export default function CampaignsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark-700 flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    }>
+      <CampaignsPageContent />
+    </Suspense>
   );
 }

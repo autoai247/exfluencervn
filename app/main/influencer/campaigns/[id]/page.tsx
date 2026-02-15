@@ -390,7 +390,7 @@ export default function CampaignDetailPage() {
 
     // Prepare share content
     const shareTitle = currentCampaign.title;
-    const shareText = `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 Ngân sách: ${formatPoints(currentCampaign.budget_min)} - ${formatPoints(currentCampaign.budget_max)} VND\n📅 Hạn chót: ${new Date(currentCampaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
+    const shareText = `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 Ngân sách: ${formatPoints(currentCampaign.minBudget)} - ${formatPoints(currentCampaign.maxBudget)} VND\n📅 Hạn chót: ${new Date(currentCampaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {

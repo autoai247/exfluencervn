@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag, Gift, Ticket, Trophy, Smartphone, Plane, Camera, Headphones, Watch, LucideIcon } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
@@ -209,11 +210,21 @@ const shopCategories: Record<'raffles' | 'tickets' | 'premium' | 'boost' | 'trai
 };
 
 export default function InfluencerShopPage() {
+  const router = useRouter();
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'raffles' | 'tickets' | 'premium' | 'boost' | 'training'>('all');
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [ticketBalance, setTicketBalance] = useState(0);
+  const [showRaffleModal, setShowRaffleModal] = useState(false);
+  const [selectedRaffle, setSelectedRaffle] = useState<ShopItem | null>(null);
+
+  // Load ticket balance from localStorage
+  useEffect(() => {
+    const balance = parseInt(localStorage.getItem('exfluencer_ticket_balance') || '0');
+    setTicketBalance(balance);
+  }, []);
 
   const categories = [
     { id: 'all', label: language === 'ko' ? '전체' : 'All', icon: ShoppingBag },
@@ -243,14 +254,75 @@ export default function InfluencerShopPage() {
   const confirmPurchase = () => {
     if (!selectedItem) return;
     const totalPrice = selectedItem.price * quantity;
+
+    // Save to localStorage
+    const currentBalance = parseInt(localStorage.getItem('exfluencer_ticket_balance') || '0');
+    const newBalance = currentBalance + quantity;
+    localStorage.setItem('exfluencer_ticket_balance', newBalance.toString());
+
+    // Save purchase history
+    const history = JSON.parse(localStorage.getItem('exfluencer_raffle_history') || '[]');
+    history.push({
+      date: new Date().toISOString(),
+      tickets: quantity,
+      pointsSpent: totalPrice,
+      itemName: selectedItem.name,
+    });
+    localStorage.setItem('exfluencer_raffle_history', JSON.stringify(history));
+
+    // Update state
+    setTicketBalance(newBalance);
+
     alert(
       language === 'ko'
-        ? `${selectedItem.name} ${quantity}장 구매 완료!\n\n총 금액: ${formatPoints(totalPrice)} VND\n\n보유 응모권이 ${quantity}장 증가했습니다!`
-        : `${selectedItem.nameEn} x${quantity} purchased!\n\nTotal: ${formatPoints(totalPrice)} VND\n\nYou received ${quantity} raffle tickets!`
+        ? `${selectedItem.name} ${quantity}장 구매 완료!\n\n총 금액: ${formatPoints(totalPrice)} VND\n\n보유 응모권: ${newBalance}장`
+        : `${selectedItem.nameEn} x${quantity} purchased!\n\nTotal: ${formatPoints(totalPrice)} VND\n\nTicket Balance: ${newBalance}`
     );
     setShowPurchaseModal(false);
     setSelectedItem(null);
     setQuantity(1);
+  };
+
+  const handleRaffleEntry = (item: ShopItem) => {
+    setSelectedRaffle(item);
+    setShowRaffleModal(true);
+  };
+
+  const confirmRaffleEntry = () => {
+    if (!selectedRaffle) return;
+
+    // Get required tickets from benefits (assuming format "응모권 X장 필요")
+    const requiredTickets = selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))
+      ?.match(/(\d+)장/)?.[1] || '1';
+    const ticketsNeeded = parseInt(requiredTickets);
+
+    if (ticketBalance < ticketsNeeded) {
+      alert(
+        language === 'ko'
+          ? `응모권이 부족합니다!\n\n필요: ${ticketsNeeded}장\n보유: ${ticketBalance}장`
+          : `Not enough tickets!\n\nRequired: ${ticketsNeeded}\nYou have: ${ticketBalance}`
+      );
+      return;
+    }
+
+    // Deduct tickets
+    const newBalance = ticketBalance - ticketsNeeded;
+    localStorage.setItem('exfluencer_ticket_balance', newBalance.toString());
+    setTicketBalance(newBalance);
+
+    // Save raffle entry
+    const raffleTickets = JSON.parse(localStorage.getItem('exfluencer_raffle_tickets') || '{}');
+    raffleTickets[selectedRaffle.id] = (raffleTickets[selectedRaffle.id] || 0) + ticketsNeeded;
+    localStorage.setItem('exfluencer_raffle_tickets', JSON.stringify(raffleTickets));
+
+    alert(
+      language === 'ko'
+        ? `${selectedRaffle.name} 응모 완료!\n\n사용 응모권: ${ticketsNeeded}장\n남은 응모권: ${newBalance}장`
+        : `${selectedRaffle.nameEn} entry confirmed!\n\nTickets used: ${ticketsNeeded}\nRemaining: ${newBalance}`
+    );
+
+    setShowRaffleModal(false);
+    setSelectedRaffle(null);
   };
 
   const renderItems = (): ShopItem[] => {
@@ -282,6 +354,32 @@ export default function InfluencerShopPage() {
           </div>
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
+        </div>
+
+        {/* Ticket Balance & Quick Links */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="card bg-gradient-to-br from-orange-400/20 to-red-500/20 border-2 border-orange-500/50 shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-400 mb-1">{language === 'ko' ? '보유 응모권' : 'My Tickets'}</p>
+                <div className="text-2xl font-bold text-white">{ticketBalance}</div>
+                <p className="text-xs text-gray-400 mt-1">{language === 'ko' ? '장' : 'tickets'}</p>
+              </div>
+              <Ticket size={40} className="text-orange-400/50" />
+            </div>
+          </div>
+          <button
+            onClick={() => router.push('/main/influencer/my-raffles')}
+            className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/50 hover:border-primary transition-all shadow-xl"
+          >
+            <div className="flex items-center justify-between">
+              <div className="text-left">
+                <p className="text-xs text-gray-400 mb-1">{language === 'ko' ? '내 응모' : 'My Entries'}</p>
+                <div className="text-sm font-bold text-white">{language === 'ko' ? '응모 내역 보기' : 'View Entries'}</div>
+              </div>
+              <Gift size={28} className="text-primary/70" />
+            </div>
+          </button>
         </div>
 
         {/* Category Tabs */}
@@ -362,10 +460,13 @@ export default function InfluencerShopPage() {
                         <div className="text-xs text-gray-400">VND</div>
                       </div>
                       <button
-                        onClick={() => handlePurchase(item)}
+                        onClick={() => item.id.startsWith('raffle-') ? handleRaffleEntry(item) : handlePurchase(item)}
                         className="px-5 py-2.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold text-sm hover:shadow-xl hover:scale-105 transition-all"
                       >
-                        {language === 'ko' ? '구매하기' : 'Buy Now'}
+                        {item.id.startsWith('raffle-')
+                          ? (language === 'ko' ? '응모하기' : 'Enter')
+                          : (language === 'ko' ? '구매하기' : 'Buy Now')
+                        }
                       </button>
                     </div>
                   </div>
@@ -497,6 +598,95 @@ export default function InfluencerShopPage() {
                 className="flex-1 btn btn-primary"
               >
                 {language === 'ko' ? '구매하기' : 'Purchase'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Raffle Entry Modal */}
+      {showRaffleModal && selectedRaffle && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6 border-2 border-primary/30 shadow-xl">
+            <h3 className="text-xl font-bold text-white mb-4">
+              {language === 'ko' ? '경품 응모 확인' : 'Confirm Entry'}
+            </h3>
+
+            {/* Raffle Info */}
+            <div className="bg-dark-700 rounded-xl p-4 mb-4 border-2 border-dark-500/50 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${selectedRaffle.color} flex items-center justify-center shadow-xl`}>
+                  {(() => {
+                    const Icon = selectedRaffle.icon;
+                    return <Icon size={24} className="text-white" />;
+                  })()}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-white">{language === 'ko' ? selectedRaffle.name : selectedRaffle.nameEn}</h4>
+                  <p className="text-xs text-gray-400">{language === 'ko' ? selectedRaffle.description : selectedRaffle.descriptionEn}</p>
+                </div>
+              </div>
+
+              {/* Benefits */}
+              {selectedRaffle.benefits && (
+                <div className="space-y-1 mt-3 pt-3 border-t border-dark-600">
+                  {selectedRaffle.benefits.map((benefit, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs text-gray-300">
+                      <div className="w-1 h-1 rounded-full bg-primary" />
+                      {benefit}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Ticket Info */}
+            <div className="bg-gradient-to-r from-orange-400/20 to-red-500/20 border-2 border-orange-500/30 rounded-xl p-4 mb-4 shadow-xl">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-300">{language === 'ko' ? '보유 응모권' : 'Your Tickets'}</span>
+                <span className="text-white font-bold">{ticketBalance} {language === 'ko' ? '장' : 'tickets'}</span>
+              </div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-300">{language === 'ko' ? '필요 응모권' : 'Required'}</span>
+                <span className="text-orange-400 font-bold">
+                  {selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1'} {language === 'ko' ? '장' : 'tickets'}
+                </span>
+              </div>
+              <div className="h-px bg-orange-500/30 my-2" />
+              <div className="flex justify-between items-center">
+                <span className="text-white font-bold">{language === 'ko' ? '응모 후 잔액' : 'After Entry'}</span>
+                <span className="text-primary font-bold">
+                  {ticketBalance - parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1')} {language === 'ko' ? '장' : 'tickets'}
+                </span>
+              </div>
+            </div>
+
+            {/* Warning */}
+            {ticketBalance < parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1') && (
+              <div className="bg-error/10 border-2 border-error/30 rounded-xl p-3 mb-4">
+                <p className="text-error text-sm font-semibold">
+                  {language === 'ko' ? '⚠️ 응모권이 부족합니다' : '⚠️ Not enough tickets'}
+                </p>
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowRaffleModal(false);
+                  setSelectedRaffle(null);
+                }}
+                className="flex-1 btn btn-ghost"
+              >
+                {language === 'ko' ? '취소' : 'Cancel'}
+              </button>
+              <button
+                onClick={confirmRaffleEntry}
+                disabled={ticketBalance < parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1')}
+                className="flex-1 btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {language === 'ko' ? '응모하기' : 'Enter'}
               </button>
             </div>
           </div>

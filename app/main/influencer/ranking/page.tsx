@@ -89,11 +89,11 @@ export default function RankingPage() {
         </div>
 
         {/* Full Rankings */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <h3 className="text-lg font-bold text-white px-2">
             {language === 'ko' ? '전체 랭킹' : 'Full Rankings'}
           </h3>
-          
+
           {mockRankings.map((user) => {
             const badge = getRankBadge(user.rank);
             const Icon = badge.icon;
@@ -102,7 +102,7 @@ export default function RankingPage() {
             return (
               <div
                 key={user.rank}
-                className={`bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border transition-all ${
+                className={`bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border-2 transition-all shadow-xl ${
                   isCurrentUser
                     ? 'border-primary shadow-lg shadow-primary/20'
                     : 'border-dark-500/50 hover:border-dark-400'
@@ -151,7 +151,7 @@ export default function RankingPage() {
         </div>
 
         {/* Info */}
-        <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border border-dark-500/50">
+        <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border-2 border-dark-500/50 shadow-xl">
           <p className="text-xs text-gray-400 text-center">
             {language === 'ko'
               ? '랭킹은 매월 1일 00:00 (KST)에 초기화됩니다'

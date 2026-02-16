@@ -60,8 +60,8 @@
 
   .card {
     @apply bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4;
-    @apply border border-dark-500/50;
-    @apply shadow-2xl shadow-black/20;
+    @apply border-2 border-dark-500/50;
+    @apply shadow-xl shadow-black/30;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -70,6 +70,16 @@
     @apply hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50;
     @apply hover:-translate-y-1 hover:scale-[1.02];
     @apply active:scale-[0.98];
+  }
+
+  /* 통일된 리스트 간격 */
+  .list-spacing {
+    @apply space-y-6;
+  }
+
+  /* 통일된 컨테이너 패딩 */
+  .page-container {
+    @apply container-mobile py-6 space-y-6;
   }
 
   .card-glass {

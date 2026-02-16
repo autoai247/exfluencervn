@@ -124,7 +124,7 @@ export default function PortfolioPage() {
       </div>
 
       <div className="container-mobile py-6 space-y-6">
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
           <h3 className="text-sm font-semibold text-white mb-4">📊 {t.portfolio.statistics}</h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-dark-600 rounded-lg p-3">
@@ -199,7 +199,7 @@ export default function PortfolioPage() {
 
         <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-1 gap-4'}>
           {filteredPortfolio.length === 0 ? (
-            <div className="card text-center py-12">
+            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
               <Award size={48} className="text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 mb-1">{t.portfolio.emptyState}</p>
               <p className="text-sm text-gray-500">
@@ -214,7 +214,7 @@ export default function PortfolioPage() {
             filteredPortfolio.map((item) => {
               const Icon = platformIcons[item.platform];
               return (
-              <div key={item.id} className="card p-0 overflow-hidden">
+              <div key={item.id} className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
                 <div
                   className="relative aspect-square cursor-pointer group"
                   onClick={() => {
@@ -265,7 +265,7 @@ export default function PortfolioPage() {
             filteredPortfolio.map((item) => {
               const Icon = platformIcons[item.platform];
               return (
-              <div key={item.id} className="card p-0 overflow-hidden">
+              <div key={item.id} className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
                 <div
                   className="relative h-48 cursor-pointer group"
                   onClick={() => {

@@ -111,12 +111,12 @@ export default function ShareHistoryPage() {
       <div className="container-mobile space-y-6 py-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card text-center bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+          <div className="card text-center bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
             <Share2 size={24} className="text-primary mx-auto mb-2" />
             <div className="text-2xl font-bold text-white">{stats.total}</div>
             <div className="text-xs text-gray-400 mt-1">{t.shareHistory.totalShares}</div>
           </div>
-          <div className="card text-center bg-gradient-to-br from-success/20 to-success/5 border-success/30">
+          <div className="card text-center bg-gradient-to-br from-success/20 to-success/5 border-2 border-success/30 shadow-xl">
             <DollarSign size={24} className="text-success mx-auto mb-2" />
             <div className="text-2xl font-bold text-success">{formatPoints(stats.totalEarnings)}</div>
             <div className="text-xs text-gray-400 mt-1">{t.shareHistory.totalEarned}</div>
@@ -171,9 +171,9 @@ export default function ShareHistoryPage() {
         </div>
 
         {/* Share History List */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           {filteredHistory.length === 0 ? (
-            <div className="card text-center py-12">
+            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
               <Share2 size={48} className="text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 mb-1">
                 {filter === 'all' ? t.shareHistory.noShares : t.shareHistory.noSharesFiltered}
@@ -182,7 +182,7 @@ export default function ShareHistoryPage() {
             </div>
           ) : (
             filteredHistory.map((share, index) => (
-              <div key={index} className="card">
+              <div key={index} className="card border-2 border-dark-500/50 shadow-xl">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-start gap-3 flex-1">
@@ -271,7 +271,7 @@ export default function ShareHistoryPage() {
 
         {/* Help Info */}
         {stats.pending > 0 && (
-          <div className="card bg-info/10 border-info/30">
+          <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
             <h4 className="text-sm font-semibold text-white mb-2">{t.shareHistory.reviewGuideTitle}</h4>
             <ul className="text-xs text-gray-300 space-y-1">
               <li>{t.shareHistory.reviewGuideLine1}</li>
@@ -283,7 +283,7 @@ export default function ShareHistoryPage() {
         )}
 
         {/* Share Guidelines */}
-        <div className="card bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-blue-500/30">
+        <div className="card bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-2 border-blue-500/30 shadow-xl">
           <h4 className="text-sm font-semibold text-white mb-2">{t.shareHistory.whereToShare}</h4>
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-xs">

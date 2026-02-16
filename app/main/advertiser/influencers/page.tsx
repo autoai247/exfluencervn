@@ -406,7 +406,7 @@ export default function InfluencerSearchPage() {
       </div>
 
       {/* Influencer Grid */}
-      <div className="px-4 space-y-4 pb-6">
+      <div className="px-4 space-y-6 pb-6">
         {sortedInfluencers.map((matchScore) => {
           const influencer = matchScore.influencer;
           const PlatformIcon = platformIcons[influencer.platform];
@@ -414,7 +414,7 @@ export default function InfluencerSearchPage() {
           return (
             <div
               key={influencer.id}
-              className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+              className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow cursor-pointer"
               onClick={(e) => {
                 // Only navigate if not clicking on buttons
                 if (!(e.target as HTMLElement).closest('button')) {

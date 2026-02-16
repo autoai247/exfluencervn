@@ -217,13 +217,13 @@ export default function JobsPage() {
       </div>
 
       {/* Job List */}
-      <div className="container-mobile space-y-4 py-6">
+      <div className="container-mobile space-y-6 py-6">
         {filteredJobs.map((job) => {
           const config = statusConfig[job.status];
           const StatusIcon = config.icon;
 
           return (
-            <div key={job.id} className={`card border-2 ${config.borderColor} ${config.bgColor}`}>
+            <div key={job.id} className={`card border-2 ${config.borderColor} ${config.bgColor} shadow-xl`}>
               {/* Header */}
               <div className="flex items-start gap-3 mb-3">
                 <img

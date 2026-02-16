@@ -151,7 +151,7 @@ export default function AdvertiserShopPage() {
         </div>
 
         {/* Shop Items */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {renderItems().map((item) => {
             const Icon = item.icon;
             const isFeatured = 'featured' in item && item.featured;
@@ -160,7 +160,7 @@ export default function AdvertiserShopPage() {
             return (
               <div
                 key={item.id}
-                className="relative bg-white border border-gray-200 rounded-2xl p-5 hover:border-gray-900 transition-all hover:shadow-xl group"
+                className="relative bg-white border-2 border-gray-200 rounded-2xl p-5 hover:border-gray-900 transition-all shadow-xl group"
               >
                 {/* Badge */}
                 {(isFeatured || isPopular) && (
@@ -226,7 +226,7 @@ export default function AdvertiserShopPage() {
         </div>
 
         {/* Info Notice */}
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 shadow-xl">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-gray-900/10 flex items-center justify-center flex-shrink-0">
               <Tag size={18} className="text-gray-900" />

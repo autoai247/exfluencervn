@@ -113,7 +113,7 @@ export default function MyCampaignsPage() {
 
           {/* Stats Grid - 간격 및 크기 개선 */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-primary/30 hover:border-primary/50 transition-all">
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-primary/30 hover:border-primary/50 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">⏱️</span>
                 <span className="text-sm text-gray-400 font-medium">{text.stats.active}</span>
@@ -121,7 +121,7 @@ export default function MyCampaignsPage() {
               <p className="text-3xl font-bold text-white">{getActiveCampaignsCount()}</p>
             </div>
 
-            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-mint/30 hover:border-mint/50 transition-all">
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-mint/30 hover:border-mint/50 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">✅</span>
                 <span className="text-sm text-gray-400 font-medium">{text.stats.completed}</span>
@@ -129,7 +129,7 @@ export default function MyCampaignsPage() {
               <p className="text-3xl font-bold text-white">{getCompletedCampaignsCount()}</p>
             </div>
 
-            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border border-green-500/30 hover:border-green-500/50 transition-all col-span-2">
+            <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-green-500/30 hover:border-green-500/50 transition-all col-span-2 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">💵</span>
                 <span className="text-sm text-gray-400 font-medium">{text.stats.totalEarnings}</span>
@@ -159,7 +159,7 @@ export default function MyCampaignsPage() {
         </div>
 
         {/* Campaign List */}
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-6">
           {displayCampaigns.length === 0 ? (
             <div className="text-center py-12">
               <div className="w-20 h-20 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -175,7 +175,7 @@ export default function MyCampaignsPage() {
               return (
                 <div
                   key={campaign.campaignId}
-                  className="bg-dark-700 rounded-2xl border border-dark-500 overflow-hidden hover:border-primary/30 transition-all"
+                  className="bg-dark-700 rounded-2xl border-2 border-dark-500 overflow-hidden hover:border-primary/30 transition-all shadow-xl"
                 >
                   {/* Campaign Header */}
                   <div className="p-4 border-b border-dark-600">

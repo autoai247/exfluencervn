@@ -122,7 +122,7 @@ export default function MyRafflesPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 요약 통계 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+          <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <Ticket size={20} className="text-primary" />
               <span className="text-xs text-gray-300">{t.raffle?.totalTickets || '총 응모권'}</span>
@@ -131,7 +131,7 @@ export default function MyRafflesPage() {
             <div className="text-xs text-gray-400 mt-1">{myRaffles.length}{t.raffle?.eventsParticipated || '개 이벤트 참여'}</div>
           </div>
 
-          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-blue-500/30">
+          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-2 border-blue-500/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <ShoppingBag size={20} className="text-blue-400" />
               <span className="text-xs text-gray-300">{t.raffle?.pointsUsed || '사용 포인트'}</span>
@@ -142,7 +142,7 @@ export default function MyRafflesPage() {
         </div>
 
         {/* 안내 카드 */}
-        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-accent/30">
+        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-2 border-accent/30 shadow-xl">
           <div className="flex items-center gap-3">
             <Trophy size={24} className="text-accent" />
             <div>
@@ -155,7 +155,7 @@ export default function MyRafflesPage() {
         </div>
 
         {/* 내 응모권 리스트 */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-400">{t.raffle?.participationStatus || '응모 현황'}</h3>
             <Link href="/main/influencer/shop" className="text-sm text-primary">
@@ -164,7 +164,7 @@ export default function MyRafflesPage() {
           </div>
 
           {myRaffles.length === 0 ? (
-            <div className="card text-center py-12">
+            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
               <Ticket size={48} className="text-gray-600 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-white mb-2">{t.raffle?.noEntries || '응모한 이벤트가 없습니다'}</h3>
               <p className="text-sm text-gray-400 mb-4">
@@ -183,7 +183,7 @@ export default function MyRafflesPage() {
               const winProbability = ((raffle.ticketCount / raffle.totalTickets) * 100).toFixed(4);
 
               return (
-                <div key={raffle.id} className="card">
+                <div key={raffle.id} className="card border-2 border-dark-500/50 shadow-xl">
                   <div className="flex items-start gap-4">
                     {/* 아이콘 */}
                     <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center flex-shrink-0">
@@ -262,7 +262,7 @@ export default function MyRafflesPage() {
         {/* 랭킹 바로가기 */}
         {totalTickets > 0 && (
           <Link href="/main/influencer/ranking">
-            <div className="card bg-gradient-to-r from-yellow-500/20 to-orange-500/10 border-yellow-500/30 hover:border-yellow-500/50 transition-all cursor-pointer">
+            <div className="card bg-gradient-to-r from-yellow-500/20 to-orange-500/10 border-2 border-yellow-500/30 hover:border-yellow-500/50 transition-all cursor-pointer shadow-xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
@@ -280,7 +280,7 @@ export default function MyRafflesPage() {
         )}
 
         {/* 안내 */}
-        <div className="card bg-info/10 border-info/30">
+        <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
           <h4 className="font-semibold text-white mb-2 text-sm">💡 {t.raffle?.ticketGuide || '응모권 안내'}</h4>
           <ul className="text-xs text-gray-300 space-y-1">
             <li>• {t.raffle?.guideLine1 || '응모권은 추첨 시까지 유효합니다'}</li>

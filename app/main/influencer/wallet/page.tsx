@@ -254,7 +254,7 @@ export default function WalletPage() {
       <div className="container-mobile py-6">
         {/* 현금 카드 */}
         {walletType === 'cash' && (
-          <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 mb-6">
+          <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 shadow-xl mb-6">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <BadgeDollarSign size={20} className="text-green-400" />
@@ -298,7 +298,7 @@ export default function WalletPage() {
 
         {/* 포인트 카드 */}
         {walletType === 'shopping' && (
-          <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 mb-6">
+          <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 shadow-xl mb-6">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <ShoppingBag size={20} className="text-blue-400" />
@@ -337,7 +337,7 @@ export default function WalletPage() {
 
         {/* Bank Accounts - 현금 탭일 때만 표시 */}
         {walletType === 'cash' && (
-          <div className="space-y-3 mb-6">
+          <div className="space-y-6 mb-6">
             <div className="flex items-center justify-between px-1">
               <h3 className="text-sm font-semibold text-gray-400">
                 {t.wallet.registeredAccounts}
@@ -351,7 +351,7 @@ export default function WalletPage() {
             </div>
 
             {bankAccounts.map((account) => (
-              <div key={account.id} className="card">
+              <div key={account.id} className="card border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -381,7 +381,7 @@ export default function WalletPage() {
 
         {/* 포인트 획득 방법 - 포인트 탭일 때만 표시 */}
         {walletType === 'shopping' && (
-          <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 mb-6">
+          <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl mb-6">
             <h3 className="text-sm font-semibold text-white mb-3">{t.wallet.earnHow}</h3>
             <ul className="text-xs text-gray-300 space-y-2">
               <li className="flex items-center gap-2">
@@ -454,7 +454,7 @@ export default function WalletPage() {
         </div>
 
         {/* Transactions */}
-        <div id="transaction-history" className="space-y-3">
+        <div id="transaction-history" className="space-y-6">
           <h3 className="text-sm font-semibold text-gray-400 px-1">
             {t.wallet.recentTransactions}
           </h3>
@@ -465,7 +465,7 @@ export default function WalletPage() {
             const isPositive = transaction.amount > 0;
 
             return (
-              <div key={transaction.id} className="card">
+              <div key={transaction.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <div className="flex items-start gap-3">
                   <div className={`w-10 h-10 rounded-xl bg-dark-600 flex items-center justify-center flex-shrink-0`}>
                     <Icon size={20} className={color} />
@@ -532,7 +532,7 @@ export default function WalletPage() {
 
         {/* Info Box - 현금 탭에서만 출금 안내 표시 */}
         {walletType === 'cash' && (
-          <div className="card bg-info/10 border-info/30 mt-6">
+          <div className="card bg-info/10 border-2 border-info/30 shadow-xl mt-6">
             <div className="flex gap-3">
               <AlertCircle size={20} className="text-info flex-shrink-0" />
               <div className="text-sm text-gray-300">
@@ -549,7 +549,7 @@ export default function WalletPage() {
 
         {/* 포인트 탭에서는 사용 안내 표시 */}
         {walletType === 'shopping' && (
-          <div className="card bg-gradient-to-r from-blue-500/10 to-purple-600/10 border-blue-500/30 mt-6">
+          <div className="card bg-gradient-to-r from-blue-500/10 to-purple-600/10 border-2 border-blue-500/30 shadow-xl mt-6">
             <div className="flex gap-3">
               <AlertCircle size={20} className="text-blue-400 flex-shrink-0" />
               <div className="text-sm text-gray-300">

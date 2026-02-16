@@ -1155,7 +1155,7 @@ function CampaignsPageContent() {
               const campaignUrl = `/main/influencer/campaigns/${campaign.id}${isAdminMode ? '?admin=true' : ''}`;
               return (
                 <Link key={campaign.id} href={campaignUrl}>
-                  <div className="relative card-hover overflow-hidden p-0 cursor-pointer border-2 border-primary/50">
+                  <div className="relative card-hover overflow-hidden p-0 cursor-pointer border-2 border-primary/50 shadow-xl">
                     {/* ADMIN ONLY: Demo Campaign Badge */}
                     {isAdminMode && campaign.isDemoMode && (
                       <div className="absolute top-2 left-2 z-20 px-2 py-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-[10px] font-black flex items-center gap-1 shadow-lg border border-white/30 animate-pulse">
@@ -1252,7 +1252,7 @@ function CampaignsPageContent() {
 
           return (
             <Link key={campaign.id} href={campaignUrl}>
-              <div className="card-hover overflow-hidden p-0 cursor-pointer">
+              <div className="card-hover border-2 border-dark-500/50 shadow-xl overflow-hidden p-0 cursor-pointer">
                 {/* Thumbnail Image */}
                 {campaign.thumbnail && (
                   <div className="relative w-full h-48 overflow-hidden">

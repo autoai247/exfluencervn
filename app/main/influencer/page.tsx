@@ -161,7 +161,7 @@ export default function InfluencerDashboard() {
         {/* 💰 내 자산 요약 - 최우선 표시 */}
         <div className="grid grid-cols-2 gap-3">
           <Link href="/main/influencer/wallet?tab=cash">
-            <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 hover:border-green-500/80 transition-all p-4">
+            <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 hover:border-green-500/80 transition-all shadow-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <BadgeDollarSign size={20} className="text-green-400" />
                 <span className="text-xs text-green-400 font-bold">💰 {t.wallet.cashPoints}</span>
@@ -175,7 +175,7 @@ export default function InfluencerDashboard() {
           </Link>
 
           <Link href="/main/influencer/wallet?tab=shopping">
-            <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 hover:border-blue-500/80 transition-all p-4">
+            <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 hover:border-blue-500/80 transition-all shadow-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <ShoppingCart size={20} className="text-blue-400" />
                 <span className="text-xs text-blue-400 font-bold">🛍️ {t.wallet.shoppingPoints}</span>
@@ -251,7 +251,7 @@ export default function InfluencerDashboard() {
         </Link>
 
         {/* Profile Card */}
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
           <div className="flex items-start gap-4">
             <img
               src={userProfile.avatar}
@@ -353,21 +353,21 @@ export default function InfluencerDashboard() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1">📊 {t.dashboard.overview}</h3>
           <div className="grid grid-cols-2 gap-3">
-            <div className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-green-500/20">
+            <div className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-2 border-green-500/20 shadow-xl">
               <BadgeDollarSign size={28} className="text-green-400 mx-auto mb-2" />
               <div className="text-lg font-bold text-green-400">
                 {formatCash(mockData.stats.totalCashEarnings)}
               </div>
               <div className="text-xs text-gray-300 mt-1">{t.dashboard.totalEarnings} 💰</div>
             </div>
-            <div className="card text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
+            <div className="card text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-2 border-blue-500/20 shadow-xl">
               <ShoppingCart size={28} className="text-blue-400 mx-auto mb-2" />
               <div className="text-lg font-bold text-blue-400">
                 {formatShoppingPoints(mockData.stats.totalShoppingPoints)}
               </div>
               <div className="text-xs text-gray-300 mt-1">{t.dashboard.totalShoppingPoints} 🛍️</div>
             </div>
-            <Link href="/main/influencer/completed" className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer">
+            <Link href="/main/influencer/completed" className="card text-center bg-gradient-to-br from-green-500/10 to-transparent border-2 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer shadow-xl">
               <CheckCircle size={28} className="text-green-500 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.completedCampaigns}
@@ -375,7 +375,7 @@ export default function InfluencerDashboard() {
               <div className="text-xs text-gray-300 mt-1">{t.dashboard.completedCampaigns}</div>
               <div className="text-xs text-green-500 mt-1 font-semibold">{t.dashboard.checkDetails} →</div>
             </Link>
-            <Link href="/main/influencer/jobs" className="card text-center bg-gradient-to-br from-warning/10 to-transparent border-warning/30 hover:border-warning/50 transition-all cursor-pointer">
+            <Link href="/main/influencer/jobs" className="card text-center bg-gradient-to-br from-warning/10 to-transparent border-2 border-warning/30 hover:border-warning/50 transition-all cursor-pointer shadow-xl">
               <Clock size={28} className="text-warning mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.inProgressCampaigns}
@@ -383,7 +383,7 @@ export default function InfluencerDashboard() {
               <div className="text-xs text-gray-300 mt-1">{t.dashboard.inProgress}</div>
               <div className="text-xs text-warning mt-1 font-semibold">{t.dashboard.checkDetails} →</div>
             </Link>
-            <Link href="/main/influencer/campaigns/applications" className="card text-center bg-gradient-to-br from-info/10 to-transparent border-info/30 hover:border-info/50 transition-all cursor-pointer">
+            <Link href="/main/influencer/campaigns/applications" className="card text-center bg-gradient-to-br from-info/10 to-transparent border-2 border-info/30 hover:border-info/50 transition-all cursor-pointer shadow-xl">
               <AlertCircle size={28} className="text-info mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
                 {mockData.stats.pendingApplications}
@@ -391,7 +391,7 @@ export default function InfluencerDashboard() {
               <div className="text-xs text-gray-300 mt-1">{t.dashboard.pendingApproval}</div>
               <div className="text-xs text-info mt-1 font-semibold">{t.dashboard.applicationHistory} →</div>
             </Link>
-            <Link href="/main/influencer/my-raffles" className="card text-center bg-gradient-to-br from-red-500/10 via-blue-500/10 to-red-500/10 border-red-500/30 hover:border-red-500/50 transition-all cursor-pointer">
+            <Link href="/main/influencer/my-raffles" className="card text-center bg-gradient-to-br from-red-500/10 via-blue-500/10 to-red-500/10 border-2 border-red-500/30 hover:border-red-500/50 transition-all cursor-pointer shadow-xl">
               <Ticket size={28} className="text-red-400 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">
                 {myRaffleTickets}<span className="text-sm text-gray-300">{t.dashboard.ticketsCount}</span>
@@ -470,7 +470,7 @@ export default function InfluencerDashboard() {
             ].map((campaign, idx) => {
               const steps = [t.dashboard.stepApply, t.dashboard.stepApprove, t.dashboard.stepInProgress, t.dashboard.stepSubmit, t.dashboard.stepReview, t.dashboard.stepComplete];
               return (
-              <div key={idx} className="card bg-gradient-to-br from-dark-600 to-dark-700 border-dark-500 hover:border-primary/50 transition-all">
+              <div key={idx} className="card bg-gradient-to-br from-dark-600 to-dark-700 border-2 border-dark-500 hover:border-primary/50 transition-all shadow-xl">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-white text-sm mb-1 truncate">{campaign.title}</h4>
@@ -522,7 +522,7 @@ export default function InfluencerDashboard() {
         </div>
 
         {/* 💰 이번 달 수익 현황 */}
-        <div className="card bg-gradient-to-br from-accent/10 to-accent/5 border-accent/30">
+        <div className="card bg-gradient-to-br from-accent/10 to-accent/5 border-2 border-accent/30 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Calendar size={16} className="text-accent" />
@@ -595,7 +595,7 @@ export default function InfluencerDashboard() {
         {/* Social Share Stats */}
         {totalShareEarnings > 0 && (
           <Link href="/main/influencer/shares">
-            <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer">
+            <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer shadow-xl">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <p className="text-sm text-gray-300 mb-1">📣 {t.dashboard.snsSharingBonus}</p>
@@ -690,7 +690,7 @@ export default function InfluencerDashboard() {
           <div className="grid grid-cols-2 gap-3">
             {/* 출석 체크 */}
             <Link href="/main/influencer/attendance">
-              <div className="card bg-gradient-to-br from-orange-500/20 to-yellow-500/10 border-2 border-orange-500/30 hover:border-orange-500/50 transition-all">
+              <div className="card bg-gradient-to-br from-orange-500/20 to-yellow-500/10 border-2 border-orange-500/30 hover:border-orange-500/50 transition-all shadow-xl">
                 <div className="text-center py-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                     <Calendar size={24} className="text-white" />
@@ -704,7 +704,7 @@ export default function InfluencerDashboard() {
 
             {/* 랭킹 */}
             <Link href="/main/influencer/ranking">
-              <div className="card bg-gradient-to-br from-yellow-500/20 to-orange-500/10 border-2 border-yellow-500/30 hover:border-yellow-500/50 transition-all">
+              <div className="card bg-gradient-to-br from-yellow-500/20 to-orange-500/10 border-2 border-yellow-500/30 hover:border-yellow-500/50 transition-all shadow-xl">
                 <div className="text-center py-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                     <Trophy size={24} className="text-white" />
@@ -718,7 +718,7 @@ export default function InfluencerDashboard() {
 
             {/* 친구 초대 */}
             <Link href="/main/influencer/referral">
-              <div className="card bg-gradient-to-br from-green-500/20 to-emerald-500/10 border-2 border-green-500/30 hover:border-green-500/50 transition-all">
+              <div className="card bg-gradient-to-br from-green-500/20 to-emerald-500/10 border-2 border-green-500/30 hover:border-green-500/50 transition-all shadow-xl">
                 <div className="text-center py-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-2">
                     <Users size={24} className="text-white" />
@@ -732,7 +732,7 @@ export default function InfluencerDashboard() {
 
             {/* 광고주 초대 */}
             <Link href="/main/influencer/invite-advertiser">
-              <div className="card bg-gradient-to-br from-purple-500/20 to-pink-500/10 border-2 border-purple-500/30 hover:border-purple-500/50 transition-all relative">
+              <div className="card bg-gradient-to-br from-purple-500/20 to-pink-500/10 border-2 border-purple-500/30 hover:border-purple-500/50 transition-all shadow-xl relative">
                 <div className="absolute top-1 right-1 px-1.5 py-0.5 bg-accent text-white text-[8px] rounded-full font-bold">
                   NEW
                 </div>
@@ -761,7 +761,7 @@ export default function InfluencerDashboard() {
           <div className="space-y-3">
             {recentCampaigns.map((campaign) => (
               <Link key={campaign.id} href={`/main/influencer/jobs/${campaign.id}`}>
-                <div className="card-hover overflow-hidden p-0">
+                <div className="card-hover border-2 border-dark-500/50 shadow-xl overflow-hidden p-0">
                   {/* Thumbnail Image */}
                   {campaign.thumbnail && (
                     <div className="relative w-full h-40 overflow-hidden">
@@ -825,7 +825,7 @@ export default function InfluencerDashboard() {
         </div>
 
         {/* Performance Tip */}
-        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-accent/30">
+        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-2 border-accent/30 shadow-xl">
           <div className="flex gap-3">
             <Star size={24} className="text-accent flex-shrink-0" />
             <div>

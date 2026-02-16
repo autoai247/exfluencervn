@@ -89,7 +89,7 @@ export default function AdvertiserDashboard() {
       <div className="container-mobile space-y-6 py-6">
         {/* Company Card - 클릭하면 프로필로 이동 */}
         <Link href="/main/advertiser/profile">
-          <div className="bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-all cursor-pointer">
+          <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-all cursor-pointer shadow-xl">
             <div className="flex items-center gap-4">
               <img
                 src={mockData.company.logo}
@@ -109,7 +109,7 @@ export default function AdvertiserDashboard() {
         {/* Quick Stats - Clickable */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Link href="/main/advertiser/campaigns?status=active">
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer">
+            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
               <TrendingUp size={24} className="text-gray-700 mx-auto mb-2" />
               <div className="text-xl font-bold text-gray-900">
                 {mockData.stats.activeCampaigns}
@@ -119,7 +119,7 @@ export default function AdvertiserDashboard() {
           </Link>
 
           <Link href="/main/advertiser/analytics?tab=budget">
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer">
+            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
               <DollarSign size={24} className="text-gray-700 mx-auto mb-2" />
               <div className="text-xl font-bold text-gray-900">
                 {formatPoints(mockData.stats.totalSpent)}
@@ -129,7 +129,7 @@ export default function AdvertiserDashboard() {
           </Link>
 
           <Link href="/main/advertiser/influencers">
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer">
+            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
               <Users size={24} className="text-gray-700 mx-auto mb-2" />
               <div className="text-xl font-bold text-gray-900">
                 {mockData.stats.totalInfluencers}
@@ -139,7 +139,7 @@ export default function AdvertiserDashboard() {
           </Link>
 
           <Link href="/main/advertiser/analytics?tab=roi">
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer">
+            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
               <BarChart size={24} className="text-gray-700 mx-auto mb-2" />
               <div className="text-xl font-bold text-gray-900">
                 {mockData.stats.avgROI.toFixed(1)}x
@@ -159,7 +159,7 @@ export default function AdvertiserDashboard() {
         </Link>
 
         {/* Value Prop */}
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 shadow-xl">
           <p className="text-sm text-gray-600 text-center">
             <strong className="text-gray-900">평균 24시간 내</strong> 검증된 KOL 매칭 |
             <strong className="text-gray-900"> Average 24h</strong> verified KOL matching
@@ -183,7 +183,7 @@ export default function AdvertiserDashboard() {
         </div>
 
         {/* Active Campaigns */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-900">진행 중인 캠페인</h3>
             <Link href="/main/advertiser/campaigns" className="text-sm text-gray-900 font-medium">
@@ -191,12 +191,12 @@ export default function AdvertiserDashboard() {
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-6">
             {mockData.campaigns
               .filter((c) => c.status === 'active')
               .map((campaign) => (
                 <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer">
+                  <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer shadow-xl">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
@@ -263,18 +263,18 @@ export default function AdvertiserDashboard() {
         </div>
 
         {/* Recent Completed Campaigns */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-900">최근 완료된 캠페인</h3>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-6">
             {mockData.campaigns
               .filter((c) => c.status === 'completed')
               .slice(0, 2)
               .map((campaign) => (
                 <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer">
+                  <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer shadow-xl">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
                         <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
@@ -313,7 +313,7 @@ export default function AdvertiserDashboard() {
         </div>
 
         {/* Tips */}
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 shadow-xl">
           <div className="flex gap-3">
             <TrendingUp size={24} className="text-gray-700 flex-shrink-0" />
             <div>

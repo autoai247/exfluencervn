@@ -749,7 +749,7 @@ export default function CampaignDetailPage() {
 
       <div className="container-mobile space-y-6 py-6">
         {/* 메인 배너 이미지 */}
-        <div className="card p-0 overflow-hidden">
+        <div className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
           <img
             src={mockCampaign.images.mainBanner}
             alt={mockCampaign.title}
@@ -759,7 +759,7 @@ export default function CampaignDetailPage() {
 
         {/* Urgency & Social Proof Banner */}
         {mockCampaign.urgency && (
-          <div className="card bg-gradient-to-r from-error/20 via-warning/20 to-error/20 border-2 border-error/50 animate-pulse">
+          <div className="card bg-gradient-to-r from-error/20 via-warning/20 to-error/20 border-2 border-error/50 animate-pulse shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🔥</span>
@@ -799,7 +799,7 @@ export default function CampaignDetailPage() {
         )}
 
         {/* 최근 지원자 프로필 섹션 (신뢰도 향상) */}
-        <div className="card cursor-pointer hover:border-primary/50 transition-all" onClick={() => setShowApplicantsModal(true)}>
+        <div className="card border-2 border-dark-500/50 shadow-xl cursor-pointer hover:border-primary/50 transition-all" onClick={() => setShowApplicantsModal(true)}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users size={20} className="text-primary" />
@@ -901,7 +901,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* Campaign Header */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-start gap-4 mb-3">
             <img
               src={mockCampaign.companyLogo}
@@ -968,7 +968,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* Reward */}
-        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-accent/30">
+        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-2 border-accent/30 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-300 mb-1">{t.campaignDetail.expectedEarnings}</p>
@@ -980,7 +980,7 @@ export default function CampaignDetailPage() {
 
         {/* Difficulty & Time Estimator */}
         {mockCampaign.difficulty && (
-          <div className="card bg-gradient-to-br from-info/10 to-primary/10 border-info/30">
+          <div className="card bg-gradient-to-br from-info/10 to-primary/10 border-2 border-info/30 shadow-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">⚡</span>
               <h3 className="text-lg font-bold text-white">{t.campaignDetail.difficulty.title || '난이도 & 소요시간'}</h3>
@@ -1029,7 +1029,7 @@ export default function CampaignDetailPage() {
         {mockCampaign.earningsBreakdown && (
           <div
             onClick={() => setShowEarningsModal(true)}
-            className="card bg-gradient-to-br from-success/10 to-accent/10 border-success/30 cursor-pointer hover:border-success hover:shadow-lg transition-all"
+            className="card bg-gradient-to-br from-success/10 to-accent/10 border-2 border-success/30 shadow-xl cursor-pointer hover:border-success hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -1099,7 +1099,7 @@ export default function CampaignDetailPage() {
 
         {/* Social Proof & Reviews */}
         {mockCampaign.socialProof && (
-          <div className="card bg-gradient-to-br from-secondary/10 to-primary/10 border-secondary/30">
+          <div className="card bg-gradient-to-br from-secondary/10 to-primary/10 border-2 border-secondary/30 shadow-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">⭐</span>
               <h3 className="text-lg font-bold text-white">{t.campaignDetail.socialProof.title || '인플루언서 후기'}</h3>
@@ -1229,7 +1229,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 지원 자격 요구사항 */}
-        <div className="card border-2 border-primary/30">
+        <div className="card border-2 border-primary/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <Users size={20} className="text-primary" />
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.requirements}</h3>
@@ -1442,7 +1442,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 제공 내용 */}
-        <div className="card bg-gradient-to-br from-success/10 to-success/5 border-success/30">
+        <div className="card bg-gradient-to-br from-success/10 to-success/5 border-2 border-success/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <Gift size={20} className="text-success" />
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.benefits}</h3>
@@ -1501,7 +1501,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 제품 갤러리 */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl">📸</span>
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.productGallery || '제품 갤러리'}</h3>
@@ -1519,7 +1519,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 콘텐츠 제작 예시 */}
-        <div className="card bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30">
+        <div className="card bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl">💡</span>
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.contentExamples || '콘텐츠 제작 예시'}</h3>
@@ -1544,7 +1544,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 상세 미션 가이드라인 */}
-        <div className="card border-2 border-warning/30">
+        <div className="card border-2 border-warning/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <FileText size={20} className="text-warning" />
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.missionGuide}</h3>
@@ -1604,7 +1604,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 브랜드 정보 */}
-        <div className="card bg-gradient-to-br from-info/10 to-info/5 border-info/30">
+        <div className="card bg-gradient-to-br from-info/10 to-info/5 border-2 border-info/30 shadow-xl">
           <div className="flex items-start gap-4 mb-4">
             <img
               src={mockCampaign.companyLogo}
@@ -1663,7 +1663,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 광고주 신뢰도 & 인플루언서 리뷰 - 가장 중요! */}
-        <div className="card bg-gradient-to-br from-success/10 to-success/5 border-success/30">
+        <div className="card bg-gradient-to-br from-success/10 to-success/5 border-2 border-success/30 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <CheckCircle size={20} className="text-success" />
@@ -1783,7 +1783,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* 선정 기준 */}
-        <div className="card bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/30">
+        <div className="card bg-gradient-to-br from-secondary/10 to-secondary/5 border-2 border-secondary/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <Trophy size={20} className="text-secondary" />
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.selectionCriteria}</h3>
@@ -1826,7 +1826,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* FAQ */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl">💬</span>
             <h3 className="text-lg font-bold text-white">{t.campaignDetail.faq}</h3>
@@ -1848,7 +1848,7 @@ export default function CampaignDetailPage() {
 
         {/* Pending Status */}
         {mockCampaign.status === 'pending' && (
-          <div className="card bg-gradient-to-r from-warning/20 to-warning/5 border-warning/30">
+          <div className="card bg-gradient-to-r from-warning/20 to-warning/5 border-2 border-warning/30 shadow-xl">
             <div className="text-center py-4">
               <Clock size={40} className="text-warning mx-auto mb-3" />
               <h3 className="text-lg font-bold text-white mb-1">{t.campaignDetail.pendingApproval}</h3>
@@ -2006,7 +2006,7 @@ export default function CampaignDetailPage() {
 
         {/* Progress */}
         {mockCampaign.status === 'in_progress' && (
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h3 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.progress}</h3>
             <div className="mb-3">
               <div className="flex justify-between text-sm mb-2">
@@ -2026,7 +2026,7 @@ export default function CampaignDetailPage() {
         )}
 
         {/* Deliverables */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-white">{t.campaignDetail.deliverables}</h3>
             {mockCampaign.status === 'in_progress' && (
@@ -2060,7 +2060,7 @@ export default function CampaignDetailPage() {
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-white">{t.campaignDetail.submittedWork}</h3>
             {mockCampaign.submittedWork.map((work) => (
-              <div key={work.id} className="card">
+              <div key={work.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <img
                   src={work.thumbnail}
                   alt="Submitted work"
@@ -2098,7 +2098,7 @@ export default function CampaignDetailPage() {
         )}
 
         {/* Campaign Info */}
-        <div className="card space-y-3">
+        <div className="card border-2 border-dark-500/50 shadow-xl space-y-3">
           <h3 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.campaignInfo}</h3>
 
           <div className="flex items-center gap-3 text-sm">

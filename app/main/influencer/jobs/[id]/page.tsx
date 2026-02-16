@@ -167,7 +167,7 @@ export default function JobDetailPage() {
 
       <div className="container-mobile space-y-6 py-6">
         {/* Job Header */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-start gap-4 mb-3">
             <img
               src={mockJob.companyLogo}
@@ -187,7 +187,7 @@ export default function JobDetailPage() {
         </div>
 
         {/* Budget */}
-        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-accent/30">
+        <div className="card bg-gradient-to-r from-accent/20 to-accent/5 border-2 border-accent/30 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-400 mb-1">
@@ -201,7 +201,7 @@ export default function JobDetailPage() {
 
         {/* Progress */}
         {mockJob.status === 'in_progress' && (
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h3 className="text-sm font-semibold text-white mb-3">진행 상황</h3>
             <div className="mb-3">
               <div className="flex justify-between text-sm mb-2">
@@ -221,7 +221,7 @@ export default function JobDetailPage() {
         )}
 
         {/* Requirements */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="text-sm font-semibold text-white mb-3">요구사항</h3>
           <ul className="space-y-2">
             {mockJob.requirements.map((req, index) => (
@@ -235,7 +235,7 @@ export default function JobDetailPage() {
 
         {/* Deliverables */}
         {(mockJob.status === 'in_progress' || mockJob.status === 'completed') && (
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-white">제출물 체크리스트</h3>
               {mockJob.status === 'in_progress' && (
@@ -267,10 +267,10 @@ export default function JobDetailPage() {
 
         {/* Submitted Work */}
         {mockJob.submittedWork.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-6">
             <h3 className="text-sm font-semibold text-white">제출한 결과물</h3>
             {mockJob.submittedWork.map((work) => (
-              <div key={work.id} className="card">
+              <div key={work.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <img
                   src={work.thumbnail}
                   alt="Submitted work"
@@ -297,16 +297,16 @@ export default function JobDetailPage() {
 
         {/* Feedback (for rejected jobs) */}
         {mockJob.status === 'rejected' && mockJob.feedback && (
-          <div className="card bg-error/10 border-error/30">
+          <div className="card bg-error/10 border-2 border-error/30 shadow-xl">
             <h3 className="text-sm font-semibold text-error mb-2">거절 사유</h3>
             <p className="text-sm text-gray-300">{mockJob.feedback}</p>
           </div>
         )}
 
         {/* Timeline */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="text-sm font-semibold text-white mb-3">일정</h3>
-          <div className="space-y-3">
+          <div className="space-y-6">
             {mockJob.appliedAt && (
               <div className="flex items-center gap-3">
                 <FileText size={16} className="text-gray-400" />
@@ -336,7 +336,7 @@ export default function JobDetailPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           {mockJob.status === 'accepted' && (
             <button onClick={handleStartWork} className="btn btn-primary w-full">
               <Clock size={18} className="mr-2" />

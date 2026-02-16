@@ -72,7 +72,7 @@ export default function ReviewsPage() {
 
       <div className="container-mobile space-y-6 py-6">
         {/* Overall Rating Summary */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="text-center mb-4">
             <div className="text-5xl font-bold text-white mb-2">{overallAverage.toFixed(1)}</div>
             <div className="flex items-center justify-center gap-1 mb-2">
@@ -89,7 +89,7 @@ export default function ReviewsPage() {
         </div>
 
         {/* Category Ratings */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="text-sm font-semibold text-white mb-4">{t.review.categoryRatings}</h3>
           <div className="space-y-4">
             {ratingCategories.map((category) => {
@@ -120,13 +120,13 @@ export default function ReviewsPage() {
         </div>
 
         {/* Reviews List */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <h3 className="text-sm font-semibold text-gray-400 px-1">{t.review.allReviews} ({mockReviews.length})</h3>
 
           {mockReviews.map((review) => {
             const avgRating = calculateOverallAverage(review.ratings);
             return (
-              <div key={review.id} className="card">
+              <div key={review.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <div className="flex items-start gap-3 mb-3">
                   <img
                     src={review.advertiserAvatar}

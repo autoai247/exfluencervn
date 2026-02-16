@@ -153,9 +153,9 @@ export default function NotificationsPage() {
         </div>
 
         {/* Notifications List */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           {filteredNotifications.length === 0 ? (
-            <div className="card text-center py-12">
+            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
               <Bell size={48} className="text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400">
                 {filter === 'unread'
@@ -171,10 +171,10 @@ export default function NotificationsPage() {
                 <div
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`card cursor-pointer transition-all ${
+                  className={`card border-2 shadow-xl cursor-pointer transition-all ${
                     !notification.read
                       ? 'bg-primary/5 border-primary/30'
-                      : 'hover:bg-dark-600'
+                      : 'border-dark-500/50 hover:bg-dark-600'
                   }`}
                 >
                   <div className="flex gap-3">

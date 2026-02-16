@@ -66,7 +66,7 @@ export default function InfluencerAnalyticsPage() {
           </h3>
           <div className="grid grid-cols-2 gap-3">
             {/* Campaigns */}
-            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border border-dark-500/50">
+            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                   <Target size={16} className="text-primary" />
@@ -86,7 +86,7 @@ export default function InfluencerAnalyticsPage() {
             </div>
 
             {/* Earnings */}
-            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border border-dark-500/50">
+            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center">
                   <DollarSign size={16} className="text-success" />
@@ -106,7 +106,7 @@ export default function InfluencerAnalyticsPage() {
             </div>
 
             {/* Views */}
-            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border border-dark-500/50">
+            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center">
                   <Eye size={16} className="text-secondary" />
@@ -126,7 +126,7 @@ export default function InfluencerAnalyticsPage() {
             </div>
 
             {/* Engagement */}
-            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border border-dark-500/50">
+            <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-4 border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
                   <BarChart3 size={16} className="text-accent" />
@@ -152,7 +152,7 @@ export default function InfluencerAnalyticsPage() {
           <h3 className="text-sm font-semibold text-gray-400 mb-3 px-2">
             {language === 'ko' ? '전체 통계' : 'Total Stats'}
           </h3>
-          <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-5 border border-dark-500/50">
+          <div className="bg-dark-600/80 backdrop-blur-xl rounded-2xl p-5 border-2 border-dark-500/50 shadow-xl">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-gray-400 text-xs mb-1">{language === 'ko' ? '총 캠페인' : 'Total Campaigns'}</div>
@@ -182,11 +182,11 @@ export default function InfluencerAnalyticsPage() {
           <h3 className="text-sm font-semibold text-gray-400 mb-3 px-2">
             {language === 'ko' ? '최근 캠페인' : 'Recent Campaigns'}
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-6">
             {recentCampaigns.map((campaign, idx) => (
               <div
                 key={idx}
-                className="bg-dark-600/80 backdrop-blur-xl rounded-xl p-4 border border-dark-500/50"
+                className="bg-dark-600/80 backdrop-blur-xl rounded-xl p-4 border-2 border-dark-500/50 shadow-xl"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">

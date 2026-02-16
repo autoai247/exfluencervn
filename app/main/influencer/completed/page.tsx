@@ -55,7 +55,7 @@ export default function CompletedCampaignsPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 통계 카드 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-green-500/30">
+          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-2 border-green-500/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign size={20} className="text-green-400" />
               <span className="text-xs text-gray-300">{t.wallet.cashPoints}</span>
@@ -69,7 +69,7 @@ export default function CompletedCampaignsPage() {
             )}
           </div>
 
-          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-blue-500/30">
+          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-2 border-blue-500/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <ShoppingBag size={20} className="text-blue-400" />
               <span className="text-xs text-gray-300">{t.wallet.shoppingPoints}</span>
@@ -114,9 +114,9 @@ export default function CompletedCampaignsPage() {
         </div>
 
         {/* 캠페인 리스트 */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           {filteredCampaigns.map((campaign) => (
-            <div key={campaign.id} className="card">
+            <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl">
               <div className="flex gap-3">
                 {/* Thumbnail */}
                 <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
@@ -213,7 +213,7 @@ export default function CompletedCampaignsPage() {
 
         {/* Empty State */}
         {filteredCampaigns.length === 0 && (
-          <div className="card text-center py-12">
+          <div className="card text-center py-12 border-2 border-dark-500/50 shadow-xl">
             <CheckCircle size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.completed.noCampaigns}</h3>
             <p className="text-sm text-gray-400 mb-4 whitespace-pre-line">
@@ -228,7 +228,7 @@ export default function CompletedCampaignsPage() {
         )}
 
         {/* 안내 */}
-        <div className="card bg-info/10 border-info/30">
+        <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
           <h4 className="font-semibold text-white mb-2 text-sm">{t.completed.infoTitle}</h4>
           <ul className="text-xs text-gray-300 space-y-1">
             <li>• {t.completed.infoCash}</li>

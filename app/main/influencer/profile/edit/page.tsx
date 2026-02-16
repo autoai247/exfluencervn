@@ -1134,7 +1134,7 @@ export default function EditProfilePage() {
           </div>
         </div>
 
-        <div className="bg-dark-600 border border-primary/30 rounded-xl p-4">
+        <div className="bg-dark-600 border-2 border-primary/30 rounded-xl p-4 shadow-xl">
           <p className="text-xs text-gray-400">
             💡 <strong className="text-white">{t.profile.whyDetailedInfo || '왜 이렇게 많은 정보가 필요한가요?'}</strong><br/>
             {t.profile.detailedInfoBenefit || '상세한 프로필 정보는 캠페인 매칭의 정확도를 높여줍니다'}:<br/>

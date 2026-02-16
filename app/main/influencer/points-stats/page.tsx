@@ -105,25 +105,25 @@ export default function PointsStatsPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 주요 통계 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card text-center">
+          <div className="card border-2 border-dark-500/50 shadow-xl text-center">
             <TrendingUp className="text-success mx-auto mb-2" size={28} />
             <div className="text-sm text-gray-400 mb-1">{t.pointsStats.totalEarned}</div>
             <div className="text-xl font-bold text-white">{formatShoppingPoints(stats.totalEarned)}</div>
           </div>
 
-          <div className="card text-center">
+          <div className="card border-2 border-dark-500/50 shadow-xl text-center">
             <ShoppingCart className="text-primary mx-auto mb-2" size={28} />
             <div className="text-sm text-gray-400 mb-1">{t.pointsStats.totalSpent}</div>
             <div className="text-xl font-bold text-white">{formatShoppingPoints(stats.totalSpent)}</div>
           </div>
 
-          <div className="card text-center">
+          <div className="card border-2 border-dark-500/50 shadow-xl text-center">
             <Ticket className="text-accent mx-auto mb-2" size={28} />
             <div className="text-sm text-gray-400 mb-1">{t.pointsStats.totalTickets}</div>
             <div className="text-xl font-bold text-white">{stats.totalTickets}{t.raffle.ticketUnit}</div>
           </div>
 
-          <div className="card text-center">
+          <div className="card border-2 border-dark-500/50 shadow-xl text-center">
             <PieChart className="text-secondary mx-auto mb-2" size={28} />
             <div className="text-sm text-gray-400 mb-1">{t.pointsStats.participatedRaffles}</div>
             <div className="text-xl font-bold text-white">{stats.totalRaffles}{t.raffle.eventsParticipated}</div>
@@ -131,7 +131,7 @@ export default function PointsStatsPage() {
         </div>
 
         {/* 이번 달 지출 */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-lg font-bold text-white mb-1">{t.pointsStats.thisMonthSpending}</h3>
@@ -171,7 +171,7 @@ export default function PointsStatsPage() {
         </div>
 
         {/* 평균 지출 */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-sm text-gray-400 mb-1">{t.pointsStats.avgPerRaffle}</h3>
@@ -186,14 +186,14 @@ export default function PointsStatsPage() {
         {/* 최근 거래 내역 */}
         <div>
           <h3 className="text-lg font-bold text-white mb-3">{t.pointsStats.recentTransactions}</h3>
-          <div className="space-y-2">
+          <div className="space-y-6">
             {recentTransactions.length === 0 ? (
-              <div className="card text-center py-8">
+              <div className="card border-2 border-dark-500/50 shadow-xl text-center py-8">
                 <p className="text-gray-400">{t.pointsStats.noTransactions}</p>
               </div>
             ) : (
               recentTransactions.map((transaction, index) => (
-                <div key={index} className="card">
+                <div key={index} className="card border-2 border-dark-500/50 shadow-xl">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -219,7 +219,7 @@ export default function PointsStatsPage() {
         </div>
 
         {/* 팁 */}
-        <div className="card bg-gradient-to-br from-primary/10 to-accent/10 border-primary/30">
+        <div className="card bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30 shadow-xl">
           <div className="flex items-start gap-3">
             <TrendingUp className="text-primary flex-shrink-0" size={24} />
             <div>

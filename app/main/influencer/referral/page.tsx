@@ -194,7 +194,7 @@ export default function ReferralPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-primary/10 to-transparent border-primary/30">
+          <div className="card bg-gradient-to-br from-primary/10 to-transparent border-2 border-primary/30 shadow-xl">
             <div className="text-center">
               <Gift size={32} className="text-primary mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">{formatShoppingPoints(referralStats.totalEarnings)}</div>
@@ -202,7 +202,7 @@ export default function ReferralPage() {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-success/10 to-transparent border-success/30">
+          <div className="card bg-gradient-to-br from-success/10 to-transparent border-2 border-success/30 shadow-xl">
             <div className="text-center">
               <Users size={32} className="text-success mx-auto mb-2" />
               <div className="text-2xl font-bold text-white">{referralStats.activeReferrals}</div>
@@ -213,7 +213,7 @@ export default function ReferralPage() {
         </div>
 
         {/* Referral Code */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="font-bold text-white mb-4 text-lg flex items-center gap-2">
             <Zap size={20} className="text-primary" />
             {t.referral.myReferralCode}
@@ -294,10 +294,10 @@ export default function ReferralPage() {
         </div>
 
         {/* How it Works */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <h3 className="text-lg font-bold text-white px-1">💡 5% 영구 수익 시스템</h3>
 
-          <div className="card bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/30">
+          <div className="card bg-gradient-to-br from-green-500/10 to-green-600/5 border-2 border-green-500/30 shadow-xl">
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
@@ -352,7 +352,7 @@ export default function ReferralPage() {
           </div>
 
           {/* Benefits Highlight */}
-          <div className="card bg-gradient-to-r from-yellow-500/20 to-orange-500/10 border-yellow-500/30">
+          <div className="card bg-gradient-to-r from-yellow-500/20 to-orange-500/10 border-2 border-yellow-500/30 shadow-xl">
             <div className="space-y-2">
               <h4 className="font-bold text-white flex items-center gap-2">
                 <span>🎯</span>
@@ -380,7 +380,7 @@ export default function ReferralPage() {
           </div>
 
           {/* Calculator */}
-          <div className="card bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/30">
+          <div className="card bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-2 border-blue-500/30 shadow-xl">
             <h4 className="font-bold text-white mb-3">📊 예상 수익 계산기</h4>
             <div className="space-y-3">
               <div className="bg-dark-700 rounded-lg p-3">
@@ -416,14 +416,14 @@ export default function ReferralPage() {
         </div>
 
         {/* Referral History */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-400">내 추천인 ({referralStats.totalReferrals}명)</h3>
             <span className="text-xs text-gray-500">총 {formatShoppingPoints(referralStats.totalEarnings)} 수익</span>
           </div>
 
           {referralHistory.map((referral) => (
-            <div key={referral.id} className={`card ${
+            <div key={referral.id} className={`card border-2 border-dark-500/50 shadow-xl ${
               referral.status === 'active' ? 'bg-gradient-to-br from-green-500/5 to-transparent border-green-500/20' : ''
             }`}>
               <div className="flex items-start gap-3">
@@ -488,7 +488,7 @@ export default function ReferralPage() {
           ))}
 
           {referralHistory.length === 0 && (
-            <div className="card text-center py-12">
+            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
               <div className="text-6xl mb-4">👥</div>
               <h4 className="text-lg font-bold text-white mb-2">{t.referral.noInvitesYet}</h4>
               <p className="text-sm text-gray-400 mb-4">

@@ -84,7 +84,7 @@ export default function WithdrawalPage() {
 
       <div className="container-mobile py-6 space-y-6">
         {/* Available Balance */}
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-400 mb-1">{t.wallet.availableBalance || '출금 가능 금액'}</p>
@@ -99,7 +99,7 @@ export default function WithdrawalPage() {
         {/* Withdrawal Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Amount Input */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <label className="text-sm font-medium text-gray-300 mb-3 block">
               {t.wallet.withdrawalAmount || '출금 금액'}
             </label>
@@ -144,7 +144,7 @@ export default function WithdrawalPage() {
           </div>
 
           {/* Bank Account Selection */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <label className="text-sm font-medium text-gray-300 mb-3 block">
               {t.wallet.withdrawalAccount || '출금 계좌'}
             </label>
@@ -186,7 +186,7 @@ export default function WithdrawalPage() {
 
           {/* Withdrawal Summary */}
           {parsedAmount > 0 && canWithdraw && (
-            <div className="card bg-info/10 border-info/30">
+            <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
               <h3 className="text-sm font-semibold text-white mb-3">{t.wallet.withdrawalSummary || '출금 요약'}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -207,7 +207,7 @@ export default function WithdrawalPage() {
           )}
 
           {/* Info */}
-          <div className="card bg-warning/10 border-warning/30">
+          <div className="card bg-warning/10 border-2 border-warning/30 shadow-xl">
             <div className="flex gap-3">
               <AlertCircle size={20} className="text-warning flex-shrink-0" />
               <div className="text-sm text-gray-300">

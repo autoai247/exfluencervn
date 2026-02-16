@@ -111,7 +111,7 @@ export default function AttendancePage() {
 
       <div className="container-mobile py-6 space-y-6">
         {/* Hero Stats */}
-        <div className="card bg-gradient-to-br from-orange-500/30 to-yellow-500/20 border-2 border-orange-500/40">
+        <div className="card bg-gradient-to-br from-orange-500/30 to-yellow-500/20 border-2 border-orange-500/40 shadow-xl">
           <div className="text-center mb-4">
             <div className="text-7xl mb-3">🔥</div>
             <div className="text-5xl font-bold text-white mb-2">{attendanceData.currentStreak}</div>
@@ -155,7 +155,7 @@ export default function AttendancePage() {
             {t.attendance.checkIn} ({formatShoppingPoints(todayReward.points)})
           </button>
         ) : (
-          <div className="card bg-gradient-to-r from-success/20 to-success/5 border-success/30 text-center py-6">
+          <div className="card bg-gradient-to-r from-success/20 to-success/5 border-2 border-success/30 shadow-xl text-center py-6">
             <Check size={48} className="text-success mx-auto mb-3" />
             <h3 className="text-xl font-bold text-white mb-2">{t.attendance.alreadyChecked}</h3>
             <p className="text-sm text-gray-300">{t.attendance.comeBackTomorrow}</p>
@@ -164,7 +164,7 @@ export default function AttendancePage() {
         )}
 
         {/* Weekly Progress */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Calendar size={20} className="text-primary" />
             {t.attendance.calendar}
@@ -219,13 +219,13 @@ export default function AttendancePage() {
         </div>
 
         {/* Streak Milestones */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <h3 className="text-lg font-bold text-white px-1 flex items-center gap-2">
             <Trophy size={20} className="text-yellow-400" />
             {t.attendance.rewards}
           </h3>
 
-          <div className="grid grid-cols-1 gap-3">
+          <div className="grid grid-cols-1 gap-6">
             {streakMilestones.map((milestone, index) => {
               const Icon = milestone.icon;
               const isCompleted = attendanceData.claimedMilestones.includes(milestone.days);
@@ -235,12 +235,12 @@ export default function AttendancePage() {
               return (
                 <div
                   key={milestone.days}
-                  className={`card transition-all ${
+                  className={`card transition-all shadow-xl ${
                     isCompleted
-                      ? 'bg-gradient-to-r from-success/20 to-success/5 border-success/30'
+                      ? 'bg-gradient-to-r from-success/20 to-success/5 border-2 border-success/30'
                       : isCurrent
-                      ? 'bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 shadow-lg'
-                      : 'bg-dark-600 border-dark-500 opacity-70'
+                      ? 'bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30'
+                      : 'bg-dark-600 border-2 border-dark-500 opacity-70'
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -311,7 +311,7 @@ export default function AttendancePage() {
         </div>
 
         {/* Monthly Calendar Preview */}
-        <div className="card">
+        <div className="card border-2 border-dark-500/50 shadow-xl">
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Calendar size={20} className="text-primary" />
             {t.attendance.thisMonth}
@@ -373,7 +373,7 @@ export default function AttendancePage() {
         </div>
 
         {/* Attendance Rules */}
-        <div className="card bg-gradient-to-br from-info/10 to-info/5 border-info/30">
+        <div className="card bg-gradient-to-br from-info/10 to-info/5 border-2 border-info/30 shadow-xl">
           <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
             <Zap size={18} className="text-info" />
             출석 체크 규칙
@@ -411,7 +411,7 @@ export default function AttendancePage() {
         </div>
 
         {/* Motivational Card */}
-        <div className="card bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-500/30 text-center py-6">
+        <div className="card bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-purple-500/30 shadow-xl text-center py-6">
           <Award size={48} className="text-purple-400 mx-auto mb-3" />
           <h3 className="text-xl font-bold text-white mb-2">
             30일 연속 출석하면

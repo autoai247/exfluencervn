@@ -76,7 +76,7 @@ export default function FavoritesPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 통계 카드 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-green-500/30">
+          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-2 border-green-500/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign size={20} className="text-green-400" />
               <span className="text-sm text-gray-300">{t.wallet.cashPoints}</span>
@@ -85,7 +85,7 @@ export default function FavoritesPage() {
             <div className="text-xs text-gray-400 mt-1">{t.dashboard.withdrawable}</div>
           </div>
 
-          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-blue-500/30">
+          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-2 border-blue-500/30 shadow-xl">
             <div className="flex items-center gap-2 mb-2">
               <ShoppingBag size={20} className="text-blue-400" />
               <span className="text-sm text-gray-300">{t.wallet.shoppingPoints}</span>
@@ -97,7 +97,7 @@ export default function FavoritesPage() {
 
         {/* 현금 캠페인 섹션 */}
         {cashCampaigns.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-6">
             <div className="flex items-center gap-2 px-1">
               <DollarSign size={20} className="text-green-400" />
               <h3 className="text-sm font-semibold text-gray-300">{t.favorites.cashCampaigns}</h3>
@@ -105,7 +105,7 @@ export default function FavoritesPage() {
             </div>
 
             {cashCampaigns.map((campaign) => (
-              <div key={campaign.id} className="card relative">
+              <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl relative">
                 {/* 제거 버튼 */}
                 <button
                   onClick={() => removeFavorite(campaign.id)}
@@ -161,7 +161,7 @@ export default function FavoritesPage() {
 
         {/* 포인트 캠페인 섹션 */}
         {pointsCampaigns.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-6">
             <div className="flex items-center gap-2 px-1">
               <ShoppingBag size={20} className="text-blue-400" />
               <h3 className="text-sm font-semibold text-gray-300">{t.favorites.pointsCampaigns}</h3>
@@ -169,7 +169,7 @@ export default function FavoritesPage() {
             </div>
 
             {pointsCampaigns.map((campaign) => (
-              <div key={campaign.id} className="card relative">
+              <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl relative">
                 {/* 제거 버튼 */}
                 <button
                   onClick={() => removeFavorite(campaign.id)}
@@ -225,7 +225,7 @@ export default function FavoritesPage() {
 
         {/* Empty State */}
         {favorites.length === 0 && (
-          <div className="card text-center py-12">
+          <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
             <Heart size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.favorites.noCampaigns}</h3>
             <p className="text-sm text-gray-400 mb-4">

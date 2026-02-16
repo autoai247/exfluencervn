@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag, LucideIcon } from 'lucide-react';
+import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag, Gift, Ticket, Trophy, Smartphone, Plane, Camera, Headphones, Watch, LucideIcon } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatPoints } from '@/lib/points';
@@ -23,7 +23,81 @@ interface ShopItem {
 }
 
 // Mock shop items
-const shopCategories: Record<'premium' | 'boost' | 'training', ShopItem[]> = {
+const shopCategories: Record<'raffles' | 'premium' | 'boost' | 'training', ShopItem[]> = {
+  raffles: [
+    {
+      id: 'raffle-1',
+      name: 'iPhone 16 Pro 응모',
+      nameEn: 'iPhone 16 Pro Raffle',
+      description: '최신 iPhone 16 Pro 256GB - 응모권 1장으로 참여',
+      descriptionEn: 'Latest iPhone 16 Pro 256GB - Enter with 1 ticket',
+      price: 50000,
+      icon: Smartphone,
+      color: 'from-blue-400 to-purple-500',
+      featured: true,
+      benefits: ['iPhone 16 Pro 256GB', '당첨자 1명', '응모 마감: 2026-03-15', '응모권 1장 필요'],
+    },
+    {
+      id: 'raffle-2',
+      name: '다낭 3박4일 여행 응모',
+      nameEn: 'Da Nang 4D3N Trip Raffle',
+      description: '5성급 리조트 + 항공권 포함 럭셔리 여행 - 응모권 2장',
+      descriptionEn: '5-star resort + flights included - 2 tickets required',
+      price: 100000,
+      icon: Plane,
+      color: 'from-cyan-400 to-blue-500',
+      featured: true,
+      benefits: ['5성급 리조트 3박', '왕복 항공권 포함', '당첨자 2명', '응모권 2장 필요'],
+    },
+    {
+      id: 'raffle-3',
+      name: 'Sony A7 IV 카메라 응모',
+      nameEn: 'Sony A7 IV Camera Raffle',
+      description: '전문가용 풀프레임 미러리스 카메라 + 렌즈 키트',
+      descriptionEn: 'Professional full-frame mirrorless camera + lens kit',
+      price: 100000,
+      icon: Camera,
+      color: 'from-gray-400 to-gray-600',
+      popular: true,
+      benefits: ['Sony A7 IV 바디', '28-70mm 렌즈 포함', '당첨자 1명', '응모권 2장 필요'],
+    },
+    {
+      id: 'raffle-4',
+      name: 'AirPods Pro 2 응모',
+      nameEn: 'AirPods Pro 2 Raffle',
+      description: '최신 노이즈캔슬링 무선 이어폰',
+      descriptionEn: 'Latest noise-canceling wireless earbuds',
+      price: 30000,
+      icon: Headphones,
+      color: 'from-white to-gray-300',
+      popular: true,
+      benefits: ['AirPods Pro 2세대', '당첨자 3명', '응모 마감: 2026-02-28', '응모권 1장 필요'],
+    },
+    {
+      id: 'raffle-5',
+      name: 'Apple Watch Ultra 2 응모',
+      nameEn: 'Apple Watch Ultra 2 Raffle',
+      description: '프리미엄 스마트워치 - 티타늄 케이스',
+      descriptionEn: 'Premium smartwatch - Titanium case',
+      price: 80000,
+      icon: Watch,
+      color: 'from-orange-400 to-red-500',
+      featured: true,
+      benefits: ['Apple Watch Ultra 2', '티타늄 케이스', '당첨자 1명', '응모권 1장 필요'],
+    },
+    {
+      id: 'raffle-6',
+      name: '제주도 2박3일 여행 응모',
+      nameEn: 'Jeju Island 3D2N Trip Raffle',
+      description: '호텔 + 렌터카 + 체험 투어 포함',
+      descriptionEn: 'Hotel + car rental + experience tours included',
+      price: 100000,
+      icon: Plane,
+      color: 'from-green-400 to-emerald-500',
+      popular: true,
+      benefits: ['4성급 호텔 2박', '렌터카 3일', '체험투어 포함', '응모권 2장 필요'],
+    },
+  ],
   premium: [
     {
       id: 'premium-1',
@@ -99,10 +173,11 @@ const shopCategories: Record<'premium' | 'boost' | 'training', ShopItem[]> = {
 
 export default function InfluencerShopPage() {
   const { language } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'premium' | 'boost' | 'training'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'raffles' | 'premium' | 'boost' | 'training'>('all');
 
   const categories = [
     { id: 'all', label: language === 'ko' ? '전체' : 'All', icon: ShoppingBag },
+    { id: 'raffles', label: language === 'ko' ? '경품응모' : 'Raffles', icon: Gift },
     { id: 'premium', label: language === 'ko' ? '프리미엄' : 'Premium', icon: Crown },
     { id: 'boost', label: language === 'ko' ? '부스트' : 'Boost', icon: Zap },
     { id: 'training', label: language === 'ko' ? '교육' : 'Training', icon: Award },
@@ -118,7 +193,7 @@ export default function InfluencerShopPage() {
 
   const renderItems = (): ShopItem[] => {
     if (selectedCategory === 'all') {
-      return [...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
+      return [...shopCategories.raffles, ...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
     }
     return shopCategories[selectedCategory];
   };
@@ -170,7 +245,7 @@ export default function InfluencerShopPage() {
         </div>
 
         {/* Shop Items */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {renderItems().map((item) => {
             const Icon = item.icon;
             const isFeatured = 'featured' in item && item.featured;
@@ -179,7 +254,7 @@ export default function InfluencerShopPage() {
             return (
               <div
                 key={item.id}
-                className="relative bg-dark-600/80 backdrop-blur-xl rounded-2xl p-5 border border-dark-500/50 hover:border-primary/50 transition-all hover:scale-[1.02] group"
+                className="relative bg-dark-600/80 backdrop-blur-xl rounded-2xl p-5 border-2 border-dark-500/50 hover:border-primary/50 transition-all hover:scale-[1.02] group shadow-xl"
               >
                 {/* Badge */}
                 {(isFeatured || isPopular) && (
@@ -239,7 +314,7 @@ export default function InfluencerShopPage() {
         </div>
 
         {/* Info Notice */}
-        <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border border-dark-500/50">
+        <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
               <Tag size={18} className="text-primary" />

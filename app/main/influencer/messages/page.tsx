@@ -129,14 +129,14 @@ export default function MessagesPage() {
             <p className="text-sm text-gray-500">{t.messages.noMessagesDesc}</p>
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-6">
             {filteredConversations.map((conv) => (
               <Link
                 key={conv.id}
                 href={`/main/influencer/messages/${conv.id}`}
                 className="block"
               >
-                <div className={`card p-4 hover:bg-dark-600/50 transition-all ${
+                <div className={`card border-2 border-dark-500/50 shadow-xl p-4 hover:bg-dark-600/50 transition-all ${
                   conv.unreadCount > 0 ? 'border-l-4 border-primary' : ''
                 }`}>
                   <div className="flex items-start gap-3">

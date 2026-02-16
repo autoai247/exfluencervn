@@ -246,7 +246,7 @@ export default function ProfilePage() {
         {/* 💰 내 자산 요약 - 최우선 */}
         <div className="grid grid-cols-2 gap-3">
           <Link href="/main/influencer/wallet?tab=cash">
-            <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 hover:border-green-500/80 transition-all">
+            <div className="card bg-gradient-to-br from-green-500/30 to-green-600/10 border-2 border-green-500/50 hover:border-green-500/80 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <DollarSign size={20} className="text-green-400" />
                 <span className="text-xs text-green-400 font-bold">💰 {t.wallet.cashPoints}</span>
@@ -259,7 +259,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/wallet?tab=shopping">
-            <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 hover:border-blue-500/80 transition-all">
+            <div className="card bg-gradient-to-br from-blue-500/30 to-purple-600/20 border-2 border-blue-500/50 hover:border-blue-500/80 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <ShoppingCart size={20} className="text-blue-400" />
                 <span className="text-xs text-blue-400 font-bold">🛍️ {t.wallet.shoppingPoints}</span>
@@ -383,7 +383,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30">
+        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
           <div className="flex items-start gap-4">
             <img
               src={userProfile.avatar}
@@ -430,7 +430,7 @@ export default function ProfilePage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
           <Link href="/main/influencer/completed">
-            <div className="card text-center hover:bg-dark-600 transition-colors cursor-pointer border-2 border-green-500/30 hover:border-green-500/50">
+            <div className="card text-center hover:bg-dark-600 transition-colors cursor-pointer border-2 border-green-500/30 hover:border-green-500/50 shadow-xl">
               <div className="text-2xl font-bold text-green-400">
                 {userProfile.stats.completedCampaigns}
               </div>
@@ -441,7 +441,7 @@ export default function ProfilePage() {
             </div>
           </Link>
           <Link href="/main/influencer/reviews">
-            <div className="card text-center hover:bg-dark-600 transition-colors cursor-pointer">
+            <div className="card text-center hover:bg-dark-600 transition-colors cursor-pointer border-2 border-dark-500/50 shadow-xl">
               <div className="text-2xl font-bold text-accent">
                 {userProfile.stats.rating.toFixed(1)} ⭐
               </div>
@@ -455,7 +455,7 @@ export default function ProfilePage() {
           </Link>
           {(totalShareEarnings > 0 || pendingShareCount > 0) && (
             <Link href="/main/influencer/shares" className="col-span-2">
-              <div className="card text-center bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer">
+              <div className="card text-center bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer shadow-xl">
                 <div className="text-2xl font-bold text-primary">
                   +{(totalShareEarnings / 1000).toFixed(0)}K VND
                 </div>
@@ -490,7 +490,7 @@ export default function ProfilePage() {
             const bgColor = platformColors[account.platform];
 
             return (
-              <div key={account.platform} className="card">
+              <div key={account.platform} className="card border-2 border-dark-500/50 shadow-xl">
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-xl ${bgColor} flex items-center justify-center`}>
                     <Icon size={24} className="text-white" />
@@ -537,7 +537,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Demographics */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <User size={16} className="text-primary" />
               {t.profile.basic}
@@ -577,7 +577,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Lifestyle */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <Home size={16} className="text-primary" />
               {t.profile.lifestyle}
@@ -615,7 +615,7 @@ export default function ProfilePage() {
 
           {/* Beauty & Fashion (if applicable) */}
           {userProfile.categories.includes('beauty') && (
-            <div className="card">
+            <div className="card border-2 border-dark-500/50 shadow-xl">
               <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                 <Heart size={16} className="text-pink-400" />
                 {t.profile.beautyInfo}
@@ -652,7 +652,7 @@ export default function ProfilePage() {
           )}
 
           {/* Tech & Gadgets */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <Smartphone size={16} className="text-blue-400" />
               {t.profile.techGadgets}
@@ -676,7 +676,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Hobbies */}
-          <div className="card">
+          <div className="card border-2 border-dark-500/50 shadow-xl">
             <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <Heart size={16} className="text-purple-400" />
               {t.profile.hobbiesInterests}
@@ -701,7 +701,7 @@ export default function ProfilePage() {
           <h3 className="text-sm font-semibold text-gray-400 px-1">{t.profile.rewardsBenefits}</h3>
 
           <Link href="/main/influencer/invite-advertiser">
-            <div className="card-hover border-2 border-secondary/50 bg-gradient-to-r from-secondary/20 to-primary/20">
+            <div className="card-hover border-2 border-secondary/50 bg-gradient-to-r from-secondary/20 to-primary/20 shadow-xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-secondary/30 rounded-xl flex items-center justify-center">
@@ -721,7 +721,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/attendance">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-success/20 rounded-xl flex items-center justify-center">
                   <Calendar size={20} className="text-success" />
@@ -736,7 +736,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/referral">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
                   <UsersIcon size={20} className="text-primary" />
@@ -751,7 +751,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/shop">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-warning/20 rounded-xl flex items-center justify-center">
                   <ShoppingCart size={20} className="text-warning" />
@@ -772,7 +772,7 @@ export default function ProfilePage() {
 
           {/* 내 캠페인 - 전체 진행 상태 */}
           <Link href="/main/influencer/my-campaigns">
-            <div className="card-hover flex items-center justify-between border-2 border-mint/50 bg-gradient-to-r from-mint/10 to-primary/10">
+            <div className="card-hover flex items-center justify-between border-2 border-mint/50 bg-gradient-to-r from-mint/10 to-primary/10 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-mint to-primary rounded-xl flex items-center justify-center shadow-lg shadow-mint/20">
                   <Briefcase size={20} className="text-white" />
@@ -794,7 +794,7 @@ export default function ProfilePage() {
 
           {/* 완료한 캠페인 */}
           <Link href="/main/influencer/completed">
-            <div className="card-hover flex items-center justify-between border-2 border-green-500/30">
+            <div className="card-hover flex items-center justify-between border-2 border-green-500/30 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
                   <CheckCircle size={20} className="text-green-500" />
@@ -813,7 +813,7 @@ export default function ProfilePage() {
 
           {/* 진행 중인 작업 */}
           <Link href="/main/influencer/jobs">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
                   <Briefcase size={20} className="text-primary" />
@@ -832,7 +832,7 @@ export default function ProfilePage() {
 
           {/* 찜 목록 */}
           <Link href="/main/influencer/favorites">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center">
                   <Heart size={20} className="text-red-500" />
@@ -851,7 +851,7 @@ export default function ProfilePage() {
 
           {/* 내 응모권 */}
           <Link href="/main/influencer/my-raffles">
-            <div className="card-hover flex items-center justify-between border-2 border-primary/30 hover:border-primary/50">
+            <div className="card-hover flex items-center justify-between border-2 border-primary/30 hover:border-primary/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
                   <Ticket size={20} className="text-white" />
@@ -870,7 +870,7 @@ export default function ProfilePage() {
 
           {/* 메시지 */}
           <Link href="/main/messages">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center">
                   <MessageCircle size={20} className="text-blue-500" />
@@ -889,7 +889,7 @@ export default function ProfilePage() {
 
           {/* 랭킹 */}
           <Link href="/main/influencer/ranking">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center">
                   <Trophy size={20} className="text-yellow-400" />
@@ -912,7 +912,7 @@ export default function ProfilePage() {
           <h3 className="text-sm font-semibold text-gray-400 px-1">{t.profile.accountSettings}</h3>
 
           <Link href="/main/influencer/wallet">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center">
                   <Wallet size={20} className="text-accent" />
@@ -927,7 +927,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/stats">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center">
                   <BarChart size={20} className="text-secondary" />
@@ -942,7 +942,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/main/influencer/portfolio">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
                   <FileText size={20} className="text-primary" />
@@ -957,7 +957,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/settings/notifications">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-info/20 rounded-xl flex items-center justify-center">
                   <Bell size={20} className="text-info" />
@@ -972,7 +972,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/settings">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gray-500/20 rounded-xl flex items-center justify-center">
                   <Settings size={20} className="text-gray-400" />
@@ -992,7 +992,7 @@ export default function ProfilePage() {
           <h3 className="text-sm font-semibold text-gray-400 px-1">{t.profile.support}</h3>
 
           <Link href="/help">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <HelpCircle size={20} className="text-gray-400" />
                 <span className="text-white">{t.profile.help}</span>
@@ -1002,7 +1002,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/terms">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <FileText size={20} className="text-gray-400" />
                 <span className="text-white">{t.profile.termsOfService}</span>
@@ -1012,7 +1012,7 @@ export default function ProfilePage() {
           </Link>
 
           <Link href="/privacy">
-            <div className="card-hover flex items-center justify-between">
+            <div className="card-hover flex items-center justify-between border-2 border-dark-500/50 shadow-xl">
               <div className="flex items-center gap-3">
                 <Shield size={20} className="text-gray-400" />
                 <span className="text-white">{t.profile.privacyPolicy}</span>

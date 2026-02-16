@@ -23,7 +23,7 @@ interface ShopItem {
 }
 
 // Mock shop items
-const shopCategories: Record<'raffles' | 'premium' | 'boost' | 'training', ShopItem[]> = {
+const shopCategories: Record<'raffles' | 'tickets' | 'premium' | 'boost' | 'training', ShopItem[]> = {
   raffles: [
     {
       id: 'raffle-1',
@@ -96,6 +96,43 @@ const shopCategories: Record<'raffles' | 'premium' | 'boost' | 'training', ShopI
       color: 'from-green-400 to-emerald-500',
       popular: true,
       benefits: ['4성급 호텔 2박', '렌터카 3일', '체험투어 포함', '응모권 2장 필요'],
+    },
+  ],
+  tickets: [
+    {
+      id: 'ticket-1',
+      name: '응모권 1장',
+      nameEn: '1 Raffle Ticket',
+      description: '모든 경품 응모에 사용 가능한 응모권',
+      descriptionEn: 'Use for any raffle campaign',
+      price: 50000,
+      icon: Ticket,
+      color: 'from-orange-400 to-red-500',
+      popular: true,
+    },
+    {
+      id: 'ticket-2',
+      name: '응모권 5장 패키지',
+      nameEn: '5 Raffle Tickets Pack',
+      description: '5장 구매 시 10% 할인 (225,000 VND)',
+      descriptionEn: '10% discount on 5 tickets',
+      price: 225000,
+      icon: Ticket,
+      color: 'from-orange-400 to-red-500',
+      featured: true,
+      benefits: ['10% 할인', '5장 = 225,000 VND', '즉시 사용 가능'],
+    },
+    {
+      id: 'ticket-3',
+      name: '응모권 10장 패키지',
+      nameEn: '10 Raffle Tickets Pack',
+      description: '10장 구매 시 20% 할인 (400,000 VND)',
+      descriptionEn: '20% discount on 10 tickets',
+      price: 400000,
+      icon: Ticket,
+      color: 'from-orange-400 to-red-500',
+      featured: true,
+      benefits: ['20% 할인', '10장 = 400,000 VND', '프리미엄 경품 접근'],
     },
   ],
   premium: [
@@ -173,27 +210,52 @@ const shopCategories: Record<'raffles' | 'premium' | 'boost' | 'training', ShopI
 
 export default function InfluencerShopPage() {
   const { language } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'raffles' | 'premium' | 'boost' | 'training'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'raffles' | 'tickets' | 'premium' | 'boost' | 'training'>('all');
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   const categories = [
     { id: 'all', label: language === 'ko' ? '전체' : 'All', icon: ShoppingBag },
     { id: 'raffles', label: language === 'ko' ? '경품응모' : 'Raffles', icon: Gift },
+    { id: 'tickets', label: language === 'ko' ? '응모권구매' : 'Tickets', icon: Ticket },
     { id: 'premium', label: language === 'ko' ? '프리미엄' : 'Premium', icon: Crown },
     { id: 'boost', label: language === 'ko' ? '부스트' : 'Boost', icon: Zap },
     { id: 'training', label: language === 'ko' ? '교육' : 'Training', icon: Award },
   ];
 
   const handlePurchase = (item: ShopItem) => {
+    // 응모권은 수량 선택 모달 표시
+    if (item.id.startsWith('ticket-')) {
+      setSelectedItem(item);
+      setQuantity(1);
+      setShowPurchaseModal(true);
+    } else {
+      // 다른 상품은 기존 방식
+      alert(
+        language === 'ko'
+          ? `"${item.name}" 구매 기능은 곧 출시됩니다!\n\n가격: ${formatPoints(item.price)} VND`
+          : `"${item.nameEn}" purchase coming soon!\n\nPrice: ${formatPoints(item.price)} VND`
+      );
+    }
+  };
+
+  const confirmPurchase = () => {
+    if (!selectedItem) return;
+    const totalPrice = selectedItem.price * quantity;
     alert(
       language === 'ko'
-        ? `"${item.name}" 구매 기능은 곧 출시됩니다!\n\n가격: ${formatPoints(item.price)} VND`
-        : `"${item.nameEn}" purchase coming soon!\n\nPrice: ${formatPoints(item.price)} VND`
+        ? `${selectedItem.name} ${quantity}장 구매 완료!\n\n총 금액: ${formatPoints(totalPrice)} VND\n\n보유 응모권이 ${quantity}장 증가했습니다!`
+        : `${selectedItem.nameEn} x${quantity} purchased!\n\nTotal: ${formatPoints(totalPrice)} VND\n\nYou received ${quantity} raffle tickets!`
     );
+    setShowPurchaseModal(false);
+    setSelectedItem(null);
+    setQuantity(1);
   };
 
   const renderItems = (): ShopItem[] => {
     if (selectedCategory === 'all') {
-      return [...shopCategories.raffles, ...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
+      return [...shopCategories.raffles, ...shopCategories.tickets, ...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
     }
     return shopCategories[selectedCategory];
   };
@@ -332,6 +394,114 @@ export default function InfluencerShopPage() {
           </div>
         </div>
       </div>
+
+      {/* Purchase Modal (Quantity Selector) */}
+      {showPurchaseModal && selectedItem && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6 border-2 border-primary/30 shadow-xl">
+            <h3 className="text-xl font-bold text-white mb-4">
+              {language === 'ko' ? '응모권 구매' : 'Purchase Tickets'}
+            </h3>
+
+            {/* Item Info */}
+            <div className="bg-dark-700 rounded-xl p-4 mb-4 border-2 border-dark-500/50 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${selectedItem.color} flex items-center justify-center shadow-xl`}>
+                  <Ticket size={24} className="text-white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white">{language === 'ko' ? selectedItem.name : selectedItem.nameEn}</h4>
+                  <p className="text-sm text-gray-400">{formatPoints(selectedItem.price)} VND / {language === 'ko' ? '장' : 'ticket'}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="mb-4">
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                {language === 'ko' ? '수량' : 'Quantity'}
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-12 h-12 rounded-xl bg-dark-700 border-2 border-dark-500 text-white font-bold text-xl hover:bg-dark-600 hover:border-primary/50 transition-all"
+                >
+                  -
+                </button>
+                <div className="flex-1 text-center">
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-full bg-dark-700 border-2 border-dark-500 rounded-xl px-4 py-3 text-center text-2xl font-bold text-white focus:border-primary focus:outline-none"
+                    min="1"
+                  />
+                </div>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-12 h-12 rounded-xl bg-dark-700 border-2 border-dark-500 text-white font-bold text-xl hover:bg-dark-600 hover:border-primary/50 transition-all"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Quick Select */}
+              <div className="grid grid-cols-4 gap-2 mt-3">
+                {[1, 5, 10, 20].map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => setQuantity(num)}
+                    className={`py-2 rounded-lg text-sm font-semibold transition-all ${
+                      quantity === num
+                        ? 'bg-primary text-white'
+                        : 'bg-dark-700 text-gray-300 hover:bg-dark-600 border-2 border-dark-500'
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Total Price */}
+            <div className="bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 rounded-xl p-4 mb-4 shadow-xl">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-300">{language === 'ko' ? '응모권' : 'Tickets'}</span>
+                <span className="text-white font-semibold">{quantity} {language === 'ko' ? '장' : 'pcs'}</span>
+              </div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-300">{language === 'ko' ? '단가' : 'Unit Price'}</span>
+                <span className="text-white font-semibold">{formatPoints(selectedItem.price)} VND</span>
+              </div>
+              <div className="h-px bg-primary/30 my-2" />
+              <div className="flex justify-between items-center">
+                <span className="text-white font-bold">{language === 'ko' ? '총 금액' : 'Total'}</span>
+                <span className="text-primary font-bold text-xl">{formatPoints(selectedItem.price * quantity)} VND</span>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowPurchaseModal(false);
+                  setSelectedItem(null);
+                  setQuantity(1);
+                }}
+                className="flex-1 btn btn-ghost"
+              >
+                {language === 'ko' ? '취소' : 'Cancel'}
+              </button>
+              <button
+                onClick={confirmPurchase}
+                className="flex-1 btn btn-primary"
+              >
+                {language === 'ko' ? '구매하기' : 'Purchase'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNav userType="influencer" />
     </div>

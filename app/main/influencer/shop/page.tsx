@@ -228,11 +228,11 @@ export default function InfluencerShopPage() {
 
   const categories = [
     { id: 'all', label: language === 'ko' ? '전체' : 'All', icon: ShoppingBag },
-    { id: 'raffles', label: language === 'ko' ? '응모' : 'Enter', icon: Gift },
-    { id: 'tickets', label: language === 'ko' ? '티켓' : 'Tickets', icon: Ticket },
-    { id: 'premium', label: language === 'ko' ? '프리미엄' : 'Premium', icon: Crown },
-    { id: 'boost', label: language === 'ko' ? '부스트' : 'Boost', icon: Zap },
-    { id: 'training', label: language === 'ko' ? '교육' : 'Training', icon: Award },
+    { id: 'raffles', label: language === 'ko' ? '응모' : 'Vào', icon: Gift },
+    { id: 'tickets', label: language === 'ko' ? '티켓' : 'Vé', icon: Ticket },
+    { id: 'premium', label: language === 'ko' ? 'VIP' : 'VIP', icon: Crown },
+    { id: 'boost', label: language === 'ko' ? '부스트' : 'Tăng', icon: Zap },
+    { id: 'training', label: language === 'ko' ? '교육' : 'Học', icon: Award },
   ];
 
   const handlePurchase = (item: ShopItem) => {
@@ -391,13 +391,13 @@ export default function InfluencerShopPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id as any)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl font-semibold text-xs sm:text-sm whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg font-semibold text-xs whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105'
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg'
                     : 'bg-dark-600 text-gray-300 hover:bg-dark-500'
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={14} />
                 {cat.label}
               </button>
             );

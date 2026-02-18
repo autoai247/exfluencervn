@@ -20,7 +20,7 @@ export default function Loading() {
             Loading...
           </p>
           <p className="text-sm text-gray-400">
-            Đang tải / 로딩 중
+            Đang tải...
           </p>
         </div>
       </div>

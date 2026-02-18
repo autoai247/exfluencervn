@@ -28,9 +28,9 @@ const mockStats = {
 };
 
 const recentCampaigns = [
-  { name: '스킨케어 리뷰', date: '2026-02-10', earning: 2500000, views: 85000, status: 'completed' },
-  { name: '패션 브랜드 협찬', date: '2026-02-05', earning: 3200000, views: 124000, status: 'completed' },
-  { name: '뷰티 박스 언박싱', date: '2026-01-28', earning: 1800000, views: 67000, status: 'completed' },
+  { name: 'Review Skincare cao cấp', date: '2026-02-10', earning: 2500000, views: 85000, status: 'completed' },
+  { name: 'Fashion Brand Collaboration', date: '2026-02-05', earning: 3200000, views: 124000, status: 'completed' },
+  { name: 'Unboxing Beauty Box', date: '2026-01-28', earning: 1800000, views: 67000, status: 'completed' },
 ];
 
 export default function InfluencerAnalyticsPage() {
@@ -46,7 +46,7 @@ export default function InfluencerAnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-dark-800 via-dark-700 to-dark-800 pb-20">
-      <MobileHeader title={language === 'ko' ? '통계' : 'Analytics'} showBack />
+      <MobileHeader title={language === 'ko' ? '통계' : 'Thống kê'} showBack />
 
       <div className="container-mobile py-6 space-y-6">
         {/* Header */}

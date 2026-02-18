@@ -2,1127 +2,855 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import {
   ArrowLeft,
   Save,
-  Upload,
   Plus,
   X,
   DollarSign,
   Users,
   Calendar,
-  MapPin,
   Tag,
   FileText,
-  Heart,
-  Baby,
-  Car,
-  Home,
-  PawPrint,
-  Shirt,
-  Utensils,
+  Hash,
+  Eye,
+  Copy,
+  CheckCircle,
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
-import Breadcrumb from '@/components/common/Breadcrumb';
-import type { Platform, Category } from '@/types';
+import MobileHeader from '@/components/common/MobileHeader';
 import { useToast } from '@/components/common/ToastContainer';
+import { formatCash } from '@/lib/points';
 
-const platformIcons = {
-  instagram: FaInstagram,
-  tiktok: FaTiktok,
-  youtube: FaYoutube,
-  facebook: FaFacebook,
-};
+// ─── Types ─────────────────────────────────────────────────
+type Platform = 'instagram' | 'tiktok' | 'youtube' | 'facebook';
+type Deliverable = 'post' | 'story' | 'reel' | 'video' | 'live';
 
+const PLATFORMS: { id: Platform; label: string; icon: typeof FaInstagram; color: string }[] = [
+  { id: 'instagram', label: 'Instagram', icon: FaInstagram, color: 'text-pink-400' },
+  { id: 'tiktok', label: 'TikTok', icon: FaTiktok, color: 'text-white' },
+  { id: 'youtube', label: 'YouTube', icon: FaYoutube, color: 'text-red-400' },
+  { id: 'facebook', label: 'Facebook', icon: FaFacebook, color: 'text-blue-400' },
+];
+
+const DELIVERABLES: { id: Deliverable; label: string; desc: string }[] = [
+  { id: 'post', label: 'Post / Feed', desc: 'Bài đăng cố định' },
+  { id: 'story', label: 'Story', desc: 'Đăng 24 giờ' },
+  { id: 'reel', label: 'Reel / Short', desc: 'Video ngắn' },
+  { id: 'video', label: 'Video dài', desc: 'YouTube / FB Watch' },
+  { id: 'live', label: 'Livestream', desc: 'Phát trực tiếp' },
+];
+
+const NICHES = [
+  'Beauty', 'Fashion', 'Food', 'Travel', 'Fitness',
+  'Tech', 'Lifestyle', 'Gaming', 'Finance', 'Parenting',
+];
+
+// ─── Component ─────────────────────────────────────────────
 export default function CreateCampaignPage() {
   const router = useRouter();
   const toast = useToast();
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  const [formData, setFormData] = useState({
+  const [step, setStep] = useState<1 | 2 | 3>(1); // 3 steps
+  const [showPreview, setShowPreview] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [copiedShare, setCopiedShare] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [campaignId] = useState(() => Math.random().toString(36).slice(2, 8).toUpperCase());
+
+  const [form, setForm] = useState({
+    // Step 1: Campaign basics
+    brand: '',
     title: '',
     description: '',
-    budget: '',
-    type: 'cash' as 'cash' | 'points',
-    platforms: [] as Platform[],
-    categories: [] as Category[],
-    location: '호치민, 베트남',
+    niche: [] as string[],
+    platform: [] as Platform[],
+    deliverable: [] as Deliverable[],
+
+    // Step 2: Requirements
+    slots: '3',
+    budget: '',          // per KOL (VND)
+    minFollowers: '10000',
+    minEngagement: '3',
+    gender: 'any' as 'any' | 'female' | 'male',
+    ageRange: '18-35',
+    location: 'TP.HCM',
+
+    // Step 3: Details
     startDate: '',
     endDate: '',
-    applicationDeadline: '',
-
-    // Requirements
-    minFollowers: '',
-    minEngagement: '',
-    gender: 'any' as 'any' | 'male' | 'female',
-    ageRange: '',
-
-    // Extended requirements
-    requiresVehicle: false,
-    vehicleTypes: [] as string[],
-    requiresParent: false,
-    childAgeRange: [] as string[],
-    requiresPet: false,
-    petTypes: [] as string[],
-    maritalStatus: [] as string[],
-    housingTypes: [] as string[],
-
-    // Beauty specific
-    skinTypes: [] as string[],
-    skinTones: [] as string[],
-
-    // Fashion specific
-    clothingSizes: {
-      top: [] as string[],
-      bottom: [] as string[],
-    },
+    hashtags: '',
+    guidelines: '',
+    provided: '',        // what brand provides (product, sample, etc.)
   });
 
-  const [uploadedFiles, setUploadedFiles] = useState<Array<{
-    file: File;
-    preview: string;
-    type: 'image' | 'video';
-  }>>([]);
+  const [hashtagInput, setHashtagInput] = useState('');
 
-  // Form errors for inline validation
-  const [errors, setErrors] = useState<{
-    title?: string;
-    description?: string;
-    budget?: string;
-    platforms?: string;
-    categories?: string;
-    startDate?: string;
-    endDate?: string;
-    applicationDeadline?: string;
-  }>({});
-
-  // Loading state
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Auto-save state
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [showDraftPrompt, setShowDraftPrompt] = useState(false);
+  // Auto-save draft
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (form.title) {
+        try {
+          localStorage.setItem('campaign_draft_vn', JSON.stringify(form));
+        } catch {
+          // ignore
+        }
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [form]);
 
   // Load draft on mount
   useEffect(() => {
-    const draft = localStorage.getItem('campaign_draft');
-    if (draft) {
-      try {
-        const savedData = JSON.parse(draft);
-        const savedTime = localStorage.getItem('campaign_draft_time');
-        if (savedTime) {
-          const timeDiff = Date.now() - parseInt(savedTime);
-          // Show draft if saved within last 24 hours
-          if (timeDiff < 24 * 60 * 60 * 1000) {
-            setShowDraftPrompt(true);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load draft:', error);
+    try {
+      const saved = localStorage.getItem('campaign_draft_vn');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.title) setForm(parsed);
       }
+    } catch {
+      // ignore
     }
   }, []);
 
-  // Auto-save every 3 seconds when form data changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.title || formData.description) {
-        localStorage.setItem('campaign_draft', JSON.stringify(formData));
-        localStorage.setItem('campaign_draft_time', Date.now().toString());
-        setLastSaved(new Date());
-      }
-    }, 3000);
+  const togglePlatform = (p: Platform) =>
+    setForm(f => ({
+      ...f,
+      platform: f.platform.includes(p)
+        ? f.platform.filter(x => x !== p)
+        : [...f.platform, p],
+    }));
 
-    return () => clearTimeout(timer);
-  }, [formData]);
+  const toggleDeliverable = (d: Deliverable) =>
+    setForm(f => ({
+      ...f,
+      deliverable: f.deliverable.includes(d)
+        ? f.deliverable.filter(x => x !== d)
+        : [...f.deliverable, d],
+    }));
 
-  const loadDraft = () => {
-    const draft = localStorage.getItem('campaign_draft');
-    if (draft) {
-      try {
-        setFormData(JSON.parse(draft));
-        setShowDraftPrompt(false);
-      } catch (error) {
-        console.error('Failed to load draft:', error);
-      }
+  const toggleNiche = (n: string) =>
+    setForm(f => ({
+      ...f,
+      niche: f.niche.includes(n)
+        ? f.niche.filter(x => x !== n)
+        : [...f.niche, n],
+    }));
+
+  const addHashtag = () => {
+    const tag = hashtagInput.trim().replace(/^#/, '');
+    if (!tag) return;
+    const existing = form.hashtags ? form.hashtags.split(' ') : [];
+    if (!existing.includes(`#${tag}`)) {
+      setForm(f => ({ ...f, hashtags: [...existing, `#${tag}`].join(' ').trim() }));
+    }
+    setHashtagInput('');
+  };
+
+  const removeHashtag = (tag: string) =>
+    setForm(f => ({
+      ...f,
+      hashtags: f.hashtags.split(' ').filter(t => t !== tag).join(' '),
+    }));
+
+  const generateBriefText = () => {
+    const tags = form.hashtags || '#[hashtag]';
+    const budget = form.budget ? formatCash(parseInt(form.budget)) : '[Thương lượng]';
+    const platformLabels = form.platform.map(p =>
+      PLATFORMS.find(x => x.id === p)?.label || p
+    ).join(', ') || '[Chọn nền tảng]';
+    const deliverableLabels = form.deliverable.map(d =>
+      DELIVERABLES.find(x => x.id === d)?.label || d
+    ).join(' + ') || '[Chọn loại nội dung]';
+
+    return `📋 BRIEF CHIẾN DỊCH
+──────────────────────────
+🏢 Thương hiệu: ${form.brand || '[Tên thương hiệu]'}
+📌 Tên chiến dịch: ${form.title || '[Tên chiến dịch]'}
+📱 Nền tảng: ${platformLabels}
+🎬 Loại nội dung: ${deliverableLabels}
+
+📝 Mô tả chiến dịch:
+${form.description || '[Mô tả sản phẩm/dịch vụ cần quảng cáo]'}
+
+──────────────────────────
+✅ YÊU CẦU KOL
+• Followers tối thiểu: ${parseInt(form.minFollowers || '0').toLocaleString()}
+• Tỷ lệ tương tác tối thiểu: ${form.minEngagement || '3'}%
+• Giới tính: ${form.gender === 'female' ? 'Nữ' : form.gender === 'male' ? 'Nam' : 'Không giới hạn'}
+• Độ tuổi: ${form.ageRange}
+• Khu vực: ${form.location}
+
+──────────────────────────
+💰 THANH TOÁN
+• Ngân sách/KOL: ${budget}
+• Số lượng KOL: ${form.slots} người
+
+──────────────────────────
+📅 THỜI GIAN
+• Bắt đầu: ${form.startDate || '[DD/MM/YYYY]'}
+• Kết thúc: ${form.endDate || '[DD/MM/YYYY]'}
+
+──────────────────────────
+#️⃣ Hashtag bắt buộc:
+${tags}
+
+📋 Hướng dẫn thực hiện:
+${form.guidelines || '[Ghi hướng dẫn cụ thể cho KOL]'}
+
+🎁 Thương hiệu cung cấp:
+${form.provided || '[Sản phẩm/mẫu thử/chi phí khác]'}
+
+──────────────────────────
+📩 Đăng ký & ứng tuyển tại:
+🔗 https://exfluencervn.vercel.app/main/influencer/campaigns
+
+⚡ Ứng tuyển nhanh — Không qua Google Form!`;
+  };
+
+  const generateShareText = () => {
+    const budget = form.budget ? formatCash(parseInt(form.budget)) : '...';
+    const platformLabels = form.platform.map(p =>
+      PLATFORMS.find(x => x.id === p)?.label || p
+    ).join(' + ') || '...';
+    return `🔥 [CHIẾN DỊCH MỚI] ${form.title || 'Tuyển KOL'}
+
+🏢 ${form.brand || 'Thương hiệu'}
+📱 Nền tảng: ${platformLabels}
+💰 Thu nhập: ${budget}/KOL
+👥 ${form.slots || '3'} suất — hạn: ${form.endDate || 'TBD'}
+
+${form.description ? form.description.slice(0, 150) + (form.description.length > 150 ? '...' : '') : ''}
+
+✅ Điều kiện: ${parseInt(form.minFollowers || '0').toLocaleString()}+ followers, ER ${form.minEngagement || '3'}%+
+
+📩 Ứng tuyển ngay — không qua Google Form:
+👉 https://exfluencervn.vercel.app/main/influencer/campaigns
+
+#KOL #influencer #chiendich #${(form.niche[0] || 'beauty').toLowerCase()}`;
+  };
+
+  const copyBrief = async () => {
+    try {
+      await navigator.clipboard.writeText(generateBriefText());
+      setCopied(true);
+      toast.success('Đã sao chép!', 'Brief đã được sao chép vào clipboard.');
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error('Lỗi', 'Không thể sao chép. Hãy thử lại.');
     }
   };
 
-  const discardDraft = () => {
-    localStorage.removeItem('campaign_draft');
-    localStorage.removeItem('campaign_draft_time');
-    setShowDraftPrompt(false);
-  };
-
-  // Track scroll progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY;
-      const scrollableHeight = documentHeight - windowHeight;
-      const progress = scrollableHeight > 0 ? (scrollTop / scrollableHeight) * 100 : 0;
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial calculation
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Clear previous errors
-    const newErrors: typeof errors = {};
-
-    // Validation
-    if (!formData.title.trim()) {
-      newErrors.title = '캠페인 제목을 입력해주세요';
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = '캠페인 설명을 입력해주세요';
-    }
-
-    if (formData.platforms.length === 0) {
-      newErrors.platforms = '플랫폼을 최소 1개 선택해주세요';
-    }
-
-    if (formData.categories.length === 0) {
-      newErrors.categories = '카테고리를 최소 1개 선택해주세요';
-    }
-
-    if (!formData.budget || parseInt(formData.budget) <= 0) {
-      newErrors.budget = '예산을 입력해주세요';
-    }
-
-    if (!formData.startDate) {
-      newErrors.startDate = '시작일을 선택해주세요';
-    }
-
-    if (!formData.endDate) {
-      newErrors.endDate = '종료일을 선택해주세요';
-    }
-
-    if (!formData.applicationDeadline) {
-      newErrors.applicationDeadline = '지원 마감일을 선택해주세요';
-    }
-
-    // Update errors state
-    setErrors(newErrors);
-
-    // Show validation errors if any
-    if (Object.keys(newErrors).length > 0) {
-      // Scroll to first error
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleSubmit = async () => {
+    if (!form.title || !form.platform.length || !form.deliverable.length) {
+      toast.error('Thiếu thông tin', 'Vui lòng điền đầy đủ tên, nền tảng và loại nội dung.');
+      setStep(1);
       return;
     }
 
-    // Start loading
     setIsSubmitting(true);
+    await new Promise(r => setTimeout(r, 1200));
 
     try {
-      // TODO: Save to API
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      localStorage.removeItem('campaign_draft_vn');
+    } catch {
+      // ignore
+    }
 
-      // Clear draft on successful submission
-      localStorage.removeItem('campaign_draft');
-      localStorage.removeItem('campaign_draft_time');
+    setIsSubmitting(false);
+    setSubmitted(true);
+  };
 
-      // Success notification
-      toast.success(
-        '캠페인 생성 완료!',
-        '새로운 캠페인이 성공적으로 생성되었습니다.'
-      );
-
-      // Navigate to dashboard
-      setTimeout(() => {
-        router.push('/main/advertiser');
-      }, 500);
-    } catch (error) {
-      toast.error(
-        '캠페인 생성 실패',
-        '캠페인 생성에 실패했습니다. 다시 시도해주세요.'
-      );
-    } finally {
-      setIsSubmitting(false);
+  const copyShareText = async () => {
+    try {
+      await navigator.clipboard.writeText(generateShareText());
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2500);
+    } catch {
+      // ignore
     }
   };
 
-  const togglePlatform = (platform: Platform) => {
-    setFormData({
-      ...formData,
-      platforms: formData.platforms.includes(platform)
-        ? formData.platforms.filter(p => p !== platform)
-        : [...formData.platforms, platform],
-    });
-  };
+  const step1Done = form.title && form.platform.length > 0 && form.deliverable.length > 0;
+  const step2Done = form.budget;
 
-  const toggleCategory = (category: Category) => {
-    setFormData({
-      ...formData,
-      categories: formData.categories.includes(category)
-        ? formData.categories.filter(c => c !== category)
-        : [...formData.categories, category],
-    });
-  };
+  // ─── Step 1: Basics ────────────────────────────────────────
+  const renderStep1 = () => (
+    <div className="space-y-5">
+      {/* Brand & Title */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <FileText size={15} className="text-primary" />
+          Thông tin cơ bản
+        </h3>
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-
-    files.forEach(file => {
-      const isImage = file.type.startsWith('image/');
-      const isVideo = file.type.startsWith('video/');
-
-      if (!isImage && !isVideo) {
-        toast.error(
-          '파일 형식 오류',
-          '이미지 또는 비디오 파일만 업로드 가능합니다.'
-        );
-        return;
-      }
-
-      // 파일 크기 체크 (100MB 제한)
-      if (file.size > 100 * 1024 * 1024) {
-        toast.error(
-          '파일 크기 초과',
-          `${file.name}: 파일이 너무 큽니다 (최대 100MB)`
-        );
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setUploadedFiles(prev => [...prev, {
-          file,
-          preview: event.target?.result as string,
-          type: isImage ? 'image' : 'video',
-        }]);
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Reset input
-    e.target.value = '';
-  };
-
-  const removeFile = (index: number) => {
-    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-  };
-
-  return (
-    <div className="min-h-screen bg-white pb-20">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
-                <ArrowLeft size={24} />
-              </button>
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">새 캠페인 만들기</h1>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-xs text-gray-500">{Math.round(scrollProgress)}% 완료</p>
-                  {lastSaved && (
-                    <span className="text-xs text-green-600 flex items-center gap-1">
-                      ✓ 저장됨 {new Date(lastSaved).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className={`px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1 ${
-                isSubmitting
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gray-900 text-white hover:bg-gray-800'
-              }`}
-            >
-              {isSubmitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  생성 중...
-                </>
-              ) : (
-                <>
-                  <Save size={18} />
-                  생성
-                </>
-              )}
-            </button>
-          </div>
-          <Breadcrumb
-            items={[
-              { label: '캠페인', href: '/main/advertiser/campaigns' },
-              { label: '새 캠페인 만들기' },
-            ]}
-            className="ml-9"
+        <div>
+          <label className="text-xs text-gray-400 mb-1 block">Tên thương hiệu</label>
+          <input
+            value={form.brand}
+            onChange={e => setForm(f => ({ ...f, brand: e.target.value }))}
+            placeholder="VD: Laneige Vietnam"
+            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
           />
         </div>
-        {/* Progress Bar */}
-        <div className="h-1 bg-gray-100">
-          <div
-            className="h-full bg-gray-900 transition-all duration-300 ease-out"
-            style={{ width: `${scrollProgress}%` }}
+
+        <div>
+          <label className="text-xs text-gray-400 mb-1 block">Tên chiến dịch *</label>
+          <input
+            value={form.title}
+            onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+            placeholder="VD: Review serum dưỡng ẩm mùa hè"
+            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
+          />
+        </div>
+
+        <div>
+          <label className="text-xs text-gray-400 mb-1 block">Mô tả sản phẩm / chiến dịch</label>
+          <textarea
+            value={form.description}
+            onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+            rows={4}
+            placeholder="Mô tả sản phẩm, mục tiêu chiến dịch, thông điệp cần truyền tải..."
+            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
           />
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="container-mobile space-y-6 py-6">
-        {/* Draft Restoration Prompt */}
-        {showDraftPrompt && (
-          <div className="bg-blue-50 border-2 border-blue-500 rounded-xl p-4">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-white text-sm font-bold">💾</span>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-blue-900 font-bold mb-2">저장된 초안이 있습니다</h3>
-                <p className="text-blue-700 text-sm mb-3">
-                  이전에 작성하던 캠페인 초안을 불러올까요?
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={loadDraft}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                  >
-                    초안 불러오기
-                  </button>
-                  <button
-                    type="button"
-                    onClick={discardDraft}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors text-sm font-medium"
-                  >
-                    새로 작성
-                  </button>
+      {/* Niche */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <Tag size={15} className="text-secondary" />
+          Lĩnh vực
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {NICHES.map(n => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => toggleNiche(n)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                form.niche.includes(n)
+                  ? 'bg-secondary text-white'
+                  : 'bg-dark-700 text-gray-400 border border-dark-400'
+              }`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Platforms */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300">Nền tảng *</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {PLATFORMS.map(p => {
+            const Icon = p.icon;
+            const selected = form.platform.includes(p.id);
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => togglePlatform(p.id)}
+                className={`flex items-center gap-2 p-3 rounded-xl transition-all border ${
+                  selected
+                    ? 'bg-primary/20 border-primary text-white'
+                    : 'bg-dark-700 border-dark-400 text-gray-400'
+                }`}
+              >
+                <Icon size={18} className={selected ? 'text-primary' : p.color} />
+                <span className="text-sm font-medium">{p.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Deliverables */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300">Loại nội dung cần *</h3>
+        <div className="space-y-2">
+          {DELIVERABLES.map(d => {
+            const selected = form.deliverable.includes(d.id);
+            return (
+              <button
+                key={d.id}
+                type="button"
+                onClick={() => toggleDeliverable(d.id)}
+                className={`w-full flex items-center justify-between p-3 rounded-xl transition-all border ${
+                  selected
+                    ? 'bg-secondary/20 border-secondary text-white'
+                    : 'bg-dark-700 border-dark-400 text-gray-400'
+                }`}
+              >
+                <div className="text-left">
+                  <div className="text-sm font-medium">{d.label}</div>
+                  <div className="text-xs text-gray-500">{d.desc}</div>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Error Summary */}
-        {Object.keys(errors).length > 0 && (
-          <div className="bg-red-50 border-2 border-red-500 rounded-xl p-4">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-white text-sm font-bold">!</span>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-red-900 font-bold mb-2">입력 항목을 확인해주세요</h3>
-                <ul className="space-y-1">
-                  {Object.entries(errors).map(([key, value]) => (
-                    value && (
-                      <li key={key} className="text-red-700 text-sm">
-                        • {value}
-                      </li>
-                    )
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Basic Information */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText size={16} className="text-gray-700" />
-            기본 정보
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">캠페인 제목 *</label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => {
-                  setFormData({ ...formData, title: e.target.value });
-                  if (errors.title) setErrors({ ...errors, title: undefined });
-                }}
-                placeholder="예: 신규 스킨케어 제품 리뷰 캠페인"
-                className={`w-full px-4 py-2.5 bg-white border rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent ${
-                  errors.title ? 'border-red-500 focus:ring-red-500' : 'border-gray-200 focus:ring-gray-900'
-                }`}
-                required
-              />
-              {errors.title && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  ⚠️ {errors.title}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">설명 *</label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => {
-                  setFormData({ ...formData, description: e.target.value });
-                  if (errors.description) setErrors({ ...errors, description: undefined });
-                }}
-                placeholder="캠페인에 대한 상세한 설명을 입력하세요..."
-                className={`input min-h-[100px] ${
-                  errors.description ? '!border-red-500 !focus:ring-red-500' : ''
-                }`}
-                required
-              />
-              {errors.description && (
-                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                  ⚠️ {errors.description}
-                </p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  <Users size={14} className="inline mr-1" />
-                  모집 인원 *
-                </label>
-                <input
-                  type="number"
-                  placeholder="10"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">선발할 인플루언서 수</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  <FileText size={14} className="inline mr-1" />
-                  제출물 개수
-                </label>
-                <input
-                  type="number"
-                  placeholder="3"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                />
-                <p className="text-xs text-gray-500 mt-1">필요한 포스트/영상 수</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  <DollarSign size={14} className="inline mr-1" />
-                  예산 (VND) *
-                </label>
-                <input
-                  type="number"
-                  value={formData.budget}
-                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                  placeholder="500000"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">타입</label>
-                <select
-                  value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as 'cash' | 'points' })}
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                >
-                  <option value="cash">💰 현금</option>
-                  <option value="points">🛍️ 포인트</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                <MapPin size={14} className="inline mr-1" />
-                지역
-              </label>
-              <input
-                type="text"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                placeholder="예: 호치민, 하노이, 온라인"
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              />
-            </div>
-          </div>
+                {selected && <CheckCircle size={16} className="text-secondary flex-shrink-0" />}
+              </button>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Media Upload */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Upload size={16} className="text-gray-700" />
-            사진 / 영상 업로드
-          </h3>
+      <button
+        type="button"
+        onClick={() => step1Done && setStep(2)}
+        disabled={!step1Done}
+        className={`w-full py-3.5 rounded-2xl text-sm font-bold transition-all ${
+          step1Done
+            ? 'bg-gradient-to-r from-primary to-secondary text-white'
+            : 'bg-dark-500 text-gray-600 cursor-not-allowed'
+        }`}
+      >
+        Tiếp theo: Yêu cầu KOL →
+      </button>
+    </div>
+  );
 
-          <div className="space-y-4">
-            {/* Upload Button */}
-            <label className="block">
-              <input
-                type="file"
-                multiple
-                accept="image/*,video/*"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <div className="border-2 border-dashed border-gray-900/50 rounded-xl p-8 text-center cursor-pointer hover:border-gray-900 hover:bg-gray-900/5 transition-all">
-                <Upload size={40} className="text-gray-700 mx-auto mb-3" />
-                <p className="text-gray-900 font-semibold mb-1">파일 선택 또는 드래그 & 드롭</p>
-                <p className="text-xs text-gray-400">이미지 (JPG, PNG, GIF) 또는 비디오 (MP4, MOV)</p>
-                <p className="text-xs text-gray-500 mt-1">최대 100MB, 다중 선택 가능</p>
-              </div>
-            </label>
-
-            {/* Preview Grid */}
-            {uploadedFiles.length > 0 && (
-              <div className="grid grid-cols-3 gap-3">
-                {uploadedFiles.map((item, index) => (
-                  <div key={index} className="relative group">
-                    <div className="aspect-square rounded-lg overflow-hidden bg-gray-50">
-                      {item.type === 'image' ? (
-                        <img
-                          src={item.preview}
-                          alt={`Upload ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <video
-                          src={item.preview}
-                          className="w-full h-full object-cover"
-                          muted
-                        />
-                      )}
-                    </div>
-                    {/* Remove Button */}
-                    <button
-                      type="button"
-                      onClick={() => removeFile(index)}
-                      className="absolute top-1 right-1 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-                      aria-label="파일 삭제"
-                    >
-                      <X size={16} className="text-white" />
-                    </button>
-                    {/* Type Badge */}
-                    <div className="absolute bottom-1 left-1 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded text-[10px] text-white">
-                      {item.type === 'image' ? '📷' : '🎥'} {item.file.name.length > 10 ? item.file.name.substring(0, 10) + '...' : item.file.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {uploadedFiles.length > 0 && (
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-400">{uploadedFiles.length}개 파일 업로드됨</span>
-                <span className="text-gray-500">
-                  {(uploadedFiles.reduce((sum, item) => sum + item.file.size, 0) / 1024 / 1024).toFixed(2)} MB
-                </span>
-              </div>
-            )}
-
-            <p className="text-xs text-gray-500 bg-info/10 border border-info/30 rounded-lg p-3">
-              💡 <strong>팁:</strong> 캠페인 이미지는 인플루언서들이 어떤 제품/서비스인지 이해하는데 도움을 줍니다.
-              고품질 이미지를 업로드하면 지원률이 높아집니다!
-            </p>
-          </div>
-        </div>
-
-        {/* Dates */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Calendar size={16} className="text-gray-700" />
-            일정
-          </h3>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">시작일</label>
-              <input
-                type="date"
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">종료일</label>
-              <input
-                type="date"
-                value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          <div className="mt-3">
-            <label className="text-sm font-medium text-gray-700 mb-2 block">지원 마감일 *</label>
+  // ─── Step 2: Requirements ────────────────────────────────────
+  const renderStep2 = () => (
+    <div className="space-y-5">
+      {/* Budget & Slots */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <DollarSign size={15} className="text-accent" />
+          Ngân sách
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Ngân sách / KOL (VND) *</label>
             <input
-              type="date"
-              value={formData.applicationDeadline}
-              onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
-              className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              required
+              type="number"
+              value={form.budget}
+              onChange={e => setForm(f => ({ ...f, budget: e.target.value }))}
+              placeholder="500000"
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
+            />
+            {form.budget && (
+              <div className="text-xs text-accent mt-1">{formatCash(parseInt(form.budget))}</div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Số lượng KOL</label>
+            <input
+              type="number"
+              value={form.slots}
+              onChange={e => setForm(f => ({ ...f, slots: e.target.value }))}
+              placeholder="3"
+              min="1"
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
             />
           </div>
         </div>
-
-        {/* Campaign Details */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <FileText size={16} className="text-gray-700" />
-            캠페인 세부 정보
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                #️⃣ 필수 해시태그
-              </label>
-              <input
-                type="text"
-                placeholder="#beauty #skincare #kbeauty (스페이스로 구분)"
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">인플루언서가 반드시 사용해야 할 해시태그</p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                📋 상세 가이드라인
-              </label>
-              <textarea
-                placeholder="• 제품 사용 후 솔직한 리뷰 작성&#10;• 제품의 장단점 모두 언급&#10;• 사용 전/후 비교 사진 포함&#10;• 24시간 이상 게시물 유지"
-                className="input min-h-[120px]"
-              />
-              <p className="text-xs text-gray-500 mt-1">인플루언서가 따라야 할 구체적인 지침</p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                📦 제공 사항
-              </label>
-              <textarea
-                placeholder="• 제품 1세트 무료 제공&#10;• 배송비 지원&#10;• 추가 샘플 5종 제공"
-                className="input min-h-[80px]"
-              />
-              <p className="text-xs text-gray-500 mt-1">인플루언서에게 제공할 제품/서비스</p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                🎁 보너스 조건 (선택)
-              </label>
-              <textarea
-                placeholder="• 조회수 10만 이상 달성 시 +50% 보너스&#10;• 좋아요 1만 개 이상 시 +30% 보너스"
-                className="input min-h-[60px]"
-              />
-              <p className="text-xs text-gray-500 mt-1">성과에 따른 추가 보상</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Platforms & Categories */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Tag size={16} className="text-gray-700" />
-            플랫폼 & 카테고리
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">플랫폼 *</label>
-              <div className="grid grid-cols-2 gap-2">
-                {(['instagram', 'tiktok', 'youtube', 'facebook'] as Platform[]).map(platform => {
-                  const Icon = platformIcons[platform];
-                  return (
-                    <label
-                      key={platform}
-                      className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all ${
-                        formData.platforms.includes(platform)
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.platforms.includes(platform)}
-                        onChange={() => togglePlatform(platform)}
-                        className="hidden"
-                      />
-                      <Icon size={20} />
-                      <span className="text-sm font-medium capitalize">{platform}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">카테고리 *</label>
-              <div className="grid grid-cols-3 gap-2">
-                {(['beauty', 'food', 'fashion', 'tech', 'fitness', 'travel', 'lifestyle'] as Category[]).map(category => (
-                  <label
-                    key={category}
-                    className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
-                      formData.categories.includes(category)
-                        ? 'bg-gray-900 text-white'
-                        : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.categories.includes(category)}
-                      onChange={() => toggleCategory(category)}
-                      className="hidden"
-                    />
-                    <span className="text-xs font-medium">{category}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Basic Requirements */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Users size={16} className="text-gray-700" />
-            인플루언서 요구사항
-          </h3>
-
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">최소 팔로워</label>
-                <input
-                  type="number"
-                  value={formData.minFollowers}
-                  onChange={(e) => setFormData({ ...formData, minFollowers: e.target.value })}
-                  placeholder="10000"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">최소 참여율 (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={formData.minEngagement}
-                  onChange={(e) => setFormData({ ...formData, minEngagement: e.target.value })}
-                  placeholder="3.0"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">성별</label>
-                <select
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                >
-                  <option value="any">무관</option>
-                  <option value="male">남성</option>
-                  <option value="female">여성</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">연령대</label>
-                <input
-                  type="text"
-                  value={formData.ageRange}
-                  onChange={(e) => setFormData({ ...formData, ageRange: e.target.value })}
-                  placeholder="20-35"
-                  className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Lifestyle Requirements */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Home size={16} className="text-gray-700" />
-            라이프스타일 조건
-          </h3>
-
-          <div className="space-y-3">
-            {/* Vehicle */}
-            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.requiresVehicle}
-                onChange={(e) => setFormData({ ...formData, requiresVehicle: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
-              />
-              <Car size={18} className="text-blue-400" />
-              <span className="text-sm text-gray-900">차량 소유 필수</span>
-            </label>
-
-            {/* Parent */}
-            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.requiresParent}
-                onChange={(e) => setFormData({ ...formData, requiresParent: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
-              />
-              <Baby size={18} className="text-pink-400" />
-              <span className="text-sm text-gray-900">자녀 있는 사람 필수</span>
-            </label>
-
-            {/* Pet */}
-            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.requiresPet}
-                onChange={(e) => setFormData({ ...formData, requiresPet: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-gray-700 focus:ring-primary"
-              />
-              <PawPrint size={18} className="text-orange-400" />
-              <span className="text-sm text-gray-900">반려동물 있는 사람 필수</span>
-            </label>
-          </div>
-        </div>
-
-        {/* Beauty Requirements */}
-        {formData.categories.includes('beauty') && (
-          <div className="bg-white border border-gray-200 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Heart size={16} className="text-pink-400" />
-              뷰티 조건
-            </h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">피부 타입</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { value: 'dry', label: '건성' },
-                    { value: 'oily', label: '지성' },
-                    { value: 'combination', label: '복합성' },
-                    { value: 'sensitive', label: '민감성' },
-                    { value: 'normal', label: '중성' },
-                  ].map(type => (
-                    <label
-                      key={type.value}
-                      className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
-                        formData.skinTypes.includes(type.value)
-                          ? 'bg-pink-500 text-gray-900'
-                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.skinTypes.includes(type.value)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData({ ...formData, skinTypes: [...formData.skinTypes, type.value] });
-                          } else {
-                            setFormData({ ...formData, skinTypes: formData.skinTypes.filter(t => t !== type.value) });
-                          }
-                        }}
-                        className="hidden"
-                      />
-                      <span className="text-xs font-medium">{type.label}</span>
-                    </label>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-500 mt-1">스킨케어 제품은 피부 타입별로 매칭됩니다</p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">피부톤</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { value: 'fair', label: '매우 밝음' },
-                    { value: 'light', label: '밝음' },
-                    { value: 'medium', label: '중간' },
-                    { value: 'tan', label: '어두움' },
-                    { value: 'dark', label: '매우 어두움' },
-                  ].map(tone => (
-                    <label
-                      key={tone.value}
-                      className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
-                        formData.skinTones.includes(tone.value)
-                          ? 'bg-pink-500 text-gray-900'
-                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.skinTones.includes(tone.value)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData({ ...formData, skinTones: [...formData.skinTones, tone.value] });
-                          } else {
-                            setFormData({ ...formData, skinTones: formData.skinTones.filter(t => t !== tone.value) });
-                          }
-                        }}
-                        className="hidden"
-                      />
-                      <span className="text-xs font-medium">{tone.label}</span>
-                    </label>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-500 mt-1">메이크업 제품은 피부톤 매칭이 중요합니다</p>
-              </div>
+        {form.budget && form.slots && (
+          <div className="rounded-xl bg-accent/10 border border-accent/30 px-4 py-2.5">
+            <div className="text-xs text-gray-400">Tổng ngân sách dự kiến</div>
+            <div className="text-lg font-bold text-accent">
+              {formatCash(parseInt(form.budget) * parseInt(form.slots))}
             </div>
           </div>
         )}
+      </div>
 
-        {/* Fashion Requirements */}
-        {formData.categories.includes('fashion') && (
-          <div className="bg-white border border-gray-200 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Shirt size={16} className="text-purple-400" />
-              패션 조건
-            </h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">상의 사이즈</label>
-                <div className="grid grid-cols-6 gap-2">
-                  {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-                    <label
-                      key={size}
-                      className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
-                        formData.clothingSizes.top.includes(size)
-                          ? 'bg-purple-500 text-gray-900'
-                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.clothingSizes.top.includes(size)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData({
-                              ...formData,
-                              clothingSizes: {
-                                ...formData.clothingSizes,
-                                top: [...formData.clothingSizes.top, size]
-                              }
-                            });
-                          } else {
-                            setFormData({
-                              ...formData,
-                              clothingSizes: {
-                                ...formData.clothingSizes,
-                                top: formData.clothingSizes.top.filter(s => s !== size)
-                              }
-                            });
-                          }
-                        }}
-                        className="hidden"
-                      />
-                      <span className="text-xs font-medium">{size}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">하의 사이즈</label>
-                <div className="grid grid-cols-6 gap-2">
-                  {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-                    <label
-                      key={size}
-                      className={`p-2 rounded-lg text-center cursor-pointer transition-all ${
-                        formData.clothingSizes.bottom.includes(size)
-                          ? 'bg-purple-500 text-gray-900'
-                          : 'bg-gray-50 text-gray-400 hover:bg-gray-100'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.clothingSizes.bottom.includes(size)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData({
-                              ...formData,
-                              clothingSizes: {
-                                ...formData.clothingSizes,
-                                bottom: [...formData.clothingSizes.bottom, size]
-                              }
-                            });
-                          } else {
-                            setFormData({
-                              ...formData,
-                              clothingSizes: {
-                                ...formData.clothingSizes,
-                                bottom: formData.clothingSizes.bottom.filter(s => s !== size)
-                              }
-                            });
-                          }
-                        }}
-                        className="hidden"
-                      />
-                      <span className="text-xs font-medium">{size}</span>
-                    </label>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-500 mt-1">의류 협찬은 정확한 사이즈 매칭이 필수입니다</p>
-              </div>
-            </div>
+      {/* KOL Requirements */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <Users size={15} className="text-primary" />
+          Yêu cầu KOL
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Followers tối thiểu</label>
+            <select
+              value={form.minFollowers}
+              onChange={e => setForm(f => ({ ...f, minFollowers: e.target.value }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            >
+              <option value="1000">1,000+</option>
+              <option value="5000">5,000+</option>
+              <option value="10000">10,000+</option>
+              <option value="50000">50,000+</option>
+              <option value="100000">100,000+</option>
+              <option value="500000">500,000+</option>
+            </select>
           </div>
-        )}
-
-        {/* Food Requirements */}
-        {formData.categories.includes('food') && (
-          <div className="bg-white border border-gray-200 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Utensils size={16} className="text-orange-400" />
-              식품 조건
-            </h3>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">식이 제한 고려</label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { value: 'vegetarian', label: '채식' },
-                  { value: 'vegan', label: '비건' },
-                  { value: 'halal', label: '할랄' },
-                  { value: 'gluten-free', label: '글루텐 프리' },
-                  { value: 'lactose-free', label: '유당 불내증' },
-                  { value: 'none', label: '제한 없음' },
-                ].map(diet => (
-                  <label
-                    key={diet.value}
-                    className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100"
-                  >
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-gray-600 text-gray-700 focus:ring-primary"
-                    />
-                    <span className="text-xs text-gray-900">{diet.label}</span>
-                  </label>
-                ))}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">식품 캠페인은 식이 제한을 고려해야 합니다</p>
-            </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Tỷ lệ tương tác (%)</label>
+            <select
+              value={form.minEngagement}
+              onChange={e => setForm(f => ({ ...f, minEngagement: e.target.value }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            >
+              <option value="1">1%+</option>
+              <option value="2">2%+</option>
+              <option value="3">3%+</option>
+              <option value="5">5%+</option>
+              <option value="8">8%+</option>
+            </select>
           </div>
-        )}
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Giới tính</label>
+            <select
+              value={form.gender}
+              onChange={e => setForm(f => ({ ...f, gender: e.target.value as 'any' | 'female' | 'male' }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            >
+              <option value="any">Không giới hạn</option>
+              <option value="female">Nữ</option>
+              <option value="male">Nam</option>
+            </select>
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Độ tuổi</label>
+            <select
+              value={form.ageRange}
+              onChange={e => setForm(f => ({ ...f, ageRange: e.target.value }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            >
+              <option value="13-17">13–17</option>
+              <option value="18-24">18–24</option>
+              <option value="18-35">18–35</option>
+              <option value="25-34">25–34</option>
+              <option value="25-44">25–44</option>
+              <option value="35+">35+</option>
+              <option value="all">Tất cả</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label className="text-xs text-gray-400 mb-1 block">Khu vực</label>
+          <input
+            value={form.location}
+            onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
+            placeholder="VD: TP.HCM, Hà Nội, Toàn quốc"
+            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
+          />
+        </div>
+      </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="w-full py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-lg flex items-center justify-center gap-2">
-          <Save size={20} />
-          캠페인 생성하기
+      <div className="flex gap-3">
+        <button
+          type="button"
+          onClick={() => setStep(1)}
+          className="flex-1 py-3.5 rounded-2xl text-sm font-bold bg-dark-500 text-gray-400"
+        >
+          ← Quay lại
         </button>
-      </form>
+        <button
+          type="button"
+          onClick={() => step2Done && setStep(3)}
+          disabled={!step2Done}
+          className={`flex-[2] py-3.5 rounded-2xl text-sm font-bold transition-all ${
+            step2Done
+              ? 'bg-gradient-to-r from-primary to-secondary text-white'
+              : 'bg-dark-500 text-gray-600 cursor-not-allowed'
+          }`}
+        >
+          Tiếp theo: Chi tiết →
+        </button>
+      </div>
+    </div>
+  );
+
+  // ─── Step 3: Details + Brief ────────────────────────────────
+  const renderStep3 = () => (
+    <div className="space-y-5">
+      {/* Dates */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <Calendar size={15} className="text-secondary" />
+          Thời gian
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Ngày bắt đầu</label>
+            <input
+              type="date"
+              value={form.startDate}
+              onChange={e => setForm(f => ({ ...f, startDate: e.target.value }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Ngày kết thúc</label>
+            <input
+              type="date"
+              value={form.endDate}
+              onChange={e => setForm(f => ({ ...f, endDate: e.target.value }))}
+              className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Hashtags */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+          <Hash size={15} className="text-warning" />
+          Hashtag bắt buộc
+        </h3>
+        <div className="flex gap-2">
+          <input
+            value={hashtagInput}
+            onChange={e => setHashtagInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addHashtag())}
+            placeholder="Nhập hashtag (không cần #)"
+            className="flex-1 bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
+          />
+          <button
+            type="button"
+            onClick={addHashtag}
+            className="px-4 py-2.5 bg-primary/20 border border-primary/40 rounded-xl text-primary"
+          >
+            <Plus size={18} />
+          </button>
+        </div>
+        {form.hashtags && (
+          <div className="flex flex-wrap gap-2">
+            {form.hashtags.split(' ').filter(Boolean).map(tag => (
+              <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-warning/20 text-warning text-xs rounded-full border border-warning/30">
+                {tag}
+                <button type="button" onClick={() => removeHashtag(tag)}>
+                  <X size={12} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Guidelines */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300">Hướng dẫn thực hiện</h3>
+        <textarea
+          value={form.guidelines}
+          onChange={e => setForm(f => ({ ...f, guidelines: e.target.value }))}
+          rows={5}
+          placeholder={"• Chụp ảnh sản phẩm trên nền trắng hoặc phông sáng\n• Đề cập tên sản phẩm trong caption\n• Tag @[brand_account]\n• Giữ bài đăng ít nhất 30 ngày\n• Không được chỉnh sửa quá mức ảnh sản phẩm"}
+          className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
+        />
+      </div>
+
+      {/* What brand provides */}
+      <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
+        <h3 className="text-sm font-semibold text-gray-300">Thương hiệu cung cấp</h3>
+        <textarea
+          value={form.provided}
+          onChange={e => setForm(f => ({ ...f, provided: e.target.value }))}
+          rows={3}
+          placeholder={"• 1 bộ sản phẩm mẫu thử (miễn phí)\n• Freeship toàn quốc\n• Ảnh chất lượng cao để sử dụng"}
+          className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
+        />
+      </div>
+
+      {/* Generate Brief */}
+      <div className="rounded-2xl bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/40 p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="text-sm font-bold text-white">Tạo Brief ngay</div>
+            <div className="text-xs text-gray-400">Copy và gửi cho KOL qua Facebook/Zalo</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowPreview(!showPreview)}
+            className="flex items-center gap-1.5 px-3 py-2 bg-dark-600 rounded-xl text-sm text-primary border border-primary/30"
+          >
+            <Eye size={15} />
+            Xem trước
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={copyBrief}
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold flex items-center justify-center gap-2"
+        >
+          {copied ? <CheckCircle size={16} /> : <Copy size={16} />}
+          {copied ? 'Đã sao chép!' : 'Sao chép Brief'}
+        </button>
+      </div>
+
+      {/* Brief Preview */}
+      {showPreview && (
+        <div className="card bg-dark-800 border-2 border-dark-400 shadow-xl">
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-xs text-gray-400 font-semibold">XEM TRƯỚC BRIEF</div>
+            <button type="button" onClick={() => setShowPreview(false)}>
+              <X size={16} className="text-gray-500" />
+            </button>
+          </div>
+          <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+            {generateBriefText()}
+          </pre>
+        </div>
+      )}
+
+      <div className="flex gap-3">
+        <button
+          type="button"
+          onClick={() => setStep(2)}
+          className="flex-1 py-3.5 rounded-2xl text-sm font-bold bg-dark-500 text-gray-400"
+        >
+          ← Quay lại
+        </button>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="flex-[2] py-3.5 rounded-2xl text-sm font-bold bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center gap-2"
+        >
+          {isSubmitting ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Save size={15} />
+          )}
+          {isSubmitting ? 'Đang tạo...' : 'Tạo chiến dịch'}
+        </button>
+      </div>
+    </div>
+  );
+
+  // ─── Success Screen ─────────────────────────────────────────
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-dark-700 pb-10">
+        <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4 flex items-center gap-3">
+          <CheckCircle size={22} className="text-accent" />
+          <h1 className="text-base font-bold text-white">Chiến dịch đã tạo!</h1>
+        </div>
+
+        <div className="px-4 py-5 space-y-4">
+          {/* Success Banner */}
+          <div className="rounded-2xl bg-gradient-to-r from-accent/20 to-green-500/10 border-2 border-accent/50 p-5 text-center">
+            <div className="text-4xl mb-2">🎉</div>
+            <div className="text-lg font-bold text-white mb-1">"{form.title}"</div>
+            <div className="text-sm text-gray-400">đã được tạo thành công!</div>
+            <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
+              <span className="px-2 py-1 bg-dark-600 rounded-lg">ID: {campaignId}</span>
+              <span className="px-2 py-1 bg-dark-600 rounded-lg">Ngân sách: {form.budget ? formatCash(parseInt(form.budget)) : '?'}/KOL</span>
+              <span className="px-2 py-1 bg-dark-600 rounded-lg">{form.slots || '3'} suất</span>
+            </div>
+          </div>
+
+          {/* Step 2: Share to Facebook */}
+          <div className="card bg-dark-600 border-2 border-blue-500/40 shadow-xl space-y-3">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-sm">f</span>
+              </div>
+              <div>
+                <div className="text-sm font-bold text-white">Chia sẻ lên nhóm Facebook</div>
+                <div className="text-xs text-gray-400">Đăng vào nhóm KOL → KOL ứng tuyển trực tiếp</div>
+              </div>
+            </div>
+
+            {/* Share Text Preview */}
+            <div className="bg-dark-700 rounded-xl p-3 border border-dark-400">
+              <pre className="text-xs text-gray-300 whitespace-pre-wrap leading-relaxed font-sans">
+                {generateShareText()}
+              </pre>
+            </div>
+
+            <button
+              onClick={copyShareText}
+              className="w-full py-3 rounded-xl bg-blue-600 text-white text-sm font-bold flex items-center justify-center gap-2"
+            >
+              {copiedShare ? <CheckCircle size={16} /> : <Copy size={16} />}
+              {copiedShare ? 'Đã sao chép! Dán vào Facebook ngay 👆' : 'Sao chép bài đăng Facebook'}
+            </button>
+
+            <p className="text-[10px] text-gray-500 text-center">
+              💡 Copy → Mở Facebook → Tìm nhóm KOL → Dán & Đăng
+            </p>
+          </div>
+
+          {/* Suggested Facebook Groups */}
+          <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-2">
+            <div className="text-xs font-semibold text-gray-400 mb-2">📌 Nhóm Facebook KOL gợi ý để đăng:</div>
+            {[
+              'KOL Vietnam - Influencer Marketing',
+              'Cộng đồng Influencer Việt Nam',
+              'KOL & Influencer HCM',
+              'Review & Collaboration Vietnam',
+            ].map((group) => (
+              <div key={group} className="flex items-center gap-2 text-xs text-gray-300 py-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+                {group}
+              </div>
+            ))}
+          </div>
+
+          {/* Also copy brief */}
+          <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+            <div className="text-xs font-semibold text-gray-400 mb-2">📋 Brief chi tiết (gửi riêng cho KOL):</div>
+            <button
+              onClick={copyBrief}
+              className="w-full py-2.5 rounded-xl bg-dark-500 border border-primary/30 text-primary text-sm font-semibold flex items-center justify-center gap-2"
+            >
+              {copied ? <CheckCircle size={14} /> : <Copy size={14} />}
+              {copied ? 'Đã sao chép!' : 'Sao chép Brief đầy đủ'}
+            </button>
+          </div>
+
+          {/* Go to Dashboard */}
+          <button
+            onClick={() => router.push('/main/advertiser')}
+            className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold"
+          >
+            Xem Dashboard →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Render ─────────────────────────────────────────────────
+  return (
+    <div className="min-h-screen bg-dark-700 pb-10">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500">
+        <div className="px-4 py-4 flex items-center gap-3">
+          <button onClick={() => (step > 1 ? setStep((step - 1) as 1 | 2 | 3) : router.back())} className="text-gray-400">
+            <ArrowLeft size={22} />
+          </button>
+          <div className="flex-1">
+            <h1 className="text-base font-bold text-white">Tạo chiến dịch mới</h1>
+            <div className="text-xs text-gray-500">Bước {step} / 3</div>
+          </div>
+        </div>
+        {/* Step Progress */}
+        <div className="flex px-4 pb-3 gap-2">
+          {([1, 2, 3] as const).map(s => (
+            <div
+              key={s}
+              className={`flex-1 h-1.5 rounded-full transition-all ${
+                s <= step ? 'bg-primary' : 'bg-dark-500'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Step Labels */}
+      <div className="flex px-4 py-3 gap-2 text-center">
+        {[
+          { label: '1. Cơ bản', active: step === 1 },
+          { label: '2. Yêu cầu', active: step === 2 },
+          { label: '3. Chi tiết', active: step === 3 },
+        ].map((s, i) => (
+          <div key={i} className={`flex-1 text-xs font-medium ${s.active ? 'text-primary' : 'text-gray-600'}`}>
+            {s.label}
+          </div>
+        ))}
+      </div>
+
+      <div className="px-4 space-y-5">
+        {step === 1 && renderStep1()}
+        {step === 2 && renderStep2()}
+        {step === 3 && renderStep3()}
+      </div>
     </div>
   );
 }

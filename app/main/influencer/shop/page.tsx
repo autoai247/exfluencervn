@@ -1,697 +1,377 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ShoppingBag, Star, Zap, Award, Gem, TrendingUp, Crown, Sparkles, Tag, Gift, Ticket, Trophy, Smartphone, Plane, Camera, Headphones, Watch, LucideIcon } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
+import {
+  BookOpen,
+  FileText,
+  Download,
+  CheckCircle,
+  ChevronRight,
+  Instagram,
+  Video,
+  TrendingUp,
+  Star,
+  MessageCircle,
+  ExternalLink,
+  Lightbulb,
+  BarChart3,
+  BadgeCheck,
+  Gift,
+  Trophy,
+  Clock,
+} from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
-import { formatPoints } from '@/lib/points';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-// Shop item type definition
-interface ShopItem {
-  id: string;
-  name: string;
-  nameEn: string;
-  description: string;
-  descriptionEn: string;
-  price: number;
-  icon: LucideIcon;
-  color: string;
-  featured?: boolean;
-  popular?: boolean;
-  benefits?: string[];
-}
+// ─── Free Templates ───────────────────────────────────────
+const templates = [
+  {
+    id: 'media-kit',
+    icon: FileText,
+    color: 'from-primary to-secondary',
+    title: 'Media Kit Template',
+    desc: 'Giới thiệu bản thân đến nhà quảng cáo một cách chuyên nghiệp',
+    tags: ['Canva', 'Miễn phí'],
+    url: 'https://www.canva.com/templates/search/media-kit/',
+  },
+  {
+    id: 'rate-card',
+    icon: BarChart3,
+    color: 'from-secondary to-accent',
+    title: 'Rate Card Template',
+    desc: 'Bảng báo giá dịch vụ chuẩn cho mọi nền tảng',
+    tags: ['Google Docs', 'Miễn phí'],
+    url: 'https://docs.google.com/document/create',
+  },
+  {
+    id: 'caption',
+    icon: MessageCircle,
+    color: 'from-purple-500 to-pink-500',
+    title: 'Caption Hooks (50 mẫu)',
+    desc: '50 câu mở đầu caption thu hút tương tác cao',
+    tags: ['PDF', 'Miễn phí'],
+    url: null,
+  },
+];
 
-// Mock shop items
-const shopCategories: Record<'raffles' | 'tickets' | 'premium' | 'boost' | 'training', ShopItem[]> = {
-  raffles: [
-    {
-      id: 'raffle-1',
-      name: 'iPhone 16 Pro 응모',
-      nameEn: 'iPhone 16 Pro Raffle',
-      description: '최신 iPhone 16 Pro 256GB - 응모권 1장으로 참여',
-      descriptionEn: 'Latest iPhone 16 Pro 256GB - Enter with 1 ticket',
-      price: 50000,
-      icon: Smartphone,
-      color: 'from-blue-400 to-purple-500',
-      featured: true,
-      benefits: ['iPhone 16 Pro 256GB', '당첨자 1명', '응모 마감: 2026-03-15', '응모권 1장 필요'],
-    },
-    {
-      id: 'raffle-2',
-      name: '다낭 3박4일 여행 응모',
-      nameEn: 'Da Nang 4D3N Trip Raffle',
-      description: '5성급 리조트 + 항공권 포함 럭셔리 여행 - 응모권 2장',
-      descriptionEn: '5-star resort + flights included - 2 tickets required',
-      price: 100000,
-      icon: Plane,
-      color: 'from-cyan-400 to-blue-500',
-      featured: true,
-      benefits: ['5성급 리조트 3박', '왕복 항공권 포함', '당첨자 2명', '응모권 2장 필요'],
-    },
-    {
-      id: 'raffle-3',
-      name: 'Sony A7 IV 카메라 응모',
-      nameEn: 'Sony A7 IV Camera Raffle',
-      description: '전문가용 풀프레임 미러리스 카메라 + 렌즈 키트',
-      descriptionEn: 'Professional full-frame mirrorless camera + lens kit',
-      price: 100000,
-      icon: Camera,
-      color: 'from-gray-400 to-gray-600',
-      popular: true,
-      benefits: ['Sony A7 IV 바디', '28-70mm 렌즈 포함', '당첨자 1명', '응모권 2장 필요'],
-    },
-    {
-      id: 'raffle-4',
-      name: 'AirPods Pro 2 응모',
-      nameEn: 'AirPods Pro 2 Raffle',
-      description: '최신 노이즈캔슬링 무선 이어폰',
-      descriptionEn: 'Latest noise-canceling wireless earbuds',
-      price: 30000,
-      icon: Headphones,
-      color: 'from-white to-gray-300',
-      popular: true,
-      benefits: ['AirPods Pro 2세대', '당첨자 3명', '응모 마감: 2026-02-28', '응모권 1장 필요'],
-    },
-    {
-      id: 'raffle-5',
-      name: 'Apple Watch Ultra 2 응모',
-      nameEn: 'Apple Watch Ultra 2 Raffle',
-      description: '프리미엄 스마트워치 - 티타늄 케이스',
-      descriptionEn: 'Premium smartwatch - Titanium case',
-      price: 80000,
-      icon: Watch,
-      color: 'from-orange-400 to-red-500',
-      featured: true,
-      benefits: ['Apple Watch Ultra 2', '티타늄 케이스', '당첨자 1명', '응모권 1장 필요'],
-    },
-    {
-      id: 'raffle-6',
-      name: '제주도 2박3일 여행 응모',
-      nameEn: 'Jeju Island 3D2N Trip Raffle',
-      description: '호텔 + 렌터카 + 체험 투어 포함',
-      descriptionEn: 'Hotel + car rental + experience tours included',
-      price: 100000,
-      icon: Plane,
-      color: 'from-green-400 to-emerald-500',
-      popular: true,
-      benefits: ['4성급 호텔 2박', '렌터카 3일', '체험투어 포함', '응모권 2장 필요'],
-    },
-  ],
-  tickets: [
-    {
-      id: 'ticket-1',
-      name: '응모권 1장',
-      nameEn: '1 Raffle Ticket',
-      description: '모든 경품 응모에 사용 가능한 응모권',
-      descriptionEn: 'Use for any raffle campaign',
-      price: 50000,
-      icon: Ticket,
-      color: 'from-orange-400 to-red-500',
-      popular: true,
-    },
-    {
-      id: 'ticket-2',
-      name: '응모권 5장 패키지',
-      nameEn: '5 Raffle Tickets Pack',
-      description: '5장 구매 시 10% 할인 (225,000 VND)',
-      descriptionEn: '10% discount on 5 tickets',
-      price: 225000,
-      icon: Ticket,
-      color: 'from-orange-400 to-red-500',
-      featured: true,
-      benefits: ['10% 할인', '5장 = 225,000 VND', '즉시 사용 가능'],
-    },
-    {
-      id: 'ticket-3',
-      name: '응모권 10장 패키지',
-      nameEn: '10 Raffle Tickets Pack',
-      description: '10장 구매 시 20% 할인 (400,000 VND)',
-      descriptionEn: '20% discount on 10 tickets',
-      price: 400000,
-      icon: Ticket,
-      color: 'from-orange-400 to-red-500',
-      featured: true,
-      benefits: ['20% 할인', '10장 = 400,000 VND', '프리미엄 경품 접근'],
-    },
-  ],
-  premium: [
-    {
-      id: 'premium-1',
-      name: '프리미엄 뱃지',
-      nameEn: 'Premium Badge',
-      description: '프로필에 프리미엄 인증 뱃지 표시',
-      descriptionEn: 'Display premium verified badge on profile',
-      price: 500000,
-      icon: Crown,
-      color: 'from-yellow-400 to-orange-500',
-      featured: true,
-      benefits: ['프로필 상단 노출', '캠페인 우선 매칭', '전용 고객 지원'],
-    },
-    {
-      id: 'premium-2',
-      name: 'VIP 회원권 (30일)',
-      nameEn: 'VIP Membership (30 days)',
-      description: 'VIP 전용 혜택 및 프리미엄 캠페인 접근',
-      descriptionEn: 'VIP exclusive benefits and premium campaigns',
-      price: 1200000,
-      icon: Gem,
-      color: 'from-purple-400 to-pink-500',
-      featured: true,
-      benefits: ['프리미엄 캠페인 우선 선택', '수수료 20% 할인', '월간 리포트 제공'],
-    },
-  ],
-  boost: [
-    {
-      id: 'boost-1',
-      name: '프로필 부스트 (7일)',
-      nameEn: 'Profile Boost (7 days)',
-      description: '검색 결과 상단 노출 및 추천 목록 우선 배치',
-      descriptionEn: 'Top search results and featured placement',
-      price: 300000,
-      icon: TrendingUp,
-      color: 'from-blue-400 to-cyan-500',
-      popular: true,
-    },
-    {
-      id: 'boost-2',
-      name: '캠페인 신청 부스트',
-      nameEn: 'Application Boost',
-      description: '캠페인 신청 시 광고주에게 우선 추천',
-      descriptionEn: 'Priority recommendation to advertisers',
-      price: 150000,
-      icon: Zap,
-      color: 'from-green-400 to-emerald-500',
-    },
-  ],
-  training: [
-    {
-      id: 'training-1',
-      name: '인플루언서 마스터 클래스',
-      nameEn: 'Influencer Master Class',
-      description: '전문가 강의 및 성공 전략 공유',
-      descriptionEn: 'Expert lectures and success strategies',
-      price: 800000,
-      icon: Award,
-      color: 'from-indigo-400 to-purple-500',
-    },
-    {
-      id: 'training-2',
-      name: '콘텐츠 제작 가이드북',
-      nameEn: 'Content Creation Guidebook',
-      description: '프로 콘텐츠 제작 비법 및 템플릿',
-      descriptionEn: 'Pro content creation tips and templates',
-      price: 250000,
-      icon: Sparkles,
-      color: 'from-pink-400 to-rose-500',
-    },
-  ],
-};
+// ─── Platform Guides ──────────────────────────────────────
+const guides = [
+  {
+    id: 'tiktok',
+    icon: Video,
+    color: 'bg-black border border-white/10',
+    iconColor: 'text-white',
+    title: 'TikTok Algorithm 2025',
+    points: [
+      'Đăng 3–5 lần/tuần để duy trì momentum',
+      'Video 15–30s có tỉ lệ xem hết cao nhất',
+      'Hook mạnh trong 3 giây đầu là bắt buộc',
+      'Dùng 3–5 hashtag liên quan, không spam',
+    ],
+  },
+  {
+    id: 'instagram',
+    icon: Instagram,
+    color: 'bg-gradient-to-br from-purple-500 to-pink-500',
+    iconColor: 'text-white',
+    title: 'Instagram Reels Tips',
+    points: [
+      'Reels được ưu tiên hơn ảnh trong feed',
+      'Caption 1–2 dòng ngắn gọn, kết với CTA',
+      'Story tương tác (poll, quiz) tăng reach tự nhiên',
+      'Collab với KOL cùng niche để mở rộng reach',
+    ],
+  },
+  {
+    id: 'engagement',
+    icon: TrendingUp,
+    color: 'bg-gradient-to-br from-accent to-green-500',
+    iconColor: 'text-dark-800',
+    title: 'Tăng Engagement Rate',
+    points: [
+      'Trả lời comment trong 1h đầu sau khi đăng',
+      'Đặt câu hỏi trong caption để kích thích comment',
+      'Post đúng giờ vàng: 7–9h sáng, 12h trưa, 7–9h tối',
+      'ER > 3% là tốt — nhà QC quan tâm hơn followers',
+    ],
+  },
+];
 
-export default function InfluencerShopPage() {
-  const router = useRouter();
-  const { language } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'raffles' | 'tickets' | 'premium' | 'boost' | 'training'>('all');
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [ticketBalance, setTicketBalance] = useState(0);
-  const [showRaffleModal, setShowRaffleModal] = useState(false);
-  const [selectedRaffle, setSelectedRaffle] = useState<ShopItem | null>(null);
+// ─── Campaign Tips ────────────────────────────────────────
+const campaignTips = [
+  { icon: '📋', tip: 'Đọc kỹ brief trước khi ứng tuyển — đảm bảo niche và follower phù hợp yêu cầu' },
+  { icon: '📸', tip: 'Ảnh portfolio chất lượng cao tăng khả năng được chọn lên 3x' },
+  { icon: '⏱️', tip: 'Ứng tuyển trong 24h đầu khi chiến dịch mở — slot có giới hạn' },
+  { icon: '💬', tip: 'Giới thiệu bản thân ngắn gọn, nêu rõ why you (tại sao bạn phù hợp)' },
+  { icon: '✅', tip: 'Nộp kết quả đúng hạn — uy tín cao giúp được chọn ưu tiên lần sau' },
+];
 
-  // Load ticket balance from localStorage
-  useEffect(() => {
-    const balance = parseInt(localStorage.getItem('exfluencer_ticket_balance') || '0');
-    setTicketBalance(balance);
-  }, []);
+export default function ResourcesPage() {
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const categories = [
-    { id: 'all', label: language === 'ko' ? '전체' : 'All', icon: ShoppingBag },
-    { id: 'raffles', label: language === 'ko' ? '응모' : 'Vào', icon: Gift },
-    { id: 'tickets', label: language === 'ko' ? '티켓' : 'Vé', icon: Ticket },
-    { id: 'premium', label: language === 'ko' ? 'VIP' : 'VIP', icon: Crown },
-    { id: 'boost', label: language === 'ko' ? '부스트' : 'Tăng', icon: Zap },
-    { id: 'training', label: language === 'ko' ? '교육' : 'Học', icon: Award },
-  ];
-
-  const handlePurchase = (item: ShopItem) => {
-    // 응모권은 수량 선택 모달 표시
-    if (item.id.startsWith('ticket-')) {
-      setSelectedItem(item);
-      setQuantity(1);
-      setShowPurchaseModal(true);
-    } else {
-      // 다른 상품은 기존 방식
-      alert(
-        language === 'ko'
-          ? `"${item.name}" 구매 기능은 곧 출시됩니다!\n\n가격: ${formatPoints(item.price)} VND`
-          : `"${item.nameEn}" purchase coming soon!\n\nPrice: ${formatPoints(item.price)} VND`
-      );
-    }
-  };
-
-  const confirmPurchase = () => {
-    if (!selectedItem) return;
-    const totalPrice = selectedItem.price * quantity;
-
-    // Save to localStorage
-    const currentBalance = parseInt(localStorage.getItem('exfluencer_ticket_balance') || '0');
-    const newBalance = currentBalance + quantity;
-    localStorage.setItem('exfluencer_ticket_balance', newBalance.toString());
-
-    // Save purchase history
-    const history = JSON.parse(localStorage.getItem('exfluencer_raffle_history') || '[]');
-    history.push({
-      date: new Date().toISOString(),
-      tickets: quantity,
-      pointsSpent: totalPrice,
-      itemName: selectedItem.name,
+  const handleCopy = (id: string, text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
     });
-    localStorage.setItem('exfluencer_raffle_history', JSON.stringify(history));
-
-    // Update state
-    setTicketBalance(newBalance);
-
-    alert(
-      language === 'ko'
-        ? `${selectedItem.name} ${quantity}장 구매 완료!\n\n총 금액: ${formatPoints(totalPrice)} VND\n\n보유 응모권: ${newBalance}장`
-        : `${selectedItem.nameEn} x${quantity} purchased!\n\nTotal: ${formatPoints(totalPrice)} VND\n\nTicket Balance: ${newBalance}`
-    );
-    setShowPurchaseModal(false);
-    setSelectedItem(null);
-    setQuantity(1);
-  };
-
-  const handleRaffleEntry = (item: ShopItem) => {
-    setSelectedRaffle(item);
-    setShowRaffleModal(true);
-  };
-
-  const confirmRaffleEntry = () => {
-    if (!selectedRaffle) return;
-
-    // Get required tickets from benefits (assuming format "응모권 X장 필요")
-    const requiredTickets = selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))
-      ?.match(/(\d+)장/)?.[1] || '1';
-    const ticketsNeeded = parseInt(requiredTickets);
-
-    if (ticketBalance < ticketsNeeded) {
-      alert(
-        language === 'ko'
-          ? `응모권이 부족합니다!\n\n필요: ${ticketsNeeded}장\n보유: ${ticketBalance}장`
-          : `Not enough tickets!\n\nRequired: ${ticketsNeeded}\nYou have: ${ticketBalance}`
-      );
-      return;
-    }
-
-    // Deduct tickets
-    const newBalance = ticketBalance - ticketsNeeded;
-    localStorage.setItem('exfluencer_ticket_balance', newBalance.toString());
-    setTicketBalance(newBalance);
-
-    // Save raffle entry
-    const raffleTickets = JSON.parse(localStorage.getItem('exfluencer_raffle_tickets') || '{}');
-    raffleTickets[selectedRaffle.id] = (raffleTickets[selectedRaffle.id] || 0) + ticketsNeeded;
-    localStorage.setItem('exfluencer_raffle_tickets', JSON.stringify(raffleTickets));
-
-    alert(
-      language === 'ko'
-        ? `${selectedRaffle.name} 응모 완료!\n\n사용 응모권: ${ticketsNeeded}장\n남은 응모권: ${newBalance}장`
-        : `${selectedRaffle.nameEn} entry confirmed!\n\nTickets used: ${ticketsNeeded}\nRemaining: ${newBalance}`
-    );
-
-    setShowRaffleModal(false);
-    setSelectedRaffle(null);
-  };
-
-  const renderItems = (): ShopItem[] => {
-    if (selectedCategory === 'all') {
-      return [...shopCategories.raffles, ...shopCategories.tickets, ...shopCategories.premium, ...shopCategories.boost, ...shopCategories.training];
-    }
-    return shopCategories[selectedCategory];
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-dark-800 via-dark-700 to-dark-800 pb-20">
-      <MobileHeader title={language === 'ko' ? '상점' : 'Shop'} showBack />
+    <div className="min-h-screen bg-dark-700 pb-20">
+      <MobileHeader title="Tài nguyên KOL" showNotification />
 
-      <div className="container-mobile py-6 space-y-6">
-        {/* Hero Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent p-6 text-white">
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-2">
-              <ShoppingBag size={24} />
-              <h2 className="text-xl font-bold">
-                {language === 'ko' ? '인플루언서 성장 아이템' : 'Influencer Growth Items'}
-              </h2>
+      <div className="container-mobile space-y-6 py-5">
+
+        {/* ── 상단 배너 ── */}
+        <div className="rounded-2xl bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 p-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <BookOpen size={24} className="text-primary" />
             </div>
-            <p className="text-sm text-white/90">
-              {language === 'ko'
-                ? '프리미엄 기능으로 더 많은 기회를 얻으세요'
-                : 'Get more opportunities with premium features'}
+            <div>
+              <div className="font-bold text-white">Công cụ & Hướng dẫn miễn phí</div>
+              <div className="text-xs text-gray-400 mt-0.5">Giúp bạn phát triển kênh và nhận nhiều chiến dịch hơn</div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── 응모 이벤트 섹션 ── */}
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
+            <Gift size={14} className="text-accent" />
+            Sự kiện tri ân KOL
+            <span className="text-[10px] px-1.5 py-0.5 bg-accent/20 text-accent rounded-full font-bold">THÁNG 3</span>
+          </h3>
+
+          {/* 큰 경품 — 분기별 KOL 어워드 */}
+          <div className="card bg-gradient-to-br from-accent/10 to-yellow-500/5 border-2 border-accent/50 shadow-xl">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-yellow-400 flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Trophy size={26} className="text-dark-800" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-bold text-white">iPhone 16 Pro 256GB</span>
+                  <span className="text-[9px] px-1.5 py-0.5 bg-accent/30 text-accent rounded-full font-bold">GIẢI LỚN</span>
+                </div>
+                <div className="text-xs text-gray-400 mt-0.5">Giải thưởng KOL xuất sắc quý Q1/2026</div>
+                <div className="text-[10px] text-accent font-semibold mt-1">Trị giá ~35,000,000 VND</div>
+              </div>
+            </div>
+
+            <div className="bg-dark-700 rounded-xl p-3 mb-3 space-y-1.5">
+              <div className="text-[10px] font-semibold text-gray-400 mb-1">ĐIỀU KIỆN THAM GIA:</div>
+              <div className="flex items-start gap-2 text-xs text-gray-300">
+                <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
+                Hoàn thành ít nhất <span className="text-white font-bold mx-1">3 chiến dịch</span> trong quý
+              </div>
+              <div className="flex items-start gap-2 text-xs text-gray-300">
+                <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
+                Điểm đánh giá trung bình <span className="text-white font-bold mx-1">4.5★ trở lên</span>
+              </div>
+              <div className="flex items-start gap-2 text-xs text-gray-300">
+                <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
+                Nộp bài đúng hạn 100% (không trễ)
+              </div>
+              <div className="flex items-start gap-2 text-xs text-gray-300">
+                <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
+                1 người đáp ứng đủ điều kiện xuất sắc nhất sẽ được chọn
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                <Clock size={12} />
+                Kết thúc: 31/03/2026
+              </div>
+              <div className="text-xs text-gray-400">
+                <span className="text-white font-bold">47</span> KOL đang tham gia
+              </div>
+            </div>
+
+            <Link href="/main/influencer/campaigns">
+              <button className="w-full py-3 rounded-xl bg-gradient-to-r from-accent to-yellow-400 text-dark-800 text-sm font-bold flex items-center justify-center gap-2">
+                <Trophy size={15} />
+                Tham gia ngay — Nhận chiến dịch đầu tiên
+              </button>
+            </Link>
+
+            <p className="text-[9px] text-gray-600 text-center mt-2">
+              * Đây là chương trình tri ân nội bộ của Exfluencer VN. Người chiến thắng được chọn dựa trên hiệu suất thực tế.
             </p>
           </div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
-        </div>
 
-        {/* Ticket Balance & Quick Links */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-orange-400/20 to-red-500/20 border-2 border-orange-500/50 shadow-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-gray-400 mb-1">{language === 'ko' ? '보유 응모권' : 'My Tickets'}</p>
-                <div className="text-2xl font-bold text-white">{ticketBalance}</div>
-                <p className="text-xs text-gray-400 mt-1">{language === 'ko' ? '장' : 'tickets'}</p>
+          {/* 작은 경품 — 첫 캠페인 완수 보너스 */}
+          <div className="card bg-dark-600 border-2 border-primary/40 shadow-xl">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                <Gift size={20} className="text-white" />
               </div>
-              <Ticket size={40} className="text-orange-400/50" />
-            </div>
-          </div>
-          <button
-            onClick={() => router.push('/main/influencer/my-raffles')}
-            className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/50 hover:border-primary transition-all shadow-xl"
-          >
-            <div className="flex items-center justify-between">
-              <div className="text-left">
-                <p className="text-xs text-gray-400 mb-1">{language === 'ko' ? '내 응모' : 'My Entries'}</p>
-                <div className="text-sm font-bold text-white">{language === 'ko' ? '응모 내역 보기' : 'View Entries'}</div>
-              </div>
-              <Gift size={28} className="text-primary/70" />
-            </div>
-          </button>
-        </div>
-
-        {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id as any)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg font-semibold text-xs whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg'
-                    : 'bg-dark-600 text-gray-300 hover:bg-dark-500'
-                }`}
-              >
-                <Icon size={14} />
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Shop Items */}
-        <div className="space-y-6">
-          {renderItems().map((item) => {
-            const Icon = item.icon;
-            const isFeatured = 'featured' in item && item.featured;
-            const isPopular = 'popular' in item && item.popular;
-
-            return (
-              <div
-                key={item.id}
-                className="relative bg-dark-600/80 backdrop-blur-xl rounded-2xl p-5 border-2 border-dark-500/50 hover:border-primary/50 transition-all hover:scale-[1.02] group shadow-xl"
-              >
-                {/* Badge */}
-                {(isFeatured || isPopular) && (
-                  <div className="absolute -top-2 -right-2 px-3 py-1 bg-gradient-to-r from-accent to-warning rounded-full text-xs font-bold text-dark-800 shadow-lg flex items-center gap-1">
-                    <Star size={12} fill="currentColor" />
-                    {isFeatured ? (language === 'ko' ? '추천' : 'Featured') : (language === 'ko' ? '인기' : 'Popular')}
-                  </div>
-                )}
-
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center flex-shrink-0 shadow-xl`}>
-                    <Icon size={28} className="text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-white mb-1">
-                      {language === 'ko' ? item.name : item.nameEn}
-                    </h3>
-                    <p className="text-sm text-gray-300 mb-3">
-                      {language === 'ko' ? item.description : item.descriptionEn}
-                    </p>
-
-                    {/* Benefits */}
-                    {'benefits' in item && item.benefits && (
-                      <div className="space-y-1 mb-3">
-                        {item.benefits.map((benefit: string, idx: number) => (
-                          <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
-                            <div className="w-1 h-1 rounded-full bg-primary" />
-                            {benefit}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Price & Button */}
-                    <div className="flex items-center justify-between gap-3 mt-3">
-                      <div>
-                        <div className="text-2xl font-bold text-white">
-                          {formatPoints(item.price)}
-                        </div>
-                        <div className="text-xs text-gray-400">VND</div>
-                      </div>
-                      <button
-                        onClick={() => item.id.startsWith('raffle-') ? handleRaffleEntry(item) : handlePurchase(item)}
-                        className="px-5 py-2.5 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold text-sm hover:shadow-xl hover:scale-105 transition-all"
-                      >
-                        {item.id.startsWith('raffle-')
-                          ? (language === 'ko' ? '응모하기' : 'Enter')
-                          : (language === 'ko' ? '구매하기' : 'Buy Now')
-                        }
-                      </button>
-                    </div>
-                  </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-white">Thưởng Chào Mừng</span>
+                  <span className="text-[9px] px-1.5 py-0.5 bg-primary/30 text-primary rounded-full font-bold">MỌI NGƯỜI</span>
                 </div>
+                <div className="text-xs text-gray-400">Hoàn thành chiến dịch đầu tiên</div>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Info Notice */}
-        <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border-2 border-dark-500/50 shadow-xl">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-              <Tag size={18} className="text-primary" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-sm font-semibold text-white mb-1">
-                {language === 'ko' ? '💡 포인트 적립 팁' : '💡 Points Earning Tips'}
-              </h4>
-              <p className="text-xs text-gray-400">
-                {language === 'ko'
-                  ? '캠페인 참여, 리뷰 작성, 친구 추천으로 포인트를 적립하고 프리미엄 아이템을 무료로 받으세요!'
-                  : 'Participate in campaigns, write reviews, and refer friends to earn points for free premium items!'}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Purchase Modal (Quantity Selector) */}
-      {showPurchaseModal && selectedItem && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6 border-2 border-primary/30 shadow-xl">
-            <h3 className="text-xl font-bold text-white mb-4">
-              {language === 'ko' ? '응모권 구매' : 'Purchase Tickets'}
-            </h3>
-
-            {/* Item Info */}
-            <div className="bg-dark-700 rounded-xl p-4 mb-4 border-2 border-dark-500/50 shadow-xl">
-              <div className="flex items-center gap-3 mb-3">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${selectedItem.color} flex items-center justify-center shadow-xl`}>
-                  <Ticket size={24} className="text-white" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white">{language === 'ko' ? selectedItem.name : selectedItem.nameEn}</h4>
-                  <p className="text-sm text-gray-400">{formatPoints(selectedItem.price)} VND / {language === 'ko' ? '장' : 'ticket'}</p>
-                </div>
+              <div className="text-right flex-shrink-0">
+                <div className="text-lg font-bold text-primary">200K</div>
+                <div className="text-[9px] text-gray-500">VND thưởng</div>
               </div>
             </div>
 
-            {/* Quantity Selector */}
-            <div className="mb-4">
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                {language === 'ko' ? '수량' : 'Quantity'}
-              </label>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-12 h-12 rounded-xl bg-dark-700 border-2 border-dark-500 text-white font-bold text-xl hover:bg-dark-600 hover:border-primary/50 transition-all"
-                >
-                  -
-                </button>
-                <div className="flex-1 text-center">
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-full bg-dark-700 border-2 border-dark-500 rounded-xl px-4 py-3 text-center text-2xl font-bold text-white focus:border-primary focus:outline-none"
-                    min="1"
-                  />
-                </div>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-12 h-12 rounded-xl bg-dark-700 border-2 border-dark-500 text-white font-bold text-xl hover:bg-dark-600 hover:border-primary/50 transition-all"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* Quick Select */}
-              <div className="grid grid-cols-4 gap-2 mt-3">
-                {[1, 5, 10, 20].map((num) => (
-                  <button
-                    key={num}
-                    onClick={() => setQuantity(num)}
-                    className={`py-2 rounded-lg text-sm font-semibold transition-all ${
-                      quantity === num
-                        ? 'bg-primary text-white'
-                        : 'bg-dark-700 text-gray-300 hover:bg-dark-600 border-2 border-dark-500'
-                    }`}
-                  >
-                    {num}
-                  </button>
+            <div className="bg-dark-700 rounded-xl p-3 mb-3">
+              <div className="text-[10px] font-semibold text-gray-400 mb-1.5">BẠN SẼ NHẬN:</div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {[
+                  '✅ Thưởng 200,000 VND',
+                  '🏅 Huy hiệu KOL xác minh',
+                  '⭐ Ưu tiên trong chiến dịch sau',
+                  '📊 Hồ sơ nổi bật hơn',
+                ].map((item) => (
+                  <div key={item} className="text-[10px] text-gray-300">{item}</div>
                 ))}
               </div>
             </div>
 
-            {/* Total Price */}
-            <div className="bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 rounded-xl p-4 mb-4 shadow-xl">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">{language === 'ko' ? '응모권' : 'Tickets'}</span>
-                <span className="text-white font-semibold">{quantity} {language === 'ko' ? '장' : 'pcs'}</span>
-              </div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">{language === 'ko' ? '단가' : 'Unit Price'}</span>
-                <span className="text-white font-semibold">{formatPoints(selectedItem.price)} VND</span>
-              </div>
-              <div className="h-px bg-primary/30 my-2" />
-              <div className="flex justify-between items-center">
-                <span className="text-white font-bold">{language === 'ko' ? '총 금액' : 'Total'}</span>
-                <span className="text-primary font-bold text-xl">{formatPoints(selectedItem.price * quantity)} VND</span>
-              </div>
-            </div>
+            <Link href="/main/influencer/campaigns">
+              <button className="w-full py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold">
+                Tìm chiến dịch đầu tiên →
+              </button>
+            </Link>
 
-            {/* Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  setShowPurchaseModal(false);
-                  setSelectedItem(null);
-                  setQuantity(1);
-                }}
-                className="flex-1 btn btn-ghost"
-              >
-                {language === 'ko' ? '취소' : 'Cancel'}
-              </button>
-              <button
-                onClick={confirmPurchase}
-                className="flex-1 btn btn-primary"
-              >
-                {language === 'ko' ? '구매하기' : 'Purchase'}
-              </button>
-            </div>
+            <p className="text-[9px] text-gray-600 text-center mt-2">
+              * Thưởng được ghi nhận sau khi nhà quảng cáo xác nhận hoàn thành.
+            </p>
           </div>
         </div>
-      )}
 
-      {/* Raffle Entry Modal */}
-      {showRaffleModal && selectedRaffle && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6 border-2 border-primary/30 shadow-xl">
-            <h3 className="text-xl font-bold text-white mb-4">
-              {language === 'ko' ? '경품 응모 확인' : 'Confirm Entry'}
-            </h3>
+        {/* ── 인증 뱃지 CTA ── */}
+        <Link href="/main/influencer/profile/edit">
+          <div className="rounded-2xl bg-gradient-to-r from-accent/10 to-green-500/10 border-2 border-accent/40 p-4 flex items-center gap-3">
+            <BadgeCheck size={28} className="text-accent flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-white">Xác minh hồ sơ KOL</div>
+              <div className="text-xs text-gray-400 mt-0.5">Hồ sơ được xác minh → nhà quảng cáo tin tưởng hơn → nhiều cơ hội hơn</div>
+            </div>
+            <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
+          </div>
+        </Link>
 
-            {/* Raffle Info */}
-            <div className="bg-dark-700 rounded-xl p-4 mb-4 border-2 border-dark-500/50 shadow-xl">
-              <div className="flex items-center gap-3 mb-3">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${selectedRaffle.color} flex items-center justify-center shadow-xl`}>
-                  {(() => {
-                    const Icon = selectedRaffle.icon;
-                    return <Icon size={24} className="text-white" />;
-                  })()}
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-bold text-white">{language === 'ko' ? selectedRaffle.name : selectedRaffle.nameEn}</h4>
-                  <p className="text-xs text-gray-400">{language === 'ko' ? selectedRaffle.description : selectedRaffle.descriptionEn}</p>
-                </div>
-              </div>
+        {/* ── 무료 템플릿 ── */}
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
+            <Download size={14} className="text-primary" />
+            Mẫu tải về miễn phí
+          </h3>
 
-              {/* Benefits */}
-              {selectedRaffle.benefits && (
-                <div className="space-y-1 mt-3 pt-3 border-t border-dark-600">
-                  {selectedRaffle.benefits.map((benefit, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-gray-300">
-                      <div className="w-1 h-1 rounded-full bg-primary" />
-                      {benefit}
+          <div className="space-y-2">
+            {templates.map((tpl) => {
+              const Icon = tpl.icon;
+              return (
+                <div key={tpl.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${tpl.color} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={20} className="text-white" />
                     </div>
-                  ))}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-bold text-white">{tpl.title}</div>
+                      <div className="text-xs text-gray-400 mt-0.5 truncate">{tpl.desc}</div>
+                      <div className="flex gap-1.5 mt-1">
+                        {tpl.tags.map((tag) => (
+                          <span key={tag} className="text-[9px] px-1.5 py-0.5 bg-dark-500 text-gray-400 rounded-md">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    {tpl.url ? (
+                      <a
+                        href={tpl.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink size={12} />
+                        Mở
+                      </a>
+                    ) : (
+                      <button
+                        className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
+                        onClick={() => handleCopy(tpl.id, tpl.title)}
+                      >
+                        {copiedId === tpl.id ? <CheckCircle size={12} /> : <Download size={12} />}
+                        {copiedId === tpl.id ? 'OK' : 'Lấy'}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-
-            {/* Ticket Info */}
-            <div className="bg-gradient-to-r from-orange-400/20 to-red-500/20 border-2 border-orange-500/30 rounded-xl p-4 mb-4 shadow-xl">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">{language === 'ko' ? '보유 응모권' : 'Your Tickets'}</span>
-                <span className="text-white font-bold">{ticketBalance} {language === 'ko' ? '장' : 'tickets'}</span>
-              </div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300">{language === 'ko' ? '필요 응모권' : 'Required'}</span>
-                <span className="text-orange-400 font-bold">
-                  {selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1'} {language === 'ko' ? '장' : 'tickets'}
-                </span>
-              </div>
-              <div className="h-px bg-orange-500/30 my-2" />
-              <div className="flex justify-between items-center">
-                <span className="text-white font-bold">{language === 'ko' ? '응모 후 잔액' : 'After Entry'}</span>
-                <span className="text-primary font-bold">
-                  {ticketBalance - parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1')} {language === 'ko' ? '장' : 'tickets'}
-                </span>
-              </div>
-            </div>
-
-            {/* Warning */}
-            {ticketBalance < parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1') && (
-              <div className="bg-error/10 border-2 border-error/30 rounded-xl p-3 mb-4">
-                <p className="text-error text-sm font-semibold">
-                  {language === 'ko' ? '⚠️ 응모권이 부족합니다' : '⚠️ Not enough tickets'}
-                </p>
-              </div>
-            )}
-
-            {/* Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  setShowRaffleModal(false);
-                  setSelectedRaffle(null);
-                }}
-                className="flex-1 btn btn-ghost"
-              >
-                {language === 'ko' ? '취소' : 'Cancel'}
-              </button>
-              <button
-                onClick={confirmRaffleEntry}
-                disabled={ticketBalance < parseInt(selectedRaffle.benefits?.find(b => b.includes('응모권') && b.includes('장 필요'))?.match(/(\d+)장/)?.[1] || '1')}
-                className="flex-1 btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {language === 'ko' ? '응모하기' : 'Enter'}
-              </button>
-            </div>
+              );
+            })}
           </div>
         </div>
-      )}
+
+        {/* ── 플랫폼 가이드 ── */}
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
+            <Lightbulb size={14} className="text-accent" />
+            Hướng dẫn phát triển kênh
+          </h3>
+
+          <div className="space-y-3">
+            {guides.map((guide) => {
+              const Icon = guide.icon;
+              return (
+                <div key={guide.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`w-10 h-10 rounded-xl ${guide.color} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={18} className={guide.iconColor} />
+                    </div>
+                    <div className="font-bold text-white text-sm">{guide.title}</div>
+                  </div>
+                  <div className="space-y-1.5">
+                    {guide.points.map((point, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                        <p className="text-xs text-gray-300 leading-relaxed">{point}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── 캠페인 팁 ── */}
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
+            <Star size={14} className="text-accent" />
+            Mẹo ứng tuyển chiến dịch thành công
+          </h3>
+
+          <div className="rounded-2xl bg-dark-600 border-2 border-dark-500 shadow-xl divide-y divide-dark-500">
+            {campaignTips.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 px-4 py-3">
+                <span className="text-base flex-shrink-0">{item.icon}</span>
+                <p className="text-xs text-gray-300 leading-relaxed">{item.tip}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── 지금 캠페인 찾기 CTA ── */}
+        <Link href="/main/influencer/campaigns">
+          <div className="rounded-2xl bg-gradient-to-r from-primary to-secondary p-4 flex items-center justify-between">
+            <div>
+              <div className="text-base font-bold text-white">Sẵn sàng? Tìm chiến dịch ngay!</div>
+              <div className="text-xs text-white/80 mt-0.5">36 chiến dịch đang mở · Ứng tuyển ngay hôm nay</div>
+            </div>
+            <ChevronRight size={20} className="text-white flex-shrink-0" />
+          </div>
+        </Link>
+
+      </div>
 
       <BottomNav userType="influencer" />
     </div>

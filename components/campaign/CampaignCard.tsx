@@ -223,16 +223,29 @@ export default function CampaignCard({
             </div>
           )}
 
-          {/* Action Info */}
-          <div className="flex items-center justify-between pt-3 border-t border-dark-500">
-            <span className="text-xs text-gray-300">{t.campaignFilters.clickToView}</span>
-            <div className={`text-sm px-4 py-2 rounded-lg font-semibold ${
-              eligibility.eligible
-                ? 'bg-primary text-white'
-                : 'bg-dark-600 text-gray-300'
-            }`}>
-              {t.campaignFilters.viewDetails}
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 pt-3 border-t border-dark-500">
+            <div className="flex-1 text-xs text-gray-400 truncate">
+              📅 HSD: {campaign.deadline}
             </div>
+            <Link
+              href={`${campaignUrl}`}
+              onClick={e => e.stopPropagation()}
+              className="px-3 py-2 rounded-lg text-xs text-gray-300 bg-dark-600 hover:bg-dark-500 transition-all whitespace-nowrap"
+            >
+              Xem chi tiết
+            </Link>
+            <Link
+              href={`${campaignUrl}?apply=true`}
+              onClick={e => e.stopPropagation()}
+              className={`px-4 py-2 rounded-lg text-sm font-black whitespace-nowrap transition-all active:scale-95 ${
+                eligibility.eligible
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/30'
+                  : 'bg-dark-500 text-gray-500 cursor-default pointer-events-none'
+              }`}
+            >
+              🎯 Ứng tuyển
+            </Link>
           </div>
         </div>
       </div>

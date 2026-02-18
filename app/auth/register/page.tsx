@@ -259,7 +259,7 @@ export default function RegisterPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => alert('Facebook 로그인 기능 구현 예정입니다.')}
+                  onClick={() => alert('Tính năng đăng nhập Facebook sẽ sớm ra mắt.')}
                   className="btn btn-ghost border-blue-500/30 hover:bg-blue-500/10 text-sm py-3"
                 >
                   <Facebook size={18} className="text-blue-500" />
@@ -267,7 +267,7 @@ export default function RegisterPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => alert('Google 로그인 기능 구현 예정입니다.')}
+                  onClick={() => alert('Tính năng đăng nhập Google sẽ sớm ra mắt.')}
                   className="btn btn-ghost border-red-500/30 hover:bg-red-500/10 text-sm py-3"
                 >
                   <FaGoogle size={18} className="text-red-500" />

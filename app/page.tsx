@@ -74,15 +74,15 @@ export default function HomePage() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-primary">5K+</div>
+                <div className="text-3xl font-bold text-primary">36</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.kols}</div>
               </div>
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-secondary">1.2K+</div>
+                <div className="text-3xl font-bold text-secondary">0%</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.brands}</div>
               </div>
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-accent">10K+</div>
+                <div className="text-3xl font-bold text-accent">1K+</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.campaigns}</div>
               </div>
             </div>
@@ -112,9 +112,17 @@ export default function HomePage() {
               >
                 {t.homepage.signupText}
               </Link>
+              {/* Preview campaigns without login - for Facebook-referred traffic */}
+              <Link
+                href="/main/influencer/campaigns"
+                className="block w-full text-center py-4 font-semibold bg-transparent text-accent rounded-2xl border-2 border-accent/50 hover:border-accent hover:bg-accent/10 transition-all text-sm"
+                aria-label="Browse open campaigns"
+              >
+                👀 Xem {36} chiến dịch đang mở →
+              </Link>
               <Link
                 href="/auth/login"
-                className="block w-full text-center py-5 font-semibold bg-transparent text-white rounded-2xl border-2 border-gray-600 hover:border-primary hover:bg-primary/10 transition-all"
+                className="block w-full text-center py-3 font-medium bg-transparent text-gray-400 rounded-2xl border border-gray-700 hover:border-gray-500 transition-all text-sm"
                 aria-label="Login to your account"
               >
                 {t.homepage.loginText}

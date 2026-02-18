@@ -70,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="vi" className={`${inter.variable} ${poppins.variable}`}>
       <head>
         <title>Exfluencer VN - Nền tảng tiếp thị KOL hàng đầu Việt Nam</title>
         <meta name="description" content="Kết nối KOL và thương hiệu. Tìm kiếm chiến dịch phù hợp, kiếm tiền từ nội dung của bạn." />

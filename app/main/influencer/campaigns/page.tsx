@@ -374,6 +374,20 @@ function CampaignsPageContent() {
   });
   const [isAdminMode, setIsAdminMode] = useState(false);
 
+  // Guest mode: detect unauthenticated Facebook-referred visitors
+  const [isGuest, setIsGuest] = useState(false);
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem('exfluencer_user');
+      const supabaseSession = localStorage.getItem('supabase.auth.token');
+      if (!userData && !supabaseSession) {
+        setIsGuest(true);
+      }
+    } catch {
+      setIsGuest(true);
+    }
+  }, []);
+
   // Use translated mock data based on current language
   const [mockCampaigns, setMockCampaigns] = useState(getMockCampaigns(language));
   const mockUserProfile = getMockUserProfile(language);
@@ -729,7 +743,7 @@ function CampaignsPageContent() {
               {isAdminMode && (
                 <Link href="/admin/demo-campaigns">
                   <button className="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white text-[10px] rounded-full font-bold transition-all flex items-center gap-1">
-                    ⚙️ 자동 생성 설정
+                    ⚙️ Cài đặt tự động
                   </button>
                 </Link>
               )}
@@ -1105,8 +1119,8 @@ function CampaignsPageContent() {
                 <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg">
                   <div className="text-xs text-primary font-semibold">
                     ✅ {activeFilterCount}{t.campaignFilters.filtersApplied}
-                    {filters.platforms.length > 1 && ` (플랫폼 ${filters.platforms.length}개)`}
-                    {filters.categories.length > 1 && ` (카테고리 ${filters.categories.length}개)`}
+                    {filters.platforms.length > 1 && ` (${filters.platforms.length} nền tảng)`}
+                    {filters.categories.length > 1 && ` (${filters.categories.length} danh mục)`}
                   </div>
                 </div>
               ) : null;
@@ -1136,6 +1150,24 @@ function CampaignsPageContent() {
           </div>
         )}
       </div>
+
+      {/* Guest Banner: Show registration CTA for unauthenticated Facebook-referred visitors */}
+      {isGuest && (
+        <div className="container-mobile py-3">
+          <div className="rounded-2xl bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/40 p-4 flex items-center justify-between gap-3">
+            <div>
+              <div className="text-sm font-bold text-white">🎉 Đăng ký miễn phí để ứng tuyển</div>
+              <div className="text-xs text-gray-300 mt-0.5">Không qua Google Form · 0% hoa hồng · 1K+ followers là đủ</div>
+            </div>
+            <Link
+              href="/auth/register?type=influencer"
+              className="flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold whitespace-nowrap"
+            >
+              Đăng ký →
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Results Count */}
       <div className="px-4 py-3 text-sm text-gray-300">
@@ -1230,7 +1262,7 @@ function CampaignsPageContent() {
                             ))}
                           </div>
                           <span className="text-xs text-gray-300">
-                            {campaign.applicants > 4 && `+${campaign.applicants - 4}명 `}지원함
+                            {campaign.applicants > 4 && `+${campaign.applicants - 4} `}đã ứng tuyển
                           </span>
                         </div>
                       )}
@@ -1399,10 +1431,10 @@ function CampaignsPageContent() {
                       </div>
                       <div className="flex-1">
                         <div className="text-sm font-semibold text-white">
-                          {campaign.applicants}명이 지원했습니다
+                          {campaign.applicants} người đã ứng tuyển
                         </div>
                         <div className="text-xs text-gray-300">
-                          {campaign.applicants > 6 ? `+${campaign.applicants - 6}명 더 보기` : '최근 지원자'}
+                          {campaign.applicants > 6 ? `+${campaign.applicants - 6} người nữa` : 'Ứng viên gần đây'}
                         </div>
                       </div>
                     </div>

@@ -1,332 +1,369 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Plus,
-  TrendingUp,
-  DollarSign,
   Users,
-  Eye,
   Clock,
   CheckCircle,
   ChevronRight,
+  AlertCircle,
+  BadgeDollarSign,
+  FileText,
   Search,
-  BarChart,
+  Star,
+  Instagram,
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
-import { formatPoints } from '@/lib/points';
+import { formatCash, formatCompactNumber } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-// Mock data
+// ─── Mock Data ───────────────────────────────────────────
 const mockData = {
   company: {
     name: 'K-Beauty Co.',
     logo: 'https://ui-avatars.com/api/?name=K-Beauty&background=FF6B6B&color=fff',
   },
-  stats: {
-    activeCampaigns: 5,
-    totalSpent: 12000000,
-    totalInfluencers: 23,
-    avgROI: 3.2,
-  },
-  campaigns: [
+
+  // 진행 중 캠페인
+  activeCampaigns: [
     {
       id: '1',
-      title: '신규 스킨케어 제품 리뷰 캠페인',
-      status: 'active',
-      budget: 2000000,
-      spent: 1200000,
-      applicants: 23,
+      title: 'Skincare Product Review',
+      platform: 'Facebook + TikTok',
+      deliverable: 'Bài đăng × 1 · Story × 3',
+      budget: 500000,
       accepted: 8,
-      views: 125000,
-      deadline: '2026-03-15',
-      createdAt: '2026-02-01',
+      deadline: '15/03',
+      pendingSubmit: 3,   // 결과물 제출 대기
+      pendingPayment: 2,  // 입금 확인 대기
     },
     {
       id: '2',
-      title: '봄 신상 메이크업 프로모션',
-      status: 'active',
-      budget: 1500000,
-      spent: 800000,
-      applicants: 15,
+      title: 'Spring Makeup Promo',
+      platform: 'TikTok',
+      deliverable: 'Video × 1 (60s)',
+      budget: 400000,
       accepted: 5,
-      views: 89000,
-      deadline: '2026-03-20',
-      createdAt: '2026-02-05',
+      deadline: '20/03',
+      pendingSubmit: 0,
+      pendingPayment: 1,
+    },
+  ],
+
+  // KOL 신청 승인 대기
+  pendingKols: [
+    {
+      id: 'k1',
+      name: 'Linh Nguyễn',
+      platform: 'TikTok',
+      followers: 285000,
+      engagement: 0.072,
+      rate: 500000,
+      avatar: 'https://ui-avatars.com/api/?name=Linh+Nguyen&background=FF6B6B&color=fff',
+      campaign: 'Skincare Review',
+      niche: 'Beauty',
     },
     {
-      id: '3',
-      title: '겨울 스킨케어 루틴 캠페인',
-      status: 'completed',
-      budget: 1800000,
-      spent: 1800000,
-      applicants: 31,
-      accepted: 10,
-      views: 250000,
-      deadline: '2026-02-10',
-      createdAt: '2026-01-15',
+      id: 'k2',
+      name: 'Minh Tuấn',
+      platform: 'Facebook',
+      followers: 142000,
+      engagement: 0.058,
+      rate: 300000,
+      avatar: 'https://ui-avatars.com/api/?name=Minh+Tuan&background=4ECDC4&color=fff',
+      campaign: 'Spring Makeup',
+      niche: 'Lifestyle',
+    },
+  ],
+
+  // 입금 확인 필요
+  pendingPayments: [
+    {
+      id: 'p1',
+      kolName: 'Thu Hà',
+      kolAvatar: 'https://ui-avatars.com/api/?name=Thu+Ha&background=45B7D1&color=fff',
+      campaign: 'Skincare Review',
+      amount: 600000,
+      contentUrl: 'https://www.tiktok.com',
+    },
+  ],
+
+  // 추천 KOL (찾기 화면 미리보기)
+  recommendedKols: [
+    {
+      id: 'r1',
+      name: 'Mai Anh',
+      platform: 'Facebook',
+      followers: 320000,
+      engagement: 0.065,
+      rate: 600000,
+      niche: 'Beauty & Skincare',
+      rating: 4.9,
+      avatar: 'https://ui-avatars.com/api/?name=Mai+Anh&background=9B59B6&color=fff',
+    },
+    {
+      id: 'r2',
+      name: 'Hoàng Nam',
+      platform: 'TikTok',
+      followers: 180000,
+      engagement: 0.089,
+      rate: 400000,
+      niche: 'Tech & Review',
+      rating: 4.7,
+      avatar: 'https://ui-avatars.com/api/?name=Hoang+Nam&background=E74C3C&color=fff',
+    },
+    {
+      id: 'r3',
+      name: 'Thanh Hương',
+      platform: 'Instagram',
+      followers: 95000,
+      engagement: 0.112,
+      rate: 250000,
+      niche: 'Food & Travel',
+      rating: 4.8,
+      avatar: 'https://ui-avatars.com/api/?name=Thanh+Huong&background=27AE60&color=fff',
     },
   ],
 };
 
+// ─────────────────────────────────────────────────────────
+
 export default function AdvertiserDashboard() {
+  const router = useRouter();
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-white pb-20">
-      {/* Header */}
+    <div className="min-h-screen bg-dark-700 pb-20">
       <MobileHeader
         title="Dashboard"
         showNotification
-        onNotification={() => {
-          // Navigate to notifications
-        }}
+        onNotification={() => router.push('/main/advertiser/notifications')}
       />
 
-      {/* Content */}
-      <div className="container-mobile space-y-6 py-6">
-        {/* Company Card - 클릭하면 프로필로 이동 */}
+      <div className="container-mobile space-y-5 py-5">
+
+        {/* ── 회사 프로필 ── */}
         <Link href="/main/advertiser/profile">
-          <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-300 transition-all cursor-pointer shadow-xl">
-            <div className="flex items-center gap-4">
-              <img
-                src={mockData.company.logo}
-                alt={mockData.company.name}
-                className="w-16 h-16 rounded-full border-2 border-gray-200"
-              />
-              <div className="flex-1">
-                <h2 className="text-lg font-bold text-gray-900">{mockData.company.name}</h2>
-                <p className="text-sm text-gray-600">{t.advertiser.brandAccount}</p>
-                <p className="text-xs text-gray-400 mt-1">{t.advertiser.verifiedAdvertiser}</p>
-              </div>
-              <ChevronRight size={20} className="text-gray-400" />
+          <div className="flex items-center gap-3">
+            <img
+              src={mockData.company.logo}
+              alt={mockData.company.name}
+              className="w-12 h-12 rounded-2xl border-2 border-primary"
+            />
+            <div>
+              <div className="font-bold text-white">{mockData.company.name}</div>
+              <div className="text-xs text-gray-400">{t.advertiser.brandAccount} · Chỉnh sửa →</div>
             </div>
+            <ChevronRight size={16} className="text-gray-500 ml-auto" />
           </div>
         </Link>
 
-        {/* Quick Stats - Clickable */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Link href="/main/advertiser/campaigns?status=active">
-            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-              <TrendingUp size={24} className="text-gray-700 mx-auto mb-2" />
-              <div className="text-xl font-bold text-gray-900">
-                {mockData.stats.activeCampaigns}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">진행 중 Active</div>
+        {/* ── 입금 확인 긴급 알림 ── */}
+        {mockData.pendingPayments.length > 0 && (
+          <div className="rounded-2xl bg-gradient-to-r from-accent/20 to-green-500/10 border-2 border-accent/50 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <BadgeDollarSign size={16} className="text-accent" />
+              <span className="text-sm font-bold text-accent">
+                {mockData.pendingPayments.length} KOL chờ xác nhận thanh toán
+              </span>
             </div>
-          </Link>
-
-          <Link href="/main/advertiser/analytics?tab=budget">
-            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-              <DollarSign size={24} className="text-gray-700 mx-auto mb-2" />
-              <div className="text-xl font-bold text-gray-900">
-                {formatPoints(mockData.stats.totalSpent)}
+            {mockData.pendingPayments.map((p) => (
+              <div key={p.id} className="flex items-center gap-3">
+                <img src={p.kolAvatar} alt={p.kolName} className="w-9 h-9 rounded-xl flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-white">{p.kolName} · {p.campaign}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Đã nộp nội dung. Vui lòng chuyển khoản rồi xác nhận.</div>
+                </div>
+                <div className="flex flex-col gap-1.5 flex-shrink-0">
+                  <a href={p.contentUrl} target="_blank" rel="noopener noreferrer"
+                    className="text-[10px] px-2 py-1 bg-dark-500 text-gray-300 rounded-lg text-center">
+                    Xem
+                  </a>
+                  <button className="text-[10px] px-2 py-1 bg-accent text-white rounded-lg font-bold">
+                    ✓ {formatCash(p.amount)}
+                  </button>
+                </div>
               </div>
-              <div className="text-xs text-gray-500 mt-1">총 지출 VND</div>
-            </div>
-          </Link>
+            ))}
+          </div>
+        )}
 
-          <Link href="/main/advertiser/influencers">
-            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-              <Users size={24} className="text-gray-700 mx-auto mb-2" />
-              <div className="text-xl font-bold text-gray-900">
-                {mockData.stats.totalInfluencers}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">협업 KOLs</div>
-            </div>
-          </Link>
-
-          <Link href="/main/advertiser/analytics?tab=roi">
-            <div className="bg-white border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-              <BarChart size={24} className="text-gray-700 mx-auto mb-2" />
-              <div className="text-xl font-bold text-gray-900">
-                {mockData.stats.avgROI.toFixed(1)}x
-              </div>
-              <div className="text-xs text-gray-500 mt-1">평균 ROI</div>
-              <div className="text-xs text-gray-600 mt-0.5">+{((mockData.stats.avgROI - 1) * 100).toFixed(0)}% return</div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Create Campaign Button */}
-        <Link href="/main/advertiser/campaigns/create">
-          <button className="w-full bg-gray-900 text-white rounded-xl py-4 px-6 font-semibold text-base hover:bg-gray-800 transition-colors flex items-center justify-center">
-            <Plus size={20} className="mr-2" />
-            새 캠페인 만들기 Create Campaign
-          </button>
-        </Link>
-
-        {/* Value Prop */}
-        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 shadow-xl">
-          <p className="text-sm text-gray-600 text-center">
-            <strong className="text-gray-900">평균 24시간 내</strong> 검증된 KOL 매칭 |
-            <strong className="text-gray-900"> Average 24h</strong> verified KOL matching
-          </p>
-        </div>
-
-        {/* Quick Actions */}
+        {/* ── 핵심 도구 2개 ── */}
         <div className="grid grid-cols-2 gap-3">
-          <Link href="/main/advertiser/influencers">
-            <button className="w-full bg-gray-100 text-gray-900 rounded-xl py-3 px-4 font-semibold text-sm hover:bg-gray-200 transition-colors flex items-center justify-center">
-              <Search size={18} className="mr-2" />
-              KOL 찾기 Find KOLs
-            </button>
+          {/* 캠페인 생성기 */}
+          <Link href="/main/advertiser/campaigns/create">
+            <div className="rounded-2xl bg-gradient-to-br from-primary to-secondary p-4 h-full">
+              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-3">
+                <FileText size={20} className="text-white" />
+              </div>
+              <div className="text-base font-bold text-white mb-1">Tạo chiến dịch</div>
+              <div className="text-xs text-white/70">Tạo brief tự động<br />Mẫu chuẩn hóa</div>
+            </div>
           </Link>
-          <Link href="/main/advertiser/analytics">
-            <button className="w-full bg-gray-100 text-gray-900 rounded-xl py-3 px-4 font-semibold text-sm hover:bg-gray-200 transition-colors flex items-center justify-center">
-              <BarChart size={18} className="mr-2" />
-              분석 Analytics
-            </button>
+
+          {/* KOL 찾기 */}
+          <Link href="/main/advertiser/influencers">
+            <div className="rounded-2xl bg-gradient-to-br from-dark-500 to-dark-600 border-2 border-dark-400 p-4 h-full">
+              <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center mb-3">
+                <Search size={20} className="text-secondary" />
+              </div>
+              <div className="text-base font-bold text-white mb-1">Tìm KOL</div>
+              <div className="text-xs text-gray-400">Followers · Giá · ER<br />So sánh nhanh</div>
+            </div>
           </Link>
         </div>
 
-        {/* Active Campaigns */}
-        <div className="space-y-6">
+        {/* ── KOL 신청 검토 ── */}
+        {mockData.pendingKols.length > 0 && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+                <AlertCircle size={13} className="text-warning" />
+                KOL đang chờ duyệt ({mockData.pendingKols.length})
+              </h3>
+              <Link href="/main/advertiser/campaigns?tab=approvals" className="text-xs text-primary">
+                Xem tất cả
+              </Link>
+            </div>
+
+            <div className="space-y-2">
+              {mockData.pendingKols.map((kol) => (
+                <div key={kol.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <img src={kol.avatar} alt={kol.name}
+                      className="w-11 h-11 rounded-xl border border-dark-400 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-white text-sm">{kol.name}</div>
+                      {/* 핵심 지표만 */}
+                      <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                        <span className="text-[10px] text-primary font-semibold">{kol.platform}</span>
+                        <span className="text-[10px] text-gray-400">{formatCompactNumber(kol.followers)} followers</span>
+                        <span className="text-[10px] text-accent font-semibold">{(kol.engagement * 100).toFixed(1)}% ER</span>
+                      </div>
+                      <div className="text-[10px] text-gray-500 mt-0.5">
+                        {kol.niche} · {kol.campaign} · <span className="text-white font-semibold">{formatCash(kol.rate)}/post</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <Link href={`/main/advertiser/influencers/${kol.id}`}
+                      className="flex-1 py-2 bg-dark-500 text-gray-300 text-xs font-semibold rounded-lg text-center">
+                      Xem hồ sơ
+                    </Link>
+                    <button className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold rounded-lg">
+                      ✓ Duyệt
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── 진행 중 캠페인 ── */}
+        <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-900">진행 중인 캠페인</h3>
-            <Link href="/main/advertiser/campaigns" className="text-sm text-gray-900 font-medium">
-              모두 보기
+            <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+              <Clock size={13} />
+              Đang chạy ({mockData.activeCampaigns.length})
+            </h3>
+            <Link href="/main/advertiser/campaigns" className="text-xs text-primary">Xem tất cả</Link>
+          </div>
+
+          <div className="space-y-3">
+            {mockData.activeCampaigns.map((c) => (
+              <Link key={c.id} href={`/main/advertiser/campaigns/${c.id}`}>
+                <div className="card bg-dark-600 border-2 border-dark-500 hover:border-primary/40 transition-all shadow-xl">
+                  {/* 캠페인 요약 */}
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-white text-sm truncate">{c.title}</h4>
+                      <div className="text-xs text-gray-400 mt-0.5">{c.platform}</div>
+                      <div className="text-xs text-gray-500 mt-0.5">{c.deliverable}</div>
+                    </div>
+                    <div className="text-right flex-shrink-0 ml-3">
+                      <div className="text-sm font-bold text-accent">{formatCash(c.budget)}<span className="text-xs text-gray-500">/KOL</span></div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">Hạn: {c.deadline}</div>
+                    </div>
+                  </div>
+
+                  {/* 상태 요약 */}
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="text-center bg-dark-700 rounded-lg p-2">
+                      <div className="font-bold text-white">{c.accepted}</div>
+                      <div className="text-gray-500">KOL tham gia</div>
+                    </div>
+                    <div className={`text-center rounded-lg p-2 ${c.pendingSubmit > 0 ? 'bg-warning/10 border border-warning/30' : 'bg-dark-700'}`}>
+                      <div className={`font-bold ${c.pendingSubmit > 0 ? 'text-warning' : 'text-white'}`}>{c.pendingSubmit}</div>
+                      <div className="text-gray-500">Chờ nộp bài</div>
+                    </div>
+                    <div className={`text-center rounded-lg p-2 ${c.pendingPayment > 0 ? 'bg-accent/10 border border-accent/30' : 'bg-dark-700'}`}>
+                      <div className={`font-bold ${c.pendingPayment > 0 ? 'text-accent' : 'text-white'}`}>{c.pendingPayment}</div>
+                      <div className="text-gray-500">Chờ TT</div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* ── 추천 KOL (레이트카드 미리보기) ── */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+              <Users size={13} />
+              KOL phù hợp với bạn
+            </h3>
+            <Link href="/main/advertiser/influencers" className="text-xs text-primary">
+              Xem tất cả
             </Link>
           </div>
 
-          <div className="space-y-6">
-            {mockData.campaigns
-              .filter((c) => c.status === 'active')
-              .map((campaign) => (
-                <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-                  <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Clock size={12} />
-                          마감: {campaign.deadline}
-                        </div>
+          <div className="space-y-2">
+            {mockData.recommendedKols.map((kol) => (
+              <Link key={kol.id} href={`/main/advertiser/influencers/${kol.id}`}>
+                <div className="card bg-dark-600 border-2 border-dark-500 hover:border-secondary/40 transition-all shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <img src={kol.avatar} alt={kol.name}
+                      className="w-12 h-12 rounded-xl border border-dark-400 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-white text-sm">{kol.name}</span>
+                        <span className="text-[10px] text-primary font-semibold">{kol.platform}</span>
                       </div>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-900 text-xs rounded-full font-medium">
-                        진행 중
-                      </span>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="mb-3">
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-500">예산 사용</span>
-                        <span className="text-gray-900 font-semibold">
-                          {((campaign.spent / campaign.budget) * 100).toFixed(0)}%
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gray-900 rounded-full"
-                          style={{ width: `${(campaign.spent / campaign.budget) * 100}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs mt-1">
-                        <span className="text-gray-400">
-                          {formatPoints(campaign.spent)}
-                        </span>
-                        <span className="text-gray-400">
-                          {formatPoints(campaign.budget)}
+                      <div className="text-[10px] text-gray-400 mt-0.5">{kol.niche}</div>
+                      {/* 핵심 지표 3가지만 */}
+                      <div className="flex items-center gap-3 mt-1.5">
+                        <span className="text-xs text-gray-300">{formatCompactNumber(kol.followers)}</span>
+                        <span className="text-xs text-accent font-semibold">{(kol.engagement * 100).toFixed(1)}% ER</span>
+                        <span className="flex items-center gap-0.5 text-xs text-yellow-400">
+                          <Star size={10} className="fill-yellow-400" />{kol.rating}
                         </span>
                       </div>
                     </div>
-
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">{campaign.applicants}</div>
-                        <div className="text-gray-500">지원자</div>
-                      </div>
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">{campaign.accepted}</div>
-                        <div className="text-gray-500">승인됨</div>
-                      </div>
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">
-                          {(campaign.views / 1000).toFixed(0)}K
-                        </div>
-                        <div className="text-gray-500">조회수</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                      <span className="text-xs text-gray-500">상세 정보 보기</span>
-                      <ChevronRight size={16} className="text-gray-400" />
+                    <div className="text-right flex-shrink-0">
+                      <div className="text-sm font-bold text-white">{formatCash(kol.rate)}</div>
+                      <div className="text-[10px] text-gray-400">/ post</div>
+                      <ChevronRight size={14} className="text-gray-500 ml-auto mt-1" />
                     </div>
                   </div>
-                </Link>
-              ))}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* Recent Completed Campaigns */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-900">최근 완료된 캠페인</h3>
-          </div>
-
-          <div className="space-y-6">
-            {mockData.campaigns
-              .filter((c) => c.status === 'completed')
-              .slice(0, 2)
-              .map((campaign) => (
-                <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-                  <div className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer shadow-xl">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <CheckCircle size={12} />
-                          완료일: {campaign.deadline}
-                        </div>
-                      </div>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-900 text-xs rounded-full font-medium">
-                        완료
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 text-xs mt-3">
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">{campaign.accepted}</div>
-                        <div className="text-gray-500">인플루언서</div>
-                      </div>
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">
-                          {(campaign.views / 1000).toFixed(0)}K
-                        </div>
-                        <div className="text-gray-500">조회수</div>
-                      </div>
-                      <div className="text-center p-2 bg-gray-50 rounded-lg border border-gray-100">
-                        <div className="font-semibold text-gray-900">
-                          {formatPoints(campaign.spent)}
-                        </div>
-                        <div className="text-gray-500">지출</div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
-
-        {/* Tips */}
-        <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 shadow-xl">
-          <div className="flex gap-3">
-            <TrendingUp size={24} className="text-gray-700 flex-shrink-0" />
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-1">캠페인 성공 팁</h4>
-              <p className="text-sm text-gray-600">
-                명확한 가이드라인과 충분한 예산을 제공하면 더 많은 인플루언서가 지원합니다
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Bottom Navigation */}
       <BottomNav userType="advertiser" />
     </div>
   );

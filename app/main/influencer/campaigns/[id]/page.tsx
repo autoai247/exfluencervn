@@ -32,9 +32,9 @@ const avatarColors = [
 // 지원 시간 생성 (리얼하게)
 const generateApplyTime = (seed: number, index: number): string => {
   const minutes = [
-    '방금 전', '5분 전', '12분 전', '23분 전', '35분 전', '48분 전',
-    '1시간 전', '2시간 전', '3시간 전', '5시간 전', '8시간 전',
-    '12시간 전', '1일 전', '2일 전', '3일 전', '5일 전', '7일 전'
+    'vừa xong', '5 phút trước', '12 phút trước', '23 phút trước', '35 phút trước', '48 phút trước',
+    '1 giờ trước', '2 giờ trước', '3 giờ trước', '5 giờ trước', '8 giờ trước',
+    '12 giờ trước', '1 ngày trước', '2 ngày trước', '3 ngày trước', '5 ngày trước', '7 ngày trước'
   ];
   return minutes[(seed + index) % minutes.length];
 };
@@ -49,13 +49,13 @@ const generateBadge = (seed: number, index: number, followers: number): {
   const rand = (seed + index) % 100;
 
   if (followers > 30000) {
-    if (rand < 60) return { type: 'verified', label: '인증됨', color: 'bg-blue-500' };
-    if (rand < 80) return { type: 'popular', label: '인기', color: 'bg-purple-500' };
+    if (rand < 60) return { type: 'verified', label: 'Xác minh', color: 'bg-blue-500' };
+    if (rand < 80) return { type: 'popular', label: 'Nổi bật', color: 'bg-purple-500' };
   } else if (followers > 15000) {
-    if (rand < 40) return { type: 'verified', label: '인증됨', color: 'bg-blue-500' };
-    if (rand < 60) return { type: 'rising', label: '급상승', color: 'bg-green-500' };
+    if (rand < 40) return { type: 'verified', label: 'Xác minh', color: 'bg-blue-500' };
+    if (rand < 60) return { type: 'rising', label: 'Đang hot', color: 'bg-green-500' };
   } else if (followers < 8000) {
-    if (rand < 30) return { type: 'new', label: '신규', color: 'bg-yellow-500' };
+    if (rand < 30) return { type: 'new', label: 'Mới', color: 'bg-yellow-500' };
   }
 
   return null;
@@ -91,14 +91,14 @@ const generateApplicantAvatars = (campaignId: string, applicantsCount: number, s
 // Mock campaign detail
 const mockCampaign = {
   id: '1',
-  title: '신규 스킨케어 제품 리뷰 캠페인',
-  company: 'Beauty Brand',
+  title: 'Review sản phẩm Skincare cao cấp mới ra mắt',
+  company: 'Beauty Brand VN',
   companyLogo: 'https://ui-avatars.com/api/?name=Beauty+Brand&background=FF6B6B&color=fff',
-  description: '새로 출시한 프리미엄 스킨케어 라인을 체험하고 솔직한 리뷰를 공유해주세요. 제품은 무료로 제공되며, 솔직한 사용 후기를 원합니다.',
+  description: 'Trải nghiệm dòng skincare premium mới ra mắt và chia sẻ đánh giá trung thực của bạn. Sản phẩm được cung cấp miễn phí, chúng tôi mong muốn nhận được phản hồi thật sự từ trải nghiệm của bạn.',
   budget: 500000,
   status: 'not_applied' as 'not_applied' | 'pending' | 'in_progress' | 'completed', // not_applied, pending, in_progress, completed
-  deadline: '2024-03-15',
-  startDate: '2024-02-01',
+  deadline: '2026-04-15',
+  startDate: '2026-03-01',
   campaignType: 'cash' as 'cash' | 'points', // 현금 지급 vs 포인트 지급
 
   // Marketing & UX Optimization data
@@ -112,21 +112,21 @@ const mockCampaign = {
   difficulty: {
     level: 'easy' as 'easy' | 'medium' | 'hard',
     estimatedHours: 4, // Total time investment
-    skillsRequired: ['사진 촬영', '영상 편집 기초', 'SNS 활용'],
+    skillsRequired: ['Chụp ảnh sản phẩm', 'Dựng video cơ bản', 'Quản lý SNS'],
     successRate: 85, // 85% of applicants get selected
   },
   earningsBreakdown: {
     basePayment: 500000, // VND
     bonusOpportunities: [
-      { type: '조회수 보너스', condition: '10,000회 이상', amount: 100000 },
-      { type: '우수 리뷰', condition: '평점 4.5+', amount: 50000 },
+      { type: 'Thưởng lượt xem', condition: 'Trên 10.000 lượt xem', amount: 100000 },
+      { type: 'Thưởng review chất lượng', condition: 'Đánh giá 4.5+', amount: 50000 },
     ],
     productValue: 2400000, // Total value of provided products
   },
   socialProof: {
     recentReviews: [
-      { name: 'Nguyen T.', rating: 5, comment: '제품도 좋고 정산도 빨라요!', hours: 2 },
-      { name: 'Tran M.', rating: 5, comment: '광고주 응대가 친절합니다', hours: 5 },
+      { name: 'Nguyen T.', rating: 5, comment: 'Sản phẩm tốt, thanh toán nhanh!', hours: 2 },
+      { name: 'Tran M.', rating: 5, comment: 'Nhà QC rất thân thiện và chuyên nghiệp', hours: 5 },
     ],
     averageRating: 4.9,
     completionRate: 95, // 95% of influencers complete successfully
@@ -134,7 +134,7 @@ const mockCampaign = {
   qualityAssurance: {
     verified: true, // Verified advertiser
     paymentGuarantee: true, // Payment guaranteed by platform
-    avgResponseTime: '2시간', // Average response time
+    avgResponseTime: '2 giờ', // Average response time
     contractProtection: true, // Legal contract protection
   },
 
@@ -148,9 +148,9 @@ const mockCampaign = {
       'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=800&h=800&fit=crop', // 세트
     ],
     exampleContent: [
-      { url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=800&fit=crop', caption: '언박싱 예시' },
-      { url: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=600&h=800&fit=crop', caption: '사용 전후 비교' },
-      { url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=800&fit=crop', caption: '제품 디테일' },
+      { url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=800&fit=crop', caption: 'Ví dụ unboxing' },
+      { url: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=600&h=800&fit=crop', caption: 'Trước & sau khi dùng' },
+      { url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=800&fit=crop', caption: 'Chi tiết sản phẩm' },
     ],
     brandStory: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?w=1200&h=400&fit=crop',
   },
@@ -161,10 +161,10 @@ const mockCampaign = {
     maxFollowers: 100000, // 마이크로 인플루언서 타겟
     minEngagement: 3.0,
     platforms: ['Instagram', 'TikTok'],
-    categories: ['뷰티', '라이프스타일'],
+    categories: ['Làm đẹp', 'Phong cách sống'],
     gender: 'female' as 'any' | 'male' | 'female',
     ageRange: '20-35',
-    location: ['호치민', '하노이', '다낭'],
+    location: ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng'],
 
     // Extended requirements - Beauty campaign specific
     skinType: ['combination', 'oily'], // For beauty campaign
@@ -182,37 +182,37 @@ const mockCampaign = {
   // 제공 내용
   providedItems: {
     products: [
-      { name: '하이드레이팅 세럼 30ml', value: '800,000 VND', quantity: 1, type: 'fullsize' },
-      { name: '리페어 크림 50ml', value: '1,200,000 VND', quantity: 1, type: 'fullsize' },
-      { name: '클렌징 폼 150ml', value: '400,000 VND', quantity: 1, type: 'fullsize' },
+      { name: 'Hydrating Serum 30ml', value: '800.000 VND', quantity: 1, type: 'fullsize' },
+      { name: 'Repair Cream 50ml', value: '1.200.000 VND', quantity: 1, type: 'fullsize' },
+      { name: 'Cleansing Foam 150ml', value: '400.000 VND', quantity: 1, type: 'fullsize' },
     ],
-    totalValue: '2,400,000 VND',
-    shipping: '무료 배송 (영업일 기준 2-3일)',
+    totalValue: '2.400.000 VND',
+    shipping: 'Miễn phí vận chuyển (2-3 ngày làm việc)',
     additionalBenefits: [
-      '향후 신제품 우선 체험 기회',
-      '우수 리뷰 시 장기 앰배서더 제안 가능',
+      'Ưu tiên trải nghiệm sản phẩm mới ra mắt',
+      'Cơ hội trở thành Brand Ambassador dài hạn nếu review chất lượng',
     ],
   },
 
   // 상세 미션 가이드라인
   missionGuidelines: {
     contentFormat: [
-      { platform: 'Instagram', type: '피드 포스트', count: 1, requirement: '제품 사용 전/후 사진 필수' },
-      { platform: 'Instagram', type: '스토리', count: '3개 이상', requirement: '제품 언박싱, 사용 과정, 최종 후기' },
-      { platform: 'TikTok', type: '숏폼 영상', count: 1, requirement: '1분 이상, 자막 필수' },
+      { platform: 'Instagram', type: 'Feed post', count: 1, requirement: 'Bắt buộc có ảnh trước/sau khi dùng' },
+      { platform: 'Instagram', type: 'Stories', count: '3 trở lên', requirement: 'Unboxing, quá trình sử dụng, cảm nhận cuối' },
+      { platform: 'TikTok', type: 'Video ngắn', count: 1, requirement: 'Tối thiểu 1 phút, phải có phụ đề' },
     ],
     mustInclude: [
-      '제품명 정확히 언급',
-      '브랜드 계정 태그 @beautybrand_official',
-      '해시태그: #스킨케어루틴 #뷰티리뷰 #신제품체험 #BeautyBrand',
-      '솔직한 사용감 (장단점 모두)',
-      '본인 피부 타입 언급',
+      'Đề cập tên sản phẩm chính xác',
+      'Tag tài khoản thương hiệu @beautybrand_vn',
+      'Hashtag: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand',
+      'Đánh giá trung thực (cả ưu và nhược điểm)',
+      'Đề cập loại da của bạn',
     ],
     prohibited: [
-      '다른 브랜드 제품과 비교 금지',
-      '의학적 효능 과장 금지 (예: "여드름 치료", "주름 완전 제거")',
-      '제품 판매/양도 금지',
-      '캠페인 종료 전 게시물 삭제 금지 (최소 30일 유지)',
+      'Không so sánh với sản phẩm thương hiệu khác',
+      'Không phóng đại hiệu quả y tế (VD: "chữa mụn", "xóa nếp nhăn hoàn toàn")',
+      'Không bán lại hoặc chuyển nhượng sản phẩm',
+      'Không xóa bài đăng trước khi kết thúc chiến dịch (tối thiểu 30 ngày)',
     ],
     toneAndManner: 'natural' as 'natural' | 'professional' | 'casual',
   },
@@ -221,7 +221,7 @@ const mockCampaign = {
   brandInfo: {
     name: 'Beauty Brand',
     founded: '2019',
-    description: '클린 뷰티를 추구하는 비건 스킨케어 브랜드. 베트남 여성의 피부를 연구하여 개발한 프리미엄 라인을 출시했습니다.',
+    description: 'Thương hiệu skincare vegan theo đuổi clean beauty. Nghiên cứu làn da phụ nữ Việt Nam để phát triển dòng sản phẩm premium.',
     website: 'https://beautybrand.vn',
     instagram: '@beautybrand_official',
     previousCampaigns: 5,
@@ -229,7 +229,7 @@ const mockCampaign = {
     totalInfluencers: 127,
     verified: true,
     trustScore: 95, // 신뢰도 점수 (0-100)
-    badges: ['결제 신뢰', '빠른 응답', '명확한 가이드'],
+    badges: ['Thanh toán uy tín', 'Phản hồi nhanh', 'Brief rõ ràng'],
   },
 
   // 광고주에 대한 인플루언서 리뷰 (중요!)
@@ -239,10 +239,10 @@ const mockCampaign = {
       influencer: 'Nguyen T.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Nguyen+T&background=4ECDC4&color=fff',
       rating: 5.0,
-      comment: '제품도 좋고 정산도 빨라요! 가이드라인이 명확해서 작업하기 편했습니다. 다음에도 꼭 함께하고 싶어요.',
+      comment: 'Sản phẩm tốt, thanh toán nhanh! Brief rõ ràng nên làm việc rất thuận tiện. Nhất định sẽ hợp tác lần sau.',
       date: '2026-02-08',
-      campaignTitle: '겨울 스킨케어 캠페인',
-      tags: ['정산 빠름', '소통 원활', '가이드 명확'],
+      campaignTitle: 'Chiến dịch Skincare Mùa Đông',
+      tags: ['Thanh toán nhanh', 'Giao tiếp tốt', 'Brief rõ ràng'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -251,10 +251,10 @@ const mockCampaign = {
       influencer: 'Tran M.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Tran+M&background=FF6B6B&color=fff',
       rating: 4.8,
-      comment: '광고주 응대가 친절하고 전문적입니다. 제품 퀄리티도 우수해서 자신있게 리뷰할 수 있었어요.',
+      comment: 'Nhà QC thân thiện và chuyên nghiệp. Chất lượng sản phẩm xuất sắc nên mình tự tin review.',
       date: '2026-02-05',
-      campaignTitle: '신제품 리뷰 캠페인',
-      tags: ['친절함', '전문적', '제품 우수'],
+      campaignTitle: 'Chiến dịch Review Sản Phẩm Mới',
+      tags: ['Thân thiện', 'Chuyên nghiệp', 'Sản phẩm tốt'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -263,10 +263,10 @@ const mockCampaign = {
       influencer: 'Le H.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Le+H&background=6C5CE7&color=fff',
       rating: 5.0,
-      comment: '재작업 요청이 거의 없고, 크리에이티브를 존중해주셔서 좋았습니다. 적극 추천합니다!',
+      comment: 'Hầu như không phải làm lại, họ tôn trọng sáng tạo của mình. Rất recommend!',
       date: '2026-01-28',
-      campaignTitle: '뷰티 루틴 캠페인',
-      tags: ['크리에이티브 존중', '재작업 거의 없음', '추천'],
+      campaignTitle: 'Chiến dịch Beauty Routine',
+      tags: ['Tôn trọng creative', 'Ít yêu cầu sửa', 'Được giới thiệu'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -275,10 +275,10 @@ const mockCampaign = {
       influencer: 'Pham N.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Pham+N&background=00B894&color=fff',
       rating: 4.9,
-      comment: '계약서가 명확하고, 피드백도 신속합니다. 신뢰할 수 있는 광고주예요.',
+      comment: 'Hợp đồng rõ ràng, phản hồi nhanh chóng. Nhà QC đáng tin cậy.',
       date: '2026-01-20',
-      campaignTitle: '메이크업 튜토리얼 캠페인',
-      tags: ['계약 명확', '피드백 신속', '신뢰'],
+      campaignTitle: 'Chiến dịch Tutorial Makeup',
+      tags: ['Hợp đồng rõ', 'Feedback nhanh', 'Tin cậy'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -287,10 +287,10 @@ const mockCampaign = {
       influencer: 'Hoang V.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Hoang+V&background=FFA502&color=fff',
       rating: 5.0,
-      comment: '처음부터 끝까지 완벽했습니다. 제품 배송도 빠르고, 응답도 빨라서 스트레스 없이 작업했어요.',
+      comment: 'Hoàn hảo từ đầu đến cuối. Giao hàng nhanh, phản hồi tốt, làm việc không stress.',
       date: '2026-01-15',
-      campaignTitle: '스킨케어 리뷰 캠페인',
-      tags: ['완벽함', '배송 빠름', '스트레스 없음'],
+      campaignTitle: 'Chiến dịch Review Skincare',
+      tags: ['Hoàn hảo', 'Giao hàng nhanh', 'Không stress'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     }
@@ -299,12 +299,12 @@ const mockCampaign = {
   // 선정 기준
   selectionCriteria: {
     priority: [
-      '팔로워 참여율 (좋아요, 댓글, 저장 비율)',
-      '콘텐츠 퀄리티 (사진/영상 완성도)',
-      '이전 뷰티 캠페인 경험',
-      '팔로워 demographics (20-35세 여성 비율)',
+      'Tỉ lệ tương tác followers (like, comment, save)',
+      'Chất lượng nội dung (ảnh/video)',
+      'Kinh nghiệm campaign beauty trước đây',
+      'Demographics followers (nữ 20-35 tuổi)',
     ],
-    processTime: '1-2일',
+    processTime: '1-2 ngày',
     expectedApplicants: 50,
     selectedInfluencers: 10,
     selectionRate: '20%',
@@ -313,29 +313,29 @@ const mockCampaign = {
   // FAQ
   faq: [
     {
-      q: '제품은 언제 받을 수 있나요?',
-      a: '캠페인 승인 후 2-3일 내 등록하신 주소로 배송됩니다. 송장 번호는 별도 안내드립니다.',
+      q: 'Khi nào tôi nhận được sản phẩm?',
+      a: 'Sau khi được duyệt, sản phẩm sẽ được giao trong 2-3 ngày đến địa chỉ đã đăng ký. Mã vận chuyển sẽ được thông báo riêng.',
     },
     {
-      q: '민감성 피부인데 괜찮을까요?',
-      a: '저자극 비건 포뮬러로 민감성 피부도 사용 가능하지만, 패치 테스트 후 사용을 권장드립니다. 만약 트러블 발생 시 즉시 사용 중단하고 연락 주세요.',
+      q: 'Da nhạy cảm có dùng được không?',
+      a: 'Công thức vegan ít kích ứng, phù hợp với da nhạy cảm. Tuy nhiên, khuyến nghị test patch trước khi dùng. Nếu có phản ứng, dừng ngay và liên hệ chúng tôi.',
     },
     {
-      q: '제품 사용 기간은 얼마나 되나요?',
-      a: '최소 2주 이상 사용 후 리뷰를 작성해주세요. 변화를 확인하려면 4주 사용을 권장합니다.',
+      q: 'Cần dùng sản phẩm bao lâu trước khi review?',
+      a: 'Vui lòng dùng ít nhất 2 tuần trước khi viết review. Khuyến nghị dùng 4 tuần để thấy rõ sự thay đổi.',
     },
     {
-      q: '게시물은 언제까지 유지해야 하나요?',
-      a: '최소 30일 이상 유지해주셔야 하며, 조기 삭제 시 보상이 취소될 수 있습니다.',
+      q: 'Bài đăng phải duy trì bao lâu?',
+      a: 'Ít nhất 30 ngày kể từ ngày đăng. Xóa sớm có thể dẫn đến hủy thanh toán.',
     },
   ],
 
   deliverables: [
-    { id: 1, title: 'Instagram 피드 포스트 1개 (사용 전/후 비교)', submitted: true },
-    { id: 2, title: 'Instagram 스토리 3개 이상 (언박싱, 사용, 후기)', submitted: true },
-    { id: 3, title: 'TikTok 숏폼 영상 1개 (1분 이상, 자막 포함)', submitted: false },
-    { id: 4, title: '해시태그 필수: #스킨케어루틴 #뷰티리뷰 #신제품체험 #BeautyBrand', submitted: false },
-    { id: 5, title: '브랜드 계정 태그: @beautybrand_official', submitted: false },
+    { id: 1, title: '1 bài đăng feed Instagram (ảnh trước/sau khi dùng)', submitted: true },
+    { id: 2, title: '3+ Stories Instagram (unboxing, sử dụng, cảm nhận)', submitted: true },
+    { id: 3, title: '1 video ngắn TikTok (tối thiểu 1 phút, có phụ đề)', submitted: false },
+    { id: 4, title: 'Hashtag bắt buộc: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand', submitted: false },
+    { id: 5, title: 'Tag tài khoản thương hiệu: @beautybrand_vn', submitted: false },
   ],
 
   submittedWork: [
@@ -383,8 +383,32 @@ export default function CampaignDetailPage() {
   const isDemoMode = currentCampaign?.isDemoMode || false;
   const demoApplicants = currentCampaign?.demoApplicants || [];
 
+  // Merge currentCampaign's basic data with mockCampaign's rich detail data
+  // This ensures each campaign shows its own title/company/description/budget
+  const campaign = currentCampaign ? {
+    ...mockCampaign,
+    title: currentCampaign.title,
+    company: currentCampaign.company,
+    companyLogo: currentCampaign.companyLogo,
+    description: currentCampaign.description,
+    budget: currentCampaign.budget,
+    deadline: currentCampaign.deadline,
+    images: { ...mockCampaign.images, mainBanner: currentCampaign.thumbnail },
+    urgency: { ...mockCampaign.urgency, recentApplications: currentCampaign.applicants },
+    platforms: currentCampaign.platforms,
+    applicants: currentCampaign.applicants,
+  } : mockCampaign;
+
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [applySubmitted, setApplySubmitted] = useState(false);
+  const [applyForm, setApplyForm] = useState({
+    name: '',
+    zalo: '',
+    platformUrl: '',
+    followers: '',
+    message: '',
+  });
   const [uploadData, setUploadData] = useState({
     url: '',
     description: '',
@@ -406,6 +430,13 @@ export default function CampaignDetailPage() {
   // 통계 모달 상태
   const [showApplicantsModal, setShowApplicantsModal] = useState(false);
   const [showEarningsModal, setShowEarningsModal] = useState(false);
+
+  // Auto-open apply modal if ?apply=true param is present
+  useEffect(() => {
+    if (searchParams?.get('apply') === 'true') {
+      setShowApplyModal(true);
+    }
+  }, [searchParams]);
 
   // Load share history from localStorage on mount
   useEffect(() => {
@@ -433,11 +464,19 @@ export default function CampaignDetailPage() {
     }
   }, [params.id]);
 
-  const handleApplyCampaign = () => {
-    // 실제로는 API 호출
-    alert(t.campaignDetail.alerts.applicationComplete);
-    setShowApplyModal(false);
-    // mockCampaign.status를 'pending'으로 변경 (실제로는 API에서 처리)
+  const handleApplyCampaign = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: API 호출로 실제 지원 저장
+    // 지원 정보를 localStorage에 임시 저장
+    const application = {
+      campaignId: params.id,
+      campaignTitle: campaign.title,
+      ...applyForm,
+      appliedAt: new Date().toISOString(),
+    };
+    const existing = JSON.parse(localStorage.getItem('exfluencer_applications') || '[]');
+    localStorage.setItem('exfluencer_applications', JSON.stringify([...existing, application]));
+    setApplySubmitted(true);
   };
 
   const handleSubmitWork = (e: React.FormEvent) => {
@@ -583,8 +622,8 @@ export default function CampaignDetailPage() {
     followers: 15000,
     engagementRate: 4.5,
     platforms: ['Instagram', 'TikTok'],
-    categories: ['뷰티', '라이프스타일'],
-    location: '호치민',
+    categories: ['Làm đẹp', 'Phong cách sống'],
+    location: 'Hồ Chí Minh',
     gender: 'female' as const,
     age: 28,
     skinType: 'combination' as const,
@@ -599,53 +638,53 @@ export default function CampaignDetailPage() {
   const calculateMatchingPercentage = () => {
     const criteria: { name: string; match: boolean; weight: number }[] = [
       {
-        name: '팔로워 수',
-        match: mockUserProfile.followers >= mockCampaign.requirements.minFollowers &&
-               mockUserProfile.followers <= (mockCampaign.requirements.maxFollowers || Infinity),
+        name: 'Số followers',
+        match: mockUserProfile.followers >= campaign.requirements.minFollowers &&
+               mockUserProfile.followers <= (campaign.requirements.maxFollowers || Infinity),
         weight: 20,
       },
       {
-        name: '참여율',
-        match: mockUserProfile.engagementRate >= mockCampaign.requirements.minEngagement,
+        name: 'Tỉ lệ tương tác',
+        match: mockUserProfile.engagementRate >= campaign.requirements.minEngagement,
         weight: 20,
       },
       {
-        name: '플랫폼',
-        match: mockCampaign.requirements.platforms.some((p: string) =>
+        name: 'Nền tảng',
+        match: campaign.requirements.platforms.some((p: string) =>
           mockUserProfile.platforms.includes(p)
         ),
         weight: 15,
       },
       {
-        name: '카테고리',
-        match: mockCampaign.requirements.categories.some((c: string) =>
+        name: 'Lĩnh vực',
+        match: campaign.requirements.categories.some((c: string) =>
           mockUserProfile.categories.includes(c)
         ),
         weight: 15,
       },
       {
-        name: '지역',
-        match: mockCampaign.requirements.location.some((l: string) =>
+        name: 'Khu vực',
+        match: campaign.requirements.location.some((l: string) =>
           mockUserProfile.location.includes(l)
         ),
         weight: 10,
       },
       {
-        name: '성별',
-        match: mockCampaign.requirements.gender === 'any' ||
-               mockCampaign.requirements.gender === mockUserProfile.gender,
+        name: 'Giới tính',
+        match: campaign.requirements.gender === 'any' ||
+               campaign.requirements.gender === mockUserProfile.gender,
         weight: 5,
       },
       {
-        name: '피부 타입',
-        match: !mockCampaign.requirements.skinType ||
-               mockCampaign.requirements.skinType.includes(mockUserProfile.skinType),
+        name: 'Loại da',
+        match: !campaign.requirements.skinType ||
+               campaign.requirements.skinType.includes(mockUserProfile.skinType),
         weight: 10,
       },
       {
-        name: '피부 톤',
-        match: !mockCampaign.requirements.skinTone ||
-               mockCampaign.requirements.skinTone.includes(mockUserProfile.skinTone),
+        name: 'Tông da',
+        match: !campaign.requirements.skinTone ||
+               campaign.requirements.skinTone.includes(mockUserProfile.skinTone),
         weight: 5,
       },
     ];
@@ -663,8 +702,8 @@ export default function CampaignDetailPage() {
 
   const matchingResult = calculateMatchingPercentage();
 
-  const completedCount = mockCampaign.deliverables.filter(d => d.submitted).length;
-  const progress = (completedCount / mockCampaign.deliverables.length) * 100;
+  const completedCount = campaign.deliverables.filter(d => d.submitted).length;
+  const progress = (completedCount / campaign.deliverables.length) * 100;
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
@@ -679,7 +718,7 @@ export default function CampaignDetailPage() {
         <Breadcrumb
           items={[
             { label: t.nav.campaigns, href: '/main/influencer/campaigns' },
-            { label: currentCampaign?.title || mockCampaign.title },
+            { label: currentCampaign?.title || campaign.title },
           ]}
           className="ml-9"
           dark
@@ -741,34 +780,113 @@ export default function CampaignDetailPage() {
 
             <div className="mt-3 flex items-center gap-2 text-xs text-pink-200">
               <AlertCircle size={14} />
-              <span>Regular users see this as a real campaign with {mockCampaign.urgency.recentApplications} applicants</span>
+              <span>Regular users see this as a real campaign with {campaign.urgency.recentApplications} applicants</span>
             </div>
           </div>
         </div>
       )}
 
       <div className="container-mobile space-y-6 py-6">
-        {/* 메인 배너 이미지 */}
-        <div className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
-          <img
-            src={mockCampaign.images.mainBanner}
-            alt={mockCampaign.title}
-            className="w-full h-64 object-cover"
-          />
+
+        {/* ⚡ QUICK SUMMARY CARD — Dành cho KOL từ Facebook */}
+        <div className="relative overflow-hidden rounded-2xl border-2 border-primary/60 shadow-2xl shadow-primary/20">
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-700 via-dark-600 to-dark-700" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5" />
+
+          {/* Banner image — compact */}
+          {campaign.images.mainBanner && (
+            <div className="relative h-36 overflow-hidden">
+              <img
+                src={campaign.images.mainBanner}
+                alt={campaign.title}
+                className="w-full h-full object-cover opacity-60"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-dark-700" />
+              {/* Company badge */}
+              <div className="absolute top-3 left-3 flex items-center gap-2 bg-dark-800/80 backdrop-blur-sm rounded-full px-3 py-1.5">
+                <img src={campaign.companyLogo} alt={campaign.company} className="w-5 h-5 rounded-full" />
+                <span className="text-white text-xs font-semibold">{campaign.company}</span>
+              </div>
+              {/* Type badge */}
+              <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-green-500 text-white text-xs font-bold">
+                💰 Cash
+              </div>
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="relative px-4 pt-3 pb-4">
+            <h2 className="text-lg font-black text-white leading-tight mb-3">{campaign.title}</h2>
+
+            {/* Key stats — 3 columns */}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="bg-dark-800/70 rounded-xl p-3 text-center border border-accent/30">
+                <div className="text-accent font-black text-lg leading-none">{formatPoints(campaign.budget)}</div>
+                <div className="text-gray-400 text-xs mt-1">VND</div>
+              </div>
+              <div className="bg-dark-800/70 rounded-xl p-3 text-center border border-warning/30">
+                <div className="text-warning font-black text-lg leading-none">{campaign.urgency?.remainingSlots ?? '?'}</div>
+                <div className="text-gray-400 text-xs mt-1">Suất còn</div>
+              </div>
+              <div className="bg-dark-800/70 rounded-xl p-3 text-center border border-error/30">
+                <div className="text-error font-black text-base leading-none">{campaign.deadline}</div>
+                <div className="text-gray-400 text-xs mt-1">Deadline</div>
+              </div>
+            </div>
+
+            {/* Quick requirements */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {campaign.requirements?.minFollowers && (
+                <span className="px-2.5 py-1 bg-dark-800/70 rounded-full text-xs text-gray-300 border border-dark-500">
+                  👥 {(campaign.requirements.minFollowers / 1000).toFixed(0)}K+ followers
+                </span>
+              )}
+              {campaign.requirements?.minEngagement && (
+                <span className="px-2.5 py-1 bg-dark-800/70 rounded-full text-xs text-gray-300 border border-dark-500">
+                  📊 {campaign.requirements.minEngagement}%+ engagement
+                </span>
+              )}
+              {campaign.platforms?.map((p: string) => (
+                <span key={p} className="px-2.5 py-1 bg-dark-800/70 rounded-full text-xs text-gray-300 border border-dark-500 capitalize">
+                  {p === 'instagram' ? '📸' : p === 'tiktok' ? '🎵' : p === 'youtube' ? '▶️' : '🔵'} {p}
+                </span>
+              ))}
+            </div>
+
+            {/* BIG APPLY BUTTON */}
+            {campaign.status === 'not_applied' && !applySubmitted ? (
+              <button
+                onClick={() => setShowApplyModal(true)}
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-lg shadow-xl shadow-primary/40 active:scale-95 transition-transform flex items-center justify-center gap-2"
+              >
+                🎯 Ứng tuyển ngay — {formatPoints(campaign.budget)} VND
+              </button>
+            ) : applySubmitted ? (
+              <div className="w-full py-4 rounded-xl bg-success/20 border-2 border-success text-success font-bold text-center">
+                ✅ Đã ứng tuyển thành công!
+              </div>
+            ) : null}
+
+            {/* Social proof micro-line */}
+            <p className="text-center text-xs text-gray-500 mt-2">
+              🔥 {campaign.urgency?.recentApplications ?? campaign.applicants ?? 0} người đã ứng tuyển · Không cần đăng ký
+            </p>
+          </div>
         </div>
 
         {/* Urgency & Social Proof Banner */}
-        {mockCampaign.urgency && (
+        {campaign.urgency && (
           <div className="card bg-gradient-to-r from-error/20 via-warning/20 to-error/20 border-2 border-error/50 animate-pulse shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🔥</span>
                 <div>
-                  <h3 className="text-lg font-bold text-white">{t.campaignDetail.urgency.hotCampaign || '인기 급상승 캠페인'}</h3>
-                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.recentApps || `${mockCampaign.urgency.recentApplications}명이 최근 지원했습니다`}</p>
+                  <h3 className="text-lg font-bold text-white">{t.campaignDetail.urgency.hotCampaign || 'Chiến dịch đang hot'}</h3>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.recentApps || `${campaign.urgency.recentApplications} người đã ứng tuyển gần đây`}</p>
                 </div>
               </div>
-              {mockCampaign.urgency.isTrending && (
+              {campaign.urgency.isTrending && (
                 <span className="px-3 py-1 bg-gradient-to-r from-accent to-secondary text-white text-xs font-bold rounded-full">
                   {t.campaignDetail.urgency.trending || 'TRENDING'}
                 </span>
@@ -782,17 +900,17 @@ export default function CampaignDetailPage() {
               >
                 <div className="flex items-center gap-2 mb-1">
                   <Users size={16} className="text-warning" />
-                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.slotsRemaining || '남은 자리'}</p>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.slotsRemaining || 'Suất còn lại'}</p>
                 </div>
-                <p className="text-2xl font-bold text-warning">{mockCampaign.urgency.remainingSlots}/{mockCampaign.urgency.totalSlots}</p>
-                <p className="text-xs text-gray-300 mt-1">👆 {language === 'ko' ? '지원자 보기' : 'Xem ứng viên'}</p>
+                <p className="text-2xl font-bold text-warning">{campaign.urgency.remainingSlots}/{campaign.urgency.totalSlots}</p>
+                <p className="text-xs text-gray-300 mt-1">👆 Xem ứng viên</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 border-2 border-error/50">
                 <div className="flex items-center gap-2 mb-1">
                   <Clock size={16} className="text-error" />
-                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.timeLeft || '마감까지'}</p>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.timeLeft || 'Còn lại'}</p>
                 </div>
-                <p className="text-2xl font-bold text-error">{mockCampaign.urgency.hoursRemaining}{t.campaignDetail.urgency.hours || '시간'}</p>
+                <p className="text-2xl font-bold text-error">{campaign.urgency.hoursRemaining}{t.campaignDetail.urgency.hours || ' giờ'}</p>
               </div>
             </div>
           </div>
@@ -803,16 +921,16 @@ export default function CampaignDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users size={20} className="text-primary" />
-              <h3 className="text-lg font-bold text-white">최근 지원자</h3>
+              <h3 className="text-lg font-bold text-white">Ứng viên gần đây</h3>
             </div>
             <span className="text-sm text-gray-300">
-              총 <span className="text-primary font-bold">{mockCampaign.urgency.recentApplications}</span>명
+              Tổng <span className="text-primary font-bold">{campaign.urgency.recentApplications}</span> người
             </span>
           </div>
 
           {/* 지원자 아바타 그리드 (개선!) */}
           <div className="grid grid-cols-5 gap-3 mb-4">
-            {generateApplicantAvatars(params?.id as string || '1', mockCampaign.urgency.recentApplications, 10).map((avatar, idx) => (
+            {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 10).map((avatar, idx) => (
               <div
                 key={idx}
                 className="flex flex-col items-center gap-1 group animate-fade-in"
@@ -865,7 +983,7 @@ export default function CampaignDetailPage() {
           </div>
 
           {/* 더 많은 지원자 표시 */}
-          {mockCampaign.urgency.recentApplications > 10 && (
+          {campaign.urgency.recentApplications > 10 && (
             <div className="flex items-center justify-center gap-2 p-3 bg-dark-600 rounded-lg border border-dark-500">
               <div className="flex -space-x-2">
                 {[...Array(5)].map((_, idx) => (
@@ -878,7 +996,7 @@ export default function CampaignDetailPage() {
                 ))}
               </div>
               <span className="text-sm text-gray-300">
-                그 외 <span className="text-primary font-bold">+{mockCampaign.urgency.recentApplications - 10}명</span>이 지원했습니다
+                Và <span className="text-primary font-bold">+{campaign.urgency.recentApplications - 10}</span> người khác đã ứng tuyển
               </span>
             </div>
           )}
@@ -888,14 +1006,14 @@ export default function CampaignDetailPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Trophy size={16} className="text-warning" />
-                <span className="text-sm text-white font-semibold">현재 경쟁률</span>
+                <span className="text-sm text-white font-semibold">Tỉ lệ cạnh tranh</span>
               </div>
               <span className="text-lg font-black text-warning">
-                {Math.round(mockCampaign.urgency.recentApplications / mockCampaign.urgency.totalSlots)}:1
+                {Math.round(campaign.urgency.recentApplications / campaign.urgency.totalSlots)}:1
               </span>
             </div>
             <div className="mt-2 text-xs text-gray-300">
-              💡 {mockCampaign.urgency.totalSlots}명 선발 예정, 빠르게 지원하세요!
+              💡 Dự kiến chọn {campaign.urgency.totalSlots} suất — ứng tuyển ngay!
             </div>
           </div>
         </div>
@@ -904,29 +1022,29 @@ export default function CampaignDetailPage() {
         <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-start gap-4 mb-3">
             <img
-              src={mockCampaign.companyLogo}
-              alt={mockCampaign.company}
+              src={campaign.companyLogo}
+              alt={campaign.company}
               className="w-12 h-12 rounded-full"
             />
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-xl font-bold text-white">{mockCampaign.title}</h2>
-                {mockCampaign.qualityAssurance?.verified && (
-                  <span className="text-primary" title={t.campaignDetail.quality.verified || '인증된 광고주'}>
+                <h2 className="text-xl font-bold text-white">{campaign.title}</h2>
+                {campaign.qualityAssurance?.verified && (
+                  <span className="text-primary" title={t.campaignDetail.quality.verified || 'Nhà QC đã xác minh'}>
                     <CheckCircle size={18} />
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-300">{mockCampaign.company}</p>
+              <p className="text-sm text-gray-300">{campaign.company}</p>
             </div>
             <div className="flex flex-col gap-2 items-end">
               <span className={`px-3 py-1 rounded-full text-xs whitespace-nowrap ${
-                mockCampaign.status === 'completed' ? 'bg-success/20 text-success' :
-                mockCampaign.status === 'in_progress' ? 'bg-warning/20 text-warning' :
+                campaign.status === 'completed' ? 'bg-success/20 text-success' :
+                campaign.status === 'in_progress' ? 'bg-warning/20 text-warning' :
                 'bg-info/20 text-info'
               }`}>
-                {mockCampaign.status === 'completed' ? t.dashboard.completedCampaigns.replace(' 캠페인', '').replace('Chiến dịch ', '') :
-                 mockCampaign.status === 'in_progress' ? t.dashboard.inProgress : t.wallet.pending}
+                {campaign.status === 'completed' ? 'Hoàn thành' :
+                 campaign.status === 'in_progress' ? 'Đang thực hiện' : 'Đang chờ'}
               </span>
               <button
                 onClick={handleFacebookShare}
@@ -938,28 +1056,28 @@ export default function CampaignDetailPage() {
               </button>
             </div>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed">{mockCampaign.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{campaign.description}</p>
 
           {/* Quality Assurance Badges (클릭 가능!) */}
-          {mockCampaign.qualityAssurance && (
+          {campaign.qualityAssurance && (
             <div className="grid grid-cols-2 gap-2 mt-4">
-              {mockCampaign.qualityAssurance.paymentGuarantee && (
+              {campaign.qualityAssurance.paymentGuarantee && (
                 <button
                   onClick={() => setShowPaymentGuaranteeModal(true)}
                   className="flex items-center gap-2 text-xs bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all cursor-pointer group"
                 >
                   <DollarSign size={14} className="text-blue-400" />
-                  <span className="text-blue-400 font-semibold flex-1 text-left">결제 안내</span>
+                  <span className="text-blue-400 font-semibold flex-1 text-left">Hướng dẫn thanh toán</span>
                   <span className="text-blue-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">ℹ️</span>
                 </button>
               )}
-              {mockCampaign.qualityAssurance.contractProtection && (
+              {campaign.qualityAssurance.contractProtection && (
                 <button
                   onClick={() => setShowContractProtectionModal(true)}
                   className="flex items-center gap-2 text-xs bg-primary/10 border border-primary/30 rounded-lg px-3 py-2 hover:bg-primary/20 hover:border-primary/50 transition-all cursor-pointer group"
                 >
                   <CheckCircle size={14} className="text-primary" />
-                  <span className="text-primary font-semibold flex-1 text-left">{t.campaignDetail.quality.contractProtection || '계약 보호'}</span>
+                  <span className="text-primary font-semibold flex-1 text-left">{t.campaignDetail.quality.contractProtection || 'Bảo vệ hợp đồng'}</span>
                   <span className="text-primary text-xs opacity-0 group-hover:opacity-100 transition-opacity">ℹ️</span>
                 </button>
               )}
@@ -972,50 +1090,50 @@ export default function CampaignDetailPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-300 mb-1">{t.campaignDetail.expectedEarnings}</p>
-              <p className="text-2xl font-bold text-accent">{formatPoints(mockCampaign.budget)}</p>
+              <p className="text-2xl font-bold text-accent">{formatPoints(campaign.budget)}</p>
             </div>
             <DollarSign size={40} className="text-accent/50" />
           </div>
         </div>
 
         {/* Difficulty & Time Estimator */}
-        {mockCampaign.difficulty && (
+        {campaign.difficulty && (
           <div className="card bg-gradient-to-br from-info/10 to-primary/10 border-2 border-info/30 shadow-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">⚡</span>
-              <h3 className="text-lg font-bold text-white">{t.campaignDetail.difficulty.title || '난이도 & 소요시간'}</h3>
+              <h3 className="text-lg font-bold text-white">{t.campaignDetail.difficulty.title || 'Độ khó & Thời gian'}</h3>
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.difficultyLevel || '난이도'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.difficultyLevel || 'Độ khó'}</p>
                 <div className={`text-lg font-bold ${
-                  mockCampaign.difficulty.level === 'easy' ? 'text-success' :
-                  mockCampaign.difficulty.level === 'medium' ? 'text-warning' : 'text-error'
+                  campaign.difficulty.level === 'easy' ? 'text-success' :
+                  campaign.difficulty.level === 'medium' ? 'text-warning' : 'text-error'
                 }`}>
-                  {mockCampaign.difficulty.level === 'easy' ? (t.campaignDetail.difficulty.easy || '쉬움') :
-                   mockCampaign.difficulty.level === 'medium' ? (t.campaignDetail.difficulty.medium || '보통') :
-                   (t.campaignDetail.difficulty.hard || '어려움')}
+                  {campaign.difficulty.level === 'easy' ? (t.campaignDetail.difficulty.easy || 'Dễ') :
+                   campaign.difficulty.level === 'medium' ? (t.campaignDetail.difficulty.medium || 'Trung bình') :
+                   (t.campaignDetail.difficulty.hard || 'Khó')}
                 </div>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.timeRequired || '소요시간'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.timeRequired || 'Thời gian'}</p>
                 <div className="text-lg font-bold text-primary">
-                  {mockCampaign.difficulty.estimatedHours}{t.campaignDetail.difficulty.hoursUnit || '시간'}
+                  {campaign.difficulty.estimatedHours}{t.campaignDetail.difficulty.hoursUnit || ' giờ'}
                 </div>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.successRate || '선정률'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.successRate || 'Tỉ lệ chọn'}</p>
                 <div className="text-lg font-bold text-success">
-                  {mockCampaign.difficulty.successRate}%
+                  {campaign.difficulty.successRate}%
                 </div>
               </div>
             </div>
 
             <div className="bg-dark-600 rounded-lg p-3">
-              <h4 className="text-sm font-semibold text-white mb-2">{t.campaignDetail.difficulty.skillsNeeded || '필요 스킬'}</h4>
+              <h4 className="text-sm font-semibold text-white mb-2">{t.campaignDetail.difficulty.skillsNeeded || 'Kỹ năng cần có'}</h4>
               <div className="flex flex-wrap gap-2">
-                {mockCampaign.difficulty.skillsRequired.map((skill: string, idx: number) => (
+                {campaign.difficulty.skillsRequired.map((skill: string, idx: number) => (
                   <span key={idx} className="px-2 py-1 bg-info/20 text-info text-xs rounded-full border border-info/30">
                     {skill}
                   </span>
@@ -1026,7 +1144,7 @@ export default function CampaignDetailPage() {
         )}
 
         {/* Earnings Breakdown Calculator */}
-        {mockCampaign.earningsBreakdown && (
+        {campaign.earningsBreakdown && (
           <div
             onClick={() => setShowEarningsModal(true)}
             className="card bg-gradient-to-br from-success/10 to-accent/10 border-2 border-success/30 shadow-xl cursor-pointer hover:border-success hover:shadow-lg transition-all"
@@ -1034,9 +1152,9 @@ export default function CampaignDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-xl">💰</span>
-                <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || '수익 계산기'}</h3>
+                <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || 'Tính thu nhập'}</h3>
               </div>
-              <span className="text-xs text-gray-300">👆 {language === 'ko' ? '상세 보기' : 'Xem chi tiết'}</span>
+              <span className="text-xs text-gray-300">👆 Xem chi tiết</span>
             </div>
 
             <div className="space-y-3">
@@ -1044,29 +1162,29 @@ export default function CampaignDetailPage() {
               <div className="flex items-center justify-between p-3 bg-dark-600 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle size={16} className="text-success" />
-                  <span className="text-sm text-white">{t.campaignDetail.earnings.basePayment || '기본 페이'}</span>
+                  <span className="text-sm text-white">{t.campaignDetail.earnings.basePayment || 'Thù lao cơ bản'}</span>
                 </div>
-                <span className="text-lg font-bold text-success">{formatPoints(mockCampaign.earningsBreakdown.basePayment)}</span>
+                <span className="text-lg font-bold text-success">{formatPoints(campaign.earningsBreakdown.basePayment)}</span>
               </div>
 
               {/* Product Value */}
               <div className="flex items-center justify-between p-3 bg-dark-600 rounded-lg">
                 <div className="flex items-center gap-2">
                   <Gift size={16} className="text-primary" />
-                  <span className="text-sm text-white">{t.campaignDetail.earnings.productValue || '제공 제품 가치'}</span>
+                  <span className="text-sm text-white">{t.campaignDetail.earnings.productValue || 'Giá trị sản phẩm cung cấp'}</span>
                 </div>
-                <span className="text-lg font-bold text-primary">{formatPoints(mockCampaign.earningsBreakdown.productValue)}</span>
+                <span className="text-lg font-bold text-primary">{formatPoints(campaign.earningsBreakdown.productValue)}</span>
               </div>
 
               {/* Bonus Opportunities */}
-              {mockCampaign.earningsBreakdown.bonusOpportunities.length > 0 && (
+              {campaign.earningsBreakdown.bonusOpportunities.length > 0 && (
                 <div className="bg-gradient-to-r from-accent/10 to-warning/10 border border-accent/30 rounded-lg p-3">
                   <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
                     <span>🎁</span>
-                    {t.campaignDetail.earnings.bonusOpportunities || '보너스 기회'}
+                    {t.campaignDetail.earnings.bonusOpportunities || 'Thưởng thêm'}
                   </h4>
                   <div className="space-y-2">
-                    {mockCampaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
+                    {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
                       <div key={idx} className="flex items-center justify-between text-xs">
                         <div>
                           <p className="text-white font-semibold">{bonus.type}</p>
@@ -1081,16 +1199,16 @@ export default function CampaignDetailPage() {
 
               {/* Total Potential */}
               <div className="bg-gradient-to-r from-accent to-secondary rounded-lg p-4 text-center">
-                <p className="text-xs text-white/80 mb-1">{t.campaignDetail.earnings.maxPotential || '최대 예상 수익'}</p>
+                <p className="text-xs text-white/80 mb-1">{t.campaignDetail.earnings.maxPotential || 'Thu nhập tối đa ước tính'}</p>
                 <p className="text-3xl font-bold text-white">
                   {formatPoints(
-                    mockCampaign.earningsBreakdown.basePayment +
-                    mockCampaign.earningsBreakdown.productValue +
-                    mockCampaign.earningsBreakdown.bonusOpportunities.reduce((sum: number, b: any) => sum + b.amount, 0)
+                    campaign.earningsBreakdown.basePayment +
+                    campaign.earningsBreakdown.productValue +
+                    campaign.earningsBreakdown.bonusOpportunities.reduce((sum: number, b: any) => sum + b.amount, 0)
                   )}
                 </p>
                 <p className="text-xs text-white/60 mt-1">
-                  ({t.campaignDetail.earnings.cashAndProducts || '현금 + 제품 포함'})
+                  ({t.campaignDetail.earnings.cashAndProducts || 'Bao gồm tiền mặt + sản phẩm'})
                 </p>
               </div>
             </div>
@@ -1098,32 +1216,32 @@ export default function CampaignDetailPage() {
         )}
 
         {/* Social Proof & Reviews */}
-        {mockCampaign.socialProof && (
+        {campaign.socialProof && (
           <div className="card bg-gradient-to-br from-secondary/10 to-primary/10 border-2 border-secondary/30 shadow-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">⭐</span>
-              <h3 className="text-lg font-bold text-white">{t.campaignDetail.socialProof.title || '인플루언서 후기'}</h3>
+              <h3 className="text-lg font-bold text-white">{t.campaignDetail.socialProof.title || 'Đánh giá từ KOL'}</h3>
               <span className="px-2 py-1 bg-accent/20 text-accent text-xs font-bold rounded-full">
-                {mockCampaign.socialProof.averageRating}/5.0
+                {campaign.socialProof.averageRating}/5.0
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.completionRate || '캠페인 완료율'}</p>
-                <p className="text-2xl font-bold text-success">{mockCampaign.socialProof.completionRate}%</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.completionRate || 'Tỉ lệ hoàn thành'}</p>
+                <p className="text-2xl font-bold text-success">{campaign.socialProof.completionRate}%</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || '평균 응답시간'}</p>
-                <p className="text-lg font-bold text-primary">{mockCampaign.qualityAssurance?.avgResponseTime || '2시간'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || 'Thời gian phản hồi'}</p>
+                <p className="text-lg font-bold text-primary">{campaign.qualityAssurance?.avgResponseTime || '2 giờ'}</p>
               </div>
             </div>
 
             {/* Recent Reviews */}
-            {mockCampaign.socialProof.recentReviews.length > 0 && (
+            {campaign.socialProof.recentReviews.length > 0 && (
               <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-white">{t.campaignDetail.socialProof.recentReviews || '최근 리뷰'}</h4>
-                {mockCampaign.socialProof.recentReviews.map((review: any, idx: number) => (
+                <h4 className="text-sm font-semibold text-white">{t.campaignDetail.socialProof.recentReviews || 'Đánh giá gần đây'}</h4>
+                {campaign.socialProof.recentReviews.map((review: any, idx: number) => (
                   <div key={idx} className="bg-dark-600 rounded-lg p-3">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -1134,7 +1252,7 @@ export default function CampaignDetailPage() {
                           ))}
                         </div>
                       </div>
-                      <span className="text-xs text-gray-300">{review.hours}{t.campaignDetail.socialProof.hoursAgo || '시간 전'}</span>
+                      <span className="text-xs text-gray-300">{review.hours}{t.campaignDetail.socialProof.hoursAgo || ' giờ trước'}</span>
                     </div>
                     <p className="text-sm text-gray-300">{review.comment}</p>
                   </div>
@@ -1144,14 +1262,20 @@ export default function CampaignDetailPage() {
           </div>
         )}
 
-        {/* Apply Button - Only show when not applied */}
-        {mockCampaign.status === 'not_applied' && (
+        {/* Apply Button */}
+        {campaign.status === 'not_applied' && !applySubmitted && (
           <button
             onClick={() => setShowApplyModal(true)}
-            className="btn btn-primary w-full py-4 text-lg font-bold"
+            className="w-full py-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-black text-xl shadow-2xl shadow-primary/40 active:scale-95 transition-all"
           >
-            {t.campaignDetail.applyNow.replace('🎯 ', '')}
+            🎯 Ứng tuyển ngay — Miễn phí
           </button>
+        )}
+        {applySubmitted && (
+          <div className="w-full py-4 rounded-2xl bg-success/20 border-2 border-success text-center">
+            <div className="text-success font-black text-lg">✅ Đã ứng tuyển thành công!</div>
+            <div className="text-success/70 text-xs mt-1">Nhà QC sẽ liên hệ qua Zalo trong 1-2 ngày</div>
+          </div>
         )}
 
         {/* 매칭률 표시 */}
@@ -1215,7 +1339,7 @@ export default function CampaignDetailPage() {
                 <div key={index} className="flex items-center justify-between">
                   <span className="text-gray-300">{criterion.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-300 text-xs">{criterion.weight}점</span>
+                    <span className="text-gray-300 text-xs">{criterion.weight}đ</span>
                     {criterion.match ? (
                       <CheckCircle size={14} className="text-success" />
                     ) : (
@@ -1238,11 +1362,11 @@ export default function CampaignDetailPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-dark-600 rounded-lg p-3">
               <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.minFollowers}</p>
-              <p className="text-lg font-bold text-white">{mockCampaign.requirements.minFollowers.toLocaleString()}</p>
+              <p className="text-lg font-bold text-white">{campaign.requirements.minFollowers.toLocaleString()}</p>
             </div>
             <div className="bg-dark-600 rounded-lg p-3">
               <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.minEngagement}</p>
-              <p className="text-lg font-bold text-white">{mockCampaign.requirements.minEngagement}%</p>
+              <p className="text-lg font-bold text-white">{campaign.requirements.minEngagement}%</p>
             </div>
           </div>
 
@@ -1251,14 +1375,14 @@ export default function CampaignDetailPage() {
               <span className="text-primary mt-0.5">📱</span>
               <div>
                 <span className="text-gray-300">{t.campaignDetail.platform} </span>
-                <span className="text-white font-semibold">{mockCampaign.requirements.platforms.join(', ')}</span>
+                <span className="text-white font-semibold">{campaign.requirements.platforms.join(', ')}</span>
               </div>
             </div>
             <div className="flex items-start gap-2 text-sm">
               <span className="text-primary mt-0.5">🎯</span>
               <div>
                 <span className="text-gray-300">{t.campaignDetail.category} </span>
-                <span className="text-white font-semibold">{mockCampaign.requirements.categories.join(', ')}</span>
+                <span className="text-white font-semibold">{campaign.requirements.categories.join(', ')}</span>
               </div>
             </div>
             <div className="flex items-start gap-2 text-sm">
@@ -1266,7 +1390,7 @@ export default function CampaignDetailPage() {
               <div>
                 <span className="text-gray-300">{t.campaignDetail.target} </span>
                 <span className="text-white font-semibold">
-                  {mockCampaign.requirements.gender === 'female' ? t.profile.female : mockCampaign.requirements.gender === 'male' ? t.profile.male : t.profile.any}, {mockCampaign.requirements.ageRange}{t.profile.years}
+                  {campaign.requirements.gender === 'female' ? t.profile.female : campaign.requirements.gender === 'male' ? t.profile.male : t.profile.any}, {campaign.requirements.ageRange}{t.profile.years}
                 </span>
               </div>
             </div>
@@ -1274,18 +1398,18 @@ export default function CampaignDetailPage() {
               <span className="text-primary mt-0.5">📍</span>
               <div>
                 <span className="text-gray-300">{t.campaignDetail.location} </span>
-                <span className="text-white font-semibold">{mockCampaign.requirements.location.join(', ')}</span>
+                <span className="text-white font-semibold">{campaign.requirements.location.join(', ')}</span>
               </div>
             </div>
 
             {/* Beauty-specific requirements */}
-            {mockCampaign.requirements.skinType && (
+            {campaign.requirements.skinType && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">✨</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.skinType} </span>
                   <span className="text-white font-semibold">
-                    {mockCampaign.requirements.skinType.map((type: string) => ({
+                    {campaign.requirements.skinType.map((type: string) => ({
                       dry: t.profile.drySkin,
                       oily: t.profile.oilySkin,
                       combination: t.profile.combinationSkin,
@@ -1297,13 +1421,13 @@ export default function CampaignDetailPage() {
               </div>
             )}
 
-            {mockCampaign.requirements.skinTone && (
+            {campaign.requirements.skinTone && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🎨</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.skinTone} </span>
                   <span className="text-white font-semibold">
-                    {mockCampaign.requirements.skinTone.map((tone: string) => ({
+                    {campaign.requirements.skinTone.map((tone: string) => ({
                       fair: t.profile.veryFair,
                       light: t.profile.fair,
                       medium: t.profile.medium,
@@ -1316,20 +1440,20 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Parenting requirements */}
-            {mockCampaign.requirements.requiresParent && (
+            {campaign.requirements.requiresParent && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">👶</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.childRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasChildren}
-                    {mockCampaign.requirements.childAgeRange && Array.isArray(mockCampaign.requirements.childAgeRange) && mockCampaign.requirements.childAgeRange.length > 0 && (
-                      <span className="text-gray-300"> ({(mockCampaign.requirements.childAgeRange as any[]).map((age: string) => ({
-                        '0-1': '0-1세',
-                        '1-3': '1-3세',
-                        '3-6': '3-6세',
-                        '6-12': '6-12세',
-                        '12-18': '12-18세'
+                    {campaign.requirements.childAgeRange && Array.isArray(campaign.requirements.childAgeRange) && campaign.requirements.childAgeRange.length > 0 && (
+                      <span className="text-gray-300"> ({(campaign.requirements.childAgeRange as any[]).map((age: string) => ({
+                        '0-1': '0-1 tuổi',
+                        '1-3': '1-3 tuổi',
+                        '3-6': '3-6 tuổi',
+                        '6-12': '6-12 tuổi',
+                        '12-18': '12-18 tuổi'
                       }[age])).join(', ')})</span>
                     )}
                   </span>
@@ -1338,22 +1462,22 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Vehicle requirement */}
-            {mockCampaign.requirements.requiresVehicle && (
+            {campaign.requirements.requiresVehicle && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🚗</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.vehicleRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasVehicle}
-                    {mockCampaign.requirements.vehicleTypes && mockCampaign.requirements.vehicleTypes.length > 0 && (
-                      <span className="text-gray-300"> ({mockCampaign.requirements.vehicleTypes.map((v: string) => ({
-                        sedan: '세단',
+                    {campaign.requirements.vehicleTypes && campaign.requirements.vehicleTypes.length > 0 && (
+                      <span className="text-gray-300"> ({campaign.requirements.vehicleTypes.map((v: string) => ({
+                        sedan: 'Xe sedan',
                         suv: 'SUV',
-                        truck: '트럭',
-                        electric: '전기차',
-                        hybrid: '하이브리드',
-                        motorcycle: '오토바이',
-                        scooter: '스쿠터'
+                        truck: 'Xe tải',
+                        electric: 'Xe điện',
+                        hybrid: 'Xe hybrid',
+                        motorcycle: 'Xe máy',
+                        scooter: 'Xe tay ga'
                       }[v])).join(', ')})</span>
                     )}
                   </span>
@@ -1362,17 +1486,17 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Fashion sizes requirement */}
-            {mockCampaign.requirements.clothingSizes && (
+            {campaign.requirements.clothingSizes && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">👕</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.clothingSize} </span>
                   <span className="text-white font-semibold">
-                    {mockCampaign.requirements.clothingSizes.top && mockCampaign.requirements.clothingSizes.top.length > 0 && (
-                      <span>{t.campaignDetail.topSize} {mockCampaign.requirements.clothingSizes.top.join(', ')}</span>
+                    {campaign.requirements.clothingSizes.top && campaign.requirements.clothingSizes.top.length > 0 && (
+                      <span>{t.campaignDetail.topSize} {campaign.requirements.clothingSizes.top.join(', ')}</span>
                     )}
-                    {mockCampaign.requirements.clothingSizes.bottom && mockCampaign.requirements.clothingSizes.bottom.length > 0 && (
-                      <span> / {t.campaignDetail.bottomSize} {mockCampaign.requirements.clothingSizes.bottom.join(', ')}</span>
+                    {campaign.requirements.clothingSizes.bottom && campaign.requirements.clothingSizes.bottom.length > 0 && (
+                      <span> / {t.campaignDetail.bottomSize} {campaign.requirements.clothingSizes.bottom.join(', ')}</span>
                     )}
                   </span>
                 </div>
@@ -1380,20 +1504,20 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Pet requirement */}
-            {mockCampaign.requirements.requiresPet && (
+            {campaign.requirements.requiresPet && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🐾</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.petRequired} </span>
                   <span className="text-white font-semibold">
                     {t.profile.hasPets}
-                    {mockCampaign.requirements.petTypes && mockCampaign.requirements.petTypes.length > 0 && (
-                      <span className="text-gray-300"> ({mockCampaign.requirements.petTypes.map((p: string) => ({
-                        dog: '강아지',
-                        cat: '고양이',
-                        bird: '새',
-                        fish: '물고기',
-                        other: '기타'
+                    {campaign.requirements.petTypes && campaign.requirements.petTypes.length > 0 && (
+                      <span className="text-gray-300"> ({campaign.requirements.petTypes.map((p: string) => ({
+                        dog: 'Chó',
+                        cat: 'Mèo',
+                        bird: 'Chim',
+                        fish: 'Cá',
+                        other: 'Khác'
                       }[p])).join(', ')})</span>
                     )}
                   </span>
@@ -1402,13 +1526,13 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Marital status requirement */}
-            {mockCampaign.requirements.maritalStatus && mockCampaign.requirements.maritalStatus.length > 0 && (
+            {campaign.requirements.maritalStatus && campaign.requirements.maritalStatus.length > 0 && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">💑</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.maritalStatus} </span>
                   <span className="text-white font-semibold">
-                    {mockCampaign.requirements.maritalStatus.map((status: string) => ({
+                    {campaign.requirements.maritalStatus.map((status: string) => ({
                       single: t.profile.single,
                       married: t.profile.married,
                       divorced: t.profile.divorced,
@@ -1420,13 +1544,13 @@ export default function CampaignDetailPage() {
             )}
 
             {/* Housing type requirement */}
-            {mockCampaign.requirements.housingTypes && mockCampaign.requirements.housingTypes.length > 0 && (
+            {campaign.requirements.housingTypes && campaign.requirements.housingTypes.length > 0 && (
               <div className="flex items-start gap-2 text-sm">
                 <span className="text-primary mt-0.5">🏠</span>
                 <div>
                   <span className="text-gray-300">{t.campaignDetail.housingType} </span>
                   <span className="text-white font-semibold">
-                    {mockCampaign.requirements.housingTypes.map((h: string) => ({
+                    {campaign.requirements.housingTypes.map((h: string) => ({
                       apartment: t.profile.apartment,
                       house: t.profile.house,
                       villa: t.profile.villa,
@@ -1451,7 +1575,7 @@ export default function CampaignDetailPage() {
           <div className="space-y-3 mb-4">
             <div className="bg-dark-600 rounded-lg p-3">
               <h4 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.providedProducts}</h4>
-              {mockCampaign.providedItems.products.map((product, idx) => (
+              {campaign.providedItems.products.map((product, idx) => (
                 <div key={idx} className="flex items-center justify-between py-2 border-b border-dark-500 last:border-0">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-success/20 text-success flex items-center justify-center text-xs font-bold">
@@ -1469,7 +1593,7 @@ export default function CampaignDetailPage() {
               ))}
               <div className="mt-3 pt-3 border-t border-dark-500 flex items-center justify-between">
                 <span className="text-sm font-bold text-white">{t.campaignDetail.totalValue}</span>
-                <span className="text-lg font-bold text-success">{mockCampaign.providedItems.totalValue}</span>
+                <span className="text-lg font-bold text-success">{campaign.providedItems.totalValue}</span>
               </div>
             </div>
 
@@ -1478,17 +1602,17 @@ export default function CampaignDetailPage() {
                 <CheckCircle size={16} className="text-info" />
                 <h4 className="text-sm font-semibold text-white">{t.campaignDetail.shippingInfo}</h4>
               </div>
-              <p className="text-sm text-gray-300">{mockCampaign.providedItems.shipping}</p>
+              <p className="text-sm text-gray-300">{campaign.providedItems.shipping}</p>
             </div>
 
-            {mockCampaign.providedItems.additionalBenefits.length > 0 && (
+            {campaign.providedItems.additionalBenefits.length > 0 && (
               <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/30 rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">🎁</span>
                   <h4 className="text-sm font-semibold text-white">{t.campaignDetail.additionalBenefits}</h4>
                 </div>
                 <ul className="space-y-1">
-                  {mockCampaign.providedItems.additionalBenefits.map((benefit, idx) => (
+                  {campaign.providedItems.additionalBenefits.map((benefit, idx) => (
                     <li key={idx} className="text-sm text-gray-300 flex items-start gap-2">
                       <span className="text-accent mt-0.5">•</span>
                       <span>{benefit}</span>
@@ -1504,10 +1628,10 @@ export default function CampaignDetailPage() {
         <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl">📸</span>
-            <h3 className="text-lg font-bold text-white">{t.campaignDetail.productGallery || '제품 갤러리'}</h3>
+            <h3 className="text-lg font-bold text-white">{t.campaignDetail.productGallery || 'Ảnh sản phẩm'}</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {mockCampaign.images.productGallery.map((image, idx) => (
+            {campaign.images.productGallery.map((image, idx) => (
               <img
                 key={idx}
                 src={image}
@@ -1522,13 +1646,13 @@ export default function CampaignDetailPage() {
         <div className="card bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-500/30 shadow-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl">💡</span>
-            <h3 className="text-lg font-bold text-white">{t.campaignDetail.contentExamples || '콘텐츠 제작 예시'}</h3>
+            <h3 className="text-lg font-bold text-white">{t.campaignDetail.contentExamples || 'Ví dụ nội dung'}</h3>
           </div>
           <p className="text-sm text-gray-300 mb-4">
-            {t.campaignDetail.contentExamplesDesc || '이런 스타일로 콘텐츠를 제작해주세요! 참고용 예시입니다.'}
+            {t.campaignDetail.contentExamplesDesc || 'Hãy tạo nội dung theo phong cách này! Đây chỉ là ví dụ tham khảo.'}
           </p>
           <div className="grid grid-cols-3 gap-2">
-            {mockCampaign.images.exampleContent.map((example, idx) => (
+            {campaign.images.exampleContent.map((example, idx) => (
               <div key={idx} className="relative group">
                 <img
                   src={example.url}
@@ -1554,14 +1678,14 @@ export default function CampaignDetailPage() {
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.contentFormat}</h4>
             <div className="space-y-2">
-              {mockCampaign.missionGuidelines.contentFormat.map((format, idx) => (
+              {campaign.missionGuidelines.contentFormat.map((format, idx) => (
                 <div key={idx} className="bg-dark-600 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-bold text-white">
                       {format.platform} - {format.type}
                     </span>
                     <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full font-bold">
-                      {format.count}개
+                      x{format.count}
                     </span>
                   </div>
                   <p className="text-xs text-gray-300">{format.requirement}</p>
@@ -1577,7 +1701,7 @@ export default function CampaignDetailPage() {
               {t.campaignDetail.mustInclude}
             </h4>
             <ul className="space-y-2">
-              {mockCampaign.missionGuidelines.mustInclude.map((item, idx) => (
+              {campaign.missionGuidelines.mustInclude.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-sm bg-success/5 rounded-lg p-2 border border-success/20">
                   <CheckCircle size={16} className="text-success flex-shrink-0 mt-0.5" />
                   <span className="text-gray-300">{item}</span>
@@ -1593,7 +1717,7 @@ export default function CampaignDetailPage() {
               {t.campaignDetail.prohibited}
             </h4>
             <ul className="space-y-2">
-              {mockCampaign.missionGuidelines.prohibited.map((item, idx) => (
+              {campaign.missionGuidelines.prohibited.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-sm bg-error/5 rounded-lg p-2 border border-error/20">
                   <span className="text-error flex-shrink-0 mt-0.5">✗</span>
                   <span className="text-gray-300">{item}</span>
@@ -1607,43 +1731,43 @@ export default function CampaignDetailPage() {
         <div className="card bg-gradient-to-br from-info/10 to-info/5 border-2 border-info/30 shadow-xl">
           <div className="flex items-start gap-4 mb-4">
             <img
-              src={mockCampaign.companyLogo}
-              alt={mockCampaign.brandInfo.name}
+              src={campaign.companyLogo}
+              alt={campaign.brandInfo.name}
               className="w-16 h-16 rounded-xl"
             />
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-white mb-1">{mockCampaign.brandInfo.name}</h3>
-              <p className="text-xs text-gray-300">{t.campaignDetail.founded} {mockCampaign.brandInfo.founded}</p>
+              <h3 className="text-lg font-bold text-white mb-1">{campaign.brandInfo.name}</h3>
+              <p className="text-xs text-gray-300">{t.campaignDetail.founded} {campaign.brandInfo.founded}</p>
             </div>
           </div>
 
           {/* 브랜드 스토리 이미지 */}
           <img
-            src={mockCampaign.images.brandStory}
+            src={campaign.images.brandStory}
             alt="Brand Story"
             className="w-full h-32 object-cover rounded-lg mb-4"
           />
 
-          <p className="text-sm text-gray-300 leading-relaxed mb-4">{mockCampaign.brandInfo.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed mb-4">{campaign.brandInfo.description}</p>
 
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xl font-bold text-primary">{mockCampaign.brandInfo.previousCampaigns}</div>
+              <div className="text-xl font-bold text-primary">{campaign.brandInfo.previousCampaigns}</div>
               <div className="text-xs text-gray-300">{t.campaignDetail.previousCampaigns}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xl font-bold text-accent">{mockCampaign.brandInfo.averageRating}</div>
+              <div className="text-xl font-bold text-accent">{campaign.brandInfo.averageRating}</div>
               <div className="text-xs text-gray-300">{t.campaignDetail.averageRating}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
-              <div className="text-xl font-bold text-success">{mockCampaign.brandInfo.totalInfluencers}</div>
+              <div className="text-xl font-bold text-success">{campaign.brandInfo.totalInfluencers}</div>
               <div className="text-xs text-gray-300">{t.campaignDetail.collaboratedInfluencers}</div>
             </div>
           </div>
 
           <div className="flex gap-3">
             <a
-              href={mockCampaign.brandInfo.website}
+              href={campaign.brandInfo.website}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 btn btn-ghost text-sm"
@@ -1652,7 +1776,7 @@ export default function CampaignDetailPage() {
               {t.campaignDetail.website}
             </a>
             <a
-              href={`https://instagram.com/${mockCampaign.brandInfo.instagram.replace('@', '')}`}
+              href={`https://instagram.com/${campaign.brandInfo.instagram.replace('@', '')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 btn btn-ghost text-sm"
@@ -1667,17 +1791,17 @@ export default function CampaignDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <CheckCircle size={20} className="text-success" />
-              <h3 className="text-lg font-bold text-white">광고주 신뢰도</h3>
+              <h3 className="text-lg font-bold text-white">Độ tin cậy Nhà QC</h3>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
-                <span className="text-xl font-bold text-success">{mockCampaign.brandInfo.trustScore}</span>
+                <span className="text-xl font-bold text-success">{campaign.brandInfo.trustScore}</span>
               </div>
               <div className="text-right">
-                <div className="text-xs text-gray-300">신뢰점수</div>
+                <div className="text-xs text-gray-300">Điểm tin cậy</div>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < Math.floor(mockCampaign.brandInfo.trustScore / 20) ? 'bg-success' : 'bg-gray-600'}`} />
+                    <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < Math.floor(campaign.brandInfo.trustScore / 20) ? 'bg-success' : 'bg-gray-600'}`} />
                   ))}
                 </div>
               </div>
@@ -1686,16 +1810,16 @@ export default function CampaignDetailPage() {
 
           {/* 신뢰 배지 */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {mockCampaign.brandInfo.badges.map((badge: string, idx: number) => (
+            {campaign.brandInfo.badges.map((badge: string, idx: number) => (
               <span key={idx} className="px-3 py-1.5 bg-success/20 text-success border border-success/30 rounded-full text-xs font-semibold flex items-center gap-1">
                 <CheckCircle size={12} />
                 {badge}
               </span>
             ))}
-            {mockCampaign.brandInfo.verified && (
+            {campaign.brandInfo.verified && (
               <span className="px-3 py-1.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-semibold flex items-center gap-1">
                 <CheckCircle size={12} />
-                인증된 광고주
+                Nhà QC đã xác minh
               </span>
             )}
           </div>
@@ -1703,15 +1827,15 @@ export default function CampaignDetailPage() {
           {/* 인플루언서 리뷰 */}
           <div className="bg-dark-600 rounded-xl p-4 mb-4">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-bold text-white">다른 인플루언서들의 평가</h4>
+              <h4 className="text-sm font-bold text-white">Đánh giá từ KOL khác</h4>
               <div className="flex items-center gap-1">
-                <div className="text-yellow-400 text-lg font-bold">{mockCampaign.brandInfo.averageRating}</div>
+                <div className="text-yellow-400 text-lg font-bold">{campaign.brandInfo.averageRating}</div>
                 <div className="text-gray-300 text-xs">/ 5.0</div>
               </div>
             </div>
 
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              {mockCampaign.advertiserReviews.slice(0, 3).map((review: any) => (
+              {campaign.advertiserReviews.slice(0, 3).map((review: any) => (
                 <div key={review.id} className="bg-dark-700 rounded-lg p-3 border border-dark-500">
                   <div className="flex items-start gap-3 mb-2">
                     <img
@@ -1745,13 +1869,13 @@ export default function CampaignDetailPage() {
                         {review.wasPaymentOnTime && (
                           <span className="text-success flex items-center gap-1">
                             <CheckCircle size={12} />
-                            정산 제때
+                            Thanh toán đúng hạn
                           </span>
                         )}
                         {review.wouldWorkAgain && (
                           <span className="text-primary flex items-center gap-1">
                             <CheckCircle size={12} />
-                            재협업 의향
+                            Muốn hợp tác lại
                           </span>
                         )}
                         <span className="text-gray-300">{review.date}</span>
@@ -1762,9 +1886,9 @@ export default function CampaignDetailPage() {
               ))}
             </div>
 
-            {mockCampaign.advertiserReviews.length > 3 && (
+            {campaign.advertiserReviews.length > 3 && (
               <button className="w-full mt-3 py-2 text-sm text-gray-300 hover:text-white border border-dark-500 rounded-lg hover:bg-dark-600 transition-colors">
-                전체 리뷰 보기 ({mockCampaign.advertiserReviews.length}개)
+                Xem tất cả đánh giá ({campaign.advertiserReviews.length})
               </button>
             )}
           </div>
@@ -1773,10 +1897,10 @@ export default function CampaignDetailPage() {
           <div className="bg-success/10 border border-success/30 rounded-lg p-3 flex items-start gap-3">
             <CheckCircle size={20} className="text-success flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-sm font-bold text-white mb-1">플랫폼 결제 보장</h4>
+              <h4 className="text-sm font-bold text-white mb-1">Đảm bảo thanh toán từ nền tảng</h4>
               <p className="text-xs text-gray-300 leading-relaxed">
-                이 캠페인은 플랫폼이 결제를 보장합니다. 작업 완료 후 광고주가 정산하지 않을 경우,
-                플랫폼이 대신 지급합니다. 안심하고 지원하세요!
+                Chiến dịch này được nền tảng đảm bảo thanh toán. Nếu nhà QC không thanh toán sau khi hoàn thành công việc,
+                nền tảng sẽ chi trả thay. Yên tâm ứng tuyển!
               </p>
             </div>
           </div>
@@ -1792,22 +1916,22 @@ export default function CampaignDetailPage() {
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.expectedApplicants}</div>
-              <div className="text-lg font-bold text-white">{mockCampaign.selectionCriteria.expectedApplicants}</div>
+              <div className="text-lg font-bold text-white">{campaign.selectionCriteria.expectedApplicants}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.selectedInfluencers}</div>
-              <div className="text-lg font-bold text-primary">{mockCampaign.selectionCriteria.selectedInfluencers}</div>
+              <div className="text-lg font-bold text-primary">{campaign.selectionCriteria.selectedInfluencers}</div>
             </div>
             <div className="bg-dark-600 rounded-lg p-2 text-center">
               <div className="text-xs text-gray-300 mb-1">{t.campaignDetail.expectedCompetition}</div>
-              <div className="text-lg font-bold text-accent">{mockCampaign.selectionCriteria.selectionRate}</div>
+              <div className="text-lg font-bold text-accent">{campaign.selectionCriteria.selectionRate}</div>
             </div>
           </div>
 
           <div className="bg-dark-600 rounded-lg p-3 mb-3">
             <h4 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.priorityCriteria}</h4>
             <ol className="space-y-2">
-              {mockCampaign.selectionCriteria.priority.map((item, idx) => (
+              {campaign.selectionCriteria.priority.map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-sm">
                   <span className="w-5 h-5 rounded-full bg-secondary/20 text-secondary flex items-center justify-center text-xs font-bold flex-shrink-0">
                     {idx + 1}
@@ -1820,7 +1944,7 @@ export default function CampaignDetailPage() {
 
           <div className="bg-info/10 border border-info/30 rounded-lg p-3">
             <p className="text-xs text-gray-300 text-center">
-              ⏱️ <strong className="text-white">{t.campaignDetail.avgReviewTime.split(':')[0]}</strong>: {mockCampaign.selectionCriteria.processTime}
+              ⏱️ <strong className="text-white">{t.campaignDetail.avgReviewTime.split(':')[0]}</strong>: {campaign.selectionCriteria.processTime}
             </p>
           </div>
         </div>
@@ -1833,7 +1957,7 @@ export default function CampaignDetailPage() {
           </div>
 
           <div className="space-y-3">
-            {mockCampaign.faq.map((item, idx) => (
+            {campaign.faq.map((item, idx) => (
               <details key={idx} className="bg-dark-600 rounded-lg">
                 <summary className="p-3 cursor-pointer text-sm font-semibold text-white hover:bg-dark-500 rounded-lg transition-colors">
                   Q. {item.q}
@@ -1847,7 +1971,7 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* Pending Status */}
-        {mockCampaign.status === 'pending' && (
+        {campaign.status === 'pending' && (
           <div className="card bg-gradient-to-r from-warning/20 to-warning/5 border-2 border-warning/30 shadow-xl">
             <div className="text-center py-4">
               <Clock size={40} className="text-warning mx-auto mb-3" />
@@ -1878,11 +2002,15 @@ export default function CampaignDetailPage() {
                 {campaignShareCount > 0 ? (
                   <>✅ {campaignShareCount}{t.campaignDetail.shareSubmitted}</>
                 ) : (
-                  <>{t.campaignDetail.shareDescription.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')}</>
+                  <>{language === 'ko'
+                    ? t.campaignDetail.shareDescription.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')
+                    : `Chia sẻ trên nhóm Facebook → Nhận ${formatPoints(SHARE_BONUS_AMOUNT)} VND!`}</>
                 )}
               </p>
               <p className="text-xs text-gray-300 mt-1">
-                {campaignShareCount > 0 ? `${campaignShareCount} shares submitted` : 'Share to Facebook & earn bonus points'}
+                {campaignShareCount > 0
+                  ? (language === 'ko' ? `${campaignShareCount}회 공유 제출됨` : `Đã chia sẻ ${campaignShareCount} lần`)
+                  : (language === 'ko' ? 'Facebook에 공유하고 보너스 받기' : 'Chia sẻ Facebook & nhận thưởng')}
               </p>
             </div>
           </div>
@@ -1974,7 +2102,9 @@ export default function CampaignDetailPage() {
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
                   <Gift size={14} className="text-primary flex-shrink-0 mt-0.5" />
-                  <span>{t.campaignDetail.sharePerShare.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')}</span>
+                  <span>{language === 'ko'
+                    ? t.campaignDetail.sharePerShare.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')
+                    : `+${formatPoints(SHARE_BONUS_AMOUNT)} VND cho mỗi lượt chia sẻ (sau khi admin duyệt)`}</span>
                 </div>
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
@@ -1984,7 +2114,10 @@ export default function CampaignDetailPage() {
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
                   <Clock size={14} className="text-warning flex-shrink-0 mt-0.5" />
-                  <span>{t.campaignDetail.shareDailyLimit.replace('개 캠페인 공유 가능 (오늘:', ` ${MAX_DAILY_SHARES} ${dailyShareCount}/${MAX_DAILY_SHARES}`)}</span>
+                  <span>{language === 'ko'
+                    ? `하루 최대 ${MAX_DAILY_SHARES}개 캠페인 공유 가능 (오늘: ${dailyShareCount}/${MAX_DAILY_SHARES})`
+                    : `Tối đa ${MAX_DAILY_SHARES} chiến dịch/ngày (hôm nay: ${dailyShareCount}/${MAX_DAILY_SHARES})`}
+                  </span>
                 </div>
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
@@ -2005,14 +2138,14 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* Progress */}
-        {mockCampaign.status === 'in_progress' && (
+        {campaign.status === 'in_progress' && (
           <div className="card border-2 border-dark-500/50 shadow-xl">
             <h3 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.progress}</h3>
             <div className="mb-3">
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-300">{t.campaignDetail.completedTasks}</span>
                 <span className="text-white font-semibold">
-                  {completedCount}/{mockCampaign.deliverables.length}
+                  {completedCount}/{campaign.deliverables.length}
                 </span>
               </div>
               <div className="w-full h-3 bg-dark-600 rounded-full overflow-hidden">
@@ -2029,7 +2162,7 @@ export default function CampaignDetailPage() {
         <div className="card border-2 border-dark-500/50 shadow-xl">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-white">{t.campaignDetail.deliverables}</h3>
-            {mockCampaign.status === 'in_progress' && (
+            {campaign.status === 'in_progress' && (
               <button
                 onClick={() => setShowUploadModal(true)}
                 className="btn btn-primary text-xs"
@@ -2040,7 +2173,7 @@ export default function CampaignDetailPage() {
             )}
           </div>
           <ul className="space-y-2">
-            {mockCampaign.deliverables.map((item) => (
+            {campaign.deliverables.map((item) => (
               <li key={item.id} className="flex items-start gap-2 text-sm">
                 {item.submitted ? (
                   <CheckCircle size={16} className="text-success flex-shrink-0 mt-0.5" />
@@ -2056,10 +2189,10 @@ export default function CampaignDetailPage() {
         </div>
 
         {/* Submitted Work */}
-        {mockCampaign.submittedWork.length > 0 && (
+        {campaign.submittedWork.length > 0 && (
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-white">{t.campaignDetail.submittedWork}</h3>
-            {mockCampaign.submittedWork.map((work) => (
+            {campaign.submittedWork.map((work) => (
               <div key={work.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <img
                   src={work.thumbnail}
@@ -2104,64 +2237,191 @@ export default function CampaignDetailPage() {
           <div className="flex items-center gap-3 text-sm">
             <Calendar size={16} className="text-gray-300" />
             <span className="text-gray-300">{t.campaignDetail.period}</span>
-            <span className="text-white">{mockCampaign.startDate} ~ {mockCampaign.deadline}</span>
+            <span className="text-white">{campaign.startDate} ~ {campaign.deadline}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
             <Clock size={16} className="text-gray-300" />
             <span className="text-gray-300">{t.campaignDetail.deadline}</span>
-            <span className="text-white">{mockCampaign.deadline}</span>
+            <span className="text-white">{campaign.deadline}</span>
           </div>
         </div>
       </div>
 
-      {/* Apply Modal */}
+      {/* ─── STICKY BOTTOM APPLY BAR ─── */}
+      {campaign.status === 'not_applied' && !applySubmitted && (
+        <div className="fixed bottom-16 left-0 right-0 z-40 px-4 pb-2 pointer-events-none">
+          <div className="max-w-lg mx-auto pointer-events-auto">
+            <div className="bg-dark-700/95 backdrop-blur-xl rounded-2xl border border-primary/30 shadow-2xl shadow-primary/20 px-4 py-3 flex items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="text-xs text-gray-400 truncate">{campaign.company}</div>
+                <div className="text-accent font-black text-lg leading-tight">+{formatPoints(campaign.budget)} VND</div>
+              </div>
+              <button
+                onClick={() => setShowApplyModal(true)}
+                className="flex-shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-base shadow-lg shadow-primary/30 active:scale-95 transition-transform"
+              >
+                🎯 Ứng tuyển ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── GOOGLE FORM STYLE APPLY MODAL ─── */}
       {showApplyModal && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="bg-dark-600 rounded-xl w-full max-w-md p-6">
-            <h3 className="text-xl font-bold text-white mb-4">{t.campaignDetail.applyModal.title}</h3>
-            <div className="space-y-4 mb-6">
-              <div className="bg-dark-700 rounded-lg p-4">
-                <h4 className="font-semibold text-white mb-2">{mockCampaign.title}</h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-300">{t.campaignDetail.applyModal.advertiser}</span>
-                    <span className="text-white">{mockCampaign.company}</span>
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-dark-700 rounded-t-3xl sm:rounded-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl">
+
+            {/* Handle bar (mobile) */}
+            <div className="flex justify-center pt-3 pb-1 sm:hidden">
+              <div className="w-10 h-1 bg-dark-400 rounded-full"></div>
+            </div>
+
+            {!applySubmitted ? (
+              <form onSubmit={handleApplyCampaign} className="p-5 space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-black text-white">Ứng tuyển chiến dịch</h3>
+                    <p className="text-xs text-gray-400 mt-0.5">{campaign.company} · +{formatPoints(campaign.budget)} VND</p>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-300">{t.campaignDetail.applyModal.expectedEarnings}</span>
-                    <span className="text-accent font-bold">{formatPoints(mockCampaign.budget)}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-300">{t.campaignDetail.applyModal.deadline}</span>
-                    <span className="text-white">{mockCampaign.deadline}</span>
+                  <button type="button" onClick={() => setShowApplyModal(false)} className="w-8 h-8 rounded-full bg-dark-600 flex items-center justify-center text-gray-400 hover:text-white">
+                    <X size={16} />
+                  </button>
+                </div>
+
+                {/* Progress indicator */}
+                <div className="flex items-center gap-1.5">
+                  {[1,2,3,4,5].map(i => (
+                    <div key={i} className={`h-1 flex-1 rounded-full ${i <= 5 ? 'bg-primary/60' : 'bg-dark-500'}`}></div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-400">Điền vào là xong — không cần tài khoản 🎉</p>
+
+                {/* Field 1: Name */}
+                <div>
+                  <label className="text-sm font-semibold text-white mb-1.5 block">
+                    👤 Họ tên của bạn <span className="text-error">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={applyForm.name}
+                    onChange={e => setApplyForm({...applyForm, name: e.target.value})}
+                    placeholder="Nguyen Thi Lan"
+                    className="input w-full"
+                    autoFocus
+                  />
+                </div>
+
+                {/* Field 2: Zalo */}
+                <div>
+                  <label className="text-sm font-semibold text-white mb-1.5 block">
+                    📱 Số Zalo / Facebook <span className="text-error">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={applyForm.zalo}
+                    onChange={e => setApplyForm({...applyForm, zalo: e.target.value})}
+                    placeholder="+84 90 123 4567 hoặc link Facebook"
+                    className="input w-full"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Nhà QC sẽ liên hệ bạn qua đây</p>
+                </div>
+
+                {/* Field 3: Platform URL */}
+                <div>
+                  <label className="text-sm font-semibold text-white mb-1.5 block">
+                    📸 Link Instagram / TikTok chính <span className="text-error">*</span>
+                  </label>
+                  <input
+                    type="url"
+                    required
+                    value={applyForm.platformUrl}
+                    onChange={e => setApplyForm({...applyForm, platformUrl: e.target.value})}
+                    placeholder="https://instagram.com/ten_cua_ban"
+                    className="input w-full"
+                  />
+                </div>
+
+                {/* Field 4: Followers */}
+                <div>
+                  <label className="text-sm font-semibold text-white mb-1.5 block">
+                    👥 Số người theo dõi (khoảng) <span className="text-error">*</span>
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['1K-5K', '5K-15K', '15K-50K', '50K-100K', '100K-500K', '500K+'].map(range => (
+                      <button
+                        key={range}
+                        type="button"
+                        onClick={() => setApplyForm({...applyForm, followers: range})}
+                        className={`py-2 rounded-xl text-sm font-semibold border-2 transition-all ${
+                          applyForm.followers === range
+                            ? 'bg-primary text-white border-primary'
+                            : 'bg-dark-600 text-gray-300 border-dark-500 hover:border-primary/50'
+                        }`}
+                      >
+                        {range}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-info/10 border border-info/30 rounded-lg p-3">
-                <p className="text-xs text-gray-300">
-                  {t.campaignDetail.applyModal.confirmLine1}<br />
-                  {t.campaignDetail.applyModal.confirmLine2}<br />
-                  {t.campaignDetail.applyModal.confirmLine3}
+                {/* Field 5: Message (optional) */}
+                <div>
+                  <label className="text-sm font-semibold text-white mb-1.5 block">
+                    💬 Lời nhắn ngắn <span className="text-gray-500 font-normal">(tùy chọn)</span>
+                  </label>
+                  <textarea
+                    value={applyForm.message}
+                    onChange={e => setApplyForm({...applyForm, message: e.target.value.slice(0, 150)})}
+                    placeholder="Giới thiệu ngắn về bạn và lý do muốn tham gia..."
+                    rows={2}
+                    className="input w-full resize-none"
+                  />
+                  <p className="text-xs text-gray-600 text-right mt-0.5">{applyForm.message.length}/150</p>
+                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={!applyForm.name || !applyForm.zalo || !applyForm.platformUrl || !applyForm.followers}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-lg shadow-xl shadow-primary/30 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
+                >
+                  🚀 Gửi đơn ứng tuyển
+                </button>
+
+                <p className="text-center text-xs text-gray-500">
+                  Miễn phí · Không cần đăng ký trước · Kết quả trong 1-2 ngày
                 </p>
+              </form>
+            ) : (
+              /* Success State */
+              <div className="p-8 text-center space-y-4">
+                <div className="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto animate-bounce">
+                  <span className="text-5xl">🎉</span>
+                </div>
+                <h3 className="text-2xl font-black text-white">Đã gửi thành công!</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Đơn ứng tuyển của <span className="text-white font-bold">{applyForm.name}</span> đã được gửi đến <span className="text-primary font-bold">{campaign.company}</span>.<br/><br/>
+                  Nhà QC sẽ liên hệ bạn qua Zalo/Facebook trong <span className="text-accent font-bold">1-2 ngày làm việc</span>.
+                </p>
+                <div className="bg-dark-600 rounded-xl p-4 text-left space-y-2">
+                  <div className="text-xs text-gray-400">📋 Tóm tắt đơn</div>
+                  <div className="text-sm text-white font-semibold">{campaign.title}</div>
+                  <div className="text-xs text-gray-400">Liên hệ: {applyForm.zalo}</div>
+                  <div className="text-xs text-gray-400">Link: {applyForm.platformUrl}</div>
+                </div>
+                <button
+                  onClick={() => { setShowApplyModal(false); router.push('/main/influencer/campaigns'); }}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold"
+                >
+                  Xem thêm chiến dịch khác →
+                </button>
               </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowApplyModal(false)}
-                className="flex-1 btn btn-ghost"
-              >
-                {t.campaignDetail.applyModal.cancel}
-              </button>
-              <button
-                onClick={handleApplyCampaign}
-                className="flex-1 btn btn-primary"
-              >
-                {t.campaignDetail.applyModal.apply}
-              </button>
-            </div>
+            )}
           </div>
         </div>
       )}
@@ -2336,22 +2596,22 @@ export default function CampaignDetailPage() {
                   <span className="px-2 py-0.5 bg-primary text-white text-xs rounded-full">{t.campaignDetail.shareContent.stepBadge1}</span>
                 </h4>
                 <div className="bg-dark-600 rounded p-3 text-xs text-gray-300 leading-relaxed whitespace-pre-wrap">
-🎯 {mockCampaign.title}
+🎯 {campaign.title}
 
-{mockCampaign.description}
+{campaign.description}
 
-{t.campaignDetail.shareContent.expectedEarnings} {formatPoints(mockCampaign.budget)} VND
-{t.campaignDetail.shareContent.company} {mockCampaign.company}
-{t.campaignDetail.shareContent.deadline} {mockCampaign.deadline}
+{t.campaignDetail.shareContent.expectedEarnings} {formatPoints(campaign.budget)} VND
+{t.campaignDetail.shareContent.company} {campaign.company}
+{t.campaignDetail.shareContent.deadline} {campaign.deadline}
 
-{t.campaignDetail.shareContent.viewDetails} https://exfluencer.vn/campaigns/{params.id}
+{t.campaignDetail.shareContent.viewDetails} https://exfluencervn.vercel.app/main/influencer/campaigns/{params.id}
 
-#인플루언서 #마케팅 #베트남 #ExfluencerVN #KOL
+#influencer #marketing #vietnam #ExfluencerVN #KOL
                 </div>
                 <button
                   onClick={() => {
-                    const campaignUrl = `https://exfluencer.vn/campaigns/${params.id}`;
-                    const shareText = `🎯 ${mockCampaign.title}\n\n${mockCampaign.description}\n\n${t.campaignDetail.shareContent.expectedEarnings} ${formatPoints(mockCampaign.budget)} VND\n${t.campaignDetail.shareContent.company} ${mockCampaign.company}\n${t.campaignDetail.shareContent.deadline} ${mockCampaign.deadline}\n\n${t.campaignDetail.shareContent.viewDetails} ${campaignUrl}\n\n#인플루언서 #마케팅 #베트남 #ExfluencerVN #KOL`;
+                    const campaignUrl = `https://exfluencervn.vercel.app/main/influencer/campaigns/${params.id}`;
+                    const shareText = `🎯 ${campaign.title}\n\n${campaign.description}\n\n${t.campaignDetail.shareContent.expectedEarnings} ${formatPoints(campaign.budget)} VND\n${t.campaignDetail.shareContent.company} ${campaign.company}\n${t.campaignDetail.shareContent.deadline} ${campaign.deadline}\n\n${t.campaignDetail.shareContent.viewDetails} ${campaignUrl}\n\n#influencer #marketing #vietnam #ExfluencerVN #KOL`;
                     navigator.clipboard.writeText(shareText);
                     alert(t.campaignDetail.alerts.clipboardCopied);
                   }}
@@ -2449,7 +2709,7 @@ export default function CampaignDetailPage() {
                     <DollarSign size={24} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white">결제 안내</h3>
+                    <h3 className="text-xl font-black text-white">Hướng dẫn thanh toán</h3>
                     <p className="text-xs text-blue-400">Payment Information</p>
                   </div>
                 </div>
@@ -2463,21 +2723,21 @@ export default function CampaignDetailPage() {
             </div>
 
             <div className="p-6 space-y-6">
-              {/* 메인 설명 */}
+              {/* Mô tả chính */}
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
                 <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                  🤝 직접 결제 시스템
+                  🤝 Hệ thống thanh toán trực tiếp
                 </h4>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Exfluencer는 <span className="text-blue-400 font-bold">매칭 플랫폼</span>입니다.
-                  결제는 <span className="text-blue-400 font-bold">광고주와 인플루언서가 직접 협의</span>하여 진행하세요.
-                  플랫폼은 결제를 중개하거나 보관하지 않습니다.
+                  Exfluencer là <span className="text-blue-400 font-bold">nền tảng kết nối</span>.
+                  Thanh toán do <span className="text-blue-400 font-bold">nhà QC và influencer tự thỏa thuận</span> trực tiếp.
+                  Nền tảng không trung gian hoặc giữ tiền thanh toán.
                 </p>
               </div>
 
-              {/* 권장 결제 방법 */}
+              {/* Phương thức thanh toán đề xuất */}
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-white">💳 권장 결제 방법</h4>
+                <h4 className="text-sm font-bold text-white">💳 Phương thức thanh toán đề xuất</h4>
 
                 <div className="bg-dark-600 rounded-lg p-4 border border-dark-500">
                   <div className="flex items-start gap-3">
@@ -2485,10 +2745,10 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">1</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">은행 이체 (권장)</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">Chuyển khoản ngân hàng (Khuyến nghị)</h5>
                       <p className="text-xs text-gray-300">
-                        가장 안전하고 추적 가능합니다.
-                        Vietcombank, Techcombank, VPBank, BIDV 등
+                        An toàn và có thể theo dõi.
+                        Vietcombank, Techcombank, VPBank, BIDV v.v.
                       </p>
                     </div>
                   </div>
@@ -2500,9 +2760,9 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">2</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">모바일 월렛</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">Ví điện tử</h5>
                       <p className="text-xs text-gray-300">
-                        빠르고 편리합니다.
+                        Nhanh và tiện lợi.
                         Momo, Zalo Pay, ViettelPay, ShopeePay
                       </p>
                     </div>
@@ -2515,18 +2775,18 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">3</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">국제 송금</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">Chuyển tiền quốc tế</h5>
                       <p className="text-xs text-gray-300">
-                        해외 광고주의 경우 PayPal, Wise (구 TransferWise) 등
+                        Với nhà QC nước ngoài: PayPal, Wise (trước là TransferWise) v.v.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 결제 진행 방법 */}
+              {/* Quy trình thanh toán */}
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-white">📋 결제 진행 방법</h4>
+                <h4 className="text-sm font-bold text-white">📋 Quy trình thanh toán</h4>
                 <div className="relative">
                   <div className="absolute left-4 top-8 bottom-8 w-0.5 bg-gradient-to-b from-blue-500 via-blue-500/50 to-transparent"></div>
 
@@ -2536,8 +2796,8 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">1</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">선정 후 협의</h5>
-                        <p className="text-xs text-gray-300">메시징으로 금액, 결제 방법, 일정 협의</p>
+                        <h5 className="text-sm font-semibold text-white">Thỏa thuận sau khi được chọn</h5>
+                        <p className="text-xs text-gray-300">Nhắn tin thỏa thuận số tiền, phương thức và lịch thanh toán</p>
                       </div>
                     </div>
 
@@ -2546,8 +2806,8 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">2</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">직접 결제</h5>
-                        <p className="text-xs text-gray-300">광고주가 인플루언서에게 직접 송금</p>
+                        <h5 className="text-sm font-semibold text-white">Thanh toán trực tiếp</h5>
+                        <p className="text-xs text-gray-300">Nhà QC chuyển khoản trực tiếp cho influencer</p>
                       </div>
                     </div>
 
@@ -2556,33 +2816,33 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">3</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">양측 확인</h5>
-                        <p className="text-xs text-gray-300">플랫폼에서 결제 완료 확인 체크</p>
+                        <h5 className="text-sm font-semibold text-white">Xác nhận hai bên</h5>
+                        <p className="text-xs text-gray-300">Hai bên xác nhận "Hoàn tất thanh toán" trên nền tảng</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 주의사항 */}
+              {/* Lưu ý */}
               <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-xl p-4">
                 <h4 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
-                  ⚠️ 주의사항
+                  ⚠️ Lưu ý quan trọng
                 </h4>
                 <ul className="space-y-1 text-xs text-gray-300">
-                  <li>• 반드시 계약서를 확인하고 결제하세요</li>
-                  <li>• 결제 후 양측이 플랫폼에서 "결제 완료" 확인해야 다음 단계로 진행됩니다</li>
-                  <li>• 분쟁 발생 시 플랫폼은 중재만 제공하며, 결제 책임은 당사자 간에 있습니다</li>
-                  <li>• 안전을 위해 은행 이체 또는 공식 모바일 월렛 사용을 권장합니다</li>
+                  <li>• Hãy kiểm tra hợp đồng trước khi thanh toán</li>
+                  <li>• Sau khi thanh toán, cả hai bên phải xác nhận "Hoàn tất" trên nền tảng mới chuyển sang bước tiếp theo</li>
+                  <li>• Khi phát sinh tranh chấp, nền tảng chỉ cung cấp hỗ trợ trung gian, trách nhiệm thanh toán thuộc về các bên</li>
+                  <li>• Khuyến nghị dùng chuyển khoản ngân hàng hoặc ví điện tử chính thức để đảm bảo an toàn</li>
                 </ul>
               </div>
 
-              {/* 확인 버튼 */}
+              {/* Nút xác nhận */}
               <button
                 onClick={() => setShowPaymentGuaranteeModal(false)}
                 className="w-full btn btn-primary py-4"
               >
-                ✅ 이해했습니다
+                ✅ Đã hiểu
               </button>
             </div>
           </div>
@@ -2612,16 +2872,16 @@ export default function CampaignDetailPage() {
             <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/30">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-300">{language === 'ko' ? '총 지원자' : 'Tổng ứng viên'}</span>
-                <span className="text-lg font-bold text-primary">{mockCampaign.urgency.recentApplications}명</span>
+                <span className="text-lg font-bold text-primary">{campaign.urgency.recentApplications} người</span>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-sm text-gray-300">{language === 'ko' ? '남은 자리' : 'Vị trí còn lại'}</span>
-                <span className="text-lg font-bold text-warning">{mockCampaign.urgency.remainingSlots}/{mockCampaign.urgency.totalSlots}</span>
+                <span className="text-lg font-bold text-warning">{campaign.urgency.remainingSlots}/{campaign.urgency.totalSlots}</span>
               </div>
             </div>
 
             <div className="space-y-3">
-              {generateApplicantAvatars(params?.id as string || '1', mockCampaign.urgency.recentApplications, 20).map((avatar, idx) => (
+              {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 20).map((avatar, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg hover:bg-dark-500 transition-all">
                   <div className="relative">
                     <img
@@ -2664,7 +2924,7 @@ export default function CampaignDetailPage() {
       )}
 
       {/* 수익 상세 모달 */}
-      {showEarningsModal && mockCampaign.earningsBreakdown && (
+      {showEarningsModal && campaign.earningsBreakdown && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50" onClick={() => setShowEarningsModal(false)}>
           <div className="bg-dark-700 rounded-2xl p-6 w-full max-w-md border border-success/30" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
@@ -2685,7 +2945,7 @@ export default function CampaignDetailPage() {
                     <CheckCircle size={16} className="text-success" />
                     <span className="text-sm text-white">{language === 'ko' ? '기본 페이' : 'Thanh toán cơ bản'}</span>
                   </div>
-                  <span className="text-xl font-bold text-success">{formatPoints(mockCampaign.earningsBreakdown.basePayment)}</span>
+                  <span className="text-xl font-bold text-success">{formatPoints(campaign.earningsBreakdown.basePayment)}</span>
                 </div>
                 <p className="text-xs text-gray-300">{language === 'ko' ? '캠페인 완료 시 보장' : 'Đảm bảo khi hoàn thành'}</p>
               </div>
@@ -2697,20 +2957,20 @@ export default function CampaignDetailPage() {
                     <Gift size={16} className="text-primary" />
                     <span className="text-sm text-white">{language === 'ko' ? '제공 제품 가치' : 'Giá trị sản phẩm'}</span>
                   </div>
-                  <span className="text-xl font-bold text-primary">{formatPoints(mockCampaign.earningsBreakdown.productValue)}</span>
+                  <span className="text-xl font-bold text-primary">{formatPoints(campaign.earningsBreakdown.productValue)}</span>
                 </div>
                 <p className="text-xs text-gray-300">{language === 'ko' ? '무료로 제공되는 제품' : 'Sản phẩm miễn phí'}</p>
               </div>
 
               {/* 보너스 기회 */}
-              {mockCampaign.earningsBreakdown.bonusOpportunities.length > 0 && (
+              {campaign.earningsBreakdown.bonusOpportunities.length > 0 && (
                 <div className="p-4 bg-warning/10 rounded-lg border border-warning/30">
                   <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
                     <Trophy size={16} className="text-warning" />
                     {language === 'ko' ? '보너스 기회' : 'Cơ hội thưởng'}
                   </h4>
                   <div className="space-y-2">
-                    {mockCampaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
+                    {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
                       <div key={idx} className="flex items-start justify-between text-xs">
                         <div className="flex-1">
                           <p className="text-white font-medium">{bonus.type}</p>
@@ -2729,9 +2989,9 @@ export default function CampaignDetailPage() {
                   <span className="text-sm text-white font-bold">{language === 'ko' ? '총 예상 수익' : 'Tổng thu nhập dự kiến'}</span>
                   <span className="text-2xl font-bold text-success">
                     {formatPoints(
-                      mockCampaign.earningsBreakdown.basePayment +
-                      mockCampaign.earningsBreakdown.productValue +
-                      mockCampaign.earningsBreakdown.bonusOpportunities.reduce((sum: number, b: any) => sum + b.amount, 0)
+                      campaign.earningsBreakdown.basePayment +
+                      campaign.earningsBreakdown.productValue +
+                      campaign.earningsBreakdown.bonusOpportunities.reduce((sum: number, b: any) => sum + b.amount, 0)
                     )}
                   </span>
                 </div>

@@ -76,7 +76,6 @@ export default function LoginPage() {
 
         // localStorage에 저장
         localStorage.setItem('exfluencer_user_type', userType);
-        console.log('✅ Logged in as:', userType, '- Email:', formData.email);
 
         // user_type에 따라 리다이렉트
         if (userType === 'advertiser' || userType === 'venue') {
@@ -84,11 +83,10 @@ export default function LoginPage() {
         } else {
           router.push('/main/influencer/campaigns');
         }
-
-        router.refresh();
       }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during login');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred during login';
+      setError(message);
       setLoading(false);
     }
   };

@@ -31,7 +31,7 @@ export default function Error({
             Oops! Something went wrong
           </h1>
           <p className="text-xl text-gray-300">
-            Đã xảy ra lỗi / 오류가 발생했습니다
+            Đã xảy ra lỗi
           </p>
           <p className="text-sm text-gray-400">
             {error.message || 'An unexpected error occurred'}
@@ -50,14 +50,14 @@ export default function Error({
             className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all"
           >
             <RefreshCw size={20} />
-            Try Again / Thử lại
+            Thử lại
           </button>
           <Link
             href="/"
             className="flex items-center justify-center gap-2 px-6 py-3 bg-dark-600 text-white rounded-xl font-semibold hover:bg-dark-500 transition-all border border-dark-500"
           >
             <Home size={20} />
-            Go Home / Trang chủ
+            Trang chủ
           </Link>
         </div>
 

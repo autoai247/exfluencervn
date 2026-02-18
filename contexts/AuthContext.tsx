@@ -17,10 +17,20 @@ interface Profile {
   followers?: number;
   engagement_rate?: number;
   portfolio_url?: string;
-  platforms?: any;
-  genres?: any;
+  platforms?: string[];
+  genres?: string[];
   is_verified: boolean;
   verification_status: 'none' | 'pending' | 'approved' | 'rejected';
+}
+
+interface UserData {
+  name: string;
+  userType: string;
+}
+
+interface AuthResult<T = unknown> {
+  data: T | null;
+  error: string | null;
 }
 
 interface AuthContextType {
@@ -28,8 +38,8 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData: any) => Promise<any>;
-  signIn: (email: string, password: string) => Promise<any>;
+  signUp: (email: string, password: string, userData: UserData) => Promise<AuthResult>;
+  signIn: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -39,8 +49,8 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   profile: null,
   loading: true,
-  signUp: async () => {},
-  signIn: async () => {},
+  signUp: async () => ({ data: null, error: null }),
+  signIn: async () => ({ data: null, error: null }),
   signOut: async () => {},
   refreshProfile: async () => {},
 });
@@ -106,7 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function signUp(email: string, password: string, userData: any) {
+  async function signUp(email: string, password: string, userData: UserData) {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -122,8 +132,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) throw error;
 
       return { data, error: null };
-    } catch (error: any) {
-      return { data: null, error: error.message };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Sign up failed';
+      return { data: null, error: message };
     }
   }
 
@@ -137,8 +148,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) throw error;
 
       return { data, error: null };
-    } catch (error: any) {
-      return { data: null, error: error.message };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Sign in failed';
+      return { data: null, error: message };
     }
   }
 

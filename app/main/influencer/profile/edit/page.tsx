@@ -62,8 +62,14 @@ export default function EditProfilePage() {
     // Campaign pricing
     pricePerPost: 'negotiable',
 
-    // Extra — only shown when relevant category selected
+    // Lifestyle — simple
+    vehicle: '',           // none / motorbike / car / both
+    maritalStatus: '',     // single / dating / married / divorced
     hasChildren: false,
+    travelFrequency: '',   // rarely / 1_2_year / often
+    occupation: '',
+
+    // Extra — only shown when relevant category selected
     hasPets: false,
     skinType: '',         // beauty only
     height: '',           // fashion only
@@ -86,7 +92,6 @@ export default function EditProfilePage() {
 
   const isBeauty = formData.categories.includes('beauty');
   const isFashion = formData.categories.includes('fashion');
-  const isBaby = formData.categories.includes('baby');
   const isPet = formData.categories.includes('pet');
 
   return (
@@ -293,8 +298,120 @@ export default function EditProfilePage() {
           </div>
         </div>
 
-        {/* ─── 5. Category-specific extras ─── */}
-        {(isBeauty || isFashion || isBaby || isPet) && (
+        {/* ─── 5. Lifestyle ─── */}
+        <div className="space-y-5">
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Thông tin cuộc sống</h3>
+          <p className="text-xs text-gray-500 -mt-2">Giúp ghép chiến dịch phù hợp hơn (xe, du lịch, gia đình...)</p>
+
+          {/* Vehicle */}
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">🚗 Phương tiện di chuyển</label>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { value: '', label: 'Không có' },
+                { value: 'motorbike', label: '🛵 Xe máy' },
+                { value: 'car', label: '🚗 Ô tô' },
+                { value: 'both', label: 'Cả hai' },
+              ].map((v) => (
+                <button
+                  key={v.value}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, vehicle: v.value })}
+                  className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                    formData.vehicle === v.value
+                      ? 'bg-primary/20 border-primary text-white'
+                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                  }`}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Marital status + children */}
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">💑 Tình trạng hôn nhân</label>
+            <div className="grid grid-cols-4 gap-2 mb-3">
+              {[
+                { value: 'single', label: 'Độc thân' },
+                { value: 'dating', label: 'Có đôi' },
+                { value: 'married', label: 'Kết hôn' },
+                { value: 'divorced', label: 'Đã ly hôn' },
+              ].map((m) => (
+                <button
+                  key={m.value}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, maritalStatus: m.value })}
+                  className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                    formData.maritalStatus === m.value
+                      ? 'bg-primary/20 border-primary text-white'
+                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-xl cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.hasChildren}
+                onChange={(e) => setFormData({ ...formData, hasChildren: e.target.checked })}
+                className="w-5 h-5 rounded border-gray-600 text-primary"
+              />
+              <span className="text-sm text-white">👶 Tôi đang nuôi con nhỏ</span>
+            </label>
+          </div>
+
+          {/* Travel frequency */}
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">✈️ Tần suất du lịch</label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { value: 'rarely', label: 'Hiếm khi' },
+                { value: '1_2_year', label: '1-2 lần/năm' },
+                { value: 'often', label: 'Thường xuyên' },
+              ].map((tf) => (
+                <button
+                  key={tf.value}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, travelFrequency: tf.value })}
+                  className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                    formData.travelFrequency === tf.value
+                      ? 'bg-primary/20 border-primary text-white'
+                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                  }`}
+                >
+                  {tf.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Occupation */}
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">💼 Nghề nghiệp</label>
+            <select
+              value={formData.occupation}
+              onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+              className="input"
+            >
+              <option value="">Không muốn tiết lộ</option>
+              <option value="student">Sinh viên</option>
+              <option value="office">Nhân viên văn phòng</option>
+              <option value="self_employed">Tự kinh doanh</option>
+              <option value="creator">Creator / Nghệ sĩ</option>
+              <option value="healthcare">Y tế / Điều dưỡng</option>
+              <option value="education">Giáo dục</option>
+              <option value="homemaker">Nội trợ</option>
+              <option value="other">Khác</option>
+            </select>
+          </div>
+        </div>
+
+        {/* ─── 7. Category-specific extras ─── */}
+        {(isBeauty || isFashion || isPet) && (
           <div className="space-y-4">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Thông tin bổ sung</h3>
 
@@ -357,19 +474,6 @@ export default function EditProfilePage() {
               </div>
             )}
 
-            {/* Baby */}
-            {isBaby && (
-              <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-xl cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.hasChildren}
-                  onChange={(e) => setFormData({ ...formData, hasChildren: e.target.checked })}
-                  className="w-5 h-5 rounded border-gray-600 text-primary"
-                />
-                <span className="text-sm text-white">👶 Tôi đang nuôi con nhỏ</span>
-              </label>
-            )}
-
             {/* Pet */}
             {isPet && (
               <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-xl cursor-pointer">
@@ -385,7 +489,7 @@ export default function EditProfilePage() {
           </div>
         )}
 
-        {/* ─── 6. Pricing ─── */}
+        {/* ─── 8. Pricing ─── */}
         <div className="space-y-3">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
             <DollarSign size={14} /> Mức phí mong muốn / bài đăng

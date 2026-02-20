@@ -1944,6 +1944,20 @@ export interface Translations {
     completedTasks: string;
     submitWork: string;
     deliverables: string;
+    shareCountSubmitted: string;
+    shareAndEarnBonusText: string;
+    recentApplicants: string;
+    totalApplicants: string;
+    slotsLeft: string;
+    followersUnit: string;
+    earningsBreakdown: string;
+    basePay: string;
+    guaranteedOnCompletion: string;
+    productValue: string;
+    freeProducts: string;
+    bonusOpportunity: string;
+    totalExpectedEarnings: string;
+    maxEarningsWithBonus: string;
     submittedWork: string;
     viewLink: string;
     approved: string;
@@ -3887,6 +3901,20 @@ export const translations: Record<Language, Translations> = {
       completedTasks: 'Công việc đã hoàn thành',
       submitWork: 'Gửi kết quả',
       deliverables: 'Yêu cầu nộp',
+      shareCountSubmitted: 'lần chia sẻ đã gửi',
+      shareAndEarnBonusText: 'Chia sẻ Facebook & nhận thưởng',
+      recentApplicants: 'Danh sách ứng viên gần đây',
+      totalApplicants: 'Tổng ứng viên',
+      slotsLeft: 'Vị trí còn lại',
+      followersUnit: 'người theo dõi',
+      earningsBreakdown: 'Chi tiết thu nhập',
+      basePay: 'Thanh toán cơ bản',
+      guaranteedOnCompletion: 'Đảm bảo khi hoàn thành',
+      productValue: 'Giá trị sản phẩm',
+      freeProducts: 'Sản phẩm miễn phí',
+      bonusOpportunity: 'Cơ hội thưởng',
+      totalExpectedEarnings: 'Tổng thu nhập dự kiến',
+      maxEarningsWithBonus: 'Thu nhập tối đa bao gồm thưởng',
       submittedWork: 'Kết quả đã gửi',
       viewLink: 'Xem link →',
       approved: 'Đã duyệt',
@@ -5828,6 +5856,20 @@ export const translations: Record<Language, Translations> = {
       completedTasks: '완료된 작업',
       submitWork: '결과물 제출',
       deliverables: '제출물 요구사항',
+      shareCountSubmitted: '회 공유 제출됨',
+      shareAndEarnBonusText: 'Facebook에 공유하고 보너스 받기',
+      recentApplicants: '최근 지원자 목록',
+      totalApplicants: '총 지원자',
+      slotsLeft: '남은 자리',
+      followersUnit: '팔로워',
+      earningsBreakdown: '수익 상세 내역',
+      basePay: '기본 페이',
+      guaranteedOnCompletion: '캠페인 완료 시 보장',
+      productValue: '제공 제품 가치',
+      freeProducts: '무료로 제공되는 제품',
+      bonusOpportunity: '보너스 기회',
+      totalExpectedEarnings: '총 예상 수익',
+      maxEarningsWithBonus: '보너스 포함 최대 수익',
       submittedWork: '제출한 결과물',
       viewLink: '링크 보기 →',
       approved: '승인됨',

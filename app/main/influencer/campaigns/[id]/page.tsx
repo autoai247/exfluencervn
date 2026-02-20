@@ -2011,8 +2011,8 @@ export default function CampaignDetailPage() {
               </p>
               <p className="text-xs text-gray-300 mt-1">
                 {campaignShareCount > 0
-                  ? (language === 'ko' ? `${campaignShareCount}회 공유 제출됨` : `Đã chia sẻ ${campaignShareCount} lần`)
-                  : (language === 'ko' ? 'Facebook에 공유하고 보너스 받기' : 'Chia sẻ Facebook & nhận thưởng')}
+                  ? (`${campaignShareCount} ${t.campaignDetail.shareCountSubmitted}`)
+                  : t.campaignDetail.shareAndEarnBonusText}
               </p>
             </div>
           </div>
@@ -2865,7 +2865,7 @@ export default function CampaignDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <Users size={20} className="text-primary" />
-                {language === 'ko' ? '최근 지원자 목록' : 'Danh sách ứng viên gần đây'}
+                {t.campaignDetail.recentApplicants}
               </h3>
               <button onClick={() => setShowApplicantsModal(false)} className="text-gray-300 hover:text-white">
                 <X size={24} />
@@ -2874,11 +2874,11 @@ export default function CampaignDetailPage() {
 
             <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/30">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-300">{language === 'ko' ? '총 지원자' : 'Tổng ứng viên'}</span>
+                <span className="text-sm text-gray-300">{t.campaignDetail.totalApplicants}</span>
                 <span className="text-lg font-bold text-primary">{campaign.urgency.recentApplications} người</span>
               </div>
               <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-300">{language === 'ko' ? '남은 자리' : 'Vị trí còn lại'}</span>
+                <span className="text-sm text-gray-300">{t.campaignDetail.slotsLeft}</span>
                 <span className="text-lg font-bold text-warning">{campaign.urgency.remainingSlots}/{campaign.urgency.totalSlots}</span>
               </div>
             </div>
@@ -2908,7 +2908,7 @@ export default function CampaignDetailPage() {
                         </span>
                       )}
                     </h4>
-                    <p className="text-xs text-gray-300">{(avatar.followers / 1000).toFixed(1)}K {language === 'ko' ? '팔로워' : 'người theo dõi'}</p>
+                    <p className="text-xs text-gray-300">{(avatar.followers / 1000).toFixed(1)}K {t.campaignDetail.followersUnit}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-gray-300">{avatar.applyTime}</p>
@@ -2931,7 +2931,7 @@ export default function CampaignDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <DollarSign size={20} className="text-success" />
-                {language === 'ko' ? '수익 상세 내역' : 'Chi tiết thu nhập'}
+                {t.campaignDetail.earningsBreakdown}
               </h3>
               <button onClick={() => setShowEarningsModal(false)} className="text-gray-300 hover:text-white">
                 <X size={24} />
@@ -2944,11 +2944,11 @@ export default function CampaignDetailPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <CheckCircle size={16} className="text-success" />
-                    <span className="text-sm text-white">{language === 'ko' ? '기본 페이' : 'Thanh toán cơ bản'}</span>
+                    <span className="text-sm text-white">{t.campaignDetail.basePay}</span>
                   </div>
                   <span className="text-xl font-bold text-success">{formatPoints(campaign.earningsBreakdown.basePayment)}</span>
                 </div>
-                <p className="text-xs text-gray-300">{language === 'ko' ? '캠페인 완료 시 보장' : 'Đảm bảo khi hoàn thành'}</p>
+                <p className="text-xs text-gray-300">{t.campaignDetail.guaranteedOnCompletion}</p>
               </div>
 
               {/* 제품 가치 */}
@@ -2956,11 +2956,11 @@ export default function CampaignDetailPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Gift size={16} className="text-primary" />
-                    <span className="text-sm text-white">{language === 'ko' ? '제공 제품 가치' : 'Giá trị sản phẩm'}</span>
+                    <span className="text-sm text-white">{t.campaignDetail.productValue}</span>
                   </div>
                   <span className="text-xl font-bold text-primary">{formatPoints(campaign.earningsBreakdown.productValue)}</span>
                 </div>
-                <p className="text-xs text-gray-300">{language === 'ko' ? '무료로 제공되는 제품' : 'Sản phẩm miễn phí'}</p>
+                <p className="text-xs text-gray-300">{t.campaignDetail.freeProducts}</p>
               </div>
 
               {/* 보너스 기회 */}
@@ -2968,7 +2968,7 @@ export default function CampaignDetailPage() {
                 <div className="p-4 bg-warning/10 rounded-lg border border-warning/30">
                   <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
                     <Trophy size={16} className="text-warning" />
-                    {language === 'ko' ? '보너스 기회' : 'Cơ hội thưởng'}
+                    {t.campaignDetail.bonusOpportunity}
                   </h4>
                   <div className="space-y-2">
                     {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
@@ -2987,7 +2987,7 @@ export default function CampaignDetailPage() {
               {/* 총 예상 수익 */}
               <div className="p-4 bg-gradient-to-br from-success/20 to-primary/20 rounded-lg border-2 border-success">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-white font-bold">{language === 'ko' ? '총 예상 수익' : 'Tổng thu nhập dự kiến'}</span>
+                  <span className="text-sm text-white font-bold">{t.campaignDetail.totalExpectedEarnings}</span>
                   <span className="text-2xl font-bold text-success">
                     {formatPoints(
                       campaign.earningsBreakdown.basePayment +
@@ -2997,7 +2997,7 @@ export default function CampaignDetailPage() {
                   </span>
                 </div>
                 <p className="text-xs text-gray-300 mt-2">
-                  {language === 'ko' ? '보너스 포함 최대 수익' : 'Thu nhập tối đa bao gồm thưởng'}
+                  {t.campaignDetail.maxEarningsWithBonus}
                 </p>
               </div>
             </div>

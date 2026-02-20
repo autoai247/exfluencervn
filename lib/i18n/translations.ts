@@ -1419,6 +1419,7 @@ export interface Translations {
     filtersApplied: string;
     totalCampaigns: string;
     noResults: string;
+    noResultsDesc: string;
     clickToView: string;
     viewDetails: string;
     recommendedCampaigns: string;
@@ -2073,6 +2074,7 @@ export const translations: Record<Language, Translations> = {
       filtersApplied: 'bộ lọc đang áp dụng',
       totalCampaigns: 'chiến dịch tổng cộng',
       noResults: 'Không tìm thấy kết quả',
+      noResultsDesc: 'Không có chiến dịch nào phù hợp với bộ lọc đã chọn. Hãy thử tiêu chí khác.',
       clickToView: 'Nhấp để xem chi tiết',
       viewDetails: 'Xem chi tiết',
       recommendedCampaigns: 'Chiến dịch được đề xuất cho bạn',
@@ -3676,6 +3678,7 @@ export const translations: Record<Language, Translations> = {
       filtersApplied: '개 필터 적용 중',
       totalCampaigns: '개의 캠페인',
       noResults: '검색 결과가 없습니다',
+      noResultsDesc: '선택한 필터 조건과 일치하는 캠페인이 없습니다. 다른 조건으로 다시 시도해보세요.',
       clickToView: '클릭하여 상세 보기',
       viewDetails: '상세보기',
       recommendedCampaigns: '당신을 위한 추천 캠페인',

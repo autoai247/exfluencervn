@@ -1536,12 +1536,10 @@ function CampaignsPageContent() {
         {filteredCampaigns.length === 0 && (
           <EmptyState
             icon={Search}
-            title={t.campaignFilters.noResults || '검색 결과가 없습니다'}
-            description={language === 'ko'
-              ? '선택한 필터 조건과 일치하는 캠페인이 없습니다. 다른 조건으로 다시 시도해보세요.'
-              : 'No campaigns match your selected filters. Try different criteria.'}
+            title={t.campaignFilters.noResults}
+            description={t.campaignFilters.noResultsDesc}
             action={{
-              label: language === 'ko' ? '필터 초기화' : 'Reset Filters',
+              label: t.campaignFilters.resetFilters,
               onClick: () => {
                 setFilters({
                   platforms: [],

@@ -1045,8 +1045,11 @@ export default function CampaignDetailPage() {
                 campaign.status === 'in_progress' ? 'bg-warning/20 text-warning' :
                 'bg-info/20 text-info'
               }`}>
-                {campaign.status === 'completed' ? 'Hoàn thành' :
-                 campaign.status === 'in_progress' ? 'Đang thực hiện' : 'Đang chờ'}
+                {campaign.status === 'completed'
+                  ? (language === 'ko' ? '완료' : 'Hoàn thành')
+                  : campaign.status === 'in_progress'
+                  ? (language === 'ko' ? '진행 중' : 'Đang thực hiện')
+                  : (language === 'ko' ? '대기 중' : 'Đang chờ')}
               </span>
               <button
                 onClick={handleFacebookShare}
@@ -1183,7 +1186,7 @@ export default function CampaignDetailPage() {
                 <div className="bg-gradient-to-r from-accent/10 to-warning/10 border border-accent/30 rounded-lg p-3">
                   <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
                     <span>🎁</span>
-                    {t.campaignDetail.earnings.bonusOpportunities || 'Thưởng thêm'}
+                    {t.campaignDetail.earnings.bonusOpportunities || (language === 'ko' ? '추가 보너스' : 'Thưởng thêm')}
                   </h4>
                   <div className="space-y-2">
                     {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (

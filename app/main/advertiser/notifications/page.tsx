@@ -2,30 +2,36 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell, CheckCircle, Clock, DollarSign, AlertCircle, Trash2, Users, FileText } from 'lucide-react';
+import { Bell, CheckCircle, Clock, DollarSign, FileText, Trash2, Users } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-interface Notification {
+interface NotificationData {
   id: string;
   type: 'kol' | 'payment' | 'campaign' | 'system';
-  title: string;
-  message: string;
-  timeAgo: string;
+  titleKo: string;
+  titleVi: string;
+  messageKo: string;
+  messageVi: string;
+  timeAgoKo: string;
+  timeAgoVi: string;
   read: boolean;
   icon: any;
   iconColor: string;
   actionUrl?: string;
 }
 
-const mockNotifications: Notification[] = [
+const mockNotifications: NotificationData[] = [
   {
     id: '1',
     type: 'kol',
-    title: 'KOL mới ứng tuyển',
-    message: 'Linh Nguyễn (TikTok · 285K followers) đã ứng tuyển vào chiến dịch Skincare Review.',
-    timeAgo: '10 phút trước',
+    titleKo: '새 KOL 지원',
+    titleVi: 'KOL mới ứng tuyển',
+    messageKo: 'Linh Nguyễn (TikTok · 285K 팔로워)이 스킨케어 리뷰 캠페인에 지원했습니다.',
+    messageVi: 'Linh Nguyễn (TikTok · 285K followers) đã ứng tuyển vào chiến dịch Skincare Review.',
+    timeAgoKo: '10분 전',
+    timeAgoVi: '10 phút trước',
     read: false,
     icon: Users,
     iconColor: 'text-primary',
@@ -34,9 +40,12 @@ const mockNotifications: Notification[] = [
   {
     id: '2',
     type: 'kol',
-    title: 'KOL mới ứng tuyển',
-    message: 'Minh Tuấn (Facebook · 142K followers) đã ứng tuyển vào chiến dịch Spring Makeup.',
-    timeAgo: '1 giờ trước',
+    titleKo: '새 KOL 지원',
+    titleVi: 'KOL mới ứng tuyển',
+    messageKo: 'Minh Tuấn (Facebook · 142K 팔로워)이 봄 메이크업 캠페인에 지원했습니다.',
+    messageVi: 'Minh Tuấn (Facebook · 142K followers) đã ứng tuyển vào chiến dịch Spring Makeup.',
+    timeAgoKo: '1시간 전',
+    timeAgoVi: '1 giờ trước',
     read: false,
     icon: Users,
     iconColor: 'text-primary',
@@ -45,9 +54,12 @@ const mockNotifications: Notification[] = [
   {
     id: '3',
     type: 'payment',
-    title: 'Chờ xác nhận thanh toán',
-    message: 'Thu Hà đã nộp nội dung cho chiến dịch Skincare Review. Vui lòng chuyển khoản và xác nhận.',
-    timeAgo: '3 giờ trước',
+    titleKo: '결제 확인 대기 중',
+    titleVi: 'Chờ xác nhận thanh toán',
+    messageKo: 'Thu Hà가 스킨케어 리뷰 캠페인의 콘텐츠를 제출했습니다. 입금 후 확인해 주세요.',
+    messageVi: 'Thu Hà đã nộp nội dung cho chiến dịch Skincare Review. Vui lòng chuyển khoản và xác nhận.',
+    timeAgoKo: '3시간 전',
+    timeAgoVi: '3 giờ trước',
     read: false,
     icon: DollarSign,
     iconColor: 'text-accent',
@@ -56,9 +68,12 @@ const mockNotifications: Notification[] = [
   {
     id: '4',
     type: 'campaign',
-    title: 'Chiến dịch sắp hết hạn',
-    message: 'Skincare Product Review còn 3 ngày nữa là đến hạn nộp bài (15/03).',
-    timeAgo: '1 ngày trước',
+    titleKo: '캠페인 마감 임박',
+    titleVi: 'Chiến dịch sắp hết hạn',
+    messageKo: 'Skincare Product Review 캠페인 제출 기한이 3일 남았습니다 (15/03).',
+    messageVi: 'Skincare Product Review còn 3 ngày nữa là đến hạn nộp bài (15/03).',
+    timeAgoKo: '1일 전',
+    timeAgoVi: '1 ngày trước',
     read: true,
     icon: Clock,
     iconColor: 'text-warning',
@@ -67,9 +82,12 @@ const mockNotifications: Notification[] = [
   {
     id: '5',
     type: 'campaign',
-    title: 'KOL hoàn thành nội dung',
-    message: 'Thu Hà đã nộp video TikTok cho chiến dịch Skincare Review. Xem và xác nhận thanh toán.',
-    timeAgo: '2 ngày trước',
+    titleKo: 'KOL 콘텐츠 완료',
+    titleVi: 'KOL hoàn thành nội dung',
+    messageKo: 'Thu Hà가 스킨케어 리뷰 캠페인의 TikTok 영상을 제출했습니다. 확인 후 결제해 주세요.',
+    messageVi: 'Thu Hà đã nộp video TikTok cho chiến dịch Skincare Review. Xem và xác nhận thanh toán.',
+    timeAgoKo: '2일 전',
+    timeAgoVi: '2 ngày trước',
     read: true,
     icon: CheckCircle,
     iconColor: 'text-green-400',
@@ -78,9 +96,12 @@ const mockNotifications: Notification[] = [
   {
     id: '6',
     type: 'system',
-    title: 'Tạo brief tự động',
-    message: 'Tính năng tạo brief chiến dịch tự động đã sẵn sàng. Tạo brief chuẩn chỉ trong 2 phút!',
-    timeAgo: '5 ngày trước',
+    titleKo: '브리프 자동 생성',
+    titleVi: 'Tạo brief tự động',
+    messageKo: '캠페인 브리프 자동 생성 기능이 준비되었습니다. 2분 만에 표준 브리프를 만들어 보세요!',
+    messageVi: 'Tính năng tạo brief chiến dịch tự động đã sẵn sàng. Tạo brief chuẩn chỉ trong 2 phút!',
+    timeAgoKo: '5일 전',
+    timeAgoVi: '5 ngày trước',
     read: true,
     icon: FileText,
     iconColor: 'text-secondary',
@@ -91,7 +112,7 @@ const mockNotifications: Notification[] = [
 export default function AdvertiserNotificationsPage() {
   const router = useRouter();
   const { language } = useLanguage();
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<NotificationData[]>(mockNotifications);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -111,7 +132,7 @@ export default function AdvertiserNotificationsPage() {
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
-  const handleNotificationClick = (notification: Notification) => {
+  const handleNotificationClick = (notification: NotificationData) => {
     markAsRead(notification.id);
     if (notification.actionUrl) {
       router.push(notification.actionUrl);
@@ -160,6 +181,9 @@ export default function AdvertiserNotificationsPage() {
           ) : (
             filteredNotifications.map((notification) => {
               const Icon = notification.icon;
+              const title = language === 'ko' ? notification.titleKo : notification.titleVi;
+              const message = language === 'ko' ? notification.messageKo : notification.messageVi;
+              const timeAgo = language === 'ko' ? notification.timeAgoKo : notification.timeAgoVi;
               return (
                 <div
                   key={notification.id}
@@ -179,15 +203,15 @@ export default function AdvertiserNotificationsPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-1">
                         <h3 className={`font-semibold text-sm ${notification.read ? 'text-white' : 'text-primary'}`}>
-                          {notification.title}
+                          {title}
                         </h3>
                         {!notification.read && (
                           <span className="w-2 h-2 bg-primary rounded-full flex-shrink-0 mt-1.5 ml-2" />
                         )}
                       </div>
-                      <p className="text-xs text-gray-400 mb-2 leading-relaxed">{notification.message}</p>
+                      <p className="text-xs text-gray-400 mb-2 leading-relaxed">{message}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-gray-500">{notification.timeAgo}</span>
+                        <span className="text-[10px] text-gray-500">{timeAgo}</span>
                         <button
                           onClick={(e) => { e.stopPropagation(); deleteNotification(notification.id); }}
                           className="text-gray-500 hover:text-red-400 transition-colors"

@@ -33,7 +33,7 @@ const PRICE_RANGES = [
 
 export default function EditProfilePage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     // Basic
     name: 'Nguyen Thi Lan',
@@ -331,14 +331,19 @@ export default function EditProfilePage() {
 
           {/* Marital status + children */}
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">💑 Tình trạng hôn nhân</label>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">💑 {language === 'ko' ? '혼인 상태' : 'Tình trạng hôn nhân'}</label>
             <div className="grid grid-cols-4 gap-2 mb-3">
-              {[
+              {(language === 'ko' ? [
+                { value: 'single', label: '미혼' },
+                { value: 'dating', label: '연애 중' },
+                { value: 'married', label: '기혼' },
+                { value: 'divorced', label: '이혼' },
+              ] : [
                 { value: 'single', label: 'Độc thân' },
                 { value: 'dating', label: 'Có đôi' },
                 { value: 'married', label: 'Kết hôn' },
                 { value: 'divorced', label: 'Đã ly hôn' },
-              ].map((m) => (
+              ]).map((m) => (
                 <button
                   key={m.value}
                   type="button"

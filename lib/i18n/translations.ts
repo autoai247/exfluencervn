@@ -1652,6 +1652,14 @@ export interface Translations {
     };
     viewAllShares: string;
     shareButtonDesc: string;
+    browseMoreCampaigns: string;
+    dailyShareLimitText: string;
+    importantNotesTitle: string;
+    importantNote1: string;
+    importantNote2: string;
+    importantNote3: string;
+    importantNote4: string;
+    competitionAlert: string;
     topSize: string;
     bottomSize: string;
   };
@@ -3249,6 +3257,14 @@ export const translations: Record<Language, Translations> = {
       },
       viewAllShares: 'Xem tất cả lịch sử chia sẻ →',
       shareButtonDesc: 'Nhóm/Dòng thời gian/Trang đều OK →',
+      browseMoreCampaigns: 'Xem thêm chiến dịch khác →',
+      dailyShareLimitText: 'Tối đa {max} chiến dịch/ngày (hôm nay: {current}/{max})',
+      importantNotesTitle: '⚠️ Lưu ý quan trọng',
+      importantNote1: '• Hãy kiểm tra hợp đồng trước khi thanh toán',
+      importantNote2: '• Sau khi thanh toán, cả hai bên phải xác nhận "Hoàn tất" trên nền tảng mới chuyển sang bước tiếp theo',
+      importantNote3: '• Khi phát sinh tranh chấp, nền tảng chỉ cung cấp hỗ trợ trung gian, trách nhiệm thanh toán thuộc về các bên',
+      importantNote4: '• Khuyến nghị dùng chuyển khoản ngân hàng hoặc ví điện tử chính thức để đảm bảo an toàn',
+      competitionAlert: '💡 Các influencer khác cũng quan tâm đến chiến dịch này. Hãy nhanh tay ứng tuyển!',
       topSize: 'Áo',
       bottomSize: 'Quần',
     },
@@ -4844,6 +4860,14 @@ export const translations: Record<Language, Translations> = {
       },
       viewAllShares: '전체 공유 내역 보기 →',
       shareButtonDesc: '그룹/타임라인/페이지 모두 OK →',
+      browseMoreCampaigns: '다른 캠페인 더 보기 →',
+      dailyShareLimitText: '하루 최대 {max}개 캠페인 공유 가능 (오늘: {current}/{max})',
+      importantNotesTitle: '⚠️ 중요 사항',
+      importantNote1: '• 결제 전 반드시 계약서를 확인하세요',
+      importantNote2: '• 결제 후 양측 모두 플랫폼에서 "완료" 확인을 해야 다음 단계로 진행됩니다',
+      importantNote3: '• 분쟁 발생 시 플랫폼은 중재 지원만 제공하며, 결제 책임은 당사자에게 있습니다',
+      importantNote4: '• 안전한 거래를 위해 공식 은행 송금 또는 전자지갑 사용을 권장합니다',
+      competitionAlert: '💡 다른 인플루언서들도 이 캠페인에 관심을 갖고 있습니다. 서둘러 지원하세요!',
       topSize: '상의',
       bottomSize: '하의',
     },

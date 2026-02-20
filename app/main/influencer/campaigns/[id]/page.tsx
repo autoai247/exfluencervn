@@ -2116,9 +2116,10 @@ export default function CampaignDetailPage() {
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
                   <Clock size={14} className="text-warning flex-shrink-0 mt-0.5" />
-                  <span>{language === 'ko'
-                    ? `하루 최대 ${MAX_DAILY_SHARES}개 캠페인 공유 가능 (오늘: ${dailyShareCount}/${MAX_DAILY_SHARES})`
-                    : `Tối đa ${MAX_DAILY_SHARES} chiến dịch/ngày (hôm nay: ${dailyShareCount}/${MAX_DAILY_SHARES})`}
+                  <span>{t.campaignDetail.dailyShareLimitText
+                    .replace('{max}', MAX_DAILY_SHARES.toString())
+                    .replace('{current}', dailyShareCount.toString())
+                    .replace('{max}', MAX_DAILY_SHARES.toString())}
                   </span>
                 </div>
 
@@ -2285,7 +2286,7 @@ export default function CampaignDetailPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-black text-white">Ứng tuyển chiến dịch</h3>
+                    <h3 className="text-lg font-black text-white">{t.campaignDetail.applyModal.title}</h3>
                     <p className="text-xs text-gray-400 mt-0.5">{campaign.company} · +{formatPoints(campaign.budget)} VND</p>
                   </div>
                   <button type="button" onClick={() => setShowApplyModal(false)} className="w-8 h-8 rounded-full bg-dark-600 flex items-center justify-center text-gray-400 hover:text-white">
@@ -2420,7 +2421,7 @@ export default function CampaignDetailPage() {
                   onClick={() => { setShowApplyModal(false); router.push('/main/influencer/campaigns'); }}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold"
                 >
-                  Xem thêm chiến dịch khác →
+                  {t.campaignDetail.browseMoreCampaigns}
                 </button>
               </div>
             )}
@@ -2829,13 +2830,13 @@ export default function CampaignDetailPage() {
               {/* Lưu ý */}
               <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 rounded-xl p-4">
                 <h4 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
-                  ⚠️ Lưu ý quan trọng
+                  {t.campaignDetail.importantNotesTitle}
                 </h4>
                 <ul className="space-y-1 text-xs text-gray-300">
-                  <li>• Hãy kiểm tra hợp đồng trước khi thanh toán</li>
-                  <li>• Sau khi thanh toán, cả hai bên phải xác nhận "Hoàn tất" trên nền tảng mới chuyển sang bước tiếp theo</li>
-                  <li>• Khi phát sinh tranh chấp, nền tảng chỉ cung cấp hỗ trợ trung gian, trách nhiệm thanh toán thuộc về các bên</li>
-                  <li>• Khuyến nghị dùng chuyển khoản ngân hàng hoặc ví điện tử chính thức để đảm bảo an toàn</li>
+                  <li>{t.campaignDetail.importantNote1}</li>
+                  <li>{t.campaignDetail.importantNote2}</li>
+                  <li>{t.campaignDetail.importantNote3}</li>
+                  <li>{t.campaignDetail.importantNote4}</li>
                 </ul>
               </div>
 
@@ -2917,9 +2918,7 @@ export default function CampaignDetailPage() {
             </div>
 
             <p className="text-xs text-gray-300 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
-              💡 {language === 'ko'
-                ? '다른 인플루언서들도 이 캠페인에 관심을 갖고 있습니다. 서둘러 지원하세요!'
-                : 'Các influencer khác cũng quan tâm đến chiến dịch này. Hãy nhanh tay ứng tuyển!'}
+              {t.campaignDetail.competitionAlert}
             </p>
           </div>
         </div>

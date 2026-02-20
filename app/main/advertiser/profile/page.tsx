@@ -170,7 +170,7 @@ export default function AdvertiserProfilePage() {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 size={20} className="text-gray-700" />
-            <h3 className="text-base font-semibold text-gray-900">{t.stats.title}</h3>
+            <h3 className="text-base font-semibold text-gray-900">{t.activityStats}</h3>
           </div>
 
           {/* Top Stats - Clickable */}
@@ -179,7 +179,7 @@ export default function AdvertiserProfilePage() {
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                   <Package size={18} className="text-gray-600" />
-                  <span className="text-xs text-gray-500">{t.stats.totalCampaigns}</span>
+                  <span className="text-xs text-gray-500">{t.totalCampaigns}</span>
                 </div>
                 <div className="text-2xl font-semibold text-gray-900">{advertiser.totalCampaigns}</div>
               </div>
@@ -189,7 +189,7 @@ export default function AdvertiserProfilePage() {
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                   <BarChart3 size={18} className="text-gray-600" />
-                  <span className="text-xs text-gray-500">{t.stats.activeCampaigns}</span>
+                  <span className="text-xs text-gray-500">{t.activeCampaigns}</span>
                 </div>
                 <div className="text-2xl font-semibold text-gray-900">{advertiser.activeCampaigns}</div>
               </div>
@@ -200,14 +200,14 @@ export default function AdvertiserProfilePage() {
           <div className="grid grid-cols-2 gap-3 mb-3">
             <Link href="/main/advertiser/campaigns?status=completed">
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
-                <div className="text-xs text-gray-500 mb-1">{t.stats.completedCampaigns}</div>
+                <div className="text-xs text-gray-500 mb-1">{t.completedCampaigns}</div>
                 <div className="text-xl font-semibold text-gray-900">{advertiser.completedCampaigns}</div>
               </div>
             </Link>
 
             <Link href="/main/advertiser/influencers">
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
-                <div className="text-xs text-gray-500 mb-1">{t.stats.totalInfluencers}</div>
+                <div className="text-xs text-gray-500 mb-1">{t.totalInfluencers}</div>
                 <div className="text-xl font-semibold text-gray-900">{advertiser.totalInfluencers}</div>
               </div>
             </Link>
@@ -216,9 +216,9 @@ export default function AdvertiserProfilePage() {
           {/* Total Budget - Highlighted & Clickable */}
           <Link href="/main/advertiser/analytics">
             <div className="bg-white rounded-lg p-5 border border-gray-300 hover:border-gray-400 transition-all cursor-pointer">
-              <div className="text-xs text-gray-500 font-medium mb-2">{t.stats.totalBudget}</div>
+              <div className="text-xs text-gray-500 font-medium mb-2">{t.totalBudget}</div>
               <div className="text-2xl font-semibold text-gray-900">{formatPoints(advertiser.totalBudget)} VND</div>
-              <div className="text-xs text-gray-400 mt-1">{t.stats.totalBudgetDesc}</div>
+              <div className="text-xs text-gray-400 mt-1">{t.totalBudgetDesc}</div>
             </div>
           </Link>
         </div>
@@ -227,7 +227,7 @@ export default function AdvertiserProfilePage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-2 px-1">
             <Building2 size={18} className="text-gray-600" />
-            <h3 className="text-sm font-medium text-gray-600">{t.actions.title}</h3>
+            <h3 className="text-sm font-medium text-gray-600">{t.accountManagement}</h3>
           </div>
 
           {/* Edit Profile */}
@@ -237,7 +237,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <Edit size={20} className="text-white" />
-              <span className="text-white font-medium">{t.actions.edit}</span>
+              <span className="text-white font-medium">{t.editProfile}</span>
             </div>
             <span className="text-white">›</span>
           </Link>
@@ -251,8 +251,8 @@ export default function AdvertiserProfilePage() {
               <div className="flex items-center gap-3">
                 <Building2 size={20} className="text-gray-700" />
                 <div>
-                  <span className="text-gray-900 font-medium block">{t.actions.verification}</span>
-                  <span className="text-xs text-gray-500">{t.actions.verificationDesc}</span>
+                  <span className="text-gray-900 font-medium block">{t.verification}</span>
+                  <span className="text-xs text-gray-500">{t.verificationDesc}</span>
                 </div>
               </div>
               <span className="text-gray-400">›</span>
@@ -266,7 +266,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <Settings size={20} className="text-gray-700" />
-              <span className="text-gray-900 font-medium">{t.actions.settings}</span>
+              <span className="text-gray-900 font-medium">{t.settings}</span>
             </div>
             <span className="text-gray-400">›</span>
           </Link>
@@ -278,7 +278,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <LogOut size={20} className="text-gray-700" />
-              <span className="text-gray-900 font-medium">{t.actions.logout}</span>
+              <span className="text-gray-900 font-medium">{t.logout}</span>
             </div>
             <span className="text-gray-400">›</span>
           </button>

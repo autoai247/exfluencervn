@@ -576,7 +576,7 @@ export default function InfluencerProfilePage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.maritalStatus}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {text[influencer.maritalStatus as keyof typeof text] || influencer.maritalStatus}
+                  {t.advertiser.influencerDetail[influencer.maritalStatus as keyof typeof t.advertiser.influencerDetail] || influencer.maritalStatus}
                 </span>
               </div>
             )}
@@ -593,7 +593,7 @@ export default function InfluencerProfilePage() {
                 <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.pets}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {influencer.hasPets
-                    ? influencer.petTypes.map((pet: string) => text[pet as keyof typeof text] || pet).join(', ')
+                    ? influencer.petTypes.map((pet: string) => t.advertiser.influencerDetail[pet as keyof typeof t.advertiser.influencerDetail] || pet).join(', ')
                     : t.advertiser.influencerDetail.no
                   }
                 </span>
@@ -616,11 +616,11 @@ export default function InfluencerProfilePage() {
           <div className="space-y-3">
             {influencer.languages && (
               <div className="flex items-start justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.languages_label}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.languages}</span>
                 <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                   {influencer.languages.map((lang: string) => (
                     <span key={lang} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
-                      {text[lang as keyof typeof text] || lang}
+                      {t.advertiser.influencerDetail[lang as keyof typeof t.advertiser.influencerDetail] || lang}
                     </span>
                   ))}
                 </div>
@@ -630,7 +630,7 @@ export default function InfluencerProfilePage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.education}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {text[influencer.education as keyof typeof text] || influencer.education}
+                  {t.advertiser.influencerDetail[influencer.education as keyof typeof t.advertiser.influencerDetail] || influencer.education}
                 </span>
               </div>
             )}
@@ -638,7 +638,7 @@ export default function InfluencerProfilePage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.occupation}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {text[influencer.occupation as keyof typeof text] || influencer.occupation}
+                  {t.advertiser.influencerDetail[influencer.occupation as keyof typeof t.advertiser.influencerDetail] || influencer.occupation}
                 </span>
               </div>
             )}
@@ -648,14 +648,14 @@ export default function InfluencerProfilePage() {
         {/* 관심사 */}
         {influencer.interests && influencer.interests.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.interestsTitle}</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.interests}</h3>
             <div className="flex flex-wrap gap-2">
               {influencer.interests.map((interest: string) => (
                 <span
                   key={interest}
                   className="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 text-sm rounded-full border border-purple-100"
                 >
-                  {text[interest as keyof typeof text] || interest}
+                  {t.advertiser.influencerDetail[interest as keyof typeof t.advertiser.influencerDetail] || interest}
                 </span>
               ))}
             </div>
@@ -678,7 +678,7 @@ export default function InfluencerProfilePage() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.drinker}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {text[influencer.drinker as keyof typeof text] || influencer.drinker}
+                  {t.advertiser.influencerDetail[influencer.drinker as keyof typeof t.advertiser.influencerDetail] || influencer.drinker}
                 </span>
               </div>
             )}
@@ -792,7 +792,7 @@ export default function InfluencerProfilePage() {
         {/* Additional Info */}
         <div className="bg-gray-50 rounded-xl p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.completed}</span>
+            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.completedCampaigns}</span>
             <span className="text-sm font-semibold text-gray-900">
               {influencer.completedCampaigns}
             </span>
@@ -831,7 +831,7 @@ export default function InfluencerProfilePage() {
                 onClick={() => setShowContactModal(false)}
                 className="flex-1 py-3 border border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50"
               >
-                {t.advertiser.influencerDetail.cancel}
+                {t.common.cancel}
               </button>
               <button
                 onClick={() => {

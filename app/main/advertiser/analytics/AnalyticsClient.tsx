@@ -53,7 +53,7 @@ export default function AnalyticsClient() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            {text[tab]}
+            {t[tab]}
           </button>
         ))}
       </div>

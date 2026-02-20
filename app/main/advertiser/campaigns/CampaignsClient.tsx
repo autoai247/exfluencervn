@@ -175,7 +175,7 @@ export default function CampaignsClient() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            {text[status]} ({stats[status]})
+            {t[status]} ({stats[status]})
           </button>
         ))}
       </div>

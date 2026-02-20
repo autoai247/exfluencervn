@@ -44,11 +44,6 @@ export default function HomePage() {
         <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Language Selector */}
-      <div className="fixed top-6 right-6 z-50">
-        <LanguageSelector />
-      </div>
-
       <div className="relative">
         {/* Hero Section */}
         <section className="min-h-screen flex flex-col items-center justify-center px-6 py-16">
@@ -68,6 +63,38 @@ export default function HomePage() {
                 <p className="text-gray-300 text-lg">
                   {t.homepage.tagline}
                 </p>
+              </div>
+
+              {/* Language Selector - Prominent */}
+              <div className="flex justify-center gap-3 pt-6">
+                <button
+                  onClick={() => {
+                    localStorage.setItem('exfluencer_language', 'vi');
+                    window.location.reload();
+                  }}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all border-2 ${
+                    language === 'vi'
+                      ? 'bg-primary text-white border-primary shadow-lg shadow-primary/30'
+                      : 'bg-dark-600 text-gray-300 border-dark-500 hover:border-primary/50'
+                  }`}
+                >
+                  <span className="text-2xl">🇻🇳</span>
+                  <span>Tiếng Việt</span>
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.setItem('exfluencer_language', 'ko');
+                    window.location.reload();
+                  }}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all border-2 ${
+                    language === 'ko'
+                      ? 'bg-primary text-white border-primary shadow-lg shadow-primary/30'
+                      : 'bg-dark-600 text-gray-300 border-dark-500 hover:border-primary/50'
+                  }`}
+                >
+                  <span className="text-2xl">🇰🇷</span>
+                  <span>한국어</span>
+                </button>
               </div>
             </div>
 
@@ -118,7 +145,7 @@ export default function HomePage() {
                 className="block w-full text-center py-4 font-semibold bg-transparent text-accent rounded-2xl border-2 border-accent/50 hover:border-accent hover:bg-accent/10 transition-all text-sm"
                 aria-label="Browse open campaigns"
               >
-                👀 Xem {36} chiến dịch đang mở →
+                {language === 'vi' ? '👀 Xem 36 chiến dịch đang mở →' : '👀 36개 오픈 캠페인 보기 →'}
               </Link>
               <Link
                 href="/auth/login"

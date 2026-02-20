@@ -500,7 +500,7 @@ export default function WalletPage() {
                       )}
                       {transaction.status === 'failed' && (
                         <span className="px-2 py-0.5 bg-error/20 text-error rounded-full">
-                          {t.common.error === 'Có lỗi xảy ra' ? 'Thất bại' : '실패'}
+                          {language === 'ko' ? '실패' : 'Thất bại'}
                         </span>
                       )}
                       {transaction.status === 'completed' && (
@@ -524,7 +524,7 @@ export default function WalletPage() {
           {filteredTransactions.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-400">
-                {t.common.all === 'Tất cả' ? 'Không có giao dịch' : '거래 내역이 없습니다'}
+                {language === 'ko' ? '거래 내역이 없습니다' : 'Không có giao dịch'}
               </p>
             </div>
           )}

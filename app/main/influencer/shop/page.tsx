@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // ─── Free Templates ───────────────────────────────────────
 const templates = [
@@ -108,6 +109,7 @@ const campaignTips = [
 ];
 
 export default function ResourcesPage() {
+  const { language } = useLanguage();
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleCopy = (id: string, text: string) => {
@@ -119,7 +121,7 @@ export default function ResourcesPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title="Tài nguyên KOL" showNotification />
+      <MobileHeader title={language === 'ko' ? 'KOL 리소스' : 'Tài nguyên KOL'} showNotification />
 
       <div className="container-mobile space-y-6 py-5">
 
@@ -130,8 +132,8 @@ export default function ResourcesPage() {
               <BookOpen size={24} className="text-primary" />
             </div>
             <div>
-              <div className="font-bold text-white">Công cụ & Hướng dẫn miễn phí</div>
-              <div className="text-xs text-gray-400 mt-0.5">Giúp bạn phát triển kênh và nhận nhiều chiến dịch hơn</div>
+              <div className="font-bold text-white">{language === 'ko' ? '무료 도구 & 가이드' : 'Công cụ & Hướng dẫn miễn phí'}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? '채널 성장 및 더 많은 캠페인 수주에 도움이 됩니다' : 'Giúp bạn phát triển kênh và nhận nhiều chiến dịch hơn'}</div>
             </div>
           </div>
         </div>
@@ -140,8 +142,8 @@ export default function ResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Gift size={14} className="text-accent" />
-            Sự kiện tri ân KOL
-            <span className="text-[10px] px-1.5 py-0.5 bg-accent/20 text-accent rounded-full font-bold">THÁNG 3</span>
+            {language === 'ko' ? 'KOL 감사 이벤트' : 'Sự kiện tri ân KOL'}
+            <span className="text-[10px] px-1.5 py-0.5 bg-accent/20 text-accent rounded-full font-bold">{language === 'ko' ? '3월' : 'THÁNG 3'}</span>
           </h3>
 
           {/* 큰 경품 — 분기별 KOL 어워드 */}
@@ -155,45 +157,45 @@ export default function ResourcesPage() {
                   <span className="text-base font-bold text-white">iPhone 16 Pro 256GB</span>
                   <span className="text-[9px] px-1.5 py-0.5 bg-accent/30 text-accent rounded-full font-bold">GIẢI LỚN</span>
                 </div>
-                <div className="text-xs text-gray-400 mt-0.5">Giải thưởng KOL xuất sắc quý Q1/2026</div>
-                <div className="text-[10px] text-accent font-semibold mt-1">Trị giá ~35,000,000 VND</div>
+                <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? 'Q1/2026 우수 KOL 상' : 'Giải thưởng KOL xuất sắc quý Q1/2026'}</div>
+                <div className="text-[10px] text-accent font-semibold mt-1">{language === 'ko' ? '약 35,000,000 VND 상당' : 'Trị giá ~35,000,000 VND'}</div>
               </div>
             </div>
 
             <div className="bg-dark-700 rounded-xl p-3 mb-3 space-y-1.5">
-              <div className="text-[10px] font-semibold text-gray-400 mb-1">ĐIỀU KIỆN THAM GIA:</div>
+              <div className="text-[10px] font-semibold text-gray-400 mb-1">{language === 'ko' ? '참가 조건:' : 'ĐIỀU KIỆN THAM GIA:'}</div>
               <div className="flex items-start gap-2 text-xs text-gray-300">
                 <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
-                Hoàn thành ít nhất <span className="text-white font-bold mx-1">3 chiến dịch</span> trong quý
+                {language === 'ko' ? <>{`분기 내 최소 `}<span className="text-white font-bold mx-1">3개 캠페인</span> 완료</> : <>Hoàn thành ít nhất <span className="text-white font-bold mx-1">3 chiến dịch</span> trong quý</>}
               </div>
               <div className="flex items-start gap-2 text-xs text-gray-300">
                 <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
-                Điểm đánh giá trung bình <span className="text-white font-bold mx-1">4.5★ trở lên</span>
+                {language === 'ko' ? <>평균 평점 <span className="text-white font-bold mx-1">4.5★ 이상</span></> : <>Điểm đánh giá trung bình <span className="text-white font-bold mx-1">4.5★ trở lên</span></>}
               </div>
               <div className="flex items-start gap-2 text-xs text-gray-300">
                 <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
-                Nộp bài đúng hạn 100% (không trễ)
+                {language === 'ko' ? '100% 기한 내 제출 (지연 없음)' : 'Nộp bài đúng hạn 100% (không trễ)'}
               </div>
               <div className="flex items-start gap-2 text-xs text-gray-300">
                 <CheckCircle size={12} className="text-accent mt-0.5 flex-shrink-0" />
-                1 người đáp ứng đủ điều kiện xuất sắc nhất sẽ được chọn
+                {language === 'ko' ? '조건을 가장 잘 충족한 1명이 선정됩니다' : '1 người đáp ứng đủ điều kiện xuất sắc nhất sẽ được chọn'}
               </div>
             </div>
 
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-1.5 text-xs text-gray-400">
                 <Clock size={12} />
-                Kết thúc: 31/03/2026
+                {language === 'ko' ? '종료: 31/03/2026' : 'Kết thúc: 31/03/2026'}
               </div>
               <div className="text-xs text-gray-400">
-                <span className="text-white font-bold">47</span> KOL đang tham gia
+                <span className="text-white font-bold">47</span> KOL {language === 'ko' ? '참가 중' : 'đang tham gia'}
               </div>
             </div>
 
             <Link href="/main/influencer/campaigns">
               <button className="w-full py-3 rounded-xl bg-gradient-to-r from-accent to-yellow-400 text-dark-800 text-sm font-bold flex items-center justify-center gap-2">
                 <Trophy size={15} />
-                Tham gia ngay — Nhận chiến dịch đầu tiên
+                {language === 'ko' ? '지금 참가 — 첫 캠페인 시작하기' : 'Tham gia ngay — Nhận chiến dịch đầu tiên'}
               </button>
             </Link>
 
@@ -210,10 +212,10 @@ export default function ResourcesPage() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-white">Thưởng Chào Mừng</span>
-                  <span className="text-[9px] px-1.5 py-0.5 bg-primary/30 text-primary rounded-full font-bold">MỌI NGƯỜI</span>
+                  <span className="text-sm font-bold text-white">{language === 'ko' ? '환영 보너스' : 'Thưởng Chào Mừng'}</span>
+                  <span className="text-[9px] px-1.5 py-0.5 bg-primary/30 text-primary rounded-full font-bold">{language === 'ko' ? '모두' : 'MỌI NGƯỜI'}</span>
                 </div>
-                <div className="text-xs text-gray-400">Hoàn thành chiến dịch đầu tiên</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '첫 번째 캠페인 완료' : 'Hoàn thành chiến dịch đầu tiên'}</div>
               </div>
               <div className="text-right flex-shrink-0">
                 <div className="text-lg font-bold text-primary">200K</div>
@@ -222,7 +224,7 @@ export default function ResourcesPage() {
             </div>
 
             <div className="bg-dark-700 rounded-xl p-3 mb-3">
-              <div className="text-[10px] font-semibold text-gray-400 mb-1.5">BẠN SẼ NHẬN:</div>
+              <div className="text-[10px] font-semibold text-gray-400 mb-1.5">{language === 'ko' ? '받게 되는 혜택:' : 'BẠN SẼ NHẬN:'}</div>
               <div className="grid grid-cols-2 gap-1.5">
                 {[
                   '✅ Thưởng 200,000 VND',
@@ -237,7 +239,7 @@ export default function ResourcesPage() {
 
             <Link href="/main/influencer/campaigns">
               <button className="w-full py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold">
-                Tìm chiến dịch đầu tiên →
+                {language === 'ko' ? '첫 번째 캠페인 찾기 →' : 'Tìm chiến dịch đầu tiên →'}
               </button>
             </Link>
 
@@ -252,8 +254,8 @@ export default function ResourcesPage() {
           <div className="rounded-2xl bg-gradient-to-r from-accent/10 to-green-500/10 border-2 border-accent/40 p-4 flex items-center gap-3">
             <BadgeCheck size={28} className="text-accent flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-bold text-white">Xác minh hồ sơ KOL</div>
-              <div className="text-xs text-gray-400 mt-0.5">Hồ sơ được xác minh → nhà quảng cáo tin tưởng hơn → nhiều cơ hội hơn</div>
+              <div className="text-sm font-bold text-white">{language === 'ko' ? 'KOL 프로필 인증' : 'Xác minh hồ sơ KOL'}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? '인증된 프로필 → 광고주 신뢰도 상승 → 더 많은 기회' : 'Hồ sơ được xác minh → nhà quảng cáo tin tưởng hơn → nhiều cơ hội hơn'}</div>
             </div>
             <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
           </div>
@@ -263,7 +265,7 @@ export default function ResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Download size={14} className="text-primary" />
-            Mẫu tải về miễn phí
+            {language === 'ko' ? '무료 다운로드 템플릿' : 'Mẫu tải về miễn phí'}
           </h3>
 
           <div className="space-y-2">
@@ -301,7 +303,7 @@ export default function ResourcesPage() {
                         onClick={() => handleCopy(tpl.id, tpl.title)}
                       >
                         {copiedId === tpl.id ? <CheckCircle size={12} /> : <Download size={12} />}
-                        {copiedId === tpl.id ? 'OK' : 'Lấy'}
+                        {copiedId === tpl.id ? 'OK' : (language === 'ko' ? '가져오기' : 'Lấy')}
                       </button>
                     )}
                   </div>
@@ -315,7 +317,7 @@ export default function ResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Lightbulb size={14} className="text-accent" />
-            Hướng dẫn phát triển kênh
+            {language === 'ko' ? '채널 성장 가이드' : 'Hướng dẫn phát triển kênh'}
           </h3>
 
           <div className="space-y-3">
@@ -347,7 +349,7 @@ export default function ResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Star size={14} className="text-accent" />
-            Mẹo ứng tuyển chiến dịch thành công
+            {language === 'ko' ? '캠페인 성공 지원 팁' : 'Mẹo ứng tuyển chiến dịch thành công'}
           </h3>
 
           <div className="rounded-2xl bg-dark-600 border-2 border-dark-500 shadow-xl divide-y divide-dark-500">
@@ -364,8 +366,8 @@ export default function ResourcesPage() {
         <Link href="/main/influencer/campaigns">
           <div className="rounded-2xl bg-gradient-to-r from-primary to-secondary p-4 flex items-center justify-between">
             <div>
-              <div className="text-base font-bold text-white">Sẵn sàng? Tìm chiến dịch ngay!</div>
-              <div className="text-xs text-white/80 mt-0.5">36 chiến dịch đang mở · Ứng tuyển ngay hôm nay</div>
+              <div className="text-base font-bold text-white">{language === 'ko' ? '준비됐나요? 지금 캠페인 찾기!' : 'Sẵn sàng? Tìm chiến dịch ngay!'}</div>
+              <div className="text-xs text-white/80 mt-0.5">{language === 'ko' ? '36개 캠페인 모집 중 · 오늘 지원하세요' : '36 chiến dịch đang mở · Ứng tuyển ngay hôm nay'}</div>
             </div>
             <ChevronRight size={20} className="text-white flex-shrink-0" />
           </div>

@@ -1,5 +1,7 @@
 'use client';
 
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
 export function CardSkeleton() {
   return (
     <div className="card animate-pulse">
@@ -72,6 +74,7 @@ export function StatsGridSkeleton() {
 }
 
 export function PageLoadingSpinner() {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen bg-dark-700 flex items-center justify-center">
       <div className="text-center space-y-4">
@@ -81,7 +84,7 @@ export function PageLoadingSpinner() {
             <div className="w-4 h-4 bg-primary rounded-full animate-pulse" />
           </div>
         </div>
-        <p className="text-gray-400 text-sm animate-pulse">로딩 중...</p>
+        <p className="text-gray-400 text-sm animate-pulse">{language === 'ko' ? '로딩 중...' : 'Đang tải...'}</p>
       </div>
     </div>
   );
@@ -101,6 +104,7 @@ export function InlineSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 
 // 전체 화면 로딩
 export function FullScreenLoader() {
+  const { language } = useLanguage();
   return (
     <div className="fixed inset-0 z-[100] bg-dark-800/95 backdrop-blur-xl flex items-center justify-center">
       <div className="text-center space-y-6">
@@ -120,7 +124,7 @@ export function FullScreenLoader() {
 
         {/* 텍스트 */}
         <div className="space-y-2">
-          <p className="text-white text-lg font-bold">잠시만 기다려주세요</p>
+          <p className="text-white text-lg font-bold">{language === 'ko' ? '잠시만 기다려주세요' : 'Vui lòng đợi'}</p>
           <p className="text-gray-400 text-sm">Please wait...</p>
         </div>
 

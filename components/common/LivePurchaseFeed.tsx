@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { ShoppingBag, Zap } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface PurchaseNotification {
   id: string;
   username: string;
   itemName: string;
+  itemNameVi: string;
   timestamp: number;
 }
 
@@ -17,26 +19,29 @@ const vietnameseNames = [
   '@pretty_linh', '@charm_tran', '@lovely_mai', '@shine_pham', '@star_le',
 ];
 
-const itemNames = [
-  '🇰🇷 KOREA DREAM 응모권',
-  '📱 iPhone 15 Pro Max 응모권',
-  '💰 현금 10M VND 응모권',
-  '💻 MacBook Pro M3 응모권',
-  '프리미엄 배지 (30일)',
-  '프로필 부스트 (7일)',
+const itemPairs = [
+  { ko: '🇰🇷 KOREA DREAM 응모권', vi: '🇰🇷 Vé rút thăm KOREA DREAM' },
+  { ko: '📱 iPhone 15 Pro Max 응모권', vi: '📱 Vé rút thăm iPhone 15 Pro Max' },
+  { ko: '💰 현금 10M VND 응모권', vi: '💰 Vé rút thăm tiền mặt 10M VND' },
+  { ko: '💻 MacBook Pro M3 응모권', vi: '💻 Vé rút thăm MacBook Pro M3' },
+  { ko: '프리미엄 배지 (30일)', vi: 'Huy hiệu Premium (30 ngày)' },
+  { ko: '프로필 부스트 (7일)', vi: 'Tăng hiển thị hồ sơ (7 ngày)' },
 ];
 
 export default function LivePurchaseFeed() {
+  const { language } = useLanguage();
   const [notifications, setNotifications] = useState<PurchaseNotification[]>([]);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     // 실시간 구매 알림 시뮬레이션 (3-8초마다)
     const generateNotification = () => {
+      const pair = itemPairs[Math.floor(Math.random() * itemPairs.length)];
       const newNotification: PurchaseNotification = {
         id: Date.now().toString(),
         username: vietnameseNames[Math.floor(Math.random() * vietnameseNames.length)],
-        itemName: itemNames[Math.floor(Math.random() * itemNames.length)],
+        itemName: pair.ko,
+        itemNameVi: pair.vi,
         timestamp: Date.now(),
       };
 
@@ -63,10 +68,17 @@ export default function LivePurchaseFeed() {
 
   const getTimeSince = (timestamp: number) => {
     const seconds = Math.floor((Date.now() - timestamp) / 1000);
-    if (seconds < 60) return '방금 전';
-    if (seconds < 120) return '1분 전';
-    if (seconds < 300) return `${Math.floor(seconds / 60)}분 전`;
-    return '조금 전';
+    if (language === 'ko') {
+      if (seconds < 60) return '방금 전';
+      if (seconds < 120) return '1분 전';
+      if (seconds < 300) return `${Math.floor(seconds / 60)}분 전`;
+      return '조금 전';
+    } else {
+      if (seconds < 60) return 'Vừa xong';
+      if (seconds < 120) return '1 phút trước';
+      if (seconds < 300) return `${Math.floor(seconds / 60)} phút trước`;
+      return 'Vừa rồi';
+    }
   };
 
   if (notifications.length === 0) return null;
@@ -90,13 +102,16 @@ export default function LivePurchaseFeed() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={12} className="text-warning animate-pulse" />
-                  <span className="text-xs font-bold text-warning">실시간 구매!</span>
+                  <span className="text-xs font-bold text-warning">
+                    {language === 'ko' ? '실시간 구매!' : 'Mua hàng trực tiếp!'}
+                  </span>
                 </div>
                 <p className="text-sm font-semibold text-white truncate">
-                  <span className="text-primary">{notification.username}</span>님이
+                  <span className="text-primary">{notification.username}</span>
+                  {language === 'ko' ? '님이' : ' đã'}
                 </p>
                 <p className="text-xs text-gray-300 truncate">
-                  {notification.itemName} 구매
+                  {language === 'ko' ? notification.itemName : notification.itemNameVi} {language === 'ko' ? '구매' : 'mua'}
                 </p>
               </div>
               <div className="text-[10px] text-gray-400 flex-shrink-0">

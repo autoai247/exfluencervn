@@ -19,7 +19,8 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 const mockCampaigns = [
   {
     id: '1',
-    title: '신규 스킨케어 제품 리뷰 캠페인',
+    titleKo: '신규 스킨케어 제품 리뷰 캠페인',
+    titleVi: 'Chiến dịch review sản phẩm skincare mới',
     status: 'active',
     budget: 2000000,
     spent: 1200000,
@@ -31,7 +32,8 @@ const mockCampaigns = [
   },
   {
     id: '2',
-    title: '봄 신상 메이크업 프로모션',
+    titleKo: '봄 신상 메이크업 프로모션',
+    titleVi: 'Khuyến mãi makeup BST mới mùa xuân',
     status: 'active',
     budget: 1500000,
     spent: 800000,
@@ -43,7 +45,8 @@ const mockCampaigns = [
   },
   {
     id: '3',
-    title: '겨울 스킨케어 루틴 캠페인',
+    titleKo: '겨울 스킨케어 루틴 캠페인',
+    titleVi: 'Chiến dịch skincare routine mùa đông',
     status: 'completed',
     budget: 1800000,
     spent: 1800000,
@@ -55,7 +58,8 @@ const mockCampaigns = [
   },
   {
     id: '4',
-    title: '여름 선크림 체험단 모집',
+    titleKo: '여름 선크림 체험단 모집',
+    titleVi: 'Tuyển thành viên trải nghiệm kem chống nắng mùa hè',
     status: 'draft',
     budget: 2500000,
     spent: 0,
@@ -82,7 +86,8 @@ export default function CampaignsClient() {
 
   const filteredCampaigns = mockCampaigns.filter((c) => {
     const matchesStatus = activeTab === 'all' || c.status === activeTab;
-    const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = language === 'ko' ? c.titleKo : c.titleVi;
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
@@ -109,11 +114,11 @@ export default function CampaignsClient() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'active':
-        return language === 'ko' ? '진행중' : 'Đang chạy';
+        return t.active;
       case 'completed':
-        return language === 'ko' ? '완료' : 'Hoàn thành';
+        return t.completed;
       case 'draft':
-        return language === 'ko' ? '임시저장' : 'Nháp';
+        return t.draft;
       default:
         return status;
     }
@@ -200,7 +205,7 @@ export default function CampaignsClient() {
               <div className="bg-white border border-gray-200 hover:border-gray-900 rounded-lg p-4 transition-all cursor-pointer">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
+                    <h4 className="font-semibold text-gray-900 mb-1">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</h4>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <Clock size={12} />
                       {t.deadline}: {campaign.deadline}

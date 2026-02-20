@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import Link from 'next/link';
 import {
   Search,
@@ -168,6 +169,7 @@ const platformIcons: any = {
 
 export default function InfluencerSearchPage() {
   const router = useRouter();
+  const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
@@ -293,12 +295,14 @@ export default function InfluencerSearchPage() {
   const handleInvite = (matchScore: any) => {
     setSelectedInfluencer(matchScore.influencer);
     setSelectedMatchScore(matchScore);
-    setInviteMessage(`안녕하세요 ${matchScore.influencer.name}님,\n\n저희 브랜드 캠페인에 참여하실 의향이 있으신지 문의드립니다.\n\n매칭 점수: ${matchScore.totalScore}점\n강점: ${matchScore.strengths.join(', ')}`);
+    setInviteMessage(language === 'ko'
+      ? `안녕하세요 ${matchScore.influencer.name}님,\n\n저희 브랜드 캠페인에 참여해 주시길 초대합니다.\n\n적합도 점수: ${matchScore.totalScore}\n강점: ${matchScore.strengths.join(', ')}`
+      : `Xin chào ${matchScore.influencer.name},\n\nChúng tôi muốn mời bạn tham gia chiến dịch thương hiệu của chúng tôi.\n\nĐiểm phù hợp: ${matchScore.totalScore}\nĐiểm mạnh: ${matchScore.strengths.join(', ')}`);
     setShowInviteModal(true);
   };
 
   const handleSendInvite = () => {
-    alert(`${selectedInfluencer?.name}님에게 초대가 발송되었습니다!`);
+    alert(language === 'ko' ? `${selectedInfluencer?.name}님에게 초대장을 보냈습니다!` : `Đã gửi lời mời đến ${selectedInfluencer?.name}!`);
     setShowInviteModal(false);
     setSelectedInfluencer(null);
     setSelectedMatchScore(null);
@@ -335,7 +339,7 @@ export default function InfluencerSearchPage() {
           <button onClick={() => router.back()} className="text-gray-700 hover:text-gray-900">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-xl font-bold text-gray-900">인플루언서 검색</h1>
+          <h1 className="text-xl font-bold text-gray-900">{language === 'ko' ? 'KOL 찾기' : 'Tìm kiếm KOL'}</h1>
         </div>
 
         {/* Search Bar */}
@@ -343,7 +347,7 @@ export default function InfluencerSearchPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="이름, 카테고리로 검색..."
+            placeholder={language === 'ko' ? '이름, 카테고리로 검색...' : 'Tìm theo tên, danh mục...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-gray-50 text-gray-900 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-white transition-colors"
@@ -362,7 +366,7 @@ export default function InfluencerSearchPage() {
           }`}
         >
           <Filter size={16} />
-          필터
+          {language === 'ko' ? '필터' : 'Lọc'}
           {activeFilterCount > 0 && (
             <span className="px-2 py-0.5 bg-white text-gray-900 rounded-full text-xs font-bold">
               {activeFilterCount}
@@ -375,10 +379,10 @@ export default function InfluencerSearchPage() {
           onChange={(e) => setSortBy(e.target.value as any)}
           className="flex-1 px-4 py-2 bg-gray-100 text-gray-900 rounded-lg text-sm font-medium border border-gray-200 focus:outline-none focus:border-gray-900"
         >
-          <option value="matchingScore">매칭률 높은 순</option>
-          <option value="followers">팔로워 많은 순</option>
-          <option value="engagement">참여율 높은 순</option>
-          <option value="rating">평점 높은 순</option>
+          <option value="matchingScore">{language === 'ko' ? '적합도 높은 순' : 'Độ phù hợp cao nhất'}</option>
+          <option value="followers">{language === 'ko' ? '팔로워 많은 순' : 'Nhiều người theo dõi nhất'}</option>
+          <option value="engagement">{language === 'ko' ? '참여율 높은 순' : 'Tỷ lệ tương tác cao nhất'}</option>
+          <option value="rating">{language === 'ko' ? '평점 높은 순' : 'Đánh giá cao nhất'}</option>
         </select>
       </div>
 
@@ -395,12 +399,12 @@ export default function InfluencerSearchPage() {
       {/* Results Count */}
       <div className="px-4 py-3 flex items-center justify-between bg-white">
         <p className="text-sm text-gray-500 font-medium">
-          총 {sortedInfluencers.length}명
+          {language === 'ko' ? `총 ${sortedInfluencers.length}명의 KOL` : `Tổng ${sortedInfluencers.length} KOL`}
         </p>
         {sortedInfluencers.length > 0 && sortBy === 'matchingScore' && (
           <div className="flex items-center gap-1 text-xs text-gray-600">
             <Sparkles size={14} />
-            <span className="font-medium">AI 매칭</span>
+            <span className="font-medium">{language === 'ko' ? 'AI 매칭' : 'Phù hợp AI'}</span>
           </div>
         )}
       </div>
@@ -477,13 +481,13 @@ export default function InfluencerSearchPage() {
                     matchScore.totalScore >= 60 ? 'bg-gray-600 text-white' :
                     'bg-gray-100 text-gray-700'
                   }`}>
-                    {matchScore.totalScore}점
+                    {matchScore.totalScore} {language === 'ko' ? '점' : 'điểm'}
                   </div>
                 </div>
 
                 {/* Multi-Platform Display */}
                 <div className="mb-3 p-3 bg-gray-50 rounded-lg">
-                  <p className="text-xs text-gray-600 font-medium mb-2">SNS 채널 ({influencer.platforms.length}개)</p>
+                  <p className="text-xs text-gray-600 font-medium mb-2">{language === 'ko' ? `SNS 채널 (${influencer.platforms.length})` : `Kênh SNS (${influencer.platforms.length})`}</p>
                   <div className="space-y-2">
                     {influencer.platforms.map((platData) => {
                       const Icon = platformIcons[platData.platform];
@@ -505,7 +509,7 @@ export default function InfluencerSearchPage() {
                     })}
                   </div>
                   <div className="mt-2 pt-2 border-t border-gray-200 flex items-center justify-between text-xs">
-                    <span className="text-gray-600 font-semibold">총 팔로워</span>
+                    <span className="text-gray-600 font-semibold">{language === 'ko' ? '총 팔로워' : 'Tổng người theo dõi'}</span>
                     <span className="text-gray-900 font-bold">{(influencer.followers / 1000).toFixed(0)}K</span>
                   </div>
                 </div>
@@ -513,20 +517,20 @@ export default function InfluencerSearchPage() {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <div className="text-center py-2 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-0.5">평균 조회수</p>
+                    <p className="text-xs text-gray-500 mb-0.5">{language === 'ko' ? '평균 조회수' : 'Lượt xem TB'}</p>
                     <p className="text-gray-900 font-semibold text-sm">
                       {(influencer.avgViews / 1000).toFixed(0)}K
                     </p>
                   </div>
                   <div className="text-center py-2 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-0.5">평점</p>
+                    <p className="text-xs text-gray-500 mb-0.5">{language === 'ko' ? '평점' : 'Đánh giá'}</p>
                     <p className="text-gray-900 font-semibold text-sm flex items-center justify-center gap-1">
                       <Star size={12} className="text-gray-900 fill-gray-900" />
                       {influencer.rating}
                     </p>
                   </div>
                   <div className="text-center py-2 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-0.5">완료</p>
+                    <p className="text-xs text-gray-500 mb-0.5">{language === 'ko' ? '완료' : 'Hoàn thành'}</p>
                     <p className="text-gray-900 font-semibold text-sm">
                       {influencer.completedCampaigns}
                     </p>
@@ -538,7 +542,7 @@ export default function InfluencerSearchPage() {
                   <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="flex items-center gap-1.5 mb-2">
                       <Award size={14} className="text-gray-700" />
-                      <p className="text-xs font-semibold text-gray-900">강점</p>
+                      <p className="text-xs font-semibold text-gray-900">{language === 'ko' ? '강점' : 'Điểm mạnh'}</p>
                     </div>
                     <div className="space-y-1">
                       {matchScore.strengths.slice(0, 3).map((strength: string, idx: number) => (
@@ -555,7 +559,7 @@ export default function InfluencerSearchPage() {
                   <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="flex items-center gap-1.5 mb-2">
                       <AlertCircle size={14} className="text-gray-700" />
-                      <p className="text-xs font-semibold text-gray-900">주의사항</p>
+                      <p className="text-xs font-semibold text-gray-900">{language === 'ko' ? '유의사항' : 'Lưu ý'}</p>
                     </div>
                     <div className="space-y-1">
                       {matchScore.concerns.slice(0, 2).map((concern: string, idx: number) => (
@@ -570,36 +574,36 @@ export default function InfluencerSearchPage() {
                 {/* AI Score Breakdown */}
                 <details className="mb-3 group">
                   <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-900 flex items-center gap-1 font-medium">
-                    상세 매칭 분석 보기
+                    {language === 'ko' ? '적합도 상세 분석 보기' : 'Xem phân tích độ phù hợp chi tiết'}
                     <ChevronDown size={14} className="group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200 space-y-2">
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">카테고리 매칭</span>
+                      <span className="text-gray-600">{language === 'ko' ? '카테고리 적합도' : 'Phù hợp danh mục'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.categoryMatch}/30</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">팔로워 범위</span>
+                      <span className="text-gray-600">{language === 'ko' ? '팔로워 범위' : 'Phạm vi người theo dõi'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.followerMatch}/20</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">참여율</span>
+                      <span className="text-gray-600">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.engagementScore}/20</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">경험</span>
+                      <span className="text-gray-600">{language === 'ko' ? '경험' : 'Kinh nghiệm'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.experienceScore}/15</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">평점</span>
+                      <span className="text-gray-600">{language === 'ko' ? '평점' : 'Đánh giá'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.ratingScore}/10</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">위치</span>
+                      <span className="text-gray-600">{language === 'ko' ? '위치' : 'Vị trí'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.locationMatch}/5</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-600">인증 보너스</span>
+                      <span className="text-gray-600">{language === 'ko' ? '인증 보너스' : 'Điểm thưởng xác minh'}</span>
                       <span className="text-gray-900 font-semibold">{matchScore.breakdown.verifiedBonus}/5</span>
                     </div>
                   </div>
@@ -614,7 +618,7 @@ export default function InfluencerSearchPage() {
                     }}
                     className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-200 transition-colors"
                   >
-                    프로필 보기
+                    {language === 'ko' ? '프로필 보기' : 'Xem hồ sơ'}
                   </button>
                   <button
                     onClick={(e) => {
@@ -624,7 +628,7 @@ export default function InfluencerSearchPage() {
                     className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                   >
                     <Send size={14} />
-                    초대하기
+                    {language === 'ko' ? '초대하기' : 'Mời tham gia'}
                   </button>
                 </div>
               </div>
@@ -636,10 +640,10 @@ export default function InfluencerSearchPage() {
         {sortedInfluencers.length === 0 && (
           <EmptyState
             icon={Users}
-            title="검색 결과가 없습니다"
-            description="선택한 필터 조건과 일치하는 인플루언서가 없습니다. 다른 조건으로 다시 시도해보세요."
+            title={language === 'ko' ? '결과 없음' : 'Không tìm thấy kết quả'}
+            description={language === 'ko' ? '선택한 필터에 맞는 KOL이 없습니다. 다른 조건으로 검색해 보세요.' : 'Không có KOL nào khớp với bộ lọc đã chọn. Hãy thử với điều kiện khác.'}
             action={{
-              label: '필터 초기화',
+              label: language === 'ko' ? '필터 초기화' : 'Đặt lại bộ lọc',
               onClick: () => {
                 setSearchQuery('');
                 setFilters({
@@ -673,7 +677,7 @@ export default function InfluencerSearchPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900">캠페인 초대</h3>
+              <h3 className="text-lg font-bold text-gray-900">{language === 'ko' ? '캠페인 초대' : 'Mời tham gia chiến dịch'}</h3>
               <button
                 onClick={() => setShowInviteModal(false)}
                 className="text-gray-500 hover:text-gray-900 transition-colors"
@@ -695,14 +699,14 @@ export default function InfluencerSearchPage() {
                     <p className="text-gray-900 font-bold">{selectedInfluencer.name}</p>
                     {selectedInfluencer.verified && <CheckCircle size={14} className="text-gray-900" />}
                   </div>
-                  <p className="text-xs text-gray-600">{selectedInfluencer.followers.toLocaleString()} 팔로워</p>
+                  <p className="text-xs text-gray-600">{selectedInfluencer.followers.toLocaleString()} {language === 'ko' ? '팔로워' : 'người theo dõi'}</p>
                 </div>
                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${
                   selectedMatchScore.totalScore >= 90 ? 'bg-gray-900 text-white' :
                   selectedMatchScore.totalScore >= 80 ? 'bg-gray-800 text-white' :
                   'bg-gray-700 text-white'
                 }`}>
-                  {selectedMatchScore.totalScore}점
+                  {selectedMatchScore.totalScore} điểm
                 </div>
               </div>
 
@@ -710,7 +714,7 @@ export default function InfluencerSearchPage() {
               <div className="space-y-2">
                 {selectedMatchScore.strengths.length > 0 && (
                   <div className="p-3 bg-white rounded-lg border border-gray-200">
-                    <p className="text-xs font-semibold text-gray-900 mb-1.5">강점</p>
+                    <p className="text-xs font-semibold text-gray-900 mb-1.5">{language === 'ko' ? '강점' : 'Điểm mạnh'}</p>
                     <ul className="text-xs text-gray-600 space-y-1">
                       {selectedMatchScore.strengths.slice(0, 3).map((strength: string, idx: number) => (
                         <li key={idx}>• {strength}</li>
@@ -720,7 +724,7 @@ export default function InfluencerSearchPage() {
                 )}
                 {selectedMatchScore.concerns.length > 0 && (
                   <div className="p-3 bg-white rounded-lg border border-gray-200">
-                    <p className="text-xs font-semibold text-gray-900 mb-1.5">주의사항</p>
+                    <p className="text-xs font-semibold text-gray-900 mb-1.5">{language === 'ko' ? '유의사항' : 'Lưu ý'}</p>
                     <ul className="text-xs text-gray-600 space-y-1">
                       {selectedMatchScore.concerns.map((concern: string, idx: number) => (
                         <li key={idx}>• {concern}</li>
@@ -733,12 +737,12 @@ export default function InfluencerSearchPage() {
 
             {/* Message Input */}
             <div className="mb-4">
-              <label className="text-sm text-gray-900 mb-2 block font-semibold">초대 메시지</label>
+              <label className="text-sm text-gray-900 mb-2 block font-semibold">{language === 'ko' ? '초대 메시지' : 'Nội dung lời mời'}</label>
               <textarea
                 value={inviteMessage}
                 onChange={(e) => setInviteMessage(e.target.value)}
                 className="w-full h-32 px-4 py-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-gray-900 text-gray-900 bg-gray-50"
-                placeholder="인플루언서에게 보낼 메시지를 작성하세요..."
+                placeholder={language === 'ko' ? 'KOL에게 보낼 메시지를 입력하세요...' : 'Nhập tin nhắn gửi đến KOL...'}
               />
             </div>
 
@@ -748,14 +752,14 @@ export default function InfluencerSearchPage() {
                 onClick={() => setShowInviteModal(false)}
                 className="flex-1 px-4 py-3 bg-gray-100 text-gray-900 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
               >
-                취소
+                {language === 'ko' ? '취소' : 'Hủy'}
               </button>
               <button
                 onClick={handleSendInvite}
                 className="flex-1 px-4 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
               >
                 <Send size={16} />
-                초대 발송
+                {language === 'ko' ? '초대장 보내기' : 'Gửi lời mời'}
               </button>
             </div>
           </div>

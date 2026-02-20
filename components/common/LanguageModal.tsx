@@ -53,8 +53,8 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-dark-600">
           <div>
-            <h3 className="text-xl font-bold text-white">언어 선택 / Language</h3>
-            <p className="text-sm text-gray-400 mt-1">Chọn ngôn ngữ của bạn</p>
+            <h3 className="text-xl font-bold text-white">{language === 'ko' ? '언어 선택' : 'Chọn ngôn ngữ'}</h3>
+            <p className="text-sm text-gray-400 mt-1">{language === 'ko' ? '사용할 언어를 선택하세요' : 'Chọn ngôn ngữ của bạn'}</p>
           </div>
           <button
             onClick={onClose}
@@ -110,7 +110,7 @@ export default function LanguageModal({ isOpen, onClose }: LanguageModalProps) {
         {/* Footer Info */}
         <div className="p-4 border-t border-dark-600">
           <p className="text-xs text-gray-500 text-center">
-            언어 설정은 자동으로 저장됩니다 · Cài đặt ngôn ngữ sẽ được lưu tự động
+            {language === 'ko' ? '언어 설정은 자동으로 저장됩니다' : 'Cài đặt ngôn ngữ sẽ được lưu tự động'}
           </p>
         </div>
       </div>

@@ -168,7 +168,7 @@ export default function InfluencerProfilePage() {
             className="mt-4 w-full py-2.5 rounded-xl bg-dark-600 border border-dark-400 text-sm text-gray-300 flex items-center justify-center gap-2"
           >
             {copied ? <CheckCircle size={15} className="text-accent" /> : <Share2 size={15} />}
-            {copied ? 'Đã sao chép link hồ sơ!' : 'Chia sẻ hồ sơ với nhà quảng cáo'}
+            {copied ? (language === 'ko' ? '프로필 링크 복사됨!' : 'Đã sao chép link hồ sơ!') : (language === 'ko' ? '광고주와 프로필 공유' : 'Chia sẻ hồ sơ với nhà quảng cáo')}
           </button>
         </div>
 

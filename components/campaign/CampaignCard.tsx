@@ -5,6 +5,7 @@ import { DollarSign, Calendar, MapPin, TrendingUp, X, Heart } from 'lucide-react
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import { formatCash } from '@/lib/points';
 import type { Platform } from '@/types';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const platformIcons = {
   instagram: FaInstagram,
@@ -41,6 +42,7 @@ export default function CampaignCard({
   generateApplicantAvatars,
   t,
 }: CampaignCardProps) {
+  const { language } = useLanguage();
   return (
     <Link href={campaignUrl}>
       <div className="card-hover overflow-hidden p-0 cursor-pointer border-2 border-dark-500/50 hover:border-primary/50 shadow-xl">
@@ -226,14 +228,14 @@ export default function CampaignCard({
           {/* Action Buttons */}
           <div className="flex items-center gap-2 pt-3 border-t border-dark-500">
             <div className="flex-1 text-xs text-gray-400 truncate">
-              📅 HSD: {campaign.deadline}
+              📅 {language === 'ko' ? '마감' : 'HSD'}: {campaign.deadline}
             </div>
             <Link
               href={`${campaignUrl}`}
               onClick={e => e.stopPropagation()}
               className="px-3 py-2 rounded-lg text-xs text-gray-300 bg-dark-600 hover:bg-dark-500 transition-all whitespace-nowrap"
             >
-              Xem chi tiết
+              {language === 'ko' ? '상세보기' : 'Xem chi tiết'}
             </Link>
             <Link
               href={`${campaignUrl}?apply=true`}
@@ -244,7 +246,7 @@ export default function CampaignCard({
                   : 'bg-dark-500 text-gray-500 cursor-default pointer-events-none'
               }`}
             >
-              🎯 Ứng tuyển
+              🎯 {language === 'ko' ? '지원하기' : 'Ứng tuyển'}
             </Link>
           </div>
         </div>

@@ -59,7 +59,7 @@ export default function SocialLogin({
   onError,
   providers = ['google', 'facebook', 'kakao', 'naver'],
   layout = 'grid',
-  language = 'ko',
+  language = 'vi',
 }: SocialLoginProps) {
   const [loading, setLoading] = useState<SocialProvider | null>(null);
   const toast = useToast();
@@ -101,8 +101,8 @@ export default function SocialLogin({
       };
 
       toast.success(
-        `${providerConfig[provider].name} 로그인 성공`,
-        '환영합니다!'
+        language === 'ko' ? `${providerConfig[provider].name} 로그인 성공` : `Đăng nhập ${providerConfig[provider].name} thành công`,
+        language === 'ko' ? '환영합니다!' : 'Chào mừng!'
       );
 
       onSuccess?.(provider, mockData);

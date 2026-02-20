@@ -36,7 +36,7 @@ export async function createTransaction(
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '포인트 거래 실패');
+    throw new Error(data.error || 'Giao dịch điểm thất bại');
   }
 
   return data;
@@ -48,7 +48,7 @@ export async function getTransactions(userId: string): Promise<PointTransaction[
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '거래 내역 조회 실패');
+    throw new Error(data.error || 'Không thể truy vấn lịch sử giao dịch');
   }
 
   return data.transactions;
@@ -88,5 +88,5 @@ export async function withdrawCash(
   transaction: PointTransaction;
   newBalance: number;
 }> {
-  return createTransaction(userId, 'withdrawal', 'cash', -Math.abs(amount), '현금 출금');
+  return createTransaction(userId, 'withdrawal', 'cash', -Math.abs(amount), 'Rút tiền mặt');
 }

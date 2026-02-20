@@ -3,6 +3,7 @@
 import { ThumbsUp } from 'lucide-react';
 import Rating from './Rating';
 import type { Review } from '@/contexts/ReviewContext';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface ReviewCardProps {
   review: Review;
@@ -10,17 +11,28 @@ interface ReviewCardProps {
 }
 
 export default function ReviewCard({ review, onMarkHelpful }: ReviewCardProps) {
+  const { language } = useLanguage();
+
   const formatDate = (date: Date) => {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / 86400000);
 
-    if (days === 0) return '오늘';
-    if (days === 1) return '어제';
-    if (days < 7) return `${days}일 전`;
-    if (days < 30) return `${Math.floor(days / 7)}주 전`;
-    if (days < 365) return `${Math.floor(days / 30)}개월 전`;
-    return `${Math.floor(days / 365)}년 전`;
+    if (language === 'ko') {
+      if (days === 0) return '오늘';
+      if (days === 1) return '어제';
+      if (days < 7) return `${days}일 전`;
+      if (days < 30) return `${Math.floor(days / 7)}주 전`;
+      if (days < 365) return `${Math.floor(days / 30)}개월 전`;
+      return `${Math.floor(days / 365)}년 전`;
+    } else {
+      if (days === 0) return 'Hôm nay';
+      if (days === 1) return 'Hôm qua';
+      if (days < 7) return `${days} ngày trước`;
+      if (days < 30) return `${Math.floor(days / 7)} tuần trước`;
+      if (days < 365) return `${Math.floor(days / 30)} tháng trước`;
+      return `${Math.floor(days / 365)} năm trước`;
+    }
   };
 
   return (
@@ -50,7 +62,7 @@ export default function ReviewCard({ review, onMarkHelpful }: ReviewCardProps) {
           className="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors"
         >
           <ThumbsUp size={14} />
-          <span>도움됨 ({review.helpful})</span>
+          <span>{language === 'ko' ? `도움됨 (${review.helpful})` : `Hữu ích (${review.helpful})`}</span>
         </button>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Bell, CheckCircle, Clock, DollarSign, AlertCircle, Trash2, Users, FileText } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface Notification {
   id: string;
@@ -89,6 +90,7 @@ const mockNotifications: Notification[] = [
 
 export default function AdvertiserNotificationsPage() {
   const router = useRouter();
+  const { language } = useLanguage();
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
@@ -118,7 +120,7 @@ export default function AdvertiserNotificationsPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title="Thông báo" showBack />
+      <MobileHeader title={language === 'ko' ? '알림' : 'Thông báo'} showBack />
 
       <div className="container-mobile py-5 space-y-4">
         {/* Filter */}
@@ -130,7 +132,7 @@ export default function AdvertiserNotificationsPage() {
                 filter === 'all' ? 'bg-primary text-white' : 'bg-dark-600 text-gray-400'
               }`}
             >
-              Tất cả ({notifications.length})
+              {language === 'ko' ? '전체' : 'Tất cả'} ({notifications.length})
             </button>
             <button
               onClick={() => setFilter('unread')}
@@ -138,12 +140,12 @@ export default function AdvertiserNotificationsPage() {
                 filter === 'unread' ? 'bg-primary text-white' : 'bg-dark-600 text-gray-400'
               }`}
             >
-              Chưa đọc ({unreadCount})
+              {language === 'ko' ? '미읽음' : 'Chưa đọc'} ({unreadCount})
             </button>
           </div>
           {unreadCount > 0 && (
             <button onClick={markAllAsRead} className="text-xs text-primary hover:underline">
-              Đánh dấu đã đọc
+              {language === 'ko' ? '모두 읽음 처리' : 'Đánh dấu đã đọc'}
             </button>
           )}
         </div>
@@ -153,7 +155,7 @@ export default function AdvertiserNotificationsPage() {
           {filteredNotifications.length === 0 ? (
             <div className="card border-2 border-dark-500 shadow-xl text-center py-12">
               <Bell size={48} className="text-gray-600 mx-auto mb-3" />
-              <p className="text-gray-400">Không có thông báo</p>
+              <p className="text-gray-400">{language === 'ko' ? '알림이 없습니다' : 'Không có thông báo'}</p>
             </div>
           ) : (
             filteredNotifications.map((notification) => {

@@ -81,7 +81,7 @@ const platformColors = {
 
 export default function PortfolioPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [filter, setFilter] = useState<'all' | 'instagram' | 'tiktok' | 'youtube'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
@@ -382,22 +382,22 @@ export default function PortfolioPage() {
               <div className="text-center">
                 <Eye size={18} className="text-gray-400 mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.views)}</div>
-                <div className="text-xs text-gray-400">조회수</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '조회수' : 'Lượt xem'}</div>
               </div>
               <div className="text-center">
                 <Heart size={18} className="text-red-400 mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.likes)}</div>
-                <div className="text-xs text-gray-400">좋아요</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '좋아요' : 'Lượt thích'}</div>
               </div>
               <div className="text-center">
                 <MessageCircle size={18} className="text-blue-400 mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.comments)}</div>
-                <div className="text-xs text-gray-400">댓글</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '댓글' : 'Bình luận'}</div>
               </div>
               <div className="text-center">
                 <TrendingUp size={18} className="text-accent mx-auto mb-1" />
                 <div className="text-sm font-bold text-accent">{selectedPortfolio.metrics.engagement}%</div>
-                <div className="text-xs text-gray-400">참여율</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '참여율' : 'Tương tác'}</div>
               </div>
             </div>
             {selectedPortfolio.feedback && (
@@ -413,7 +413,7 @@ export default function PortfolioPage() {
               onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink size={18} />
-              원본 콘텐츠 보기
+              {language === 'ko' ? '원본 콘텐츠 보기' : 'Xem nội dung gốc'}
             </a>
           </div>
         </div>

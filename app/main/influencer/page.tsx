@@ -80,7 +80,8 @@ const mockData = {
 };
 
 // 4단계로 단순화: 신청 → 승인 → 작업 → 제출 → 완료
-const STEPS = ['Đăng ký', 'Duyệt', 'Làm việc', 'Nộp bài', 'Hoàn thành'];
+const STEPS_VI = ['Đăng ký', 'Duyệt', 'Làm việc', 'Nộp bài', 'Hoàn thành'];
+const STEPS_KO = ['신청', '승인', '작업', '제출', '완료'];
 
 // ─────────────────────────────────────────────────────────
 
@@ -93,6 +94,7 @@ export default function InfluencerDashboard() {
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
 
+  const STEPS = language === 'ko' ? STEPS_KO : STEPS_VI;
   const urgentCampaign = mockData.inProgress.find((c) => c.daysLeft <= 3);
   const totalConfirmed = mockData.earnings
     .filter((e) => e.status === 'confirmed')
@@ -121,7 +123,7 @@ export default function InfluencerDashboard() {
             />
             <div>
               <div className="font-bold text-white">{userProfile.name}</div>
-              <div className="text-xs text-gray-400">Chỉnh sửa hồ sơ →</div>
+              <div className="text-xs text-gray-400">{language === 'ko' ? '프로필 편집 →' : 'Chỉnh sửa hồ sơ →'}</div>
             </div>
             <ChevronRight size={16} className="text-gray-500 ml-auto" />
           </div>
@@ -135,7 +137,9 @@ export default function InfluencerDashboard() {
                 <AlertCircle size={20} className="text-red-400 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-bold text-red-400">
-                    ⚡ Nộp kết quả trước {urgentCampaign.deadline} — còn {urgentCampaign.daysLeft} ngày!
+                    ⚡ {language === 'ko'
+                      ? `${urgentCampaign.deadline} 전에 결과 제출 — ${urgentCampaign.daysLeft}일 남음!`
+                      : `Nộp kết quả trước ${urgentCampaign.deadline} — còn ${urgentCampaign.daysLeft} ngày!`}
                   </div>
                   <div className="text-xs text-gray-300 truncate mt-0.5">
                     {urgentCampaign.title} · {urgentCampaign.company}
@@ -155,11 +159,11 @@ export default function InfluencerDashboard() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Search size={18} className="text-white" />
-                <span className="text-lg font-bold text-white">Tìm chiến dịch</span>
+                <span className="text-lg font-bold text-white">{language === 'ko' ? '캠페인 찾기' : 'Tìm chiến dịch'}</span>
               </div>
               <div className="text-sm text-white/80">
-                <span className="font-bold text-white">{mockData.campaigns.available} chiến dịch</span>
-                {' '}· +{mockData.campaigns.newToday} mới hôm nay
+                <span className="font-bold text-white">{mockData.campaigns.available} {language === 'ko' ? '캠페인' : 'chiến dịch'}</span>
+                {' '}· +{mockData.campaigns.newToday} {language === 'ko' ? '오늘 신규' : 'mới hôm nay'}
               </div>
             </div>
             <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -173,9 +177,9 @@ export default function InfluencerDashboard() {
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <h3 className="text-sm font-semibold text-gray-300">
-                Đang thực hiện ({mockData.inProgress.length})
+                {language === 'ko' ? `진행 중 (${mockData.inProgress.length})` : `Đang thực hiện (${mockData.inProgress.length})`}
               </h3>
-              <Link href="/main/influencer/jobs" className="text-xs text-primary">Xem tất cả</Link>
+              <Link href="/main/influencer/jobs" className="text-xs text-primary">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
             </div>
 
             <div className="space-y-3">
@@ -192,7 +196,7 @@ export default function InfluencerDashboard() {
                       </div>
                       <div className="flex-shrink-0 text-right">
                         <div className="text-base font-bold text-accent">{formatCash(c.reward)}</div>
-                        <div className="text-[10px] text-gray-400">Hạn: {c.deadline}</div>
+                        <div className="text-[10px] text-gray-400">{language === 'ko' ? '마감:' : 'Hạn:'} {c.deadline}</div>
                       </div>
                     </div>
                   </div>
@@ -222,19 +226,19 @@ export default function InfluencerDashboard() {
                       {c.action === 'submit' && (
                         <button className="w-full py-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold flex items-center justify-center gap-2">
                           <Upload size={15} />
-                          Nộp kết quả · Hạn {c.deadline}
+                          {language === 'ko' ? `결과 제출 · 마감 ${c.deadline}` : `Nộp kết quả · Hạn ${c.deadline}`}
                         </button>
                       )}
                       {c.action === 'check_brief' && (
                         <button className="w-full py-2.5 rounded-xl bg-secondary/20 border border-secondary/40 text-secondary text-sm font-bold flex items-center justify-center gap-2">
                           <CheckCircle size={15} />
-                          Xem yêu cầu chiến dịch →
+                          {language === 'ko' ? '캠페인 요구사항 보기 →' : 'Xem yêu cầu chiến dịch →'}
                         </button>
                       )}
                       {c.action === 'waiting' && (
                         <button className="w-full py-2.5 rounded-xl bg-dark-500 text-gray-400 text-sm flex items-center justify-center gap-2" disabled>
                           <Clock size={15} />
-                          Đang chờ nhà quảng cáo xác nhận...
+                          {language === 'ko' ? '광고주 확인 대기 중...' : 'Đang chờ nhà quảng cáo xác nhận...'}
                         </button>
                       )}
                     </Link>
@@ -249,10 +253,10 @@ export default function InfluencerDashboard() {
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-300">
-              Đơn đã nộp ({mockData.applying.length})
+              {language === 'ko' ? `제출한 신청 (${mockData.applying.length})` : `Đơn đã nộp (${mockData.applying.length})`}
             </h3>
             <Link href="/main/influencer/my-campaigns" className="text-xs text-primary">
-              Xem tất cả
+              {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
             </Link>
           </div>
 
@@ -267,12 +271,12 @@ export default function InfluencerDashboard() {
                   <span className="text-sm font-bold text-gray-300">{formatCash(a.reward)}</span>
                   {a.status === 'pending' && (
                     <span className="text-[10px] px-2 py-1 bg-warning/20 text-warning rounded-full font-bold border border-warning/30">
-                      Đang xét
+                      {language === 'ko' ? '검토 중' : 'Đang xét'}
                     </span>
                   )}
                   {a.status === 'rejected' && (
                     <span className="text-[10px] px-2 py-1 bg-red-500/20 text-red-400 rounded-full font-bold border border-red-500/30">
-                      Từ chối
+                      {language === 'ko' ? '거절' : 'Từ chối'}
                     </span>
                   )}
                 </div>
@@ -286,21 +290,21 @@ export default function InfluencerDashboard() {
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
               <BadgeDollarSign size={14} className="text-accent" />
-              Thu nhập
+              {language === 'ko' ? '수입' : 'Thu nhập'}
             </h3>
-            <Link href="/main/influencer/earnings" className="text-xs text-primary">Xem tất cả</Link>
+            <Link href="/main/influencer/earnings" className="text-xs text-primary">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
           </div>
 
           {/* 요약 */}
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl bg-dark-600 border border-accent/30 p-3">
-              <div className="text-[10px] text-gray-400 mb-1">✅ Đã nhận thanh toán</div>
+              <div className="text-[10px] text-gray-400 mb-1">✅ {language === 'ko' ? '결제 완료' : 'Đã nhận thanh toán'}</div>
               <div className="text-xl font-bold text-accent">{formatCash(totalConfirmed)}</div>
             </div>
             <div className="rounded-xl bg-dark-600 border border-warning/30 p-3">
-              <div className="text-[10px] text-gray-400 mb-1">⏳ Chờ xác nhận</div>
+              <div className="text-[10px] text-gray-400 mb-1">⏳ {language === 'ko' ? '확인 대기' : 'Chờ xác nhận'}</div>
               <div className="text-xl font-bold text-warning">{formatCash(totalWaiting)}</div>
-              <div className="text-[9px] text-gray-500 mt-0.5">Nhà QC xác nhận sau khi nhận tiền</div>
+              <div className="text-[9px] text-gray-500 mt-0.5">{language === 'ko' ? '입금 후 광고주가 확인' : 'Nhà QC xác nhận sau khi nhận tiền'}</div>
             </div>
           </div>
 
@@ -320,7 +324,7 @@ export default function InfluencerDashboard() {
                       {e.paidAt}
                     </div>
                   ) : (
-                    <div className="text-[10px] text-warning mt-0.5">Chờ xác nhận</div>
+                    <div className="text-[10px] text-warning mt-0.5">{language === 'ko' ? '확인 대기' : 'Chờ xác nhận'}</div>
                   )}
                 </div>
               </div>
@@ -330,8 +334,10 @@ export default function InfluencerDashboard() {
           {/* 안내 문구 */}
           <div className="rounded-xl bg-dark-600/50 border border-dark-500 px-4 py-3">
             <p className="text-[11px] text-gray-400 leading-relaxed">
-              💡 <span className="text-gray-300">Exfluencer VN</span> kết nối nhà quảng cáo và KOL.
-              Thanh toán được thực hiện trực tiếp từ nhà quảng cáo. Sau khi nhận tiền, nhà quảng cáo xác nhận trên nền tảng và trạng thái sẽ cập nhật tại đây.
+              {language === 'ko'
+                ? <>💡 <span className="text-gray-300">Exfluencer VN</span>은 광고주와 KOL을 연결합니다. 결제는 광고주에서 직접 이루어집니다. 입금 후 광고주가 플랫폼에서 확인하면 상태가 여기서 업데이트됩니다.</>
+                : <>💡 <span className="text-gray-300">Exfluencer VN</span> kết nối nhà quảng cáo và KOL. Thanh toán được thực hiện trực tiếp từ nhà quảng cáo. Sau khi nhận tiền, nhà quảng cáo xác nhận trên nền tảng và trạng thái sẽ cập nhật tại đây.</>
+              }
             </p>
           </div>
         </div>

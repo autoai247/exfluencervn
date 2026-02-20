@@ -19,7 +19,7 @@ export default function ImageUpload({
   aspectRatio = 'free',
   showPreview = true,
 }: ImageUploadProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -147,7 +147,7 @@ export default function ImageUpload({
               {t.imageUpload.dragDropOrClick}
             </p>
             <p className="text-xs text-gray-500">
-              JPG, PNG, GIF (최대 {maxSizeMB}MB)
+              JPG, PNG, GIF ({language === 'ko' ? `최대 ${maxSizeMB}MB` : `Tối đa ${maxSizeMB}MB`})
             </p>
           </div>
         </div>

@@ -19,7 +19,7 @@ export default function ExportButton({
   filename,
   formats = ['csv', 'json'],
   onExport,
-  language = 'ko',
+  language = 'vi',
   variant = 'button',
 }: ExportButtonProps) {
   const [showMenu, setShowMenu] = useState(false);

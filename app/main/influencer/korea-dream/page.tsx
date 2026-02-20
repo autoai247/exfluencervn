@@ -72,7 +72,7 @@ const topRankers = [
 
 export default function KoreaDreamPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [showExchangeModal, setShowExchangeModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
   const [shoppingPoints, setShoppingPoints] = useState(0);
@@ -110,8 +110,8 @@ export default function KoreaDreamPage() {
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* 페이스북/SNS 공유 최적화 */}
       <SocialMetaTags
-        title="🇰🇷 KOREA DREAM - 한국 뷰티 체험 여행 응모권 | Exfluencer VN"
-        description="왕복 항공 + 4박5일 + 뷰티 시술 + 쇼핑 지원! 총 가치 50,000,000 VND. 지금 응모하고 한국에서 만나요! ✈️"
+        title={language === 'ko' ? '🇰🇷 KOREA DREAM - 한국 뷰티 체험 여행 응모권 | Exfluencer VN' : '🇰🇷 KOREA DREAM - Vé tham dự trải nghiệm làm đẹp Hàn Quốc | Exfluencer VN'}
+        description={language === 'ko' ? '왕복 항공 + 4박5일 + 뷰티 시술 + 쇼핑 지원! 총 가치 50,000,000 VND. 지금 응모하고 한국에서 만나요! ✈️' : 'Vé máy bay khứ hồi + 4 đêm 5 ngày + làm đẹp + hỗ trợ mua sắm! Tổng giá trị 50.000.000 VND. Đăng ký ngay và hẹn gặp tại Hàn Quốc! ✈️'}
         image={typeof window !== 'undefined' ? `${window.location.origin}/api/og/korea-dream` : '/api/og/korea-dream'}
         url={typeof window !== 'undefined' ? window.location.href : undefined}
         type="article"
@@ -171,7 +171,7 @@ export default function KoreaDreamPage() {
                 >
                   {progressPercentage > 30 && (
                     <span className="text-xs text-white font-bold drop-shadow">
-                      {eventData.currentTickets.toLocaleString()}장
+                      {eventData.currentTickets.toLocaleString()}{language === 'ko' ? '장' : ''}
                     </span>
                   )}
                 </div>
@@ -233,7 +233,9 @@ export default function KoreaDreamPage() {
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-400">{t.koreaDream.currentRank}</span>
                 <span className="text-white font-semibold">
-                  {eventData.myRank}위 / {eventData.participants.toLocaleString()}명
+                  {language === 'ko'
+                    ? `${eventData.myRank}위 / ${eventData.participants.toLocaleString()}명`
+                    : `Hạng ${eventData.myRank} / ${eventData.participants.toLocaleString()} người`}
                 </span>
               </div>
             </div>

@@ -18,7 +18,7 @@ interface Stats {
 }
 
 export default function PointsStatsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [stats, setStats] = useState<Stats>({
     totalEarned: 0,
     totalSpent: 0,
@@ -157,7 +157,7 @@ export default function PointsStatsPage() {
                     <span className="text-sm text-success">-{trendPercentage}%</span>
                   </>
                 )}
-                <span className="text-xs text-gray-400">지난 달: {formatShoppingPoints(stats.lastMonthSpent)}</span>
+                <span className="text-xs text-gray-400">{language === 'ko' ? '지난 달' : 'Tháng trước'}: {formatShoppingPoints(stats.lastMonthSpent)}</span>
               </div>
             </div>
 
@@ -203,7 +203,7 @@ export default function PointsStatsPage() {
                         </span>
                       </div>
                       <p className="text-xs text-gray-400">
-                        {new Date(transaction.date).toLocaleDateString('ko-KR')}
+                        {new Date(transaction.date).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
                       </p>
                     </div>
                     <div className="text-right">

@@ -147,7 +147,7 @@ export default function AdvertiserProfileEditPage() {
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      alert(language === 'ko' ? `${t.maxFileSize} 10MB` : 'Kích thước file phải dưới 10MB');
+      alert(language === 'ko' ? `${t.maxFileSize} 10MB` : `${t.maxFileSize} 10MB`);
       return;
     }
 

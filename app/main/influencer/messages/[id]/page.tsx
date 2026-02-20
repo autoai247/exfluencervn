@@ -21,15 +21,19 @@ import { formatCompactNumber } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useMessages, Message } from '@/contexts/MessageContext';
 
-const getTimeLabel = (timestamp: Date) => {
+const getTimeLabel = (timestamp: Date, language: string) => {
   const hours = timestamp.getHours();
   const minutes = timestamp.getMinutes();
-  const ampm = hours >= 12 ? '오후' : '오전';
-  const displayHours = hours % 12 || 12;
-  return `${ampm} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
+  if (language === 'ko') {
+    const ampm = hours >= 12 ? '오후' : '오전';
+    const displayHours = hours % 12 || 12;
+    return `${ampm} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
+  } else {
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
 };
 
-const getDateLabel = (timestamp: Date) => {
+const getDateLabel = (timestamp: Date, language: string) => {
   const today = new Date();
   const messageDate = new Date(timestamp);
 
@@ -38,7 +42,7 @@ const getDateLabel = (timestamp: Date) => {
     messageDate.getMonth() === today.getMonth() &&
     messageDate.getFullYear() === today.getFullYear()
   ) {
-    return '오늘';
+    return language === 'ko' ? '오늘' : 'Hôm nay';
   }
 
   const yesterday = new Date(today);
@@ -49,15 +53,19 @@ const getDateLabel = (timestamp: Date) => {
     messageDate.getMonth() === yesterday.getMonth() &&
     messageDate.getFullYear() === yesterday.getFullYear()
   ) {
-    return '어제';
+    return language === 'ko' ? '어제' : 'Hôm qua';
   }
 
-  return `${messageDate.getMonth() + 1}월 ${messageDate.getDate()}일`;
+  if (language === 'ko') {
+    return `${messageDate.getMonth() + 1}월 ${messageDate.getDate()}일`;
+  } else {
+    return `${messageDate.getDate()}/${messageDate.getMonth() + 1}`;
+  }
 };
 
 export default function ConversationPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { getMessages, getConversation, sendMessage, markAsRead, typingIndicators } = useMessages();
   const [message, setMessage] = useState('');
   const [showAttachMenu, setShowAttachMenu] = useState(false);
@@ -99,7 +107,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
   let currentDate = '';
 
   messages.forEach((msg) => {
-    const dateLabel = getDateLabel(msg.timestamp);
+    const dateLabel = getDateLabel(msg.timestamp, language);
     if (dateLabel !== currentDate) {
       currentDate = dateLabel;
       groupedMessages.push({ date: dateLabel, messages: [] });
@@ -141,7 +149,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 <h2 className="text-sm font-bold text-white truncate">{conversation.name}</h2>
                 <p className="text-xs text-gray-400 truncate">{conversation.campaignTitle}</p>
                 {isTyping && (
-                  <p className="text-xs text-primary">입력 중...</p>
+                  <p className="text-xs text-primary">{language === 'ko' ? '입력 중...' : 'Đang nhập...'}</p>
                 )}
               </div>
             </div>
@@ -237,7 +245,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
                       {/* Time & Status */}
                       <div className={`flex items-center gap-1 mt-1 px-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                        <span className="text-xs text-gray-500">{getTimeLabel(msg.timestamp)}</span>
+                        <span className="text-xs text-gray-500">{getTimeLabel(msg.timestamp, language)}</span>
                         {isMe && (
                           <div>
                             {msg.status === 'read' && (
@@ -324,7 +332,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-white">{t.messages.gallery}</p>
-                    <p className="text-xs text-gray-400">Chọn ảnh</p>
+                    <p className="text-xs text-gray-400">{language === 'ko' ? '사진 선택' : 'Chọn ảnh'}</p>
                   </div>
                 </button>
                 <button
@@ -336,7 +344,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-white">{t.messages.camera}</p>
-                    <p className="text-xs text-gray-400">Chụp ảnh</p>
+                    <p className="text-xs text-gray-400">{language === 'ko' ? '사진 찍기' : 'Chụp ảnh'}</p>
                   </div>
                 </button>
                 <button
@@ -348,7 +356,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-white">{t.messages.file}</p>
-                    <p className="text-xs text-gray-400">Đính kèm</p>
+                    <p className="text-xs text-gray-400">{language === 'ko' ? '파일 첨부' : 'Đính kèm'}</p>
                   </div>
                 </button>
               </div>

@@ -11,24 +11,24 @@ const mockWallet = {
   bankAccounts: [
     {
       id: '1',
-      bankName: 'KB국민은행',
+      bankName: 'Vietcombank',
       accountNumber: '1234-56-789012',
-      accountHolder: '김민수',
+      accountHolder: 'Nguyễn Văn A',
       isDefault: true,
     },
     {
       id: '2',
-      bankName: '신한은행',
+      bankName: 'Techcombank',
       accountNumber: '9876-54-321098',
-      accountHolder: '김민수',
+      accountHolder: 'Nguyễn Văn A',
       isDefault: false,
     },
   ],
 };
 
-const MIN_WITHDRAWAL = 100000; // 최소 출금액 100,000 VND
-const FEE_RATE = 0.02; // 수수료 2%
-const MIN_FEE = 10000; // 최소 수수료 10,000 VND
+const MIN_WITHDRAWAL = 100000; // Số tiền rút tối thiểu 100,000 VND
+const FEE_RATE = 0.02; // Phí 2%
+const MIN_FEE = 10000; // Phí tối thiểu 10,000 VND
 
 export default function WithdrawalPage() {
   const router = useRouter();
@@ -63,7 +63,7 @@ export default function WithdrawalPage() {
   };
 
   const confirmWithdrawal = () => {
-    alert(t.wallet.withdrawalSuccess || '출금 요청이 완료되었습니다!\n처리까지 영업일 기준 1-3일 소요됩니다.');
+    alert(t.wallet.withdrawalSuccess);
     setShowConfirmModal(false);
     router.back();
   };
@@ -78,7 +78,7 @@ export default function WithdrawalPage() {
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-white">{t.wallet.withdrawalRequest || '출금 요청'}</h1>
+          <h1 className="text-lg font-bold text-white">{t.wallet.withdrawalRequest}</h1>
         </div>
       </div>
 
@@ -87,7 +87,7 @@ export default function WithdrawalPage() {
         <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">{t.wallet.availableBalance || '출금 가능 금액'}</p>
+              <p className="text-sm text-gray-400 mb-1">{t.wallet.availableBalance}</p>
               <div className="text-2xl font-bold text-white">
                 {formatPoints(mockWallet.available)}
               </div>
@@ -101,7 +101,7 @@ export default function WithdrawalPage() {
           {/* Amount Input */}
           <div className="card border-2 border-dark-500/50 shadow-xl">
             <label className="text-sm font-medium text-gray-300 mb-3 block">
-              {t.wallet.withdrawalAmount || '출금 금액'}
+              {t.wallet.withdrawalAmount}
             </label>
             <div className="relative">
               <input
@@ -125,7 +125,7 @@ export default function WithdrawalPage() {
                   onClick={() => setQuickAmount(value)}
                   className="btn btn-ghost text-xs py-2"
                 >
-                  {value === mockWallet.available ? (t.wallet.allAmount || '전액') : `${(value / 1000).toFixed(0)}K`}
+                  {value === mockWallet.available ? t.wallet.allAmount : `${(value / 1000).toFixed(0)}K`}
                 </button>
               ))}
             </div>
@@ -133,12 +133,12 @@ export default function WithdrawalPage() {
             {/* Error Message */}
             {parsedAmount > 0 && parsedAmount < MIN_WITHDRAWAL && (
               <p className="text-xs text-error mt-2">
-                {t.wallet.minimumWithdrawalError || '최소 출금 금액은'} {formatPoints(MIN_WITHDRAWAL)}{t.wallet.minimumWithdrawalErrorSuffix || '입니다.'}
+                {t.wallet.minimumWithdrawalError} {formatPoints(MIN_WITHDRAWAL)}{t.wallet.minimumWithdrawalErrorSuffix}
               </p>
             )}
             {parsedAmount > mockWallet.available && (
               <p className="text-xs text-error mt-2">
-                {t.wallet.exceededBalanceError || '출금 가능 금액을 초과했습니다.'}
+                {t.wallet.exceededBalanceError}
               </p>
             )}
           </div>
@@ -146,7 +146,7 @@ export default function WithdrawalPage() {
           {/* Bank Account Selection */}
           <div className="card border-2 border-dark-500/50 shadow-xl">
             <label className="text-sm font-medium text-gray-300 mb-3 block">
-              {t.wallet.withdrawalAccount || '출금 계좌'}
+              {t.wallet.withdrawalAccount}
             </label>
             <div className="space-y-2">
               {mockWallet.bankAccounts.map((account) => (
@@ -166,7 +166,7 @@ export default function WithdrawalPage() {
                         <h4 className="font-semibold text-white">{account.bankName}</h4>
                         {account.isDefault && (
                           <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full">
-                            {t.wallet.defaultAccount || '기본'}
+                            {t.wallet.defaultAccount}
                           </span>
                         )}
                       </div>
@@ -187,19 +187,19 @@ export default function WithdrawalPage() {
           {/* Withdrawal Summary */}
           {parsedAmount > 0 && canWithdraw && (
             <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
-              <h3 className="text-sm font-semibold text-white mb-3">{t.wallet.withdrawalSummary || '출금 요약'}</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">{t.wallet.withdrawalSummary}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">{t.wallet.requestedAmount || '요청 금액'}</span>
+                  <span className="text-gray-400">{t.wallet.requestedAmount}</span>
                   <span className="text-white font-semibold">{formatPoints(parsedAmount)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">{t.wallet.fee || '수수료'} (2%)</span>
+                  <span className="text-gray-400">{t.wallet.fee} (2%)</span>
                   <span className="text-error">-{formatPoints(fee)}</span>
                 </div>
                 <div className="h-px bg-dark-500 my-2" />
                 <div className="flex justify-between">
-                  <span className="text-white font-semibold">{t.wallet.actualDeposit || '실제 입금액'}</span>
+                  <span className="text-white font-semibold">{t.wallet.actualDeposit}</span>
                   <span className="text-success font-bold text-lg">{formatPoints(finalAmount)}</span>
                 </div>
               </div>
@@ -211,12 +211,12 @@ export default function WithdrawalPage() {
             <div className="flex gap-3">
               <AlertCircle size={20} className="text-warning flex-shrink-0" />
               <div className="text-sm text-gray-300">
-                <p className="font-semibold text-white mb-2">{t.wallet.withdrawalGuide || '출금 안내'}</p>
+                <p className="font-semibold text-white mb-2">{t.wallet.withdrawalGuide}</p>
                 <ul className="space-y-1 text-xs">
-                  <li>• {t.wallet.minimumWithdrawal || '최소 출금 금액'}: {formatPoints(MIN_WITHDRAWAL)}</li>
-                  <li>• {t.wallet.withdrawalFee || '출금 수수료'}: 2% ({t.wallet.minimum || '최소'} {formatPoints(MIN_FEE)})</li>
-                  <li>• {t.wallet.processingTime || '처리 시간'}: {t.wallet.processingDays || '영업일 기준 1-3일'}</li>
-                  <li>• {t.wallet.noCancellation || '출금 요청 후에는 취소가 불가능합니다'}</li>
+                  <li>• {t.wallet.minimumWithdrawal}: {formatPoints(MIN_WITHDRAWAL)}</li>
+                  <li>• {t.wallet.withdrawalFee}: 2% ({t.wallet.minimum} {formatPoints(MIN_FEE)})</li>
+                  <li>• {t.wallet.processingTime}: {t.wallet.processingDays}</li>
+                  <li>• {t.wallet.noCancellation}</li>
                 </ul>
               </div>
             </div>
@@ -229,7 +229,7 @@ export default function WithdrawalPage() {
             className="btn btn-primary w-full text-base"
           >
             <ArrowUpRight size={18} className="mr-2" />
-            {parsedAmount > 0 ? `${formatPoints(finalAmount)} ${t.wallet.withdrawalRequest || '출금 요청'}` : (t.wallet.withdrawalRequest || '출금 요청')}
+            {parsedAmount > 0 ? `${formatPoints(finalAmount)} ${t.wallet.withdrawalRequest}` : t.wallet.withdrawalRequest}
           </button>
         </form>
       </div>
@@ -238,24 +238,24 @@ export default function WithdrawalPage() {
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="bg-dark-600 rounded-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold text-white mb-4">{t.wallet.confirmWithdrawal || '출금 요청 확인'}</h3>
+            <h3 className="text-lg font-bold text-white mb-4">{t.wallet.confirmWithdrawal}</h3>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">{t.wallet.withdrawalAmount || '출금 금액'}</span>
+                <span className="text-gray-400">{t.wallet.withdrawalAmount}</span>
                 <span className="text-white font-semibold">{formatPoints(parsedAmount)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">{t.wallet.fee || '수수료'}</span>
+                <span className="text-gray-400">{t.wallet.fee}</span>
                 <span className="text-error">-{formatPoints(fee)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">{t.wallet.actualDeposit || '실제 입금액'}</span>
+                <span className="text-gray-400">{t.wallet.actualDeposit}</span>
                 <span className="text-success font-bold">{formatPoints(finalAmount)}</span>
               </div>
               <div className="h-px bg-dark-500 my-2" />
               <div className="bg-dark-700 p-3 rounded-lg">
-                <p className="text-xs text-gray-400 mb-1">{t.wallet.depositAccount || '입금 계좌'}</p>
+                <p className="text-xs text-gray-400 mb-1">{t.wallet.depositAccount}</p>
                 <p className="text-sm text-white font-semibold">{selectedBankAccount?.bankName}</p>
                 <p className="text-sm text-gray-300">{selectedBankAccount?.accountNumber}</p>
                 <p className="text-xs text-gray-400 mt-1">{selectedBankAccount?.accountHolder}</p>
@@ -263,7 +263,7 @@ export default function WithdrawalPage() {
             </div>
 
             <p className="text-xs text-warning mb-4">
-              {t.wallet.confirmWarning || '출금 요청 후에는 취소가 불가능합니다. 정보를 확인해주세요.'}
+              {t.wallet.confirmWarning}
             </p>
 
             <div className="flex gap-3">

@@ -68,7 +68,7 @@ const REFERRAL_LINK = `https://exfluencer.vn/signup?ref=${REFERRAL_CODE}`;
 
 export default function ReferralPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopyCode = () => {
@@ -86,8 +86,10 @@ export default function ReferralPage() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Exfluencer VN 초대',
-        text: `나와 함께 Exfluencer VN에서 활동해요! 가입하고 ${formatPoints(50000)}을 받으세요!`,
+        title: language === 'ko' ? 'Exfluencer VN 초대' : 'Mời bạn tham gia Exfluencer VN',
+        text: language === 'ko'
+          ? `나와 함께 Exfluencer VN에서 활동해요! 가입하고 ${formatPoints(50000)}을 받으세요!`
+          : `Hãy cùng tôi hoạt động trên Exfluencer VN! Đăng ký và nhận ${formatPoints(50000)}!`,
         url: REFERRAL_LINK,
       });
     } else {
@@ -99,8 +101,8 @@ export default function ReferralPage() {
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* 페이스북/SNS 공유 최적화 */}
       <SocialMetaTags
-        title="💰 친구 초대하고 평생 수익! 응모권 5장 무료 | Exfluencer VN"
-        description="친구 1명 초대 시 30,000 SP + 응모권 5장 무료! 친구가 캠페인 할 때마다 5% 평생 자동 수익! 지금 바로 초대하세요 🚀"
+        title={language === 'ko' ? '💰 친구 초대하고 평생 수익! 응모권 5장 무료 | Exfluencer VN' : '💰 Mời bạn bè nhận thu nhập trọn đời! 5 vé bốc thăm miễn phí | Exfluencer VN'}
+        description={language === 'ko' ? '친구 1명 초대 시 30,000 SP + 응모권 5장 무료! 친구가 캠페인 할 때마다 5% 평생 자동 수익! 지금 바로 초대하세요 🚀' : 'Mời 1 bạn nhận 30,000 SP + 5 vé bốc thăm miễn phí! Thu nhập tự động 5% suốt đời khi bạn bè làm chiến dịch! Mời ngay 🚀'}
         image={typeof window !== 'undefined' ? `${window.location.origin}/api/og/referral` : '/api/og/referral'}
         url={typeof window !== 'undefined' ? window.location.href : undefined}
       />
@@ -127,7 +129,7 @@ export default function ReferralPage() {
                 <div className="flex items-center justify-center gap-3">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                      +5장
+                      +{language === 'ko' ? '5장' : '5 vé'}
                     </div>
                     <div className="text-xs text-gray-300">{t.referral.freeTickets}</div>
                   </div>
@@ -160,9 +162,9 @@ export default function ReferralPage() {
             <div className="relative z-10 text-center mb-4">
               <div className="text-7xl mb-3">💰</div>
               <h1 className="text-3xl font-bold text-white mb-3">
-                친구 초대하고<br/>
+                {language === 'ko' ? '친구 초대하고' : 'Mời bạn bè'}<br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-yellow-400">
-                  평생 수익!
+                  {language === 'ko' ? '평생 수익!' : 'Thu nhập trọn đời!'}
                 </span>
               </h1>
               <p className="text-base text-gray-200 mb-2">
@@ -221,7 +223,7 @@ export default function ReferralPage() {
 
           <div className="bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/40 rounded-xl p-5 mb-4 shadow-lg">
             <div className="text-center mb-3">
-              <p className="text-xs text-gray-400 mb-2">내 초대 코드</p>
+              <p className="text-xs text-gray-400 mb-2">{language === 'ko' ? '내 초대 코드' : 'Mã mời của tôi'}</p>
               <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent tracking-widest">
                 {REFERRAL_CODE}
               </div>
@@ -266,7 +268,7 @@ export default function ReferralPage() {
 
               {/* WhatsApp */}
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`나와 함께 Exfluencer VN에서 활동해요! 가입하고 ${formatPoints(30000)}과 응모권 5장을 받으세요! ${REFERRAL_LINK}`)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(language === 'ko' ? `나와 함께 Exfluencer VN에서 활동해요! 가입하고 ${formatPoints(30000)}과 응모권 5장을 받으세요! ${REFERRAL_LINK}` : `Hãy cùng tôi hoạt động trên Exfluencer VN! Đăng ký và nhận ${formatPoints(30000)} cùng 5 vé bốc thăm! ${REFERRAL_LINK}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn bg-green-500 hover:bg-green-600 text-white border-0 py-4 shadow-lg"
@@ -288,14 +290,14 @@ export default function ReferralPage() {
             {/* 일반 공유 버튼 */}
             <button onClick={handleCopyLink} className="w-full btn btn-ghost border-2 border-dark-500 py-3">
               <Copy size={18} className="mr-2" />
-              링크 복사
+              {language === 'ko' ? '링크 복사' : 'Sao chép liên kết'}
             </button>
           </div>
         </div>
 
         {/* How it Works */}
         <div className="space-y-6">
-          <h3 className="text-lg font-bold text-white px-1">💡 5% 영구 수익 시스템</h3>
+          <h3 className="text-lg font-bold text-white px-1">💡 {language === 'ko' ? '5% 영구 수익 시스템' : 'Hệ thống thu nhập 5% trọn đời'}</h3>
 
           <div className="card bg-gradient-to-br from-green-500/10 to-green-600/5 border-2 border-green-500/30 shadow-xl">
             <div className="space-y-4">
@@ -305,7 +307,7 @@ export default function ReferralPage() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-white font-bold mb-1">{t.referral.inviteFriend}</p>
-                  <p className="text-xs text-gray-300">추천 코드나 링크를 친구에게 공유</p>
+                  <p className="text-xs text-gray-300">{language === 'ko' ? '추천 코드나 링크를 친구에게 공유' : 'Chia sẻ mã hoặc liên kết giới thiệu cho bạn bè'}</p>
                 </div>
               </div>
 
@@ -316,10 +318,13 @@ export default function ReferralPage() {
                 <div className="flex-1">
                   <p className="text-sm text-white font-bold mb-1">{t.referral.friendSignupComplete}</p>
                   <p className="text-xs text-gray-300 mb-1">
-                    • 친구가 {formatShoppingPoints(30000)} 받음<br />
-                    • 나도 {formatShoppingPoints(30000)} 받음
+                    {language === 'ko' ? (
+                      <>• 친구가 {formatShoppingPoints(30000)} 받음<br />• 나도 {formatShoppingPoints(30000)} 받음</>
+                    ) : (
+                      <>• Bạn bè nhận {formatShoppingPoints(30000)}<br />• Tôi cũng nhận {formatShoppingPoints(30000)}</>
+                    )}
                   </p>
-                  <p className="text-xs text-green-400 font-semibold">✅ 둘 다 보너스 획득!</p>
+                  <p className="text-xs text-green-400 font-semibold">✅ {language === 'ko' ? '둘 다 보너스 획득!' : 'Cả hai cùng nhận thưởng!'}</p>
                 </div>
               </div>
 
@@ -333,18 +338,20 @@ export default function ReferralPage() {
                     <span className="px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">BEST</span>
                   </p>
                   <p className="text-xs text-gray-300 mb-2">
-                    <span className="text-green-400 font-bold">친구가 캠페인 할 때마다</span> 나에게 5% 자동 지급
+                    <span className="text-green-400 font-bold">{language === 'ko' ? '친구가 캠페인 할 때마다' : 'Mỗi khi bạn bè làm chiến dịch'}</span> {language === 'ko' ? '나에게 5% 자동 지급' : 'tôi tự động nhận 5%'}
                   </p>
                   <div className="bg-dark-700 rounded-lg p-3 space-y-1">
-                    <p className="text-xs text-gray-400">예시:</p>
+                    <p className="text-xs text-gray-400">{language === 'ko' ? '예시:' : 'Ví dụ:'}</p>
                     <p className="text-xs text-white">
-                      친구가 500,000 VND 캠페인 완료<br />
-                      → 친구는 <span className="text-green-400 font-bold">500,000 VND</span> 받음<br />
-                      → 나는 <span className="text-green-400 font-bold">+25,000 VND</span> 자동 적립 (5%)
+                      {language === 'ko' ? (
+                        <>친구가 500,000 VND 캠페인 완료<br />→ 친구는 <span className="text-green-400 font-bold">500,000 VND</span> 받음<br />→ 나는 <span className="text-green-400 font-bold">+25,000 VND</span> 자동 적립 (5%)</>
+                      ) : (
+                        <>Bạn bè hoàn thành chiến dịch 500,000 VND<br />→ Bạn bè nhận <span className="text-green-400 font-bold">500,000 VND</span><br />→ Tôi tự động nhận <span className="text-green-400 font-bold">+25,000 VND</span> (5%)</>
+                      )}
                     </p>
                   </div>
                   <p className="text-xs text-green-400 font-semibold mt-2">
-                    ⚡ 친구에게서 빼는 게 아니라 추가로 지급!
+                    ⚡ {language === 'ko' ? '친구에게서 빼는 게 아니라 추가로 지급!' : 'Không trừ từ bạn bè mà được trả thêm!'}
                   </p>
                 </div>
               </div>
@@ -356,24 +363,24 @@ export default function ReferralPage() {
             <div className="space-y-2">
               <h4 className="font-bold text-white flex items-center gap-2">
                 <span>🎯</span>
-                <span>왜 좋은가요?</span>
+                <span>{language === 'ko' ? '왜 좋은가요?' : 'Tại sao nên tham gia?'}</span>
               </h4>
               <ul className="space-y-2 text-sm text-gray-300">
                 <li className="flex items-start gap-2">
                   <span className="text-green-400 flex-shrink-0">✓</span>
-                  <span><strong className="text-white">불이익 없음:</strong> 친구 수익 그대로 + 나만 5% 추가</span>
+                  <span><strong className="text-white">{language === 'ko' ? '불이익 없음:' : 'Không thiệt hại:'}</strong> {language === 'ko' ? '친구 수익 그대로 + 나만 5% 추가' : 'Bạn bè nhận đủ + tôi thêm 5%'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400 flex-shrink-0">✓</span>
-                  <span><strong className="text-white">영구 수익:</strong> 한 번 초대하면 평생 5% 자동 수익</span>
+                  <span><strong className="text-white">{language === 'ko' ? '영구 수익:' : 'Thu nhập trọn đời:'}</strong> {language === 'ko' ? '한 번 초대하면 평생 5% 자동 수익' : 'Mời một lần, nhận 5% tự động mãi mãi'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400 flex-shrink-0">✓</span>
-                  <span><strong className="text-white">무제한:</strong> 친구를 많이 초대할수록 수익 UP!</span>
+                  <span><strong className="text-white">{language === 'ko' ? '무제한:' : 'Không giới hạn:'}</strong> {language === 'ko' ? '친구를 많이 초대할수록 수익 UP!' : 'Mời càng nhiều bạn, thu nhập càng cao!'}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-400 flex-shrink-0">✓</span>
-                  <span><strong className="text-white">자동 지급:</strong> 친구 캠페인 완료 시 즉시 적립</span>
+                  <span><strong className="text-white">{language === 'ko' ? '자동 지급:' : 'Thanh toán tự động:'}</strong> {language === 'ko' ? '친구 캠페인 완료 시 즉시 적립' : 'Tự động nhận ngay khi bạn bè hoàn thành chiến dịch'}</span>
                 </li>
               </ul>
             </div>
@@ -381,35 +388,35 @@ export default function ReferralPage() {
 
           {/* Calculator */}
           <div className="card bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-2 border-blue-500/30 shadow-xl">
-            <h4 className="font-bold text-white mb-3">📊 예상 수익 계산기</h4>
+            <h4 className="font-bold text-white mb-3">📊 {language === 'ko' ? '예상 수익 계산기' : 'Máy tính thu nhập dự kiến'}</h4>
             <div className="space-y-3">
               <div className="bg-dark-700 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-gray-400">활성 추천인 10명</span>
-                  <span className="text-white font-semibold">10명</span>
+                  <span className="text-sm text-gray-400">{language === 'ko' ? '활성 추천인 10명' : '10 người giới thiệu đang hoạt động'}</span>
+                  <span className="text-white font-semibold">{language === 'ko' ? '10명' : '10 người'}</span>
                 </div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-gray-400">월 평균 캠페인</span>
-                  <span className="text-white font-semibold">5개/인</span>
+                  <span className="text-sm text-gray-400">{language === 'ko' ? '월 평균 캠페인' : 'Chiến dịch trung bình/tháng'}</span>
+                  <span className="text-white font-semibold">{language === 'ko' ? '5개/인' : '5 cái/người'}</span>
                 </div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-gray-400">평균 캠페인 단가</span>
+                  <span className="text-sm text-gray-400">{language === 'ko' ? '평균 캠페인 단가' : 'Giá chiến dịch trung bình'}</span>
                   <span className="text-white font-semibold">500,000 VND</span>
                 </div>
                 <div className="border-t border-dark-500 mt-3 pt-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-white font-bold">월 예상 자동 수익</span>
+                    <span className="text-white font-bold">{language === 'ko' ? '월 예상 자동 수익' : 'Thu nhập tự động dự kiến/tháng'}</span>
                     <span className="text-2xl font-bold text-green-400">
                       1,250,000 VND
                     </span>
                   </div>
                   <p className="text-xs text-gray-400 mt-1 text-right">
-                    10명 × 5개 × 500,000 VND × 5% = 1.25M VND/월
+                    {language === 'ko' ? '10명 × 5개 × 500,000 VND × 5% = 1.25M VND/월' : '10 người × 5 cái × 500,000 VND × 5% = 1.25M VND/tháng'}
                   </p>
                 </div>
               </div>
               <p className="text-xs text-gray-400 text-center">
-                💡 추천인이 많을수록 자동 수익이 늘어납니다!
+                💡 {language === 'ko' ? '추천인이 많을수록 자동 수익이 늘어납니다!' : 'Càng nhiều người giới thiệu, thu nhập tự động càng tăng!'}
               </p>
             </div>
           </div>
@@ -418,8 +425,8 @@ export default function ReferralPage() {
         {/* Referral History */}
         <div className="space-y-6">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-400">내 추천인 ({referralStats.totalReferrals}명)</h3>
-            <span className="text-xs text-gray-500">총 {formatShoppingPoints(referralStats.totalEarnings)} 수익</span>
+            <h3 className="text-sm font-semibold text-gray-400">{language === 'ko' ? `내 추천인 (${referralStats.totalReferrals}명)` : `Người được giới thiệu của tôi (${referralStats.totalReferrals} người)`}</h3>
+            <span className="text-xs text-gray-500">{language === 'ko' ? '총' : 'Tổng'} {formatShoppingPoints(referralStats.totalEarnings)} {language === 'ko' ? '수익' : 'thu nhập'}</span>
           </div>
 
           {referralHistory.map((referral) => (
@@ -435,11 +442,11 @@ export default function ReferralPage() {
                     <h4 className="font-bold text-white">{referral.name}</h4>
                     {referral.status === 'active' ? (
                       <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full font-semibold">
-                        ⚡ 활성
+                        ⚡ {language === 'ko' ? '활성' : 'Đang hoạt động'}
                       </span>
                     ) : (
                       <span className="px-2 py-0.5 bg-warning/20 text-warning text-xs rounded-full">
-                        가입 대기
+                        {language === 'ko' ? '가입 대기' : 'Chờ đăng ký'}
                       </span>
                     )}
                   </div>
@@ -456,29 +463,29 @@ export default function ReferralPage() {
                         <div className="bg-dark-700 rounded p-2">
                           <div className="text-xs text-gray-400 mb-0.5">{t.referral.completedCampaigns}</div>
                           <div className="text-sm font-bold text-white">
-                            {referral.campaignsCompleted}개
+                            {referral.campaignsCompleted}{language === 'ko' ? '개' : ''}
                           </div>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>가입: {referral.joinDate}</span>
+                        <span>{language === 'ko' ? '가입' : 'Ngày tham gia'}: {referral.joinDate}</span>
                         {referral.lastCampaignDate && (
-                          <span className="text-success">최근 활동: {referral.lastCampaignDate}</span>
+                          <span className="text-success">{language === 'ko' ? '최근 활동' : 'Hoạt động gần đây'}: {referral.lastCampaignDate}</span>
                         )}
                       </div>
 
                       <div className="mt-2 bg-gradient-to-r from-green-500/10 to-transparent border border-green-500/20 rounded p-2">
                         <p className="text-xs text-green-400 font-semibold">
-                          💰 이 친구가 캠페인 할 때마다 나에게 5% 자동 지급!
+                          💰 {language === 'ko' ? '이 친구가 캠페인 할 때마다 나에게 5% 자동 지급!' : 'Mỗi khi bạn này làm chiến dịch, tôi tự động nhận 5%!'}
                         </p>
                       </div>
                     </>
                   ) : (
                     <>
-                      <p className="text-xs text-gray-400 mt-1">가입일: {referral.joinDate}</p>
+                      <p className="text-xs text-gray-400 mt-1">{language === 'ko' ? '가입일' : 'Ngày đăng ký'}: {referral.joinDate}</p>
                       <p className="text-xs text-warning mt-2">
-                        ⏱️ 친구가 가입을 완료하면 둘 다 {formatShoppingPoints(30000)} 보너스!
+                        ⏱️ {language === 'ko' ? `친구가 가입을 완료하면 둘 다 ${formatShoppingPoints(30000)} 보너스!` : `Khi bạn hoàn tất đăng ký, cả hai cùng nhận ${formatShoppingPoints(30000)} thưởng!`}
                       </p>
                     </>
                   )}

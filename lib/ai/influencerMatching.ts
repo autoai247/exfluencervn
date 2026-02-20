@@ -64,7 +64,8 @@ export interface MatchScore {
  */
 export function calculateMatchScore(
   influencer: Influencer,
-  campaign: Campaign
+  campaign: Campaign,
+  language: 'ko' | 'vi' = 'vi'
 ): MatchScore {
   const breakdown = {
     categoryMatch: 0,
@@ -86,9 +87,11 @@ export function calculateMatchScore(
 
   if (categoryOverlap.length > 0) {
     breakdown.categoryMatch = Math.min(30, categoryOverlap.length * 15);
-    strengths.push(`${categoryOverlap.join(', ')} 카테고리 전문가`);
+    strengths.push(language === 'ko'
+      ? `${categoryOverlap.join(', ')} 카테고리 전문가`
+      : `Chuyên gia danh mục ${categoryOverlap.join(', ')}`);
   } else {
-    concerns.push('캠페인 카테고리와 일치하지 않음');
+    concerns.push(language === 'ko' ? '캠페인 카테고리와 일치하지 않음' : 'Không khớp danh mục chiến dịch');
   }
 
   // 2. 팔로워 범위 매칭 (20점)
@@ -98,13 +101,13 @@ export function calculateMatchScore(
       influencer.followers <= campaign.maxFollowers
     ) {
       breakdown.followerMatch = 20;
-      strengths.push('타겟 팔로워 범위에 완벽 매칭');
+      strengths.push(language === 'ko' ? '타겟 팔로워 범위에 완벽 매칭' : 'Khớp hoàn hảo với phạm vi follower mục tiêu');
     } else if (influencer.followers >= campaign.minFollowers) {
       breakdown.followerMatch = 15;
-      strengths.push('타겟 팔로워보다 높은 도달력');
+      strengths.push(language === 'ko' ? '타겟 팔로워보다 높은 도달력' : 'Tiếp cận cao hơn follower mục tiêu');
     } else {
       breakdown.followerMatch = 5;
-      concerns.push('타겟 팔로워 수보다 낮음');
+      concerns.push(language === 'ko' ? '타겟 팔로워 수보다 낮음' : 'Thấp hơn số follower mục tiêu');
     }
   } else {
     breakdown.followerMatch = 15;
@@ -113,48 +116,56 @@ export function calculateMatchScore(
   // 3. 참여율 점수 (20점)
   if (influencer.engagement >= 5.0) {
     breakdown.engagementScore = 20;
-    strengths.push(`매우 높은 참여율 (${influencer.engagement.toFixed(1)}%)`);
+    strengths.push(language === 'ko'
+      ? `매우 높은 참여율 (${influencer.engagement.toFixed(1)}%)`
+      : `Tỷ lệ tương tác rất cao (${influencer.engagement.toFixed(1)}%)`);
   } else if (influencer.engagement >= 4.0) {
     breakdown.engagementScore = 17;
-    strengths.push(`높은 참여율 (${influencer.engagement.toFixed(1)}%)`);
+    strengths.push(language === 'ko'
+      ? `높은 참여율 (${influencer.engagement.toFixed(1)}%)`
+      : `Tỷ lệ tương tác cao (${influencer.engagement.toFixed(1)}%)`);
   } else if (influencer.engagement >= 3.0) {
     breakdown.engagementScore = 13;
   } else if (influencer.engagement >= 2.0) {
     breakdown.engagementScore = 8;
-    concerns.push('평균 이하의 참여율');
+    concerns.push(language === 'ko' ? '평균 이하의 참여율' : 'Tỷ lệ tương tác dưới trung bình');
   } else {
     breakdown.engagementScore = 3;
-    concerns.push('낮은 참여율');
+    concerns.push(language === 'ko' ? '낮은 참여율' : 'Tỷ lệ tương tác thấp');
   }
 
   // 4. 경험 점수 (15점)
   if (influencer.completedCampaigns >= 50) {
     breakdown.experienceScore = 15;
-    strengths.push(`풍부한 경험 (${influencer.completedCampaigns}개 완료)`);
+    strengths.push(language === 'ko'
+      ? `풍부한 경험 (${influencer.completedCampaigns}개 완료)`
+      : `Kinh nghiệm phong phú (${influencer.completedCampaigns} chiến dịch hoàn thành)`);
   } else if (influencer.completedCampaigns >= 30) {
     breakdown.experienceScore = 12;
-    strengths.push('충분한 캠페인 경험');
+    strengths.push(language === 'ko' ? '충분한 캠페인 경험' : 'Kinh nghiệm chiến dịch đầy đủ');
   } else if (influencer.completedCampaigns >= 10) {
     breakdown.experienceScore = 8;
   } else if (influencer.completedCampaigns >= 5) {
     breakdown.experienceScore = 5;
   } else {
     breakdown.experienceScore = 2;
-    concerns.push('캠페인 경험 부족');
+    concerns.push(language === 'ko' ? '캠페인 경험 부족' : 'Thiếu kinh nghiệm chiến dịch');
   }
 
   // 5. 평점 점수 (10점)
   breakdown.ratingScore = influencer.rating * 2;
   if (influencer.rating >= 4.8) {
-    strengths.push(`최고 평점 (${influencer.rating.toFixed(1)}⭐)`);
+    strengths.push(language === 'ko'
+      ? `최고 평점 (${influencer.rating.toFixed(1)}⭐)`
+      : `Xếp hạng cao nhất (${influencer.rating.toFixed(1)}⭐)`);
   } else if (influencer.rating < 4.0) {
-    concerns.push('평점이 다소 낮음');
+    concerns.push(language === 'ko' ? '평점이 다소 낮음' : 'Xếp hạng hơi thấp');
   }
 
   // 6. 위치 매칭 (5점)
   if (campaign.location && influencer.location.includes(campaign.location)) {
     breakdown.locationMatch = 5;
-    strengths.push('지역 일치');
+    strengths.push(language === 'ko' ? '지역 일치' : 'Khớp khu vực');
   } else if (!campaign.location) {
     breakdown.locationMatch = 3;
   }
@@ -162,7 +173,7 @@ export function calculateMatchScore(
   // 7. 인증 보너스 (5점)
   if (influencer.verified) {
     breakdown.verifiedBonus = 5;
-    strengths.push('✓ 인증된 인플루언서');
+    strengths.push(language === 'ko' ? '✓ 인증된 인플루언서' : '✓ Influencer đã xác minh');
   }
 
   // 총점 계산
@@ -174,17 +185,17 @@ export function calculateMatchScore(
   // 추천 문구 생성
   let recommendation = '';
   if (totalScore >= 90) {
-    recommendation = '🌟 완벽 매칭! 강력 추천';
+    recommendation = language === 'ko' ? '🌟 완벽 매칭! 강력 추천' : '🌟 Khớp hoàn hảo! Đề xuất mạnh mẽ';
   } else if (totalScore >= 80) {
-    recommendation = '✨ 매우 적합 - 적극 추천';
+    recommendation = language === 'ko' ? '✨ 매우 적합 - 적극 추천' : '✨ Rất phù hợp - Đề xuất tích cực';
   } else if (totalScore >= 70) {
-    recommendation = '👍 좋은 매칭 - 추천';
+    recommendation = language === 'ko' ? '👍 좋은 매칭 - 추천' : '👍 Khớp tốt - Đề xuất';
   } else if (totalScore >= 60) {
-    recommendation = '👌 적합 - 고려해볼만';
+    recommendation = language === 'ko' ? '👌 적합 - 고려해볼만' : '👌 Phù hợp - Nên xem xét';
   } else if (totalScore >= 50) {
-    recommendation = '🤔 보통 - 신중히 검토';
+    recommendation = language === 'ko' ? '🤔 보통 - 신중히 검토' : '🤔 Trung bình - Xem xét cẩn thận';
   } else {
-    recommendation = '⚠️ 매칭 부족 - 재검토 필요';
+    recommendation = language === 'ko' ? '⚠️ 매칭 부족 - 재검토 필요' : '⚠️ Khớp kém - Cần xem xét lại';
   }
 
   return {
@@ -202,10 +213,11 @@ export function calculateMatchScore(
  */
 export function rankInfluencers(
   influencers: Influencer[],
-  campaign: Campaign
+  campaign: Campaign,
+  language: 'ko' | 'vi' = 'vi'
 ): MatchScore[] {
   return influencers
-    .map(influencer => calculateMatchScore(influencer, campaign))
+    .map(influencer => calculateMatchScore(influencer, campaign, language))
     .sort((a, b) => b.totalScore - a.totalScore);
 }
 
@@ -215,9 +227,10 @@ export function rankInfluencers(
 export function getTopRecommendations(
   influencers: Influencer[],
   campaign: Campaign,
-  count: number = 10
+  count: number = 10,
+  language: 'ko' | 'vi' = 'vi'
 ): MatchScore[] {
-  return rankInfluencers(influencers, campaign).slice(0, count);
+  return rankInfluencers(influencers, campaign, language).slice(0, count);
 }
 
 /**
@@ -240,9 +253,10 @@ export interface BudgetOptimization {
 export function optimizeBudget(
   influencers: Influencer[],
   campaign: Campaign,
-  budget: number
+  budget: number,
+  language: 'ko' | 'vi' = 'vi'
 ): BudgetOptimization[] {
-  const rankedInfluencers = rankInfluencers(influencers, campaign);
+  const rankedInfluencers = rankInfluencers(influencers, campaign, language);
 
   // 예상 비용 계산 (팔로워 수 기반 간단한 모델)
   const estimateCost = (influencer: Influencer): number => {
@@ -257,13 +271,15 @@ export function optimizeBudget(
 
   // 옵션 1: 대형 KOL 소수 (고품질)
   const option1 = {
-    option: '고품질 콘텐츠',
+    option: language === 'ko' ? '고품질 콘텐츠' : 'Nội dung chất lượng cao',
     totalBudget: 0,
     influencers: [] as any[],
     totalExpectedViews: 0,
     avgMatchScore: 0,
     costPerView: 0,
-    recommendation: '대형 KOL 위주로 고품질 콘텐츠 제작. 브랜드 이미지 강화에 적합.',
+    recommendation: language === 'ko'
+      ? '대형 KOL 위주로 고품질 콘텐츠 제작. 브랜드 이미지 강화에 적합.'
+      : 'Tạo nội dung chất lượng cao với KOL lớn. Phù hợp để nâng cao hình ảnh thương hiệu.',
   };
 
   const largeInfluencers = rankedInfluencers.filter(m => m.influencer.followers >= 100000);
@@ -295,13 +311,15 @@ export function optimizeBudget(
 
   // 옵션 2: 중소형 KOL 다수 (높은 도달률)
   const option2 = {
-    option: '높은 도달률',
+    option: language === 'ko' ? '높은 도달률' : 'Tỷ lệ tiếp cận cao',
     totalBudget: 0,
     influencers: [] as any[],
     totalExpectedViews: 0,
     avgMatchScore: 0,
     costPerView: 0,
-    recommendation: '중소형 KOL 다수로 넓은 타겟 도달. 다양한 오디언스 공략에 적합.',
+    recommendation: language === 'ko'
+      ? '중소형 KOL 다수로 넓은 타겟 도달. 다양한 오디언스 공략에 적합.'
+      : 'Tiếp cận nhiều KOL vừa và nhỏ. Phù hợp để nhắm mục tiêu nhiều đối tượng khác nhau.',
   };
 
   const mediumInfluencers = rankedInfluencers.filter(
@@ -335,13 +353,15 @@ export function optimizeBudget(
 
   // 옵션 3: 균형잡힌 조합
   const option3 = {
-    option: '균형잡힌 조합',
+    option: language === 'ko' ? '균형잡힌 조합' : 'Kết hợp cân bằng',
     totalBudget: 0,
     influencers: [] as any[],
     totalExpectedViews: 0,
     avgMatchScore: 0,
     costPerView: 0,
-    recommendation: '대/중/소형 KOL을 적절히 조합. 균형잡힌 캠페인에 최적.',
+    recommendation: language === 'ko'
+      ? '대/중/소형 KOL을 적절히 조합. 균형잡힌 캠페인에 최적.'
+      : 'Kết hợp hợp lý KOL lớn/vừa/nhỏ. Tối ưu cho chiến dịch cân bằng.',
   };
 
   let remaining3 = budget;

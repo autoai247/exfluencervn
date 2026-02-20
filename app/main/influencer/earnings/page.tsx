@@ -6,6 +6,7 @@ import { ArrowLeft, CheckCircle, Clock, BadgeDollarSign, Info } from 'lucide-rea
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatCash } from '@/lib/points';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // ─── Mock Data ─────────────────────────────────────────────
 const allEarnings = [
@@ -53,6 +54,7 @@ const allEarnings = [
 
 export default function EarningsPage() {
   const router = useRouter();
+  const { language } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [filter, setFilter] = useState<'all' | 'confirmed' | 'waiting'>('all');
 
@@ -72,7 +74,7 @@ export default function EarningsPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title="Thu nhập" showNotification />
+      <MobileHeader title={language === 'ko' ? '수입' : 'Thu nhập'} showNotification />
 
       <div className="container-mobile space-y-4 py-5">
 
@@ -81,27 +83,27 @@ export default function EarningsPage() {
           <div className="rounded-2xl bg-dark-600 border-2 border-accent/40 p-4 shadow-xl">
             <div className="text-[10px] text-gray-400 mb-1 flex items-center gap-1">
               <CheckCircle size={10} className="text-accent" />
-              Đã nhận thanh toán
+              {language === 'ko' ? '결제 완료' : 'Đã nhận thanh toán'}
             </div>
             <div className="text-2xl font-bold text-accent">{formatCash(totalConfirmed)}</div>
-            <div className="text-[10px] text-gray-500 mt-1">{allEarnings.filter(e => e.status === 'confirmed').length} chiến dịch</div>
+            <div className="text-[10px] text-gray-500 mt-1">{allEarnings.filter(e => e.status === 'confirmed').length} {language === 'ko' ? '캠페인' : 'chiến dịch'}</div>
           </div>
           <div className="rounded-2xl bg-dark-600 border-2 border-warning/40 p-4 shadow-xl">
             <div className="text-[10px] text-gray-400 mb-1 flex items-center gap-1">
               <Clock size={10} className="text-warning" />
-              Chờ xác nhận
+              {language === 'ko' ? '확인 대기' : 'Chờ xác nhận'}
             </div>
             <div className="text-2xl font-bold text-warning">{formatCash(totalWaiting)}</div>
-            <div className="text-[10px] text-gray-500 mt-1">{allEarnings.filter(e => e.status === 'waiting').length} chiến dịch</div>
+            <div className="text-[10px] text-gray-500 mt-1">{allEarnings.filter(e => e.status === 'waiting').length} {language === 'ko' ? '캠페인' : 'chiến dịch'}</div>
           </div>
         </div>
 
         {/* ── Filter tabs ── */}
         <div className="flex gap-2">
           {([
-            { key: 'all', label: 'Tất cả' },
-            { key: 'confirmed', label: 'Đã nhận' },
-            { key: 'waiting', label: 'Chờ xác nhận' },
+            { key: 'all', labelVi: 'Tất cả', labelKo: '전체' },
+            { key: 'confirmed', labelVi: 'Đã nhận', labelKo: '결제 완료' },
+            { key: 'waiting', labelVi: 'Chờ xác nhận', labelKo: '확인 대기' },
           ] as const).map(tab => (
             <button
               key={tab.key}
@@ -112,7 +114,7 @@ export default function EarningsPage() {
                   : 'bg-dark-600 text-gray-400 border border-dark-500'
               }`}
             >
-              {tab.label}
+              {language === 'ko' ? tab.labelKo : tab.labelVi}
             </button>
           ))}
         </div>
@@ -136,7 +138,7 @@ export default function EarningsPage() {
                   ) : (
                     <div className="text-[10px] text-warning mt-0.5 flex items-center justify-end gap-1">
                       <Clock size={9} />
-                      Chờ xác nhận
+                      {language === 'ko' ? '확인 대기' : 'Chờ xác nhận'}
                     </div>
                   )}
                 </div>
@@ -144,7 +146,7 @@ export default function EarningsPage() {
 
               {e.status === 'waiting' && (
                 <div className="mt-2.5 px-3 py-2 bg-warning/10 border border-warning/30 rounded-xl text-[11px] text-warning">
-                  Nhà quảng cáo xác nhận thanh toán sau khi chuyển khoản cho bạn.
+                  {language === 'ko' ? '광고주가 이체 후 결제를 확인합니다.' : 'Nhà quảng cáo xác nhận thanh toán sau khi chuyển khoản cho bạn.'}
                 </div>
               )}
 
@@ -155,7 +157,7 @@ export default function EarningsPage() {
                   rel="noopener noreferrer"
                   className="mt-2 block text-center py-2 bg-dark-700 border border-dark-400 rounded-xl text-xs text-gray-400"
                 >
-                  Xem nội dung đã đăng →
+                  {language === 'ko' ? '게시된 콘텐츠 보기 →' : 'Xem nội dung đã đăng →'}
                 </a>
               )}
             </div>
@@ -163,7 +165,7 @@ export default function EarningsPage() {
 
           {filtered.length === 0 && (
             <div className="text-center py-12 text-gray-500 text-sm">
-              Chưa có thu nhập nào.
+              {language === 'ko' ? '아직 수입이 없습니다.' : 'Chưa có thu nhập nào.'}
             </div>
           )}
         </div>
@@ -173,11 +175,12 @@ export default function EarningsPage() {
           <div className="flex items-start gap-3">
             <Info size={15} className="text-primary flex-shrink-0 mt-0.5" />
             <div>
-              <div className="text-xs font-semibold text-primary mb-1">Cách hoạt động</div>
+              <div className="text-xs font-semibold text-primary mb-1">{language === 'ko' ? '작동 방식' : 'Cách hoạt động'}</div>
               <p className="text-[11px] text-gray-400 leading-relaxed">
-                Exfluencer VN kết nối nhà quảng cáo và KOL. Thanh toán được thực hiện trực tiếp từ nhà quảng cáo sang tài khoản của bạn.
-                Sau khi nhận tiền, nhà quảng cáo xác nhận trên nền tảng và trạng thái sẽ chuyển thành{' '}
-                <span className="text-accent font-semibold">Đã nhận thanh toán</span>.
+                {language === 'ko'
+                  ? <>Exfluencer VN은 광고주와 KOL을 연결합니다. 결제는 광고주에서 귀하의 계좌로 직접 이루어집니다. 입금 후 광고주가 플랫폼에서 확인하면 상태가 <span className="text-accent font-semibold">결제 완료</span>로 변경됩니다.</>
+                  : <>Exfluencer VN kết nối nhà quảng cáo và KOL. Thanh toán được thực hiện trực tiếp từ nhà quảng cáo sang tài khoản của bạn. Sau khi nhận tiền, nhà quảng cáo xác nhận trên nền tảng và trạng thái sẽ chuyển thành <span className="text-accent font-semibold">Đã nhận thanh toán</span>.</>
+                }
               </p>
             </div>
           </div>

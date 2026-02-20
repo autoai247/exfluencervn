@@ -26,7 +26,7 @@ export default function BulkActions({
   onArchive,
   onExport,
   onDuplicate,
-  language = 'ko',
+  language = 'vi',
 }: BulkActionsProps) {
   const [showConfirm, setShowConfirm] = useState<'delete' | 'archive' | null>(null);
 

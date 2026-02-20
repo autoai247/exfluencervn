@@ -189,17 +189,17 @@ export function getGenderName(gender: Gender): string {
 // ==================== Status Utilities ====================
 
 /**
- * Get campaign status name in Korean
+ * Get campaign status name in the given language
  */
-export function getCampaignStatusName(status: string): string {
-  const names: Record<string, string> = {
-    draft: '임시저장',
-    published: '진행 중',
-    in_progress: '진행 중',
-    completed: '완료',
-    cancelled: '취소됨',
+export function getCampaignStatusName(status: string, language: 'ko' | 'vi' = 'vi'): string {
+  const names: Record<string, { ko: string; vi: string }> = {
+    draft: { ko: '임시저장', vi: 'Bản nháp' },
+    published: { ko: '진행 중', vi: 'Đang tiến hành' },
+    in_progress: { ko: '진행 중', vi: 'Đang tiến hành' },
+    completed: { ko: '완료', vi: 'Hoàn thành' },
+    cancelled: { ko: '취소됨', vi: 'Đã hủy' },
   };
-  return names[status] || status;
+  return names[status]?.[language] || status;
 }
 
 /**
@@ -217,16 +217,16 @@ export function getCampaignStatusColor(status: string): string {
 }
 
 /**
- * Get application status name in Korean
+ * Get application status name in the given language
  */
-export function getApplicationStatusName(status: string): string {
-  const names: Record<string, string> = {
-    pending: '승인 대기',
-    accepted: '승인됨',
-    rejected: '거절됨',
-    withdrawn: '철회됨',
+export function getApplicationStatusName(status: string, language: 'ko' | 'vi' = 'vi'): string {
+  const names: Record<string, { ko: string; vi: string }> = {
+    pending: { ko: '승인 대기', vi: 'Đang chờ duyệt' },
+    accepted: { ko: '승인됨', vi: 'Đã chấp nhận' },
+    rejected: { ko: '거절됨', vi: 'Đã từ chối' },
+    withdrawn: { ko: '철회됨', vi: 'Đã rút' },
   };
-  return names[status] || status;
+  return names[status]?.[language] || status;
 }
 
 /**

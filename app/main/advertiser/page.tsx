@@ -134,7 +134,7 @@ const mockData = {
 
 export default function AdvertiserDashboard() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
@@ -160,7 +160,7 @@ export default function AdvertiserDashboard() {
             />
             <div>
               <div className="font-bold text-white">{mockData.company.name}</div>
-              <div className="text-xs text-gray-400">{t.advertiser.brandAccount} · Chỉnh sửa →</div>
+              <div className="text-xs text-gray-400">{t.advertiser.brandAccount} · {language === 'ko' ? '편집 →' : 'Chỉnh sửa →'}</div>
             </div>
             <ChevronRight size={16} className="text-gray-500 ml-auto" />
           </div>
@@ -172,7 +172,7 @@ export default function AdvertiserDashboard() {
             <div className="flex items-center gap-2 mb-3">
               <BadgeDollarSign size={16} className="text-accent" />
               <span className="text-sm font-bold text-accent">
-                {mockData.pendingPayments.length} KOL chờ xác nhận thanh toán
+                {mockData.pendingPayments.length} KOL {language === 'ko' ? '결제 확인 대기 중' : 'chờ xác nhận thanh toán'}
               </span>
             </div>
             {mockData.pendingPayments.map((p) => (
@@ -180,12 +180,12 @@ export default function AdvertiserDashboard() {
                 <img src={p.kolAvatar} alt={p.kolName} className="w-9 h-9 rounded-xl flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-white">{p.kolName} · {p.campaign}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Đã nộp nội dung. Vui lòng chuyển khoản rồi xác nhận.</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? '콘텐츠 제출 완료. 이체 후 확인해주세요.' : 'Đã nộp nội dung. Vui lòng chuyển khoản rồi xác nhận.'}</div>
                 </div>
                 <div className="flex flex-col gap-1.5 flex-shrink-0">
                   <a href={p.contentUrl} target="_blank" rel="noopener noreferrer"
                     className="text-[10px] px-2 py-1 bg-dark-500 text-gray-300 rounded-lg text-center">
-                    Xem
+                    {language === 'ko' ? '보기' : 'Xem'}
                   </a>
                   <button className="text-[10px] px-2 py-1 bg-accent text-white rounded-lg font-bold">
                     ✓ {formatCash(p.amount)}
@@ -204,8 +204,8 @@ export default function AdvertiserDashboard() {
               <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-3">
                 <FileText size={20} className="text-white" />
               </div>
-              <div className="text-base font-bold text-white mb-1">Tạo chiến dịch</div>
-              <div className="text-xs text-white/70">Tạo brief tự động<br />Mẫu chuẩn hóa</div>
+              <div className="text-base font-bold text-white mb-1">{language === 'ko' ? '캠페인 생성' : 'Tạo chiến dịch'}</div>
+              <div className="text-xs text-white/70">{language === 'ko' ? '자동 브리프 생성' : 'Tạo brief tự động'}<br />{language === 'ko' ? '표준화 템플릿' : 'Mẫu chuẩn hóa'}</div>
             </div>
           </Link>
 
@@ -215,8 +215,8 @@ export default function AdvertiserDashboard() {
               <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center mb-3">
                 <Search size={20} className="text-secondary" />
               </div>
-              <div className="text-base font-bold text-white mb-1">Tìm KOL</div>
-              <div className="text-xs text-gray-400">Followers · Giá · ER<br />So sánh nhanh</div>
+              <div className="text-base font-bold text-white mb-1">{language === 'ko' ? 'KOL 찾기' : 'Tìm KOL'}</div>
+              <div className="text-xs text-gray-400">Followers · {language === 'ko' ? '단가' : 'Giá'} · ER<br />{language === 'ko' ? '빠른 비교' : 'So sánh nhanh'}</div>
             </div>
           </Link>
         </div>
@@ -227,10 +227,10 @@ export default function AdvertiserDashboard() {
             <div className="flex items-center justify-between px-1">
               <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
                 <AlertCircle size={13} className="text-warning" />
-                KOL đang chờ duyệt ({mockData.pendingKols.length})
+                {language === 'ko' ? `승인 대기 KOL (${mockData.pendingKols.length})` : `KOL đang chờ duyệt (${mockData.pendingKols.length})`}
               </h3>
               <Link href="/main/advertiser/campaigns?tab=approvals" className="text-xs text-primary">
-                Xem tất cả
+                {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
               </Link>
             </div>
 
@@ -256,10 +256,10 @@ export default function AdvertiserDashboard() {
                   <div className="flex gap-2 mt-3">
                     <Link href={`/main/advertiser/influencers/${kol.id}`}
                       className="flex-1 py-2 bg-dark-500 text-gray-300 text-xs font-semibold rounded-lg text-center">
-                      Xem hồ sơ
+                      {language === 'ko' ? '프로필 보기' : 'Xem hồ sơ'}
                     </Link>
                     <button className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold rounded-lg">
-                      ✓ Duyệt
+                      ✓ {language === 'ko' ? '승인' : 'Duyệt'}
                     </button>
                   </div>
                 </div>
@@ -273,9 +273,9 @@ export default function AdvertiserDashboard() {
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
               <Clock size={13} />
-              Đang chạy ({mockData.activeCampaigns.length})
+              {language === 'ko' ? `진행 중 (${mockData.activeCampaigns.length})` : `Đang chạy (${mockData.activeCampaigns.length})`}
             </h3>
-            <Link href="/main/advertiser/campaigns" className="text-xs text-primary">Xem tất cả</Link>
+            <Link href="/main/advertiser/campaigns" className="text-xs text-primary">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
           </div>
 
           <div className="space-y-3">
@@ -291,7 +291,7 @@ export default function AdvertiserDashboard() {
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
                       <div className="text-sm font-bold text-accent">{formatCash(c.budget)}<span className="text-xs text-gray-500">/KOL</span></div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">Hạn: {c.deadline}</div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">{language === 'ko' ? '마감:' : 'Hạn:'} {c.deadline}</div>
                     </div>
                   </div>
 
@@ -299,15 +299,15 @@ export default function AdvertiserDashboard() {
                   <div className="grid grid-cols-3 gap-2 text-xs">
                     <div className="text-center bg-dark-700 rounded-lg p-2">
                       <div className="font-bold text-white">{c.accepted}</div>
-                      <div className="text-gray-500">KOL tham gia</div>
+                      <div className="text-gray-500">{language === 'ko' ? 'KOL 참여' : 'KOL tham gia'}</div>
                     </div>
                     <div className={`text-center rounded-lg p-2 ${c.pendingSubmit > 0 ? 'bg-warning/10 border border-warning/30' : 'bg-dark-700'}`}>
                       <div className={`font-bold ${c.pendingSubmit > 0 ? 'text-warning' : 'text-white'}`}>{c.pendingSubmit}</div>
-                      <div className="text-gray-500">Chờ nộp bài</div>
+                      <div className="text-gray-500">{language === 'ko' ? '제출 대기' : 'Chờ nộp bài'}</div>
                     </div>
                     <div className={`text-center rounded-lg p-2 ${c.pendingPayment > 0 ? 'bg-accent/10 border border-accent/30' : 'bg-dark-700'}`}>
                       <div className={`font-bold ${c.pendingPayment > 0 ? 'text-accent' : 'text-white'}`}>{c.pendingPayment}</div>
-                      <div className="text-gray-500">Chờ TT</div>
+                      <div className="text-gray-500">{language === 'ko' ? '결제 대기' : 'Chờ TT'}</div>
                     </div>
                   </div>
                 </div>
@@ -321,10 +321,10 @@ export default function AdvertiserDashboard() {
           <div className="flex items-center justify-between px-1">
             <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
               <Users size={13} />
-              KOL phù hợp với bạn
+              {language === 'ko' ? '추천 KOL' : 'KOL phù hợp với bạn'}
             </h3>
             <Link href="/main/advertiser/influencers" className="text-xs text-primary">
-              Xem tất cả
+              {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
             </Link>
           </div>
 

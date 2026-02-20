@@ -17,6 +17,7 @@ import {
   Filter
 } from 'lucide-react';
 import type { UserType, UserStatus, CampaignStatus } from '@/types';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Mock data for demonstration
 const mockStats = {
@@ -133,15 +134,16 @@ const mockWithdrawals = [
 ];
 
 export default function AdminDashboardPage() {
+  const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'campaigns' | 'withdrawals'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ko-KR').format(amount) + ' VND';
+    return new Intl.NumberFormat(language === 'ko' ? 'ko-KR' : 'vi-VN').format(amount) + ' VND';
   };
 
   const formatNumber = (num: number) => {
-    return new Intl.NumberFormat('ko-KR').format(num);
+    return new Intl.NumberFormat(language === 'ko' ? 'ko-KR' : 'vi-VN').format(num);
   };
 
   const getUserStatusColor = (status: UserStatus) => {
@@ -166,33 +168,64 @@ export default function AdminDashboardPage() {
   };
 
   const getUserTypeLabel = (type: UserType) => {
-    switch (type) {
-      case 'influencer': return '인플루언서';
-      case 'advertiser': return '광고주';
-      case 'admin': return '관리자';
-      default: return type;
+    if (language === 'ko') {
+      switch (type) {
+        case 'influencer': return '인플루언서';
+        case 'advertiser': return '광고주';
+        case 'admin': return '관리자';
+        default: return type;
+      }
+    } else {
+      switch (type) {
+        case 'influencer': return 'Influencer';
+        case 'advertiser': return 'Nhà QC';
+        case 'admin': return 'Quản trị viên';
+        default: return type;
+      }
     }
   };
 
   const getStatusLabel = (status: UserStatus) => {
-    switch (status) {
-      case 'active': return '활성';
-      case 'pending': return '대기';
-      case 'suspended': return '정지';
-      case 'banned': return '차단';
-      default: return status;
+    if (language === 'ko') {
+      switch (status) {
+        case 'active': return '활성';
+        case 'pending': return '대기';
+        case 'suspended': return '정지';
+        case 'banned': return '차단';
+        default: return status;
+      }
+    } else {
+      switch (status) {
+        case 'active': return 'Hoạt động';
+        case 'pending': return 'Chờ duyệt';
+        case 'suspended': return 'Tạm đình chỉ';
+        case 'banned': return 'Bị chặn';
+        default: return status;
+      }
     }
   };
 
   const getCampaignStatusLabel = (status: CampaignStatus) => {
-    switch (status) {
-      case 'draft': return '초안';
-      case 'published': return '게시됨';
-      case 'in_progress': return '진행중';
-      case 'completed': return '완료';
-      case 'pending': return '승인대기';
-      case 'cancelled': return '취소';
-      default: return status;
+    if (language === 'ko') {
+      switch (status) {
+        case 'draft': return '초안';
+        case 'published': return '게시됨';
+        case 'in_progress': return '진행중';
+        case 'completed': return '완료';
+        case 'pending': return '승인대기';
+        case 'cancelled': return '취소';
+        default: return status;
+      }
+    } else {
+      switch (status) {
+        case 'draft': return 'Bản nháp';
+        case 'published': return 'Đã đăng';
+        case 'in_progress': return 'Đang tiến hành';
+        case 'completed': return 'Hoàn thành';
+        case 'pending': return 'Chờ duyệt';
+        case 'cancelled': return 'Đã hủy';
+        default: return status;
+      }
     }
   };
 
@@ -203,7 +236,7 @@ export default function AdminDashboardPage() {
         <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-white">관리자 대시보드</h1>
+              <h1 className="text-xl font-bold text-white">{language === 'ko' ? '관리자 대시보드' : 'Bảng quản trị'}</h1>
               <p className="text-sm text-gray-400">Exfluencer VN Admin</p>
             </div>
             <div className="flex items-center gap-2">
@@ -225,7 +258,7 @@ export default function AdminDashboardPage() {
                   : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
               }`}
             >
-              개요
+              {language === 'ko' ? '개요' : 'Tổng quan'}
             </button>
             <button
               onClick={() => setActiveTab('users')}
@@ -235,7 +268,7 @@ export default function AdminDashboardPage() {
                   : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
               }`}
             >
-              사용자 관리
+              {language === 'ko' ? '사용자 관리' : 'Quản lý người dùng'}
             </button>
             <button
               onClick={() => setActiveTab('campaigns')}
@@ -245,7 +278,7 @@ export default function AdminDashboardPage() {
                   : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
               }`}
             >
-              캠페인 승인
+              {language === 'ko' ? '캠페인 승인' : 'Duyệt chiến dịch'}
             </button>
             <button
               onClick={() => setActiveTab('withdrawals')}
@@ -255,7 +288,7 @@ export default function AdminDashboardPage() {
                   : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
               }`}
             >
-              출금 관리
+              {language === 'ko' ? '출금 관리' : 'Quản lý rút tiền'}
             </button>
           </div>
         </div>
@@ -270,63 +303,67 @@ export default function AdminDashboardPage() {
                 <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                   <div className="flex items-center gap-2 mb-2">
                     <Users size={20} className="text-primary" />
-                    <span className="text-xs text-gray-400">전체 사용자</span>
+                    <span className="text-xs text-gray-400">{language === 'ko' ? '전체 사용자' : 'Tổng người dùng'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.totalUsers)}</div>
                   <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+12%</span> vs 지난달
+                    <span className="text-success">+12%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
                   </div>
                 </div>
 
                 <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                   <div className="flex items-center gap-2 mb-2">
                     <UserCheck size={20} className="text-secondary" />
-                    <span className="text-xs text-gray-400">인플루언서</span>
+                    <span className="text-xs text-gray-400">{language === 'ko' ? '인플루언서' : 'Influencer'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.activeInfluencers)}</div>
                   <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+8%</span> vs 지난달
+                    <span className="text-success">+8%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
                   </div>
                 </div>
 
                 <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                   <div className="flex items-center gap-2 mb-2">
                     <Megaphone size={20} className="text-warning" />
-                    <span className="text-xs text-gray-400">전체 캠페인</span>
+                    <span className="text-xs text-gray-400">{language === 'ko' ? '전체 캠페인' : 'Tổng chiến dịch'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.totalCampaigns)}</div>
                   <div className="text-xs text-gray-500 mt-1">
-                    활성: {mockStats.activeCampaigns}개
+                    {language === 'ko' ? `활성: ${mockStats.activeCampaigns}개` : `Đang hoạt động: ${mockStats.activeCampaigns}`}
                   </div>
                 </div>
 
                 <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                   <div className="flex items-center gap-2 mb-2">
                     <DollarSign size={20} className="text-success" />
-                    <span className="text-xs text-gray-400">총 거래액</span>
+                    <span className="text-xs text-gray-400">{language === 'ko' ? '총 거래액' : 'Tổng giao dịch'}</span>
                   </div>
                   <div className="text-lg font-bold text-white">{formatNumber(mockStats.totalRevenue / 1000000)}M</div>
                   <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+15%</span> vs 지난달
+                    <span className="text-success">+15%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
                   </div>
                 </div>
               </div>
 
               {/* Alerts */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-white">알림 & 대기 항목</h3>
+                <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '알림 & 대기 항목' : 'Thông báo & Mục chờ'}</h3>
 
                 <div className="bg-warning/10 border border-warning/30 rounded-xl p-4">
                   <div className="flex items-start gap-3">
                     <AlertTriangle size={20} className="text-warning flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">승인 대기 중인 캠페인</h4>
-                      <p className="text-sm text-gray-300">{mockStats.pendingCampaigns}개의 캠페인이 승인을 기다리고 있습니다.</p>
+                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '승인 대기 중인 캠페인' : 'Chiến dịch chờ duyệt'}</h4>
+                      <p className="text-sm text-gray-300">
+                        {language === 'ko'
+                          ? `${mockStats.pendingCampaigns}개의 캠페인이 승인을 기다리고 있습니다.`
+                          : `${mockStats.pendingCampaigns} chiến dịch đang chờ duyệt.`}
+                      </p>
                       <button
                         onClick={() => setActiveTab('campaigns')}
                         className="text-sm text-warning font-semibold mt-2 hover:underline"
                       >
-                        확인하기 →
+                        {language === 'ko' ? '확인하기 →' : 'Xem ngay →'}
                       </button>
                     </div>
                   </div>
@@ -336,13 +373,17 @@ export default function AdminDashboardPage() {
                   <div className="flex items-start gap-3">
                     <DollarSign size={20} className="text-primary flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">출금 요청</h4>
-                      <p className="text-sm text-gray-300">{mockStats.pendingWithdrawals}건의 출금 요청이 처리 대기 중입니다.</p>
+                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền'}</h4>
+                      <p className="text-sm text-gray-300">
+                        {language === 'ko'
+                          ? `${mockStats.pendingWithdrawals}건의 출금 요청이 처리 대기 중입니다.`
+                          : `${mockStats.pendingWithdrawals} yêu cầu rút tiền đang chờ xử lý.`}
+                      </p>
                       <button
                         onClick={() => setActiveTab('withdrawals')}
                         className="text-sm text-primary font-semibold mt-2 hover:underline"
                       >
-                        처리하기 →
+                        {language === 'ko' ? '처리하기 →' : 'Xử lý ngay →'}
                       </button>
                     </div>
                   </div>
@@ -352,13 +393,17 @@ export default function AdminDashboardPage() {
                   <div className="flex items-start gap-3">
                     <Ban size={20} className="text-error flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">신고된 사용자</h4>
-                      <p className="text-sm text-gray-300">{mockStats.flaggedUsers}명의 사용자가 신고되었습니다.</p>
+                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '신고된 사용자' : 'Người dùng bị báo cáo'}</h4>
+                      <p className="text-sm text-gray-300">
+                        {language === 'ko'
+                          ? `${mockStats.flaggedUsers}명의 사용자가 신고되었습니다.`
+                          : `${mockStats.flaggedUsers} người dùng đã bị báo cáo.`}
+                      </p>
                       <button
                         onClick={() => setActiveTab('users')}
                         className="text-sm text-error font-semibold mt-2 hover:underline"
                       >
-                        조사하기 →
+                        {language === 'ko' ? '조사하기 →' : 'Kiểm tra ngay →'}
                       </button>
                     </div>
                   </div>
@@ -367,13 +412,13 @@ export default function AdminDashboardPage() {
 
               {/* Recent Activity */}
               <div>
-                <h3 className="text-sm font-semibold text-white mb-3">최근 활동</h3>
+                <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '최근 활동' : 'Hoạt động gần đây'}</h3>
                 <div className="space-y-2">
                   <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <p className="text-sm text-white">새로운 인플루언서 가입</p>
-                        <p className="text-xs text-gray-400 mt-1">nguyenthic@gmail.com • 5분 전</p>
+                        <p className="text-sm text-white">{language === 'ko' ? '새로운 인플루언서 가입' : 'Influencer mới đăng ký'}</p>
+                        <p className="text-xs text-gray-400 mt-1">nguyenthic@gmail.com • {language === 'ko' ? '5분 전' : '5 phút trước'}</p>
                       </div>
                       <UserCheck size={18} className="text-success" />
                     </div>
@@ -382,8 +427,8 @@ export default function AdminDashboardPage() {
                   <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <p className="text-sm text-white">캠페인 생성 요청</p>
-                        <p className="text-xs text-gray-400 mt-1">Fashion Shop VN • 15분 전</p>
+                        <p className="text-sm text-white">{language === 'ko' ? '캠페인 생성 요청' : 'Yêu cầu tạo chiến dịch'}</p>
+                        <p className="text-xs text-gray-400 mt-1">Fashion Shop VN • {language === 'ko' ? '15분 전' : '15 phút trước'}</p>
                       </div>
                       <Megaphone size={18} className="text-warning" />
                     </div>
@@ -392,8 +437,8 @@ export default function AdminDashboardPage() {
                   <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <p className="text-sm text-white">출금 요청</p>
-                        <p className="text-xs text-gray-400 mt-1">응우옌 반 A • 5,000,000 VND • 1시간 전</p>
+                        <p className="text-sm text-white">{language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền'}</p>
+                        <p className="text-xs text-gray-400 mt-1">응우옌 반 A • 5,000,000 VND • {language === 'ko' ? '1시간 전' : '1 giờ trước'}</p>
                       </div>
                       <DollarSign size={18} className="text-primary" />
                     </div>
@@ -411,7 +456,7 @@ export default function AdminDashboardPage() {
                   <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="사용자 검색..."
+                    placeholder={language === 'ko' ? '사용자 검색...' : 'Tìm kiếm người dùng...'}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="input pl-10 pr-4"
@@ -438,7 +483,7 @@ export default function AdminDashboardPage() {
                           </span>
                         </div>
                         <p className="text-xs text-gray-400">{user.email}</p>
-                        <p className="text-xs text-gray-500 mt-1">ID: {user.id} • 가입: {user.createdAt}</p>
+                        <p className="text-xs text-gray-500 mt-1">ID: {user.id} • {language === 'ko' ? '가입' : 'Ngày tham gia'}: {user.createdAt}</p>
                       </div>
                       <span className={`text-xs px-2 py-1 rounded-lg ${
                         user.status === 'active'
@@ -453,16 +498,16 @@ export default function AdminDashboardPage() {
 
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       <div className="bg-dark-700 rounded-lg p-2">
-                        <p className="text-xs text-gray-400">캠페인</p>
-                        <p className="text-sm font-semibold text-white">{user.campaigns}개</p>
+                        <p className="text-xs text-gray-400">{language === 'ko' ? '캠페인' : 'Chiến dịch'}</p>
+                        <p className="text-sm font-semibold text-white">{language === 'ko' ? `${user.campaigns}개` : user.campaigns}</p>
                       </div>
                       <div className="bg-dark-700 rounded-lg p-2">
-                        <p className="text-xs text-gray-400">평점</p>
+                        <p className="text-xs text-gray-400">{language === 'ko' ? '평점' : 'Đánh giá'}</p>
                         <p className="text-sm font-semibold text-white">⭐ {user.rating}</p>
                       </div>
                       <div className="bg-dark-700 rounded-lg p-2">
                         <p className="text-xs text-gray-400">
-                          {user.userType === 'influencer' ? '수익' : '지출'}
+                          {user.userType === 'influencer' ? (language === 'ko' ? '수익' : 'Thu nhập') : (language === 'ko' ? '지출' : 'Chi tiêu')}
                         </p>
                         <p className="text-sm font-semibold text-white">
                           {formatNumber((user.totalEarnings || user.totalSpent || 0) / 1000000)}M
@@ -476,17 +521,17 @@ export default function AdminDashboardPage() {
                         className="flex-1 py-2 bg-dark-700 hover:bg-dark-500 rounded-lg text-xs font-medium text-white transition-colors flex items-center justify-center gap-1"
                       >
                         <Eye size={14} />
-                        상세보기
+                        {language === 'ko' ? '상세보기' : 'Xem chi tiết'}
                       </Link>
                       {user.status === 'active' ? (
                         <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
                           <Ban size={14} />
-                          계정정지
+                          {language === 'ko' ? '계정정지' : 'Đình chỉ'}
                         </button>
                       ) : (
                         <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
                           <CheckCircle size={14} />
-                          정지해제
+                          {language === 'ko' ? '정지해제' : 'Bỏ đình chỉ'}
                         </button>
                       )}
                     </div>
@@ -500,8 +545,12 @@ export default function AdminDashboardPage() {
           {activeTab === 'campaigns' && (
             <>
               <div className="bg-warning/10 border border-warning/30 rounded-xl p-4 mb-4">
-                <p className="text-sm text-white font-semibold mb-1">승인 대기 중</p>
-                <p className="text-xs text-gray-300">{mockCampaigns.filter(c => c.status === 'pending').length}개의 캠페인이 검토를 기다리고 있습니다.</p>
+                <p className="text-sm text-white font-semibold mb-1">{language === 'ko' ? '승인 대기 중' : 'Đang chờ duyệt'}</p>
+                <p className="text-xs text-gray-300">
+                  {language === 'ko'
+                    ? `${mockCampaigns.filter(c => c.status === 'pending').length}개의 캠페인이 검토를 기다리고 있습니다.`
+                    : `${mockCampaigns.filter(c => c.status === 'pending').length} chiến dịch đang chờ xem xét.`}
+                </p>
               </div>
 
               <div className="space-y-3">
@@ -511,7 +560,7 @@ export default function AdminDashboardPage() {
                       <div className="flex-1">
                         <h4 className="font-semibold text-white mb-1">{campaign.title}</h4>
                         <p className="text-xs text-gray-400">{campaign.advertiser}</p>
-                        <p className="text-xs text-gray-500 mt-1">ID: {campaign.id} • 생성: {campaign.createdAt}</p>
+                        <p className="text-xs text-gray-500 mt-1">ID: {campaign.id} • {language === 'ko' ? '생성' : 'Ngày tạo'}: {campaign.createdAt}</p>
                       </div>
                       <span className={`text-xs px-2 py-1 rounded-lg ${
                         campaign.status === 'pending'
@@ -526,12 +575,12 @@ export default function AdminDashboardPage() {
 
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="bg-dark-700 rounded-lg p-2">
-                        <p className="text-xs text-gray-400">예산</p>
+                        <p className="text-xs text-gray-400">{language === 'ko' ? '예산' : 'Ngân sách'}</p>
                         <p className="text-sm font-semibold text-white">{formatNumber(campaign.budget / 1000000)}M VND</p>
                       </div>
                       <div className="bg-dark-700 rounded-lg p-2">
-                        <p className="text-xs text-gray-400">인플루언서</p>
-                        <p className="text-sm font-semibold text-white">{campaign.influencers}명</p>
+                        <p className="text-xs text-gray-400">{language === 'ko' ? '인플루언서' : 'Influencer'}</p>
+                        <p className="text-sm font-semibold text-white">{language === 'ko' ? `${campaign.influencers}명` : campaign.influencers}</p>
                       </div>
                     </div>
 
@@ -539,11 +588,11 @@ export default function AdminDashboardPage() {
                       <div className="flex gap-2">
                         <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
                           <CheckCircle size={14} />
-                          승인
+                          {language === 'ko' ? '승인' : 'Duyệt'}
                         </button>
                         <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
                           <XCircle size={14} />
-                          거부
+                          {language === 'ko' ? '거부' : 'Từ chối'}
                         </button>
                       </div>
                     )}
@@ -557,8 +606,12 @@ export default function AdminDashboardPage() {
           {activeTab === 'withdrawals' && (
             <>
               <div className="bg-primary/10 border border-primary/30 rounded-xl p-4 mb-4">
-                <p className="text-sm text-white font-semibold mb-1">출금 요청 처리</p>
-                <p className="text-xs text-gray-300">{mockWithdrawals.filter(w => w.status === 'pending').length}건의 출금 요청을 검토해주세요.</p>
+                <p className="text-sm text-white font-semibold mb-1">{language === 'ko' ? '출금 요청 처리' : 'Xử lý yêu cầu rút tiền'}</p>
+                <p className="text-xs text-gray-300">
+                  {language === 'ko'
+                    ? `${mockWithdrawals.filter(w => w.status === 'pending').length}건의 출금 요청을 검토해주세요.`
+                    : `Vui lòng xem xét ${mockWithdrawals.filter(w => w.status === 'pending').length} yêu cầu rút tiền.`}
+                </p>
               </div>
 
               <div className="space-y-3">
@@ -567,33 +620,33 @@ export default function AdminDashboardPage() {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <h4 className="font-semibold text-white mb-1">{withdrawal.user}</h4>
-                        <p className="text-xs text-gray-400">요청 시간: {withdrawal.createdAt}</p>
+                        <p className="text-xs text-gray-400">{language === 'ko' ? '요청 시간' : 'Thời gian yêu cầu'}: {withdrawal.createdAt}</p>
                         <p className="text-xs text-gray-500 mt-1">ID: {withdrawal.id}</p>
                       </div>
                       <span className="text-xs px-2 py-1 rounded-lg bg-warning/20 text-warning">
-                        대기중
+                        {language === 'ko' ? '대기중' : 'Đang chờ'}
                       </span>
                     </div>
 
                     <div className="bg-dark-700 rounded-lg p-3 mb-3 space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">출금 금액</span>
+                        <span className="text-gray-400">{language === 'ko' ? '출금 금액' : 'Số tiền rút'}</span>
                         <span className="text-white font-semibold">{formatCurrency(withdrawal.amount)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">수수료 (2%)</span>
+                        <span className="text-gray-400">{language === 'ko' ? '수수료 (2%)' : 'Phí (2%)'}</span>
                         <span className="text-error">-{formatCurrency(withdrawal.fee)}</span>
                       </div>
                       <div className="border-t border-dark-500 pt-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">실수령액</span>
+                          <span className="text-gray-400">{language === 'ko' ? '실수령액' : 'Thực nhận'}</span>
                           <span className="text-success font-bold">{formatCurrency(withdrawal.amount - withdrawal.fee)}</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="bg-dark-700 rounded-lg p-3 mb-3">
-                      <p className="text-xs text-gray-400 mb-2">입금 정보</p>
+                      <p className="text-xs text-gray-400 mb-2">{language === 'ko' ? '입금 정보' : 'Thông tin ngân hàng'}</p>
                       <p className="text-sm text-white font-medium mb-1">{withdrawal.bankName}</p>
                       <p className="text-xs text-gray-300">{withdrawal.accountNumber}</p>
                     </div>
@@ -601,11 +654,11 @@ export default function AdminDashboardPage() {
                     <div className="flex gap-2">
                       <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
                         <CheckCircle size={14} />
-                        송금 완료
+                        {language === 'ko' ? '송금 완료' : 'Đã chuyển tiền'}
                       </button>
                       <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
                         <XCircle size={14} />
-                        거부
+                        {language === 'ko' ? '거부' : 'Từ chối'}
                       </button>
                     </div>
                   </div>

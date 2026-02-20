@@ -183,7 +183,9 @@ export default function AnalyticsClient() {
               </div>
             </div>
             <div className="text-sm text-gray-600">
-              {language === 'ko' ? '평균 ' : 'Trung bình '}+{((stats.avgROI - 1) * 100).toFixed(0)}% {language === 'ko' ? '수익률' : 'lợi nhuận'}
+              {language === 'ko'
+                ? `평균 +${((stats.avgROI - 1) * 100).toFixed(0)}% 수익`
+                : `Trung bình +${((stats.avgROI - 1) * 100).toFixed(0)}% lợi nhuận`}
             </div>
           </div>
 

@@ -27,26 +27,32 @@ const INVITE_LINK = `https://exfluencer.vn/advertiser/signup?ref=${INVITE_CODE}`
 
 export default function InviteAdvertiserPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(INVITE_CODE);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    alert('✅ 초대 코드가 복사되었습니다!\n\n협업 중인 광고주에게 공유하세요!');
+    alert(language === 'ko'
+      ? '✅ 초대 코드가 복사되었습니다!\n\n협업 중인 광고주에게 공유하세요!'
+      : '✅ Đã sao chép mã mời!\n\nHãy chia sẻ cho nhà quảng cáo bạn đang hợp tác!');
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(INVITE_LINK);
-    alert('✅ 초대 링크가 복사되었습니다!\n\n광고주에게 공유하면 양쪽 모두 혜택을 받습니다!');
+    alert(language === 'ko'
+      ? '✅ 초대 링크가 복사되었습니다!\n\n광고주에게 공유하면 양쪽 모두 혜택을 받습니다!'
+      : '✅ Đã sao chép liên kết mời!\n\nChia sẻ cho nhà quảng cáo để cả hai cùng nhận ưu đãi!');
   };
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Exfluencer VN - 광고주 초대',
-        text: `저와 함께 Exfluencer VN에서 캠페인을 관리하세요! 첫 캠페인 20% 할인 + 프리미엄 서포트`,
+        title: language === 'ko' ? 'Exfluencer VN - 광고주 초대' : 'Exfluencer VN - Mời nhà quảng cáo',
+        text: language === 'ko'
+          ? `저와 함께 Exfluencer VN에서 캠페인을 관리하세요! 첫 캠페인 20% 할인 + 프리미엄 서포트`
+          : `Hãy cùng tôi quản lý chiến dịch trên Exfluencer VN! Giảm 20% chiến dịch đầu tiên + Hỗ trợ cao cấp`,
         url: INVITE_LINK,
       });
     } else {

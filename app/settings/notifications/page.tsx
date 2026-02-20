@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Bell, MessageCircle, Briefcase, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface NotificationSetting {
   id: string;
@@ -15,44 +16,45 @@ interface NotificationSetting {
 
 export default function NotificationSettingsPage() {
   const router = useRouter();
+  const { language } = useLanguage();
 
   const [settings, setSettings] = useState<NotificationSetting[]>([
     {
       id: 'campaigns',
-      title: '새로운 캠페인',
-      description: '나에게 맞는 새 캠페인이 등록되면 알림',
+      title: language === 'ko' ? '새로운 캠페인' : 'Chiến dịch mới',
+      description: language === 'ko' ? '나에게 맞는 새 캠페인이 등록되면 알림' : 'Thông báo khi có chiến dịch phù hợp mới',
       icon: Briefcase,
       push: true,
       email: true,
     },
     {
       id: 'messages',
-      title: '메시지',
-      description: '새 메시지 수신 시 알림',
+      title: language === 'ko' ? '메시지' : 'Tin nhắn',
+      description: language === 'ko' ? '새 메시지 수신 시 알림' : 'Thông báo khi nhận tin nhắn mới',
       icon: MessageCircle,
       push: true,
       email: false,
     },
     {
       id: 'payments',
-      title: '결제 및 출금',
-      description: '포인트 획득 및 출금 처리 알림',
+      title: language === 'ko' ? '결제 및 출금' : 'Thanh toán và rút tiền',
+      description: language === 'ko' ? '포인트 획득 및 출금 처리 알림' : 'Thông báo nhận điểm và xử lý rút tiền',
       icon: DollarSign,
       push: true,
       email: true,
     },
     {
       id: 'applications',
-      title: '지원 상태',
-      description: '캠페인 지원 승인/거절 알림',
+      title: language === 'ko' ? '지원 상태' : 'Trạng thái ứng tuyển',
+      description: language === 'ko' ? '캠페인 지원 승인/거절 알림' : 'Thông báo duyệt/từ chối ứng tuyển chiến dịch',
       icon: TrendingUp,
       push: true,
       email: true,
     },
     {
       id: 'reviews',
-      title: '리뷰 및 평가',
-      description: '새로운 리뷰나 평가 등록 시 알림',
+      title: language === 'ko' ? '리뷰 및 평가' : 'Đánh giá và nhận xét',
+      description: language === 'ko' ? '새로운 리뷰나 평가 등록 시 알림' : 'Thông báo khi có đánh giá mới',
       icon: Users,
       push: true,
       email: false,
@@ -72,7 +74,7 @@ export default function NotificationSettingsPage() {
   };
 
   const handleSave = () => {
-    alert('알림 설정이 저장되었습니다!');
+    alert(language === 'ko' ? '알림 설정이 저장되었습니다!' : 'Đã lưu cài đặt thông báo!');
     router.back();
   };
 
@@ -84,7 +86,7 @@ export default function NotificationSettingsPage() {
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-white">알림 설정</h1>
+          <h1 className="text-lg font-bold text-white">{language === 'ko' ? '알림 설정' : 'Cài đặt thông báo'}</h1>
         </div>
       </div>
 
@@ -94,7 +96,7 @@ export default function NotificationSettingsPage() {
           <div className="flex gap-3">
             <Bell size={20} className="text-info flex-shrink-0" />
             <div className="text-sm text-gray-300">
-              <p>푸시 알림과 이메일 알림을 각각 설정할 수 있습니다.</p>
+              <p>{language === 'ko' ? '푸시 알림과 이메일 알림을 각각 설정할 수 있습니다.' : 'Bạn có thể cài đặt riêng thông báo đẩy và thông báo email.'}</p>
             </div>
           </div>
         </div>
@@ -118,7 +120,7 @@ export default function NotificationSettingsPage() {
                 <div className="space-y-3">
                   {/* Push Notification Toggle */}
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">푸시 알림</span>
+                    <span className="text-sm text-gray-300">{language === 'ko' ? '푸시 알림' : 'Thông báo đẩy'}</span>
                     <button
                       onClick={() => togglePush(setting.id)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -135,7 +137,7 @@ export default function NotificationSettingsPage() {
 
                   {/* Email Notification Toggle */}
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">이메일 알림</span>
+                    <span className="text-sm text-gray-300">{language === 'ko' ? '이메일 알림' : 'Thông báo email'}</span>
                     <button
                       onClick={() => toggleEmail(setting.id)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
@@ -157,7 +159,7 @@ export default function NotificationSettingsPage() {
 
         {/* Save Button */}
         <button onClick={handleSave} className="btn btn-primary w-full">
-          설정 저장
+          {language === 'ko' ? '설정 저장' : 'Lưu cài đặt'}
         </button>
       </div>
     </div>

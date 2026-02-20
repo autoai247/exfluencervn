@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { SearchX, Home, ArrowLeft } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function NotFound() {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen bg-gradient-to-b from-dark-800 via-dark-700 to-dark-800 flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center space-y-8 animate-fade-in">
@@ -23,10 +25,10 @@ export default function NotFound() {
             Page Not Found
           </h1>
           <p className="text-lg text-gray-300">
-            Không tìm thấy trang / 페이지를 찾을 수 없습니다
+            {language === 'ko' ? '페이지를 찾을 수 없습니다' : 'Không tìm thấy trang'}
           </p>
           <p className="text-sm text-gray-400">
-            The page you're looking for doesn't exist or has been moved.
+            {language === 'ko' ? '찾으시는 페이지가 존재하지 않거나 이동되었습니다.' : 'Trang bạn tìm kiếm không tồn tại hoặc đã được di chuyển.'}
           </p>
         </div>
 
@@ -37,32 +39,32 @@ export default function NotFound() {
             className="flex items-center justify-center gap-2 px-6 py-3 bg-dark-600 text-white rounded-xl font-semibold hover:bg-dark-500 transition-all border border-dark-500"
           >
             <ArrowLeft size={20} />
-            Go Back / Quay lại
+            {language === 'ko' ? '뒤로 가기' : 'Quay lại'}
           </button>
           <Link
             href="/"
             className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all"
           >
             <Home size={20} />
-            Home / Trang chủ
+            {language === 'ko' ? '홈' : 'Trang chủ'}
           </Link>
         </div>
 
         {/* Popular Links */}
         <div className="pt-8 space-y-3">
-          <p className="text-sm text-gray-500 font-semibold">Popular pages:</p>
+          <p className="text-sm text-gray-500 font-semibold">{language === 'ko' ? '인기 페이지:' : 'Trang phổ biến:'}</p>
           <div className="flex flex-wrap gap-2 justify-center">
             <Link
               href="/auth/login"
               className="px-4 py-2 bg-dark-600/50 text-gray-300 rounded-lg text-sm hover:bg-dark-600 transition-colors"
             >
-              Login / Đăng nhập
+              {language === 'ko' ? '로그인' : 'Đăng nhập'}
             </Link>
             <Link
               href="/auth/register"
               className="px-4 py-2 bg-dark-600/50 text-gray-300 rounded-lg text-sm hover:bg-dark-600 transition-colors"
             >
-              Sign Up / Đăng ký
+              {language === 'ko' ? '회원가입' : 'Đăng ký'}
             </Link>
             <Link
               href="/main/influencer/campaigns"

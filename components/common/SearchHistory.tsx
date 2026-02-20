@@ -17,7 +17,7 @@ export default function SearchHistory({
   onRemove,
   onClear,
   popularSearches = [],
-  language = 'ko',
+  language = 'vi',
 }: SearchHistoryProps) {
   const text = {
     ko: {

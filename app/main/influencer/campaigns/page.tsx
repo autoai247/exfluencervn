@@ -152,7 +152,7 @@ const FilterPanel = dynamic(() => import('@/components/campaign/FilterPanel'), {
     maxBudget: 800000,
     platforms: ['instagram', 'youtube', 'tiktok'] as Platform[],
     categories: ['fitness', 'health'] as Category[],
-    location: '온라인',
+    location: 'Online',
     deadline: '2024-03-25',
     requiredFollowers: 20000,
     requiredEngagement: 3.5,
@@ -272,7 +272,7 @@ const FilterPanel = dynamic(() => import('@/components/campaign/FilterPanel'), {
     maxBudget: 1000000,
     platforms: ['youtube', 'facebook'] as Platform[],
     categories: ['tech', 'gaming'] as Category[],
-    location: '온라인',
+    location: 'Online',
     deadline: '2024-03-28',
     requiredFollowers: 25000,
     requiredEngagement: 5.0,
@@ -510,7 +510,7 @@ function CampaignsPageContent() {
       followers: mockUserProfile.followers >= campaign.requiredFollowers,
       engagement: mockUserProfile.engagementRate >= campaign.requiredEngagement,
       platform: campaign.platforms.some(p => mockUserProfile.platforms.includes(p)),
-      location: campaign.location === '온라인' || campaign.location.includes(mockUserProfile.location.split(',')[0]),
+      location: campaign.location === 'Online' || campaign.location.includes(mockUserProfile.location.split(',')[0]),
 
       // Extended eligibility checks
       vehicle: campaign.requiresVehicle ? mockUserProfile.hasVehicle : true,

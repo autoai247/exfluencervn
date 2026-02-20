@@ -343,7 +343,7 @@ export default function InfluencerProfilePage() {
       <div className="container-mobile pt-4">
         <Breadcrumb
           items={[
-            { label: language === 'ko' ? '인플루언서' : 'Influencers', href: '/main/advertiser/influencers' },
+            { label: 'Influencers', href: '/main/advertiser/influencers' },
             { label: influencer.name },
           ]}
         />
@@ -422,7 +422,7 @@ export default function InfluencerProfilePage() {
         {/* SNS Channels */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {t.advertiser.influencerDetail.snsChannels} ({influencer.platforms.length}개)
+            {t.advertiser.influencerDetail.snsChannels} ({influencer.platforms.length})
           </h3>
           <div className="space-y-3">
             {influencer.platforms.map((platData: any) => {
@@ -448,7 +448,7 @@ export default function InfluencerProfilePage() {
                     <p className="text-sm font-bold text-gray-900">
                       {(platData.followers / 1000).toFixed(1)}K
                     </p>
-                    <p className="text-xs text-gray-500">{platData.engagement}% 참여율</p>
+                    <p className="text-xs text-gray-500">{platData.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
                   </div>
                 </a>
               );
@@ -497,13 +497,13 @@ export default function InfluencerProfilePage() {
                     src={review.advertiserLogo}
                     alt={review.advertiser}
                     className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all"
-                    onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
+                    onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h4
                         className="text-sm font-semibold text-gray-900 cursor-pointer hover:text-gray-600 transition-colors"
-                        onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
+                        onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                       >
                         {review.advertiser}
                       </h4>
@@ -690,7 +690,7 @@ export default function InfluencerProfilePage() {
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
             {t.advertiser.influencerDetail.recentWorks}
             <span className="text-xs text-gray-500 font-normal ml-2">
-              ({language === 'ko' ? '콘텐츠 스타일 확인용' : 'Kiểm tra phong cách nội dung'})
+              {language === 'ko' ? '(콘텐츠 스타일 확인)' : '(Kiểm tra phong cách nội dung)'}
             </span>
           </h3>
           <div className="space-y-3">
@@ -732,16 +732,14 @@ export default function InfluencerProfilePage() {
             ))}
           </div>
           <p className="text-xs text-gray-500 mt-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
-            💡 {language === 'ko'
-              ? '최근 작업물을 통해 인플루언서의 콘텐츠 스타일, 편집 퀄리티, 톤앤매너를 확인하세요'
-              : 'Xem phong cách nội dung, chất lượng chỉnh sửa và tone của influencer qua các công việc gần đây'}
+            💡 {language === 'ko' ? '최근 작업물을 통해 인플루언서의 콘텐츠 스타일, 편집 품질, 톤을 확인하세요' : 'Xem phong cách nội dung, chất lượng chỉnh sửa và tone của influencer qua các công việc gần đây'}
           </p>
         </div>
 
         {/* 완료한 캠페인 */}
         <div>
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {t.advertiser.influencerDetail.completedCampaigns} ({influencer.completedCampaigns}개)
+            {t.advertiser.influencerDetail.completedCampaigns} ({influencer.completedCampaigns})
           </h3>
           <div className="space-y-3">
             {influencer.completedCampaignsList.slice(0, 5).map((campaign: any) => (
@@ -822,9 +820,7 @@ export default function InfluencerProfilePage() {
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
             <h3 className="text-lg font-bold text-gray-900 mb-4">{t.advertiser.influencerDetail.contactTitle}</h3>
             <p className="text-sm text-gray-600 mb-4">
-              {language === 'ko'
-                ? '캠페인 상세 정보를 입력하고 인플루언서에게 제안을 보내세요.'
-                : 'Nhập thông tin chi tiết chiến dịch và gửi đề xuất cho influencer.'}
+              {language === 'ko' ? '캠페인 상세 정보를 입력하고 인플루언서에게 제안서를 보내세요.' : 'Nhập thông tin chi tiết chiến dịch và gửi đề xuất cho influencer.'}
             </p>
             <div className="flex gap-3">
               <button
@@ -835,7 +831,7 @@ export default function InfluencerProfilePage() {
               </button>
               <button
                 onClick={() => {
-                  alert(language === 'ko' ? '제안이 전송되었습니다!' : 'Đề xuất đã được gửi!');
+                  alert(language === 'ko' ? '제안서가 전송되었습니다!' : 'Đề xuất đã được gửi!');
                   setShowContactModal(false);
                 }}
                 className="flex-1 py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800"

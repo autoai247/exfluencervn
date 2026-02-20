@@ -17,6 +17,7 @@ import {
 import { formatPoints } from '@/lib/points';
 import BottomNav from '@/components/common/BottomNav';
 import SocialMetaTags from '@/components/common/SocialMetaTags';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type JobStatus = 'pending' | 'accepted' | 'in_progress' | 'completed' | 'rejected';
 
@@ -58,45 +59,47 @@ const mockJob = {
   feedback: '',
 };
 
-const statusConfig = {
+const getStatusConfig = (language: string) => ({
   pending: {
-    label: '승인 대기',
+    label: language === 'ko' ? '승인 대기' : 'Chờ duyệt',
     icon: AlertCircle,
     color: 'text-warning',
     bgColor: 'bg-warning/20',
   },
   accepted: {
-    label: '승인됨',
+    label: language === 'ko' ? '승인됨' : 'Đã duyệt',
     icon: CheckCircle,
     color: 'text-info',
     bgColor: 'bg-info/20',
   },
   in_progress: {
-    label: '진행 중',
+    label: language === 'ko' ? '진행 중' : 'Đang thực hiện',
     icon: Clock,
     color: 'text-secondary',
     bgColor: 'bg-secondary/20',
   },
   completed: {
-    label: '완료',
+    label: language === 'ko' ? '완료' : 'Hoàn thành',
     icon: CheckCircle,
     color: 'text-success',
     bgColor: 'bg-success/20',
   },
   rejected: {
-    label: '거절됨',
+    label: language === 'ko' ? '거절됨' : 'Bị từ chối',
     icon: XCircle,
     color: 'text-error',
     bgColor: 'bg-error/20',
   },
-};
+});
 
 export default function JobDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const { language } = useLanguage();
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadItems, setUploadItems] = useState([{ url: '', description: '' }]);
 
+  const statusConfig = getStatusConfig(language);
   const config = statusConfig[mockJob.status];
   const StatusIcon = config.icon;
 
@@ -120,16 +123,16 @@ export default function JobDetailPage() {
     e.preventDefault();
     const validItems = uploadItems.filter(item => item.url.trim() !== '');
     if (validItems.length === 0) {
-      alert('최소 1개의 URL을 입력해주세요.');
+      alert(language === 'ko' ? '최소 1개의 URL을 입력해주세요.' : 'Vui lòng nhập ít nhất 1 URL.');
       return;
     }
-    alert(`${validItems.length}개의 결과물이 제출되었습니다!`);
+    alert(language === 'ko' ? `${validItems.length}개의 결과물이 제출되었습니다!` : `Đã nộp ${validItems.length} kết quả!`);
     setShowUploadModal(false);
     setUploadItems([{ url: '', description: '' }]);
   };
 
   const handleStartWork = () => {
-    alert('작업을 시작합니다!');
+    alert(language === 'ko' ? '작업을 시작합니다!' : 'Bắt đầu công việc!');
   };
 
   const handleContactAdvertiser = () => {
@@ -161,7 +164,7 @@ export default function JobDetailPage() {
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-white">작업 상세</h1>
+          <h1 className="text-lg font-bold text-white">{language === 'ko' ? '작업 상세' : 'Chi tiết công việc'}</h1>
         </div>
       </div>
 
@@ -191,7 +194,9 @@ export default function JobDetailPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-400 mb-1">
-                {mockJob.status === 'completed' ? '획득 수익' : '예상 수익'}
+                {mockJob.status === 'completed'
+                  ? (language === 'ko' ? '획득 수익' : 'Thu nhập đã nhận')
+                  : (language === 'ko' ? '예상 수익' : 'Thu nhập dự kiến')}
               </p>
               <p className="text-2xl font-bold text-accent">{formatPoints(mockJob.budget)}</p>
             </div>
@@ -202,10 +207,10 @@ export default function JobDetailPage() {
         {/* Progress */}
         {mockJob.status === 'in_progress' && (
           <div className="card border-2 border-dark-500/50 shadow-xl">
-            <h3 className="text-sm font-semibold text-white mb-3">진행 상황</h3>
+            <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '진행 상황' : 'Tiến độ'}</h3>
             <div className="mb-3">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">완료된 작업</span>
+                <span className="text-gray-400">{language === 'ko' ? '완료된 작업' : 'Công việc hoàn thành'}</span>
                 <span className="text-white font-semibold">
                   {completedCount}/{mockJob.deliverables.length}
                 </span>
@@ -222,7 +227,7 @@ export default function JobDetailPage() {
 
         {/* Requirements */}
         <div className="card border-2 border-dark-500/50 shadow-xl">
-          <h3 className="text-sm font-semibold text-white mb-3">요구사항</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '요구사항' : 'Yêu cầu'}</h3>
           <ul className="space-y-2">
             {mockJob.requirements.map((req, index) => (
               <li key={index} className="flex items-start gap-2 text-sm text-gray-300">
@@ -237,14 +242,14 @@ export default function JobDetailPage() {
         {(mockJob.status === 'in_progress' || mockJob.status === 'completed') && (
           <div className="card border-2 border-dark-500/50 shadow-xl">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-white">제출물 체크리스트</h3>
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '제출물 체크리스트' : 'Danh sách nộp'}</h3>
               {mockJob.status === 'in_progress' && (
                 <button
                   onClick={() => setShowUploadModal(true)}
                   className="btn btn-primary text-xs"
                 >
                   <Upload size={14} className="mr-1" />
-                  결과물 제출
+                  {language === 'ko' ? '결과물 제출' : 'Nộp kết quả'}
                 </button>
               )}
             </div>
@@ -268,7 +273,7 @@ export default function JobDetailPage() {
         {/* Submitted Work */}
         {mockJob.submittedWork.length > 0 && (
           <div className="space-y-6">
-            <h3 className="text-sm font-semibold text-white">제출한 결과물</h3>
+            <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '제출한 결과물' : 'Kết quả đã nộp'}</h3>
             {mockJob.submittedWork.map((work) => (
               <div key={work.id} className="card border-2 border-dark-500/50 shadow-xl">
                 <img
@@ -283,13 +288,13 @@ export default function JobDetailPage() {
                     rel="noopener noreferrer"
                     className="text-primary text-sm hover:underline"
                   >
-                    링크 보기 →
+                    {language === 'ko' ? '링크 보기 →' : 'Xem liên kết →'}
                   </a>
                   <span className="text-xs px-2 py-1 rounded-full bg-success/20 text-success">
-                    승인됨
+                    {language === 'ko' ? '승인됨' : 'Đã duyệt'}
                   </span>
                 </div>
-                <div className="text-xs text-gray-400">제출일: {work.submittedAt}</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? '제출일' : 'Ngày nộp'}: {work.submittedAt}</div>
               </div>
             ))}
           </div>
@@ -298,20 +303,20 @@ export default function JobDetailPage() {
         {/* Feedback (for rejected jobs) */}
         {mockJob.status === 'rejected' && mockJob.feedback && (
           <div className="card bg-error/10 border-2 border-error/30 shadow-xl">
-            <h3 className="text-sm font-semibold text-error mb-2">거절 사유</h3>
+            <h3 className="text-sm font-semibold text-error mb-2">{language === 'ko' ? '거절 사유' : 'Lý do từ chối'}</h3>
             <p className="text-sm text-gray-300">{mockJob.feedback}</p>
           </div>
         )}
 
         {/* Timeline */}
         <div className="card border-2 border-dark-500/50 shadow-xl">
-          <h3 className="text-sm font-semibold text-white mb-3">일정</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '일정' : 'Lịch trình'}</h3>
           <div className="space-y-6">
             {mockJob.appliedAt && (
               <div className="flex items-center gap-3">
                 <FileText size={16} className="text-gray-400" />
                 <div className="flex-1">
-                  <p className="text-sm text-white">지원일</p>
+                  <p className="text-sm text-white">{language === 'ko' ? '지원일' : 'Ngày ứng tuyển'}</p>
                   <p className="text-xs text-gray-400">{mockJob.appliedAt}</p>
                 </div>
               </div>
@@ -320,7 +325,7 @@ export default function JobDetailPage() {
               <div className="flex items-center gap-3">
                 <Clock size={16} className="text-info" />
                 <div className="flex-1">
-                  <p className="text-sm text-white">시작일</p>
+                  <p className="text-sm text-white">{language === 'ko' ? '시작일' : 'Ngày bắt đầu'}</p>
                   <p className="text-xs text-gray-400">{mockJob.startedAt}</p>
                 </div>
               </div>
@@ -328,7 +333,7 @@ export default function JobDetailPage() {
             <div className="flex items-center gap-3">
               <Calendar size={16} className="text-warning" />
               <div className="flex-1">
-                <p className="text-sm text-white">마감일</p>
+                <p className="text-sm text-white">{language === 'ko' ? '마감일' : 'Ngày hết hạn'}</p>
                 <p className="text-xs text-gray-400">{mockJob.deadline}</p>
               </div>
             </div>
@@ -340,20 +345,20 @@ export default function JobDetailPage() {
           {mockJob.status === 'accepted' && (
             <button onClick={handleStartWork} className="btn btn-primary w-full">
               <Clock size={18} className="mr-2" />
-              작업 시작하기
+              {language === 'ko' ? '작업 시작하기' : 'Bắt đầu công việc'}
             </button>
           )}
 
           {mockJob.status === 'in_progress' && (
             <button onClick={() => setShowUploadModal(true)} className="btn btn-primary w-full">
               <Upload size={18} className="mr-2" />
-              결과물 제출하기
+              {language === 'ko' ? '결과물 제출하기' : 'Nộp kết quả'}
             </button>
           )}
 
           <button onClick={handleContactAdvertiser} className="btn btn-secondary w-full">
             <MessageCircle size={18} className="mr-2" />
-            광고주에게 문의하기
+            {language === 'ko' ? '광고주에게 문의하기' : 'Liên hệ nhà quảng cáo'}
           </button>
         </div>
       </div>
@@ -362,25 +367,25 @@ export default function JobDetailPage() {
       {showUploadModal && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-dark-600 rounded-xl w-full max-w-md p-6 my-8">
-            <h3 className="text-lg font-bold text-white mb-4">결과물 제출</h3>
+            <h3 className="text-lg font-bold text-white mb-4">{language === 'ko' ? '결과물 제출' : 'Nộp kết quả'}</h3>
             <form onSubmit={handleSubmitWork} className="space-y-4">
               {uploadItems.map((item, index) => (
                 <div key={index} className="p-4 bg-dark-700 rounded-lg space-y-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-primary">결과물 #{index + 1}</span>
+                    <span className="text-sm font-semibold text-primary">{language === 'ko' ? `결과물 #${index + 1}` : `Kết quả #${index + 1}`}</span>
                     {uploadItems.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeUploadItem(index)}
                         className="text-xs text-error hover:text-error/80"
                       >
-                        삭제
+                        {language === 'ko' ? '삭제' : 'Xóa'}
                       </button>
                     )}
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-300 mb-2 block">
-                      콘텐츠 URL
+                      {language === 'ko' ? '콘텐츠 URL' : 'URL nội dung'}
                     </label>
                     <input
                       type="url"
@@ -392,12 +397,12 @@ export default function JobDetailPage() {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-300 mb-2 block">
-                      설명 (선택)
+                      {language === 'ko' ? '설명 (선택)' : 'Mô tả (tùy chọn)'}
                     </label>
                     <textarea
                       value={item.description}
                       onChange={(e) => updateUploadItem(index, 'description', e.target.value)}
-                      placeholder="추가 설명을 입력하세요..."
+                      placeholder={language === 'ko' ? '추가 설명을 입력하세요...' : 'Nhập mô tả thêm...'}
                       rows={2}
                       className="input resize-none"
                     />
@@ -410,7 +415,7 @@ export default function JobDetailPage() {
                 onClick={addUploadItem}
                 className="btn btn-secondary w-full text-sm"
               >
-                + 결과물 추가
+                + {language === 'ko' ? '결과물 추가' : 'Thêm kết quả'}
               </button>
 
               <div className="flex gap-3 pt-2">
@@ -422,10 +427,10 @@ export default function JobDetailPage() {
                   }}
                   className="flex-1 btn btn-ghost"
                 >
-                  취소
+                  {language === 'ko' ? '취소' : 'Hủy'}
                 </button>
                 <button type="submit" className="flex-1 btn btn-primary">
-                  {uploadItems.filter(i => i.url).length}개 제출
+                  {language === 'ko' ? `${uploadItems.filter(i => i.url).length}개 제출` : `Nộp ${uploadItems.filter(i => i.url).length} mục`}
                 </button>
               </div>
             </form>

@@ -4,6 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Mail, Phone, Calendar, DollarSign, Star, Briefcase, Ban, CheckCircle, MessageCircle, Facebook } from 'lucide-react';
 import { FaFacebookMessenger } from 'react-icons/fa';
 import { formatPoints } from '@/lib/points';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Mock user data
 const mockUsers: any = {
@@ -100,6 +101,7 @@ const mockUsers: any = {
 export default function AdminUserDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const { language } = useLanguage();
   const userId = params?.id as string;
 
   const user = mockUsers[userId] || mockUsers['U001'];
@@ -113,7 +115,7 @@ export default function AdminUserDetailPage() {
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-white">사용자 상세 정보</h1>
+          <h1 className="text-lg font-bold text-white">{language === 'ko' ? '사용자 상세 정보' : 'Thông tin người dùng'}</h1>
         </div>
       </div>
 
@@ -131,13 +133,13 @@ export default function AdminUserDetailPage() {
               <span className={`text-xs px-3 py-1 rounded-full ${
                 isInfluencer ? 'bg-secondary/20 text-secondary' : 'bg-primary/20 text-primary'
               }`}>
-                {isInfluencer ? '인플루언서' : '광고주'}
+                {isInfluencer ? (language === 'ko' ? '인플루언서' : 'Influencer') : (language === 'ko' ? '광고주' : 'Nhà QC')}
               </span>
               <div className="mt-2">
                 <span className={`text-xs px-2 py-1 rounded ${
                   user.status === 'active' ? 'bg-success/20 text-success' : 'bg-error/20 text-error'
                 }`}>
-                  {user.status === 'active' ? '활성' : '정지됨'}
+                  {user.status === 'active' ? (language === 'ko' ? '활성' : 'Hoạt động') : (language === 'ko' ? '정지됨' : 'Đình chỉ')}
                 </span>
               </div>
             </div>
@@ -154,17 +156,17 @@ export default function AdminUserDetailPage() {
 
         {/* Contact Info */}
         <div className="card space-y-3">
-          <h3 className="text-sm font-semibold text-white mb-3">연락처 정보</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '연락처 정보' : 'Thông tin liên lạc'}</h3>
 
           <div className="flex items-center gap-3 text-sm">
             <Mail size={16} className="text-gray-400" />
-            <span className="text-gray-400">이메일:</span>
+            <span className="text-gray-400">{language === 'ko' ? '이메일' : 'Email'}:</span>
             <span className="text-white">{user.email}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
             <Phone size={16} className="text-gray-400" />
-            <span className="text-gray-400">전화:</span>
+            <span className="text-gray-400">{language === 'ko' ? '전화' : 'Điện thoại'}:</span>
             <span className="text-white">{user.phone}</span>
           </div>
 
@@ -182,13 +184,13 @@ export default function AdminUserDetailPage() {
 
           <div className="flex items-center gap-3 text-sm">
             <Calendar size={16} className="text-gray-400" />
-            <span className="text-gray-400">가입일:</span>
+            <span className="text-gray-400">{language === 'ko' ? '가입일' : 'Ngày tham gia'}:</span>
             <span className="text-white">{user.createdAt}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
             <Calendar size={16} className="text-gray-400" />
-            <span className="text-gray-400">마지막 활동:</span>
+            <span className="text-gray-400">{language === 'ko' ? '마지막 활동' : 'Hoạt động cuối'}:</span>
             <span className="text-white">{user.lastActive}</span>
           </div>
         </div>
@@ -198,7 +200,7 @@ export default function AdminUserDetailPage() {
           <>
             {/* Social Accounts */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">소셜 미디어 계정</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '소셜 미디어 계정' : 'Tài khoản mạng xã hội'}</h3>
               <div className="space-y-3">
                 {user.socialAccounts.map((account: any, index: number) => (
                   <div key={index} className="bg-dark-700 rounded-lg p-3">
@@ -208,11 +210,11 @@ export default function AdminUserDetailPage() {
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div>
-                        <p className="text-gray-400">팔로워</p>
+                        <p className="text-gray-400">{language === 'ko' ? '팔로워' : 'Người theo dõi'}</p>
                         <p className="text-white font-semibold">{account.followers.toLocaleString()}</p>
                       </div>
                       <div>
-                        <p className="text-gray-400">참여율</p>
+                        <p className="text-gray-400">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</p>
                         <p className="text-white font-semibold">{account.engagement}%</p>
                       </div>
                     </div>
@@ -228,40 +230,40 @@ export default function AdminUserDetailPage() {
                 <div className="text-lg font-bold text-white">
                   {formatPoints(user.stats.totalEarnings)}
                 </div>
-                <div className="text-xs text-gray-400 mt-1">총 수익</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '총 수익' : 'Tổng thu nhập'}</div>
               </div>
               <div className="card text-center">
                 <Briefcase size={24} className="text-secondary mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.completedCampaigns}</div>
-                <div className="text-xs text-gray-400 mt-1">완료한 캠페인</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '완료한 캠페인' : 'Chiến dịch hoàn thành'}</div>
               </div>
               <div className="card text-center">
                 <Star size={24} className="text-warning mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.rating}</div>
-                <div className="text-xs text-gray-400 mt-1">평균 평점</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '평균 평점' : 'Đánh giá trung bình'}</div>
               </div>
               <div className="card text-center">
                 <CheckCircle size={24} className="text-info mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.reviewCount}</div>
-                <div className="text-xs text-gray-400 mt-1">리뷰 수</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '리뷰 수' : 'Số đánh giá'}</div>
               </div>
             </div>
 
             {/* Points Balance */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">포인트 잔액</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '포인트 잔액' : 'Số dư điểm'}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">사용 가능:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '사용 가능' : 'Có thể dùng'}:</span>
                   <span className="text-success font-semibold">{formatPoints(user.stats.availablePoints)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">보류 중:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '보류 중' : 'Đang chờ'}:</span>
                   <span className="text-warning font-semibold">{formatPoints(user.stats.lockedPoints)}</span>
                 </div>
                 <div className="border-t border-dark-500 pt-2 mt-2">
                   <div className="flex justify-between">
-                    <span className="text-white font-semibold">총 잔액:</span>
+                    <span className="text-white font-semibold">{language === 'ko' ? '총 잔액' : 'Tổng số dư'}:</span>
                     <span className="text-white font-bold">{formatPoints(user.stats.availablePoints + user.stats.lockedPoints)}</span>
                   </div>
                 </div>
@@ -270,18 +272,18 @@ export default function AdminUserDetailPage() {
 
             {/* Bank Info */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">출금 계좌 정보</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '출금 계좌 정보' : 'Thông tin tài khoản rút tiền'}</h3>
               <div className="space-y-2 text-sm bg-dark-700 rounded-lg p-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">은행:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '은행' : 'Ngân hàng'}:</span>
                   <span className="text-white">{user.bankInfo.bankName}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">계좌번호:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '계좌번호' : 'Số tài khoản'}:</span>
                   <span className="text-white font-mono">{user.bankInfo.accountNumber}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">예금주:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '예금주' : 'Chủ tài khoản'}:</span>
                   <span className="text-white">{user.bankInfo.accountName}</span>
                 </div>
               </div>
@@ -289,7 +291,7 @@ export default function AdminUserDetailPage() {
 
             {/* Recent Campaigns */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-white">최근 캠페인 활동</h3>
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '최근 캠페인 활동' : 'Hoạt động chiến dịch gần đây'}</h3>
               {user.recentCampaigns.map((campaign: any, index: number) => (
                 <div key={index} className="card">
                   <div className="flex justify-between items-start mb-2">
@@ -300,7 +302,7 @@ export default function AdminUserDetailPage() {
                     <span className={`text-xs px-2 py-1 rounded ${
                       campaign.status === 'completed' ? 'bg-success/20 text-success' : 'bg-warning/20 text-warning'
                     }`}>
-                      {campaign.status === 'completed' ? '완료' : '진행 중'}
+                      {campaign.status === 'completed' ? (language === 'ko' ? '완료' : 'Hoàn thành') : (language === 'ko' ? '진행 중' : 'Đang tiến hành')}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -318,26 +320,26 @@ export default function AdminUserDetailPage() {
           <>
             {/* Company Info */}
             <div className="card space-y-2">
-              <h3 className="text-sm font-semibold text-white mb-3">회사 정보</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '회사 정보' : 'Thông tin công ty'}</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">산업:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '산업' : 'Ngành'}:</span>
                   <span className="text-white">{user.industry}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">회사 규모:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '회사 규모' : 'Quy mô công ty'}:</span>
                   <span className="text-white">{user.companySize}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">웹사이트:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '웹사이트' : 'Website'}:</span>
                   <span className="text-primary">{user.website}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">주소:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '주소' : 'Địa chỉ'}:</span>
                   <span className="text-white">{user.address}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">사업자번호:</span>
+                  <span className="text-gray-400">{language === 'ko' ? '사업자번호' : 'Mã số thuế'}:</span>
                   <span className="text-white font-mono">{user.taxId}</span>
                 </div>
               </div>
@@ -350,39 +352,39 @@ export default function AdminUserDetailPage() {
                 <div className="text-lg font-bold text-white">
                   {formatPoints(user.stats.totalSpent)}
                 </div>
-                <div className="text-xs text-gray-400 mt-1">총 지출</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '총 지출' : 'Tổng chi tiêu'}</div>
               </div>
               <div className="card text-center">
                 <Briefcase size={24} className="text-secondary mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.completedCampaigns}</div>
-                <div className="text-xs text-gray-400 mt-1">완료한 캠페인</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '완료한 캠페인' : 'Chiến dịch hoàn thành'}</div>
               </div>
               <div className="card text-center">
                 <Star size={24} className="text-warning mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.rating}</div>
-                <div className="text-xs text-gray-400 mt-1">평균 평점</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '평균 평점' : 'Đánh giá trung bình'}</div>
               </div>
               <div className="card text-center">
                 <CheckCircle size={24} className="text-info mx-auto mb-2" />
                 <div className="text-xl font-bold text-white">{user.stats.totalInfluencers}</div>
-                <div className="text-xs text-gray-400 mt-1">협업 인플루언서</div>
+                <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '협업 인플루언서' : 'Influencer hợp tác'}</div>
               </div>
             </div>
 
             {/* Recent Campaigns */}
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-white">최근 캠페인</h3>
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '최근 캠페인' : 'Chiến dịch gần đây'}</h3>
               {user.recentCampaigns.map((campaign: any, index: number) => (
                 <div key={index} className="card">
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <h4 className="font-semibold text-white text-sm">{campaign.title}</h4>
-                      <p className="text-xs text-gray-400">{campaign.influencers}명의 인플루언서</p>
+                      <p className="text-xs text-gray-400">{language === 'ko' ? `${campaign.influencers}명의 인플루언서` : `${campaign.influencers} influencer`}</p>
                     </div>
                     <span className={`text-xs px-2 py-1 rounded ${
                       campaign.status === 'completed' ? 'bg-success/20 text-success' : campaign.status === 'active' ? 'bg-warning/20 text-warning' : 'bg-info/20 text-info'
                     }`}>
-                      {campaign.status === 'completed' ? '완료' : campaign.status === 'active' ? '진행 중' : '대기'}
+                      {campaign.status === 'completed' ? (language === 'ko' ? '완료' : 'Hoàn thành') : campaign.status === 'active' ? (language === 'ko' ? '진행 중' : 'Đang tiến hành') : (language === 'ko' ? '대기' : 'Chờ duyệt')}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -397,18 +399,18 @@ export default function AdminUserDetailPage() {
 
         {/* Admin Actions */}
         <div className="card space-y-3">
-          <h3 className="text-sm font-semibold text-white mb-3">관리자 작업</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '관리자 작업' : 'Thao tác quản trị'}</h3>
 
           <div className="grid grid-cols-2 gap-3">
             {user.status === 'active' ? (
               <button className="btn bg-error/20 text-error hover:bg-error/30">
                 <Ban size={16} className="mr-2" />
-                계정 정지
+                {language === 'ko' ? '계정 정지' : 'Đình chỉ tài khoản'}
               </button>
             ) : (
               <button className="btn bg-success/20 text-success hover:bg-success/30">
                 <CheckCircle size={16} className="mr-2" />
-                정지 해제
+                {language === 'ko' ? '정지 해제' : 'Bỏ đình chỉ'}
               </button>
             )}
 
@@ -417,7 +419,7 @@ export default function AdminUserDetailPage() {
               className="btn btn-ghost"
             >
               <MessageCircle size={16} className="mr-2" />
-              메시지 보내기
+              {language === 'ko' ? '메시지 보내기' : 'Gửi tin nhắn'}
             </button>
           </div>
         </div>

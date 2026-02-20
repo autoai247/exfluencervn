@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, ReactNode } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface SwipeableCardProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ export default function SwipeableCard({
   className = '',
   threshold = 100,
 }: SwipeableCardProps) {
+  const { language } = useLanguage();
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
@@ -74,12 +76,12 @@ export default function SwipeableCard({
         <>
           {currentX < -50 && (
             <div className="absolute top-1/2 right-4 -translate-y-1/2 bg-red-500/80 backdrop-blur-sm text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg">
-              ← 삭제
+              {language === 'ko' ? '← 삭제' : '← Xóa'}
             </div>
           )}
           {currentX > 50 && (
             <div className="absolute top-1/2 left-4 -translate-y-1/2 bg-green-500/80 backdrop-blur-sm text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg">
-              보관 →
+              {language === 'ko' ? '보관 →' : 'Lưu trữ →'}
             </div>
           )}
         </>

@@ -120,18 +120,22 @@ function downloadBlob(blob: Blob, filename: string) {
 /**
  * Export campaigns data
  */
-export function exportCampaigns(campaigns: any[], format: ExportFormat = 'csv') {
+export function exportCampaigns(campaigns: any[], format: ExportFormat = 'csv', language: 'ko' | 'vi' = 'vi') {
+  const labels = language === 'ko'
+    ? { title: '제목', company: '회사', budget: '예산', platforms: '플랫폼', categories: '카테고리', location: '위치', deadline: '마감일', applicants: '신청자수', type: '타입' }
+    : { title: 'Tiêu đề', company: 'Công ty', budget: 'Ngân sách', platforms: 'Nền tảng', categories: 'Danh mục', location: 'Địa điểm', deadline: 'Hạn chót', applicants: 'Số ứng viên', type: 'Loại' };
+
   const exportData = campaigns.map(campaign => ({
     ID: campaign.id,
-    제목: campaign.title,
-    회사: campaign.company,
-    예산: campaign.budget,
-    플랫폼: campaign.platforms.join(', '),
-    카테고리: campaign.categories.join(', '),
-    위치: campaign.location,
-    마감일: campaign.deadline,
-    신청자수: campaign.applicants,
-    타입: campaign.type,
+    [labels.title]: campaign.title,
+    [labels.company]: campaign.company,
+    [labels.budget]: campaign.budget,
+    [labels.platforms]: campaign.platforms.join(', '),
+    [labels.categories]: campaign.categories.join(', '),
+    [labels.location]: campaign.location,
+    [labels.deadline]: campaign.deadline,
+    [labels.applicants]: campaign.applicants,
+    [labels.type]: campaign.type,
   }));
 
   exportToCSV(exportData, {

@@ -21,6 +21,7 @@ import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import MobileHeader from '@/components/common/MobileHeader';
 import { useToast } from '@/components/common/ToastContainer';
 import { formatCash } from '@/lib/points';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // ─── Types ─────────────────────────────────────────────────
 type Platform = 'instagram' | 'tiktok' | 'youtube' | 'facebook';
@@ -50,6 +51,7 @@ const NICHES = [
 export default function CreateCampaignPage() {
   const router = useRouter();
   const toast = useToast();
+  const { language } = useLanguage();
 
   const [step, setStep] = useState<1 | 2 | 3>(1); // 3 steps
   const [showPreview, setShowPreview] = useState(false);
@@ -235,16 +237,16 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
     try {
       await navigator.clipboard.writeText(generateBriefText());
       setCopied(true);
-      toast.success('Đã sao chép!', 'Brief đã được sao chép vào clipboard.');
+      toast.success(language === 'ko' ? '복사됨!' : 'Đã sao chép!', language === 'ko' ? 'Brief가 클립보드에 복사되었습니다.' : 'Brief đã được sao chép vào clipboard.');
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error('Lỗi', 'Không thể sao chép. Hãy thử lại.');
+      toast.error(language === 'ko' ? '오류' : 'Lỗi', language === 'ko' ? '복사할 수 없습니다. 다시 시도하세요.' : 'Không thể sao chép. Hãy thử lại.');
     }
   };
 
   const handleSubmit = async () => {
     if (!form.title || !form.platform.length || !form.deliverable.length) {
-      toast.error('Thiếu thông tin', 'Vui lòng điền đầy đủ tên, nền tảng và loại nội dung.');
+      toast.error(language === 'ko' ? '정보 부족' : 'Thiếu thông tin', language === 'ko' ? '이름, 플랫폼, 콘텐츠 유형을 모두 입력해 주세요.' : 'Vui lòng điền đầy đủ tên, nền tảng và loại nội dung.');
       setStep(1);
       return;
     }
@@ -282,11 +284,11 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <FileText size={15} className="text-primary" />
-          Thông tin cơ bản
+          {language === 'ko' ? '기본 정보' : 'Thông tin cơ bản'}
         </h3>
 
         <div>
-          <label className="text-xs text-gray-400 mb-1 block">Tên thương hiệu</label>
+          <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '브랜드명' : 'Tên thương hiệu'}</label>
           <input
             value={form.brand}
             onChange={e => setForm(f => ({ ...f, brand: e.target.value }))}
@@ -296,7 +298,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
         </div>
 
         <div>
-          <label className="text-xs text-gray-400 mb-1 block">Tên chiến dịch *</label>
+          <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '캠페인명 *' : 'Tên chiến dịch *'}</label>
           <input
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
@@ -306,7 +308,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
         </div>
 
         <div>
-          <label className="text-xs text-gray-400 mb-1 block">Mô tả sản phẩm / chiến dịch</label>
+          <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '제품/캠페인 설명' : 'Mô tả sản phẩm / chiến dịch'}</label>
           <textarea
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
@@ -321,7 +323,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <Tag size={15} className="text-secondary" />
-          Lĩnh vực
+          {language === 'ko' ? '분야' : 'Lĩnh vực'}
         </h3>
         <div className="flex flex-wrap gap-2">
           {NICHES.map(n => (
@@ -343,7 +345,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
       {/* Platforms */}
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
-        <h3 className="text-sm font-semibold text-gray-300">Nền tảng *</h3>
+        <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '플랫폼 *' : 'Nền tảng *'}</h3>
         <div className="grid grid-cols-2 gap-2">
           {PLATFORMS.map(p => {
             const Icon = p.icon;
@@ -369,7 +371,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
       {/* Deliverables */}
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
-        <h3 className="text-sm font-semibold text-gray-300">Loại nội dung cần *</h3>
+        <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '필요한 콘텐츠 유형 *' : 'Loại nội dung cần *'}</h3>
         <div className="space-y-2">
           {DELIVERABLES.map(d => {
             const selected = form.deliverable.includes(d.id);
@@ -405,7 +407,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             : 'bg-dark-500 text-gray-600 cursor-not-allowed'
         }`}
       >
-        Tiếp theo: Yêu cầu KOL →
+        {language === 'ko' ? '다음: KOL 요구사항 →' : 'Tiếp theo: Yêu cầu KOL →'}
       </button>
     </div>
   );
@@ -417,11 +419,11 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <DollarSign size={15} className="text-accent" />
-          Ngân sách
+          {language === 'ko' ? '예산' : 'Ngân sách'}
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Ngân sách / KOL (VND) *</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? 'KOL당 예산 (VND) *' : 'Ngân sách / KOL (VND) *'}</label>
             <input
               type="number"
               value={form.budget}
@@ -434,7 +436,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             )}
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Số lượng KOL</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? 'KOL 수' : 'Số lượng KOL'}</label>
             <input
               type="number"
               value={form.slots}
@@ -447,7 +449,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
         </div>
         {form.budget && form.slots && (
           <div className="rounded-xl bg-accent/10 border border-accent/30 px-4 py-2.5">
-            <div className="text-xs text-gray-400">Tổng ngân sách dự kiến</div>
+            <div className="text-xs text-gray-400">{language === 'ko' ? '예상 총 예산' : 'Tổng ngân sách dự kiến'}</div>
             <div className="text-lg font-bold text-accent">
               {formatCash(parseInt(form.budget) * parseInt(form.slots))}
             </div>
@@ -459,11 +461,11 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <Users size={15} className="text-primary" />
-          Yêu cầu KOL
+          {language === 'ko' ? 'KOL 요구사항' : 'Yêu cầu KOL'}
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Followers tối thiểu</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '최소 팔로워' : 'Followers tối thiểu'}</label>
             <select
               value={form.minFollowers}
               onChange={e => setForm(f => ({ ...f, minFollowers: e.target.value }))}
@@ -478,7 +480,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             </select>
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Tỷ lệ tương tác (%)</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '최소 참여율 (%)' : 'Tỷ lệ tương tác (%)'}</label>
             <select
               value={form.minEngagement}
               onChange={e => setForm(f => ({ ...f, minEngagement: e.target.value }))}
@@ -492,19 +494,19 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             </select>
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Giới tính</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '성별' : 'Giới tính'}</label>
             <select
               value={form.gender}
               onChange={e => setForm(f => ({ ...f, gender: e.target.value as 'any' | 'female' | 'male' }))}
               className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
             >
-              <option value="any">Không giới hạn</option>
-              <option value="female">Nữ</option>
-              <option value="male">Nam</option>
+              <option value="any">{language === 'ko' ? '제한 없음' : 'Không giới hạn'}</option>
+              <option value="female">{language === 'ko' ? '여성' : 'Nữ'}</option>
+              <option value="male">{language === 'ko' ? '남성' : 'Nam'}</option>
             </select>
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Độ tuổi</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '연령대' : 'Độ tuổi'}</label>
             <select
               value={form.ageRange}
               onChange={e => setForm(f => ({ ...f, ageRange: e.target.value }))}
@@ -516,12 +518,12 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
               <option value="25-34">25–34</option>
               <option value="25-44">25–44</option>
               <option value="35+">35+</option>
-              <option value="all">Tất cả</option>
+              <option value="all">{language === 'ko' ? '전체' : 'Tất cả'}</option>
             </select>
           </div>
         </div>
         <div>
-          <label className="text-xs text-gray-400 mb-1 block">Khu vực</label>
+          <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '지역' : 'Khu vực'}</label>
           <input
             value={form.location}
             onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
@@ -537,7 +539,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           onClick={() => setStep(1)}
           className="flex-1 py-3.5 rounded-2xl text-sm font-bold bg-dark-500 text-gray-400"
         >
-          ← Quay lại
+          {language === 'ko' ? '← 이전' : '← Quay lại'}
         </button>
         <button
           type="button"
@@ -549,7 +551,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
               : 'bg-dark-500 text-gray-600 cursor-not-allowed'
           }`}
         >
-          Tiếp theo: Chi tiết →
+          {language === 'ko' ? '다음: 상세 내용 →' : 'Tiếp theo: Chi tiết →'}
         </button>
       </div>
     </div>
@@ -562,11 +564,11 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-4">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <Calendar size={15} className="text-secondary" />
-          Thời gian
+          {language === 'ko' ? '일정' : 'Thời gian'}
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Ngày bắt đầu</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '시작일' : 'Ngày bắt đầu'}</label>
             <input
               type="date"
               value={form.startDate}
@@ -575,7 +577,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Ngày kết thúc</label>
+            <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '종료일' : 'Ngày kết thúc'}</label>
             <input
               type="date"
               value={form.endDate}
@@ -590,14 +592,14 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
         <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
           <Hash size={15} className="text-warning" />
-          Hashtag bắt buộc
+          {language === 'ko' ? '필수 해시태그' : 'Hashtag bắt buộc'}
         </h3>
         <div className="flex gap-2">
           <input
             value={hashtagInput}
             onChange={e => setHashtagInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addHashtag())}
-            placeholder="Nhập hashtag (không cần #)"
+            placeholder={language === 'ko' ? '해시태그 입력 (#불필요)' : 'Nhập hashtag (không cần #)'}
             className="flex-1 bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
           />
           <button
@@ -624,7 +626,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
       {/* Guidelines */}
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
-        <h3 className="text-sm font-semibold text-gray-300">Hướng dẫn thực hiện</h3>
+        <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '실행 가이드라인' : 'Hướng dẫn thực hiện'}</h3>
         <textarea
           value={form.guidelines}
           onChange={e => setForm(f => ({ ...f, guidelines: e.target.value }))}
@@ -636,7 +638,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
       {/* What brand provides */}
       <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-3">
-        <h3 className="text-sm font-semibold text-gray-300">Thương hiệu cung cấp</h3>
+        <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '브랜드 제공 사항' : 'Thương hiệu cung cấp'}</h3>
         <textarea
           value={form.provided}
           onChange={e => setForm(f => ({ ...f, provided: e.target.value }))}
@@ -650,8 +652,8 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="rounded-2xl bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/40 p-4">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <div className="text-sm font-bold text-white">Tạo Brief ngay</div>
-            <div className="text-xs text-gray-400">Copy và gửi cho KOL qua Facebook/Zalo</div>
+            <div className="text-sm font-bold text-white">{language === 'ko' ? 'Brief 생성' : 'Tạo Brief ngay'}</div>
+            <div className="text-xs text-gray-400">{language === 'ko' ? 'Facebook/Zalo로 KOL에게 복사 전송' : 'Copy và gửi cho KOL qua Facebook/Zalo'}</div>
           </div>
           <button
             type="button"
@@ -659,7 +661,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             className="flex items-center gap-1.5 px-3 py-2 bg-dark-600 rounded-xl text-sm text-primary border border-primary/30"
           >
             <Eye size={15} />
-            Xem trước
+            {language === 'ko' ? '미리보기' : 'Xem trước'}
           </button>
         </div>
         <button
@@ -668,7 +670,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold flex items-center justify-center gap-2"
         >
           {copied ? <CheckCircle size={16} /> : <Copy size={16} />}
-          {copied ? 'Đã sao chép!' : 'Sao chép Brief'}
+          {copied ? (language === 'ko' ? '복사됨!' : 'Đã sao chép!') : (language === 'ko' ? 'Brief 복사' : 'Sao chép Brief')}
         </button>
       </div>
 
@@ -676,7 +678,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       {showPreview && (
         <div className="card bg-dark-800 border-2 border-dark-400 shadow-xl">
           <div className="flex items-center justify-between mb-3">
-            <div className="text-xs text-gray-400 font-semibold">XEM TRƯỚC BRIEF</div>
+            <div className="text-xs text-gray-400 font-semibold">{language === 'ko' ? 'BRIEF 미리보기' : 'XEM TRƯỚC BRIEF'}</div>
             <button type="button" onClick={() => setShowPreview(false)}>
               <X size={16} className="text-gray-500" />
             </button>
@@ -693,7 +695,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           onClick={() => setStep(2)}
           className="flex-1 py-3.5 rounded-2xl text-sm font-bold bg-dark-500 text-gray-400"
         >
-          ← Quay lại
+          {language === 'ko' ? '← 이전' : '← Quay lại'}
         </button>
         <button
           type="button"
@@ -706,7 +708,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           ) : (
             <Save size={15} />
           )}
-          {isSubmitting ? 'Đang tạo...' : 'Tạo chiến dịch'}
+          {isSubmitting ? (language === 'ko' ? '생성 중...' : 'Đang tạo...') : (language === 'ko' ? '캠페인 생성' : 'Tạo chiến dịch')}
         </button>
       </div>
     </div>
@@ -718,7 +720,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       <div className="min-h-screen bg-dark-700 pb-10">
         <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4 flex items-center gap-3">
           <CheckCircle size={22} className="text-accent" />
-          <h1 className="text-base font-bold text-white">Chiến dịch đã tạo!</h1>
+          <h1 className="text-base font-bold text-white">{language === 'ko' ? '캠페인이 생성되었습니다!' : 'Chiến dịch đã tạo!'}</h1>
         </div>
 
         <div className="px-4 py-5 space-y-4">
@@ -726,7 +728,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           <div className="rounded-2xl bg-gradient-to-r from-accent/20 to-green-500/10 border-2 border-accent/50 p-5 text-center">
             <div className="text-4xl mb-2">🎉</div>
             <div className="text-lg font-bold text-white mb-1">"{form.title}"</div>
-            <div className="text-sm text-gray-400">đã được tạo thành công!</div>
+            <div className="text-sm text-gray-400">{language === 'ko' ? '이(가) 성공적으로 생성되었습니다!' : 'đã được tạo thành công!'}</div>
             <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
               <span className="px-2 py-1 bg-dark-600 rounded-lg">ID: {campaignId}</span>
               <span className="px-2 py-1 bg-dark-600 rounded-lg">Ngân sách: {form.budget ? formatCash(parseInt(form.budget)) : '?'}/KOL</span>
@@ -741,8 +743,8 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
                 <span className="text-white font-bold text-sm">f</span>
               </div>
               <div>
-                <div className="text-sm font-bold text-white">Chia sẻ lên nhóm Facebook</div>
-                <div className="text-xs text-gray-400">Đăng vào nhóm KOL → KOL ứng tuyển trực tiếp</div>
+                <div className="text-sm font-bold text-white">{language === 'ko' ? 'Facebook 그룹에 공유' : 'Chia sẻ lên nhóm Facebook'}</div>
+                <div className="text-xs text-gray-400">{language === 'ko' ? 'KOL 그룹에 게시 → KOL이 직접 지원' : 'Đăng vào nhóm KOL → KOL ứng tuyển trực tiếp'}</div>
               </div>
             </div>
 
@@ -758,17 +760,17 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
               className="w-full py-3 rounded-xl bg-blue-600 text-white text-sm font-bold flex items-center justify-center gap-2"
             >
               {copiedShare ? <CheckCircle size={16} /> : <Copy size={16} />}
-              {copiedShare ? 'Đã sao chép! Dán vào Facebook ngay 👆' : 'Sao chép bài đăng Facebook'}
+              {copiedShare ? (language === 'ko' ? '복사됨! Facebook에 붙여넣기 👆' : 'Đã sao chép! Dán vào Facebook ngay 👆') : (language === 'ko' ? 'Facebook 게시물 복사' : 'Sao chép bài đăng Facebook')}
             </button>
 
             <p className="text-[10px] text-gray-500 text-center">
-              💡 Copy → Mở Facebook → Tìm nhóm KOL → Dán & Đăng
+              💡 {language === 'ko' ? '복사 → Facebook 열기 → KOL 그룹 찾기 → 붙여넣기 & 게시' : 'Copy → Mở Facebook → Tìm nhóm KOL → Dán & Đăng'}
             </p>
           </div>
 
           {/* Suggested Facebook Groups */}
           <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl space-y-2">
-            <div className="text-xs font-semibold text-gray-400 mb-2">📌 Nhóm Facebook KOL gợi ý để đăng:</div>
+            <div className="text-xs font-semibold text-gray-400 mb-2">📌 {language === 'ko' ? '추천 KOL Facebook 그룹:' : 'Nhóm Facebook KOL gợi ý để đăng:'}</div>
             {[
               'KOL Vietnam - Influencer Marketing',
               'Cộng đồng Influencer Việt Nam',
@@ -784,13 +786,13 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
           {/* Also copy brief */}
           <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
-            <div className="text-xs font-semibold text-gray-400 mb-2">📋 Brief chi tiết (gửi riêng cho KOL):</div>
+            <div className="text-xs font-semibold text-gray-400 mb-2">📋 {language === 'ko' ? '상세 Brief (KOL에게 개별 전송):' : 'Brief chi tiết (gửi riêng cho KOL):'}</div>
             <button
               onClick={copyBrief}
               className="w-full py-2.5 rounded-xl bg-dark-500 border border-primary/30 text-primary text-sm font-semibold flex items-center justify-center gap-2"
             >
               {copied ? <CheckCircle size={14} /> : <Copy size={14} />}
-              {copied ? 'Đã sao chép!' : 'Sao chép Brief đầy đủ'}
+              {copied ? (language === 'ko' ? '복사됨!' : 'Đã sao chép!') : (language === 'ko' ? '전체 Brief 복사' : 'Sao chép Brief đầy đủ')}
             </button>
           </div>
 
@@ -799,7 +801,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             onClick={() => router.push('/main/advertiser')}
             className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold"
           >
-            Xem Dashboard →
+            {language === 'ko' ? '대시보드 보기 →' : 'Xem Dashboard →'}
           </button>
         </div>
       </div>
@@ -816,8 +818,8 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             <ArrowLeft size={22} />
           </button>
           <div className="flex-1">
-            <h1 className="text-base font-bold text-white">Tạo chiến dịch mới</h1>
-            <div className="text-xs text-gray-500">Bước {step} / 3</div>
+            <h1 className="text-base font-bold text-white">{language === 'ko' ? '새 캠페인 만들기' : 'Tạo chiến dịch mới'}</h1>
+            <div className="text-xs text-gray-500">{language === 'ko' ? `${step}단계 / 3` : `Bước ${step} / 3`}</div>
           </div>
         </div>
         {/* Step Progress */}
@@ -836,9 +838,9 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
       {/* Step Labels */}
       <div className="flex px-4 py-3 gap-2 text-center">
         {[
-          { label: '1. Cơ bản', active: step === 1 },
-          { label: '2. Yêu cầu', active: step === 2 },
-          { label: '3. Chi tiết', active: step === 3 },
+          { label: language === 'ko' ? '1. 기본' : '1. Cơ bản', active: step === 1 },
+          { label: language === 'ko' ? '2. 요구사항' : '2. Yêu cầu', active: step === 2 },
+          { label: language === 'ko' ? '3. 상세' : '3. Chi tiết', active: step === 3 },
         ].map((s, i) => (
           <div key={i} className={`flex-1 text-xs font-medium ${s.active ? 'text-primary' : 'text-gray-600'}`}>
             {s.label}

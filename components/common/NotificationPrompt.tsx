@@ -10,7 +10,7 @@ interface NotificationPromptProps {
 }
 
 export default function NotificationPrompt({
-  language = 'ko',
+  language = 'vi',
   onClose,
 }: NotificationPromptProps) {
   const [dismissed, setDismissed] = useState(false);

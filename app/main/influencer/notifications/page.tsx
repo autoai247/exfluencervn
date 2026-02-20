@@ -159,8 +159,8 @@ export default function NotificationsPage() {
               <Bell size={48} className="text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400">
                 {filter === 'unread'
-                  ? (t.common.all === 'Tất cả' ? 'Không có thông báo chưa đọc' : '읽지 않은 알림이 없습니다')
-                  : (t.common.all === 'Tất cả' ? 'Không có thông báo' : '알림이 없습니다')
+                  ? (language === 'ko' ? '읽지 않은 알림이 없습니다' : 'Không có thông báo chưa đọc')
+                  : (language === 'ko' ? '알림이 없습니다' : 'Không có thông báo')
                 }
               </p>
             </div>

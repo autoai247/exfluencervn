@@ -20,11 +20,11 @@ const dailyRewards = [
 ];
 
 // Streak milestones - labels will be translated dynamically
-const getStreakMilestones = (t: any) => [
-  { days: 7, bonus: 10000, icon: Flame, color: 'orange', label: '1주일 연속' },
-  { days: 14, bonus: 25000, icon: Star, color: 'yellow', label: '2주일 연속' },
-  { days: 21, bonus: 50000, icon: Trophy, color: 'blue', label: '3주일 연속' },
-  { days: 30, bonus: 100000, icon: Crown, color: 'purple', label: '30일 연속' },
+const getStreakMilestones = (t: any, language: string) => [
+  { days: 7, bonus: 10000, icon: Flame, color: 'orange', label: language === 'ko' ? '1주일 연속' : '7 ngày liên tiếp' },
+  { days: 14, bonus: 25000, icon: Star, color: 'yellow', label: language === 'ko' ? '2주일 연속' : '14 ngày liên tiếp' },
+  { days: 21, bonus: 50000, icon: Trophy, color: 'blue', label: language === 'ko' ? '3주일 연속' : '21 ngày liên tiếp' },
+  { days: 30, bonus: 100000, icon: Crown, color: 'purple', label: language === 'ko' ? '30일 연속' : '30 ngày liên tiếp' },
 ];
 
 // Mock data - 실제로는 localStorage/API에서 가져옴
@@ -45,7 +45,7 @@ const mockAttendanceData = {
 
 export default function AttendancePage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [attendanceData, setAttendanceData] = useState(mockAttendanceData);
   const [todayChecked, setTodayChecked] = useState(mockAttendanceData.todayChecked);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -53,7 +53,7 @@ export default function AttendancePage() {
   const currentDayInWeek = (attendanceData.currentStreak % 7) || 7; // 1-7 사이 값
   const todayReward = dailyRewards[currentDayInWeek - 1];
 
-  const streakMilestones = getStreakMilestones(t);
+  const streakMilestones = getStreakMilestones(t, language);
   // 다음 마일스톤 계산
   const nextMilestone = streakMilestones.find(m => m.days > attendanceData.currentStreak);
   const daysUntilNextMilestone = nextMilestone ? nextMilestone.days - attendanceData.currentStreak : 0;
@@ -70,7 +70,7 @@ export default function AttendancePage() {
 
     if (milestone) {
       totalEarned += milestone.bonus;
-      bonusMessage = `\n\n🎉 ${milestone.label} 달성!\n보너스 +${formatShoppingPoints(milestone.bonus)}`;
+      bonusMessage = `\n\n🎉 ${milestone.label} ${language === 'ko' ? '달성!' : 'đạt được!'}\n${language === 'ko' ? '보너스' : 'Thưởng'} +${formatShoppingPoints(milestone.bonus)}`;
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
     }
@@ -120,7 +120,9 @@ export default function AttendancePage() {
             {nextMilestone && (
               <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full">
                 <span className="text-white font-bold text-sm">
-                  {nextMilestone.label}까지 {daysUntilNextMilestone}{t.attendance.days} 남음!
+                  {language === 'ko'
+                    ? `${nextMilestone.label}까지 ${daysUntilNextMilestone}${t.attendance.days} 남음!`
+                    : `Còn ${daysUntilNextMilestone} ${t.attendance.days} để đạt ${nextMilestone.label}!`}
                 </span>
               </div>
             )}
@@ -213,7 +215,7 @@ export default function AttendancePage() {
 
           <div className="mt-4 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/30 rounded-lg p-3">
             <p className="text-xs text-gray-300 text-center">
-              💡 매일 출석하면 7일마다 총 <span className="text-orange-400 font-bold">{formatShoppingPoints(dailyRewards.reduce((sum, d) => sum + d.points, 0))}</span> 획득!
+              💡 {language === 'ko' ? '매일 출석하면 7일마다 총' : 'Điểm danh mỗi ngày, mỗi 7 ngày nhận tổng'} <span className="text-orange-400 font-bold">{formatShoppingPoints(dailyRewards.reduce((sum, d) => sum + d.points, 0))}</span> {language === 'ko' ? '획득!' : '!'}
             </p>
           </div>
         </div>
@@ -290,7 +292,9 @@ export default function AttendancePage() {
                               {attendanceData.currentStreak} / {milestone.days}{t.attendance.days}
                             </span>
                             <span className="text-xs text-primary font-semibold">
-                              {milestone.days - attendanceData.currentStreak}{t.attendance.days} 남음
+                              {language === 'ko'
+                                ? `${milestone.days - attendanceData.currentStreak}${t.attendance.days} 남음`
+                                : `Còn ${milestone.days - attendanceData.currentStreak} ${t.attendance.days}`}
                             </span>
                           </div>
                         </div>
@@ -318,7 +322,10 @@ export default function AttendancePage() {
           </h3>
 
           <div className="grid grid-cols-7 gap-1 mb-4">
-            {['월', '화', '수', '목', '금', '토', '일'].map((day, i) => (
+            {(language === 'ko'
+              ? ['월', '화', '수', '목', '금', '토', '일']
+              : ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']
+            ).map((day, i) => (
               <div key={i} className="text-center text-xs text-gray-400 py-1">
                 {day}
               </div>
@@ -363,11 +370,11 @@ export default function AttendancePage() {
             </div>
             <div className="flex items-center gap-1">
               <div className="w-4 h-4 bg-primary/30 border-2 border-primary rounded"></div>
-              <span className="text-gray-400">오늘</span>
+              <span className="text-gray-400">{language === 'ko' ? '오늘' : 'Hôm nay'}</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-4 h-4 bg-dark-600 rounded"></div>
-              <span className="text-gray-400">미출석</span>
+              <span className="text-gray-400">{language === 'ko' ? '미출석' : 'Chưa điểm danh'}</span>
             </div>
           </div>
         </div>
@@ -376,36 +383,36 @@ export default function AttendancePage() {
         <div className="card bg-gradient-to-br from-info/10 to-info/5 border-2 border-info/30 shadow-xl">
           <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
             <Zap size={18} className="text-info" />
-            출석 체크 규칙
+            {language === 'ko' ? '출석 체크 규칙' : 'Quy tắc điểm danh'}
           </h4>
           <ul className="text-sm text-gray-300 space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span>매일 1회 출석 체크 가능 (자정 기준 초기화)</span>
+              <span>{language === 'ko' ? '매일 1회 출석 체크 가능 (자정 기준 초기화)' : 'Điểm danh 1 lần mỗi ngày (reset lúc nửa đêm)'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span>1-4일차: 각 1,000 SP, 5-6일차: 각 2,000 SP, 7일차: 3,000 SP</span>
+              <span>{language === 'ko' ? '1-4일차: 각 1,000 SP, 5-6일차: 각 2,000 SP, 7일차: 3,000 SP' : 'Ngày 1-4: 1,000 SP/ngày, Ngày 5-6: 2,000 SP/ngày, Ngày 7: 3,000 SP'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span><strong className="text-yellow-400">7일 연속:</strong> +10,000 SP 보너스</span>
+              <span><strong className="text-yellow-400">{language === 'ko' ? '7일 연속:' : '7 ngày liên tiếp:'}</strong> +10,000 SP {language === 'ko' ? '보너스' : 'thưởng'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span><strong className="text-yellow-400">14일 연속:</strong> +25,000 SP 보너스</span>
+              <span><strong className="text-yellow-400">{language === 'ko' ? '14일 연속:' : '14 ngày liên tiếp:'}</strong> +25,000 SP {language === 'ko' ? '보너스' : 'thưởng'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span><strong className="text-yellow-400">21일 연속:</strong> +50,000 SP 보너스</span>
+              <span><strong className="text-yellow-400">{language === 'ko' ? '21일 연속:' : '21 ngày liên tiếp:'}</strong> +50,000 SP {language === 'ko' ? '보너스' : 'thưởng'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
-              <span><strong className="text-yellow-400">30일 연속:</strong> +100,000 SP 보너스</span>
+              <span><strong className="text-yellow-400">{language === 'ko' ? '30일 연속:' : '30 ngày liên tiếp:'}</strong> +100,000 SP {language === 'ko' ? '보너스' : 'thưởng'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-warning flex-shrink-0">⚠️</span>
-              <span className="text-warning">연속 출석이 끊기면 처음부터 다시 시작</span>
+              <span className="text-warning">{language === 'ko' ? '연속 출석이 끊기면 처음부터 다시 시작' : 'Nếu bỏ ngày, streak sẽ reset về đầu'}</span>
             </li>
           </ul>
         </div>
@@ -414,13 +421,15 @@ export default function AttendancePage() {
         <div className="card bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-purple-500/30 shadow-xl text-center py-6">
           <Award size={48} className="text-purple-400 mx-auto mb-3" />
           <h3 className="text-xl font-bold text-white mb-2">
-            30일 연속 출석하면
+            {language === 'ko' ? '30일 연속 출석하면' : 'Điểm danh 30 ngày liên tiếp'}
           </h3>
           <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-2">
             {formatShoppingPoints(100000)}
           </div>
           <p className="text-sm text-gray-300">
-            + 7일/14일/21일 보너스 포함 총 {formatShoppingPoints(185000)} 획득 가능!
+            {language === 'ko'
+              ? `+ 7일/14일/21일 보너스 포함 총 ${formatShoppingPoints(185000)} 획득 가능!`
+              : `+ Bao gồm thưởng 7/14/21 ngày, tổng cộng có thể nhận ${formatShoppingPoints(185000)}!`}
           </p>
         </div>
       </div>

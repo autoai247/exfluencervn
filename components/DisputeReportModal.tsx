@@ -35,7 +35,7 @@ export default function DisputeReportModal({
   campaignTitle,
   reporterType,
   onClose,
-  language = 'ko'
+  language = 'vi'
 }: DisputeReportModalProps) {
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [formData, setFormData] = useState({

@@ -12,7 +12,7 @@ interface ThemeToggleProps {
 export default function ThemeToggle({
   variant = 'icon',
   showLabel = false,
-  language = 'ko',
+  language = 'vi',
 }: ThemeToggleProps) {
   const { theme, effectiveTheme, toggleTheme, setTheme, mounted } = useTheme();
 

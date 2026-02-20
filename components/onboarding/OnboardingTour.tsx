@@ -22,7 +22,7 @@ export default function OnboardingTour({
   steps,
   onComplete,
   onSkip,
-  language = 'ko',
+  language = 'vi',
 }: OnboardingTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);

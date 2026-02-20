@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Send, Paperclip } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Mock conversation data
 const mockConversation = {
@@ -50,6 +51,7 @@ const mockConversation = {
 export default function MessageDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const { language } = useLanguage();
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState(mockConversation.messages);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -70,7 +72,7 @@ export default function MessageDetailPage() {
       id: String(messages.length + 1),
       sender: 'me' as const,
       text: messageText,
-      timestamp: new Date().toLocaleString('ko-KR', {
+      timestamp: new Date().toLocaleString(language === 'ko' ? 'ko-KR' : 'vi-VN', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -100,7 +102,7 @@ export default function MessageDetailPage() {
             <h1 className="text-base font-bold text-white">
               {mockConversation.recipient.name}
             </h1>
-            <p className="text-xs text-gray-400">온라인</p>
+            <p className="text-xs text-gray-400">{language === 'ko' ? '온라인' : 'Trực tuyến'}</p>
           </div>
         </div>
       </div>
@@ -154,19 +156,25 @@ export default function MessageDetailPage() {
 
                 const oversizedFiles = files.filter(f => f.size > maxFileSize);
                 if (oversizedFiles.length > 0) {
-                  alert(`⚠️ 파일당 최대 10MB까지 업로드 가능합니다.\n\n초과 파일:\n${oversizedFiles.map(f => `• ${f.name} (${(f.size / 1024 / 1024).toFixed(1)}MB)`).join('\n')}`);
+                  alert(language === 'ko'
+                    ? `⚠️ 파일당 최대 10MB까지 업로드 가능합니다.\n\n초과 파일:\n${oversizedFiles.map(f => `• ${f.name} (${(f.size / 1024 / 1024).toFixed(1)}MB)`).join('\n')}`
+                    : `⚠️ Tối đa 10MB mỗi tệp.\n\nTệp vượt quá:\n${oversizedFiles.map(f => `• ${f.name} (${(f.size / 1024 / 1024).toFixed(1)}MB)`).join('\n')}`);
                   return;
                 }
 
                 const totalSize = files.reduce((sum, f) => sum + f.size, 0);
                 if (totalSize > maxTotalSize) {
-                  alert(`⚠️ 전체 파일 용량은 50MB를 초과할 수 없습니다.\n\n현재 선택된 용량: ${(totalSize / 1024 / 1024).toFixed(1)}MB`);
+                  alert(language === 'ko'
+                    ? `⚠️ 전체 파일 용량은 50MB를 초과할 수 없습니다.\n\n현재 선택된 용량: ${(totalSize / 1024 / 1024).toFixed(1)}MB`
+                    : `⚠️ Tổng dung lượng tệp không được vượt quá 50MB.\n\nDung lượng đã chọn: ${(totalSize / 1024 / 1024).toFixed(1)}MB`);
                   return;
                 }
 
                 // 파일명과 용량 표시
                 const fileList = files.map((f, i) => `${i + 1}. ${f.name} (${(f.size / 1024 / 1024).toFixed(1)}MB)`).join('\n');
-                alert(`✅ ${files.length}개 파일 선택 완료!\n\n${fileList}\n\n📤 업로드를 시작합니다...`);
+                alert(language === 'ko'
+                  ? `✅ ${files.length}개 파일 선택 완료!\n\n${fileList}\n\n📤 업로드를 시작합니다...`
+                  : `✅ Đã chọn ${files.length} tệp!\n\n${fileList}\n\n📤 Đang bắt đầu tải lên...`);
 
                 // 실제로는 여기서 파일 업로드 처리
                 // 예: FormData로 서버에 전송
@@ -176,7 +184,7 @@ export default function MessageDetailPage() {
             className="w-full btn btn-secondary text-sm py-2 flex items-center justify-center gap-2"
           >
             <Paperclip size={18} />
-            📎 파일 첨부 (다중 선택 가능 - 사진, 영상, 문서)
+            {language === 'ko' ? '📎 파일 첨부 (다중 선택 가능 - 사진, 영상, 문서)' : '📎 Đính kèm tệp (chọn nhiều - ảnh, video, tài liệu)'}
           </button>
 
           {/* Message Input */}
@@ -185,7 +193,7 @@ export default function MessageDetailPage() {
               type="text"
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
-              placeholder="메시지를 입력하세요... Type a message..."
+              placeholder={language === 'ko' ? '메시지를 입력하세요...' : 'Nhập tin nhắn...'}
               className="flex-1 input"
             />
             <button
@@ -200,7 +208,7 @@ export default function MessageDetailPage() {
 
         {/* 안내 텍스트 */}
         <p className="text-xs text-gray-500 text-center mt-2">
-          💡 Ctrl 또는 Shift 키로 여러 파일 선택 가능 | 파일당 10MB, 전체 50MB
+          {language === 'ko' ? '💡 Ctrl 또는 Shift 키로 여러 파일 선택 가능 | 파일당 10MB, 전체 50MB' : '💡 Giữ Ctrl hoặc Shift để chọn nhiều tệp | Tối đa 10MB/tệp, 50MB tổng'}
         </p>
       </div>
     </div>

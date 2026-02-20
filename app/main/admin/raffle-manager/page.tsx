@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Gift, Trophy, Users, Ticket, Plus, Edit2, Trash2, Play } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface RaffleItem {
   id: string;
@@ -27,6 +28,7 @@ interface DrawResult {
 }
 
 export default function RaffleManagerPage() {
+  const { language } = useLanguage();
   const [raffleItems, setRaffleItems] = useState<RaffleItem[]>([]);
   const [drawResults, setDrawResults] = useState<DrawResult[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,17 +89,19 @@ export default function RaffleManagerPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert(`🎉 당첨자: ${data.winner.name}\n이메일: ${data.winner.email}\n티켓 수: ${data.winner.ticketCount}장\n당첨 확률: ${data.stats.winProbability}`);
+        alert(language === 'ko'
+        ? `🎉 당첨자: ${data.winner.name}\n이메일: ${data.winner.email}\n티켓 수: ${data.winner.ticketCount}장\n당첨 확률: ${data.stats.winProbability}`
+        : `🎉 Người trúng thưởng: ${data.winner.name}\nEmail: ${data.winner.email}\nSố vé: ${data.winner.ticketCount}\nXác suất trúng: ${data.stats.winProbability}`);
         loadRaffleItems();
         loadDrawResults();
         setShowPasswordModal(false);
         setAdminPassword('');
       } else {
-        alert('추첨 실패: ' + data.error);
+        alert((language === 'ko' ? '추첨 실패: ' : 'Rút thăm thất bại: ') + data.error);
       }
     } catch (error) {
       console.error('Draw error:', error);
-      alert('추첨 중 오류가 발생했습니다');
+      alert(language === 'ko' ? '추첨 중 오류가 발생했습니다' : 'Đã xảy ra lỗi khi rút thăm');
     }
   };
 
@@ -106,7 +110,7 @@ export default function RaffleManagerPage() {
       <div className="min-h-screen bg-dark-700 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-400">로딩 중...</p>
+          <p className="text-gray-400">{language === 'ko' ? '로딩 중...' : 'Đang tải...'}</p>
         </div>
       </div>
     );
@@ -119,7 +123,7 @@ export default function RaffleManagerPage() {
         <div className="container-mobile">
           <div className="flex items-center justify-between py-4">
             <div>
-              <h1 className="text-xl font-bold text-white">응모 상품 관리</h1>
+              <h1 className="text-xl font-bold text-white">{language === 'ko' ? '응모 상품 관리' : 'Quản lý sản phẩm rút thăm'}</h1>
               <p className="text-xs text-gray-400">Raffle Manager</p>
             </div>
             <Trophy className="text-primary" size={32} />
@@ -133,26 +137,26 @@ export default function RaffleManagerPage() {
           <div className="card text-center">
             <Gift className="text-primary mx-auto mb-2" size={24} />
             <div className="text-2xl font-bold text-white">{raffleItems.length}</div>
-            <div className="text-xs text-gray-400">총 상품</div>
+            <div className="text-xs text-gray-400">{language === 'ko' ? '총 상품' : 'Tổng sản phẩm'}</div>
           </div>
           <div className="card text-center">
             <Ticket className="text-secondary mx-auto mb-2" size={24} />
             <div className="text-2xl font-bold text-white">
               {raffleItems.filter(item => item.active).length}
             </div>
-            <div className="text-xs text-gray-400">진행 중</div>
+            <div className="text-xs text-gray-400">{language === 'ko' ? '진행 중' : 'Đang diễn ra'}</div>
           </div>
           <div className="card text-center">
             <Trophy className="text-accent mx-auto mb-2" size={24} />
             <div className="text-2xl font-bold text-white">{drawResults.length}</div>
-            <div className="text-xs text-gray-400">추첨 완료</div>
+            <div className="text-xs text-gray-400">{language === 'ko' ? '추첨 완료' : 'Đã rút thăm'}</div>
           </div>
         </div>
 
         {/* 응모 상품 목록 */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-white">응모 상품 목록</h2>
+            <h2 className="text-lg font-bold text-white">{language === 'ko' ? '응모 상품 목록' : 'Danh sách sản phẩm rút thăm'}</h2>
           </div>
 
           <div className="space-y-3">
@@ -167,9 +171,9 @@ export default function RaffleManagerPage() {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-base font-bold text-white">{item.name}</h3>
                         {item.active ? (
-                          <span className="badge badge-success text-xs">진행중</span>
+                          <span className="badge badge-success text-xs">{language === 'ko' ? '진행중' : 'Đang diễn ra'}</span>
                         ) : (
-                          <span className="badge badge-gray text-xs">종료</span>
+                          <span className="badge badge-gray text-xs">{language === 'ko' ? '종료' : 'Đã kết thúc'}</span>
                         )}
                       </div>
                       <p className="text-xs text-gray-400 mb-2">{item.description}</p>
@@ -184,7 +188,7 @@ export default function RaffleManagerPage() {
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-xs mb-1">
                       <span className="text-gray-400">
-                        {item.currentTickets.toLocaleString()} / {item.totalTickets.toLocaleString()} 티켓
+                        {item.currentTickets.toLocaleString()} / {item.totalTickets.toLocaleString()} {language === 'ko' ? '티켓' : 'vé'}
                       </span>
                       <span className={`font-bold ${isCompleted ? 'text-primary' : 'text-gray-400'}`}>
                         {progress.toFixed(1)}%
@@ -207,7 +211,7 @@ export default function RaffleManagerPage() {
                       className="btn btn-primary w-full text-sm flex items-center justify-center gap-2"
                     >
                       <Play size={16} />
-                      추첨하기
+                      {language === 'ko' ? '추첨하기' : 'Rút thăm'}
                     </button>
                   )}
                 </div>
@@ -219,7 +223,7 @@ export default function RaffleManagerPage() {
         {/* 추첨 결과 */}
         {drawResults.length > 0 && (
           <div>
-            <h2 className="text-lg font-bold text-white mb-3">추첨 결과</h2>
+            <h2 className="text-lg font-bold text-white mb-3">{language === 'ko' ? '추첨 결과' : 'Kết quả rút thăm'}</h2>
             <div className="space-y-3">
               {drawResults.map((result) => {
                 const raffle = raffleItems.find(r => r.id === result.raffleId);
@@ -231,15 +235,15 @@ export default function RaffleManagerPage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-sm font-bold text-white mb-1">
-                          {raffle?.name || '알 수 없는 상품'}
+                          {raffle?.name || (language === 'ko' ? '알 수 없는 상품' : 'Sản phẩm không xác định')}
                         </h3>
                         <div className="space-y-1 text-xs text-gray-400">
-                          <div>🏆 당첨자: <span className="text-white font-bold">{result.winnerName}</span></div>
-                          <div>👥 참여자: {result.totalParticipants}명</div>
-                          <div>📅 추첨일: {new Date(result.drawDate).toLocaleDateString('ko-KR')}</div>
+                          <div>🏆 {language === 'ko' ? '당첨자' : 'Người trúng'}: <span className="text-white font-bold">{result.winnerName}</span></div>
+                          <div>👥 {language === 'ko' ? '참여자' : 'Người tham gia'}: {language === 'ko' ? `${result.totalParticipants}명` : result.totalParticipants}</div>
+                          <div>📅 {language === 'ko' ? '추첨일' : 'Ngày rút thăm'}: {new Date(result.drawDate).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}</div>
                         </div>
                         {result.announced && (
-                          <span className="badge badge-primary text-xs mt-2">발표 완료</span>
+                          <span className="badge badge-primary text-xs mt-2">{language === 'ko' ? '발표 완료' : 'Đã công bố'}</span>
                         )}
                       </div>
                     </div>
@@ -255,15 +259,15 @@ export default function RaffleManagerPage() {
       {showPasswordModal && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
           <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold text-white mb-4">추첨 실행</h3>
+            <h3 className="text-lg font-bold text-white mb-4">{language === 'ko' ? '추첨 실행' : 'Thực hiện rút thăm'}</h3>
             <p className="text-sm text-gray-400 mb-4">
-              관리자 비밀번호를 입력하세요
+              {language === 'ko' ? '관리자 비밀번호를 입력하세요' : 'Nhập mật khẩu quản trị viên'}
             </p>
             <input
               type="password"
               value={adminPassword}
               onChange={(e) => setAdminPassword(e.target.value)}
-              placeholder="관리자 비밀번호"
+              placeholder={language === 'ko' ? '관리자 비밀번호' : 'Mật khẩu quản trị viên'}
               className="input w-full mb-4"
             />
             <div className="flex gap-3">
@@ -274,14 +278,14 @@ export default function RaffleManagerPage() {
                 }}
                 className="btn bg-dark-700 text-gray-300 flex-1"
               >
-                취소
+                {language === 'ko' ? '취소' : 'Hủy'}
               </button>
               <button
                 onClick={executeDraw}
                 disabled={!adminPassword}
                 className="btn btn-primary flex-1 disabled:opacity-50"
               >
-                추첨 실행
+                {language === 'ko' ? '추첨 실행' : 'Thực hiện rút thăm'}
               </button>
             </div>
           </div>

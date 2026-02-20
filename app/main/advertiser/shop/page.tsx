@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const guides = [
   {
@@ -76,9 +77,10 @@ const tips = [
 ];
 
 export default function AdvertiserResourcesPage() {
+  const { language } = useLanguage();
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title="Tài nguyên Nhà QC" showNotification />
+      <MobileHeader title={language === 'ko' ? '광고주 리소스' : 'Tài nguyên Nhà QC'} showNotification />
 
       <div className="container-mobile space-y-6 py-5">
 
@@ -89,8 +91,8 @@ export default function AdvertiserResourcesPage() {
               <BookOpen size={24} className="text-primary" />
             </div>
             <div>
-              <div className="font-bold text-white">Hướng dẫn chạy campaign hiệu quả</div>
-              <div className="text-xs text-gray-400 mt-0.5">Tối ưu chi phí · Chọn đúng KOL · Đo lường kết quả</div>
+              <div className="font-bold text-white">{language === 'ko' ? '효과적인 캠페인 운영 가이드' : 'Hướng dẫn chạy campaign hiệu quả'}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? '비용 최적화 · KOL 선택 · 성과 측정' : 'Tối ưu chi phí · Chọn đúng KOL · Đo lường kết quả'}</div>
             </div>
           </div>
         </div>
@@ -99,8 +101,8 @@ export default function AdvertiserResourcesPage() {
         <Link href="/main/advertiser/campaigns/create">
           <div className="rounded-2xl bg-gradient-to-r from-primary to-secondary p-4 flex items-center justify-between">
             <div>
-              <div className="text-base font-bold text-white">Tạo chiến dịch ngay</div>
-              <div className="text-xs text-white/80 mt-0.5">Brief tự động · Mẫu chuẩn · 2 phút</div>
+              <div className="text-base font-bold text-white">{language === 'ko' ? '캠페인 만들기' : 'Tạo chiến dịch ngay'}</div>
+              <div className="text-xs text-white/80 mt-0.5">{language === 'ko' ? '자동 브리프 · 표준 템플릿 · 2분' : 'Brief tự động · Mẫu chuẩn · 2 phút'}</div>
             </div>
             <ChevronRight size={20} className="text-white flex-shrink-0" />
           </div>
@@ -110,7 +112,7 @@ export default function AdvertiserResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Lightbulb size={14} className="text-accent" />
-            Hướng dẫn thực chiến
+            {language === 'ko' ? '실전 가이드' : 'Hướng dẫn thực chiến'}
           </h3>
 
           <div className="space-y-3">
@@ -142,7 +144,7 @@ export default function AdvertiserResourcesPage() {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
             <Target size={14} className="text-primary" />
-            Mẹo từ nhà quảng cáo thành công
+            {language === 'ko' ? '성공 광고주의 팁' : 'Mẹo từ nhà quảng cáo thành công'}
           </h3>
 
           <div className="rounded-2xl bg-dark-600 border-2 border-dark-500 shadow-xl divide-y divide-dark-500">
@@ -159,8 +161,8 @@ export default function AdvertiserResourcesPage() {
         <Link href="/main/advertiser/influencers">
           <div className="rounded-2xl bg-dark-600 border-2 border-dark-500 p-4 flex items-center justify-between">
             <div>
-              <div className="text-sm font-bold text-white">Tìm KOL phù hợp ngay</div>
-              <div className="text-xs text-gray-400 mt-0.5">Lọc theo niche · followers · ER · giá</div>
+              <div className="text-sm font-bold text-white">{language === 'ko' ? '적합한 KOL 찾기' : 'Tìm KOL phù hợp ngay'}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{language === 'ko' ? '니치 · 팔로워 · ER · 가격으로 필터' : 'Lọc theo niche · followers · ER · giá'}</div>
             </div>
             <ChevronRight size={16} className="text-gray-500 flex-shrink-0" />
           </div>

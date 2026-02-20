@@ -36,7 +36,7 @@ export async function getRaffleItems(activeOnly: boolean = true): Promise<Raffle
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '응모 상품 조회 실패');
+    throw new Error(data.error || 'Không thể truy vấn danh sách giải thưởng');
   }
 
   return data.items;
@@ -67,7 +67,7 @@ export async function purchaseRaffle(
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '응모권 구매 실패');
+    throw new Error(data.error || 'Mua vé rút thăm thất bại');
   }
 
   return data;
@@ -82,7 +82,7 @@ export async function getUserRaffleTickets(userId: string): Promise<{
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '응모권 조회 실패');
+    throw new Error(data.error || 'Không thể truy vấn vé rút thăm');
   }
 
   return data;
@@ -105,7 +105,7 @@ export async function executeRaffleDraw(
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '추첨 실행 실패');
+    throw new Error(data.error || 'Thực hiện rút thăm thất bại');
   }
 
   return data;
@@ -121,7 +121,7 @@ export async function getDrawResults(raffleId?: string): Promise<any[]> {
   const data = await response.json();
 
   if (!data.success) {
-    throw new Error(data.error || '추첨 결과 조회 실패');
+    throw new Error(data.error || 'Không thể truy vấn kết quả rút thăm');
   }
 
   return data.results;

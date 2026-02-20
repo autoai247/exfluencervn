@@ -158,7 +158,7 @@ export default function JobsPage() {
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
-      <MobileHeader title={t.common.all === 'Tất cả' ? 'Công việc của tôi' : '내 작업'} showNotification />
+      <MobileHeader title={language === 'ko' ? '내 작업' : 'Công việc của tôi'} showNotification />
 
       {/* Tabs */}
       <div className="sticky top-14 z-20 bg-dark-700 border-b border-dark-500 overflow-x-auto">
@@ -248,8 +248,8 @@ export default function JobsPage() {
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-gray-500">
                     {job.status === 'completed'
-                      ? (t.common.all === 'Tất cả' ? 'Thu nhập đã nhận' : '획득 수익')
-                      : (t.common.all === 'Tất cả' ? 'Thu nhập dự kiến' : '예상 수익')
+                      ? (language === 'ko' ? '획득 수익' : 'Thu nhập đã nhận')
+                      : (language === 'ko' ? '예상 수익' : 'Thu nhập dự kiến')
                     }
                   </span>
                   <div className="flex items-center gap-2">
@@ -273,7 +273,7 @@ export default function JobsPage() {
                   <div className="flex items-center gap-2">
                     <FileText size={12} />
                     <span>
-                      {t.common.all === 'Tất cả' ? 'Ngày ứng tuyển' : '지원일'}: {job.appliedAt}
+                      {language === 'ko' ? '지원일' : 'Ngày ứng tuyển'}: {job.appliedAt}
                     </span>
                   </div>
                 )}
@@ -281,7 +281,7 @@ export default function JobsPage() {
                   <div className="flex items-center gap-2">
                     <Clock size={12} />
                     <span>
-                      {t.common.all === 'Tất cả' ? 'Ngày bắt đầu' : '시작일'}: {job.startedAt}
+                      {language === 'ko' ? '시작일' : 'Ngày bắt đầu'}: {job.startedAt}
                     </span>
                   </div>
                 )}
@@ -309,12 +309,12 @@ export default function JobsPage() {
                 </Link>
                 {job.status === 'accepted' && (
                   <Link href={`/main/influencer/jobs/${job.id}`} className="btn btn-secondary w-full">
-                    {t.common.all === 'Tất cả' ? 'Bắt đầu công việc' : '작업 시작'}
+                    {language === 'ko' ? '작업 시작' : 'Bắt đầu công việc'}
                   </Link>
                 )}
                 {job.status === 'in_progress' && (
                   <Link href={`/main/influencer/jobs/${job.id}`} className="btn btn-primary w-full">
-                    {t.common.submit === 'Gửi' ? 'Nộp kết quả' : '결과물 제출'}
+                    {language === 'ko' ? '결과물 제출' : 'Nộp kết quả'}
                   </Link>
                 )}
               </div>
@@ -326,8 +326,8 @@ export default function JobsPage() {
           <div className="text-center py-12">
             <p className="text-gray-400">
               {activeTab === 'all'
-                ? (t.common.all === 'Tất cả' ? 'Không có công việc đang thực hiện' : '진행 중인 작업이 없습니다')
-                : `${statusConfig[activeTab as JobStatus]?.label} ${t.common.all === 'Tất cả' ? 'không có công việc' : '작업이 없습니다'}`
+                ? (language === 'ko' ? '진행 중인 작업이 없습니다' : 'Không có công việc đang thực hiện')
+                : `${statusConfig[activeTab as JobStatus]?.label} ${language === 'ko' ? '작업이 없습니다' : 'không có công việc'}`
               }
             </p>
             <Link href="/main/influencer/campaigns" className="btn btn-primary mt-4">

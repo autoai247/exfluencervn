@@ -6,6 +6,7 @@ import { Search, MessageCircle, Clock } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatTimeAgo } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface Message {
   id: string;
@@ -23,79 +24,28 @@ interface Message {
 }
 
 // Mock data
-const mockMessages: Message[] = [
-  {
-    id: '1',
-    conversationId: '1',
-    sender: {
-      id: '1',
-      name: 'K-Beauty Co.',
-      avatar: 'https://ui-avatars.com/api/?name=K-Beauty&background=FF6B6B&color=fff',
-      type: 'advertiser',
-    },
-    lastMessage: '캠페인 진행 상황이 어떠신가요? 중간 결과물을 먼저 확인해보고 싶습니다.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15분 전
-    unread: true,
-    unreadCount: 2,
-  },
-  {
-    id: '2',
-    conversationId: '2',
-    sender: {
-      id: '2',
-      name: 'Tech Store',
-      avatar: 'https://ui-avatars.com/api/?name=Tech+Store&background=6C5CE7&color=fff',
-      type: 'advertiser',
-    },
-    lastMessage: '언박싱 영상 잘 봤습니다! 정말 퀄리티가 좋네요. 다음 제품도 부탁드립니다.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2시간 전
-    unread: false,
-  },
-  {
-    id: '3',
-    conversationId: '3',
-    sender: {
-      id: '3',
-      name: 'Food Paradise',
-      avatar: 'https://ui-avatars.com/api/?name=Food+Paradise&background=4ECDC4&color=fff',
-      type: 'advertiser',
-    },
-    lastMessage: '레스토랑 방문 일정을 조율하고 싶어요. 다음 주 언제 시간 되시나요?',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1일 전
-    unread: true,
-    unreadCount: 1,
-  },
-  {
-    id: '4',
-    conversationId: '4',
-    sender: {
-      id: '4',
-      name: 'FitLife App',
-      avatar: 'https://ui-avatars.com/api/?name=FitLife&background=00B894&color=fff',
-      type: 'advertiser',
-    },
-    lastMessage: '네, 괜찮습니다. 그럼 그렇게 진행해주세요!',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), // 2일 전
-    unread: false,
-  },
-  {
-    id: '5',
-    conversationId: '5',
-    sender: {
-      id: '5',
-      name: 'Cafe Mocha',
-      avatar: 'https://ui-avatars.com/api/?name=Cafe+Mocha&background=FFA502&color=fff',
-      type: 'advertiser',
-    },
-    lastMessage: '신메뉴 출시 일정이 연기되었습니다. 다시 연락드리겠습니다.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), // 3일 전
-    unread: false,
-  },
+const mockMessagesKo = [
+  { id: '1', conversationId: '1', sender: { id: '1', name: 'K-Beauty Co.', avatar: 'https://ui-avatars.com/api/?name=K-Beauty&background=FF6B6B&color=fff', type: 'advertiser' as const }, lastMessage: '캠페인 진행 상황이 어떠신가요? 중간 결과물을 먼저 확인해보고 싶습니다.', timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), unread: true, unreadCount: 2 },
+  { id: '2', conversationId: '2', sender: { id: '2', name: 'Tech Store', avatar: 'https://ui-avatars.com/api/?name=Tech+Store&background=6C5CE7&color=fff', type: 'advertiser' as const }, lastMessage: '언박싱 영상 잘 봤습니다! 정말 퀄리티가 좋네요. 다음 제품도 부탁드립니다.', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), unread: false },
+  { id: '3', conversationId: '3', sender: { id: '3', name: 'Food Paradise', avatar: 'https://ui-avatars.com/api/?name=Food+Paradise&background=4ECDC4&color=fff', type: 'advertiser' as const }, lastMessage: '레스토랑 방문 일정을 조율하고 싶어요. 다음 주 언제 시간 되시나요?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), unread: true, unreadCount: 1 },
+  { id: '4', conversationId: '4', sender: { id: '4', name: 'FitLife App', avatar: 'https://ui-avatars.com/api/?name=FitLife&background=00B894&color=fff', type: 'advertiser' as const }, lastMessage: '네, 괜찮습니다. 그럼 그렇게 진행해주세요!', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), unread: false },
+  { id: '5', conversationId: '5', sender: { id: '5', name: 'Cafe Mocha', avatar: 'https://ui-avatars.com/api/?name=Cafe+Mocha&background=FFA502&color=fff', type: 'advertiser' as const }, lastMessage: '신메뉴 출시 일정이 연기되었습니다. 다시 연락드리겠습니다.', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), unread: false },
+];
+
+const mockMessagesVi: Message[] = [
+  { id: '1', conversationId: '1', sender: { id: '1', name: 'K-Beauty Co.', avatar: 'https://ui-avatars.com/api/?name=K-Beauty&background=FF6B6B&color=fff', type: 'advertiser' }, lastMessage: 'Chiến dịch đang tiến triển thế nào rồi? Tôi muốn xem kết quả tạm thời trước.', timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), unread: true, unreadCount: 2 },
+  { id: '2', conversationId: '2', sender: { id: '2', name: 'Tech Store', avatar: 'https://ui-avatars.com/api/?name=Tech+Store&background=6C5CE7&color=fff', type: 'advertiser' }, lastMessage: 'Video unboxing rất hay! Chất lượng tuyệt vời. Bạn có thể làm thêm sản phẩm tiếp theo không?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), unread: false },
+  { id: '3', conversationId: '3', sender: { id: '3', name: 'Food Paradise', avatar: 'https://ui-avatars.com/api/?name=Food+Paradise&background=4ECDC4&color=fff', type: 'advertiser' }, lastMessage: 'Tôi muốn sắp xếp lịch thăm nhà hàng. Tuần tới bạn rảnh khi nào?', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), unread: true, unreadCount: 1 },
+  { id: '4', conversationId: '4', sender: { id: '4', name: 'FitLife App', avatar: 'https://ui-avatars.com/api/?name=FitLife&background=00B894&color=fff', type: 'advertiser' }, lastMessage: 'Được, không sao. Vậy thì tiến hành theo kế hoạch nhé!', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), unread: false },
+  { id: '5', conversationId: '5', sender: { id: '5', name: 'Cafe Mocha', avatar: 'https://ui-avatars.com/api/?name=Cafe+Mocha&background=FFA502&color=fff', type: 'advertiser' }, lastMessage: 'Lịch ra mắt menu mới bị dời lại. Tôi sẽ liên lạc lại sau.', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), unread: false },
 ];
 
 export default function MessagesPage() {
+  const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [userType] = useState<'influencer' | 'advertiser'>('influencer'); // TODO: Get from auth context
+
+  const mockMessages = language === 'ko' ? mockMessagesKo : mockMessagesVi;
 
   const filteredMessages = mockMessages.filter((message) => {
     if (!searchQuery) return true;
@@ -112,11 +62,11 @@ export default function MessagesPage() {
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
       <MobileHeader
-        title="메시지"
+        title={language === 'ko' ? '메시지' : 'Tin nhắn'}
         rightAction={
           unreadCount > 0 ? (
             <div className="px-3 py-1 bg-primary rounded-full">
-              <span className="text-xs font-semibold text-white">{unreadCount}개</span>
+              <span className="text-xs font-semibold text-white">{language === 'ko' ? `${unreadCount}개` : `${unreadCount}`}</span>
             </div>
           ) : undefined
         }
@@ -133,7 +83,7 @@ export default function MessagesPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="메시지 검색..."
+            placeholder={language === 'ko' ? '메시지 검색...' : 'Tìm kiếm tin nhắn...'}
             className="input pl-12 pr-4"
           />
         </div>
@@ -197,7 +147,9 @@ export default function MessagesPage() {
           <div className="flex flex-col items-center justify-center py-20">
             <MessageCircle size={48} className="text-gray-600 mb-4" />
             <p className="text-gray-400 text-center">
-              {searchQuery ? '검색 결과가 없습니다' : '메시지가 없습니다'}
+              {searchQuery
+                ? (language === 'ko' ? '검색 결과가 없습니다' : 'Không có kết quả tìm kiếm')
+                : (language === 'ko' ? '메시지가 없습니다' : 'Không có tin nhắn')}
             </p>
           </div>
         )}

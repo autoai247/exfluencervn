@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Clock, Flame } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface UrgencyTimerProps {
   endDate?: Date;
@@ -81,6 +82,7 @@ export function StockProgress({
   total: number;
   variant?: 'danger' | 'warning' | 'success';
 }) {
+  const { language } = useLanguage();
   const percentage = (current / total) * 100;
   const remaining = total - current;
 
@@ -91,9 +93,9 @@ export function StockProgress({
   };
 
   const getStatusText = () => {
-    if (percentage > 70) return '🔥 빨리 소진 중!';
-    if (percentage > 40) return '⚡ 인기 폭발!';
-    return '✨ 판매 중';
+    if (percentage > 70) return language === 'ko' ? '🔥 빨리 소진 중!' : '🔥 Sắp hết hàng!';
+    if (percentage > 40) return language === 'ko' ? '⚡ 인기 폭발!' : '⚡ Cực kỳ phổ biến!';
+    return language === 'ko' ? '✨ 판매 중' : '✨ Đang bán';
   };
 
   return (
@@ -101,7 +103,7 @@ export function StockProgress({
       <div className="flex items-center justify-between text-xs">
         <span className="font-bold text-primary">{getStatusText()}</span>
         <span className="text-gray-400">
-          재고: <span className="text-white font-bold">{remaining}</span>개 남음
+          {language === 'ko' ? '재고' : 'Tồn kho'}: <span className="text-white font-bold">{remaining}</span>{language === 'ko' ? '개 남음' : ' còn lại'}
         </span>
       </div>
       <div className="w-full bg-dark-500 rounded-full h-3 overflow-hidden border border-dark-400">
@@ -114,18 +116,20 @@ export function StockProgress({
         </div>
       </div>
       <div className="text-center text-xs text-gray-500">
-        {percentage.toFixed(0)}% 판매됨
+        {language === 'ko' ? `${percentage.toFixed(0)}% 판매됨` : `Đã bán ${percentage.toFixed(0)}%`}
       </div>
     </div>
   );
 }
 
 // 긴급 배지 컴포넌트
-export function UrgencyBadge({ text = '한정 수량!' }: { text?: string }) {
+export function UrgencyBadge({ text }: { text?: string }) {
+  const { language } = useLanguage();
+  const defaultText = language === 'ko' ? '한정 수량!' : 'Số lượng có hạn!';
   return (
     <div className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-full shadow-lg shadow-red-500/50 animate-pulse">
       <Flame size={14} className="text-white" />
-      <span className="text-xs font-bold text-white">{text}</span>
+      <span className="text-xs font-bold text-white">{text ?? defaultText}</span>
     </div>
   );
 }

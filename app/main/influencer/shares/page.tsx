@@ -29,7 +29,7 @@ const mockCampaignTitles: { [key: string]: string } = {
 
 export default function ShareHistoryPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [shareHistory, setShareHistory] = useState<ShareHistory[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
 
@@ -59,7 +59,7 @@ export default function ShareHistoryPage() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', {
+    return date.toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -191,7 +191,7 @@ export default function ShareHistoryPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-white text-sm truncate">
-                        {mockCampaignTitles[share.campaignId] || `캠페인 #${share.campaignId}`}
+                        {mockCampaignTitles[share.campaignId] || `${language === 'ko' ? '캠페인' : 'Chiến dịch'} #${share.campaignId}`}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
                         <Calendar size={12} className="text-gray-500" />
@@ -248,7 +248,9 @@ export default function ShareHistoryPage() {
                   {share.status === 'rejected' && (
                     <button
                       onClick={() => {
-                        alert(share.rejectionReason || '관리자가 게시물을 확인할 수 없었습니다.\n\n사유:\n• 링크가 잘못되었거나 삭제됨\n• 내용이 캠페인과 무관함\n• 게시물이 비공개이거나 접근 불가 (공개 설정 필요)');
+                        alert(share.rejectionReason || (language === 'ko'
+                          ? '관리자가 게시물을 확인할 수 없었습니다.\n\n사유:\n• 링크가 잘못되었거나 삭제됨\n• 내용이 캠페인과 무관함\n• 게시물이 비공개이거나 접근 불가 (공개 설정 필요)'
+                          : 'Quản trị viên không thể xác minh bài đăng.\n\nLý do:\n• Liên kết không hợp lệ hoặc đã bị xóa\n• Nội dung không liên quan đến chiến dịch\n• Bài đăng ở chế độ riêng tư hoặc không thể truy cập (cần đặt công khai)'));
                       }}
                       className="text-xs text-error hover:underline"
                     >

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, Shield, AlertTriangle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { language } = useLanguage();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -29,7 +31,7 @@ export default function AdminLoginPage() {
       }, 1000);
     } else {
       setTimeout(() => {
-        setError('관리자 계정 정보가 올바르지 않습니다.');
+        setError(language === 'ko' ? '관리자 계정 정보가 올바르지 않습니다.' : 'Thông tin tài khoản quản trị viên không chính xác.');
         setLoading(false);
       }, 1000);
     }
@@ -59,11 +61,11 @@ export default function AdminLoginPage() {
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Shield size={32} className="text-error" />
               </div>
-              <h1 className="text-3xl font-bold text-white">관리자 로그인</h1>
+              <h1 className="text-3xl font-bold text-white">{language === 'ko' ? '관리자 로그인' : 'Đăng nhập quản trị viên'}</h1>
               <p className="text-gray-400">Exfluencer VN Admin Panel</p>
               <div className="inline-flex items-center gap-2 mt-3 bg-warning/10 border border-warning/30 rounded-lg px-3 py-2">
                 <AlertTriangle size={16} className="text-warning" />
-                <span className="text-xs text-warning">권한이 있는 관리자만 접근 가능합니다</span>
+                <span className="text-xs text-warning">{language === 'ko' ? '권한이 있는 관리자만 접근 가능합니다' : 'Chỉ quản trị viên có quyền mới được truy cập'}</span>
               </div>
             </div>
 
@@ -73,7 +75,7 @@ export default function AdminLoginPage() {
                 <div className="flex items-start gap-3">
                   <AlertTriangle size={20} className="text-error flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-white mb-1">로그인 실패</h4>
+                    <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '로그인 실패' : 'Đăng nhập thất bại'}</h4>
                     <p className="text-sm text-gray-300">{error}</p>
                   </div>
                 </div>
@@ -82,10 +84,10 @@ export default function AdminLoginPage() {
 
             {/* Demo Credentials */}
             <div className="bg-primary/10 border border-primary/30 rounded-xl p-4">
-              <p className="text-xs text-gray-400 mb-2">데모 계정 (테스트용)</p>
+              <p className="text-xs text-gray-400 mb-2">{language === 'ko' ? '데모 계정 (테스트용)' : 'Tài khoản demo (để thử nghiệm)'}</p>
               <div className="space-y-1">
-                <p className="text-sm text-white font-mono">이메일: admin@exfluencervn.com</p>
-                <p className="text-sm text-white font-mono">비밀번호: admin123</p>
+                <p className="text-sm text-white font-mono">{language === 'ko' ? '이메일' : 'Email'}: admin@exfluencervn.com</p>
+                <p className="text-sm text-white font-mono">{language === 'ko' ? '비밀번호' : 'Mật khẩu'}: admin123</p>
               </div>
             </div>
 
@@ -94,7 +96,7 @@ export default function AdminLoginPage() {
               {/* Email */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">
-                  관리자 이메일
+                  {language === 'ko' ? '관리자 이메일' : 'Email quản trị viên'}
                 </label>
                 <div className="relative">
                   <Mail
@@ -118,7 +120,7 @@ export default function AdminLoginPage() {
               {/* Password */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">
-                  비밀번호
+                  {language === 'ko' ? '비밀번호' : 'Mật khẩu'}
                 </label>
                 <div className="relative">
                   <Lock
@@ -155,12 +157,12 @@ export default function AdminLoginPage() {
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="spinner" />
-                    인증 중...
+                    {language === 'ko' ? '인증 중...' : 'Đang xác thực...'}
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-2">
                     <Shield size={20} />
-                    관리자 로그인
+                    {language === 'ko' ? '관리자 로그인' : 'Đăng nhập quản trị viên'}
                   </div>
                 )}
               </button>
@@ -170,19 +172,19 @@ export default function AdminLoginPage() {
             <div className="bg-dark-600 border border-dark-500 rounded-xl p-4">
               <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
                 <Shield size={16} className="text-primary" />
-                보안 안내
+                {language === 'ko' ? '보안 안내' : 'Hướng dẫn bảo mật'}
               </h4>
               <ul className="space-y-1 text-xs text-gray-400">
-                <li>• 모든 관리자 활동은 로그로 기록됩니다</li>
-                <li>• 비인가 접근 시도는 차단됩니다</li>
-                <li>• 계정 정보를 타인과 공유하지 마세요</li>
+                <li>• {language === 'ko' ? '모든 관리자 활동은 로그로 기록됩니다' : 'Tất cả hoạt động quản trị đều được ghi log'}</li>
+                <li>• {language === 'ko' ? '비인가 접근 시도는 차단됩니다' : 'Các lần truy cập trái phép sẽ bị chặn'}</li>
+                <li>• {language === 'ko' ? '계정 정보를 타인과 공유하지 마세요' : 'Không chia sẻ thông tin tài khoản với người khác'}</li>
               </ul>
             </div>
 
             {/* Back Link */}
             <div className="text-center pt-4">
               <Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
-                ← 메인 페이지로 돌아가기
+                {language === 'ko' ? '← 메인 페이지로 돌아가기' : '← Quay lại trang chính'}
               </Link>
             </div>
           </div>

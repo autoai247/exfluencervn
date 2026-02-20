@@ -2004,9 +2004,7 @@ export default function CampaignDetailPage() {
                 {campaignShareCount > 0 ? (
                   <>✅ {campaignShareCount}{t.campaignDetail.shareSubmitted}</>
                 ) : (
-                  <>{language === 'ko'
-                    ? t.campaignDetail.shareDescription.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')
-                    : `Chia sẻ trên nhóm Facebook → Nhận ${formatPoints(SHARE_BONUS_AMOUNT)} VND!`}</>
+                  <>{`Chia sẻ trên nhóm Facebook → Nhận ${formatPoints(SHARE_BONUS_AMOUNT)} VND!`}</>
                 )}
               </p>
               <p className="text-xs text-gray-300 mt-1">
@@ -2104,9 +2102,7 @@ export default function CampaignDetailPage() {
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
                   <Gift size={14} className="text-primary flex-shrink-0 mt-0.5" />
-                  <span>{language === 'ko'
-                    ? t.campaignDetail.sharePerShare.replace('적립', formatPoints(SHARE_BONUS_AMOUNT) + ' VND')
-                    : `+${formatPoints(SHARE_BONUS_AMOUNT)} VND cho mỗi lượt chia sẻ (sau khi admin duyệt)`}</span>
+                  <span>{`+${formatPoints(SHARE_BONUS_AMOUNT)} VND cho mỗi lượt chia sẻ (sau khi admin duyệt)`}</span>
                 </div>
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
@@ -3003,9 +2999,7 @@ export default function CampaignDetailPage() {
             </div>
 
             <p className="text-xs text-gray-300 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
-              💡 {language === 'ko'
-                ? '보너스는 성과 목표 달성 시 지급됩니다'
-                : 'Tiền thưởng được trả khi đạt mục tiêu hiệu suất'}
+              💡 Tiền thưởng được trả khi đạt mục tiêu hiệu suất
             </p>
           </div>
         </div>

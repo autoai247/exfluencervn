@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle, Ticket, TrendingDown, Sparkles, X } from 'lucide-react';
 import { formatShoppingPoints } from '@/lib/points';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface PurchaseSuccessModalProps {
   itemName: string;
@@ -19,6 +20,7 @@ export default function PurchaseSuccessModal({
   remainingPoints,
   onClose,
 }: PurchaseSuccessModalProps) {
+  const { language } = useLanguage();
   const [show, setShow] = useState(false);
   const [confetti, setConfetti] = useState<Array<{ id: number; x: number; delay: number }>>([]);
 
@@ -100,7 +102,7 @@ export default function PurchaseSuccessModal({
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-white text-center mb-2 animate-fade-in">
-          구매 완료!
+          {language === 'ko' ? '구매 완료!' : 'Mua hàng thành công!'}
         </h2>
         <p className="text-sm text-gray-400 text-center mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           Purchase Successful
@@ -112,7 +114,7 @@ export default function PurchaseSuccessModal({
             <div className="flex items-center gap-3">
               <Ticket className="text-primary" size={24} />
               <div className="flex-1">
-                <p className="text-xs text-gray-400">구매 상품</p>
+                <p className="text-xs text-gray-400">{language === 'ko' ? '구매 상품' : 'Sản phẩm mua'}</p>
                 <p className="text-sm font-bold text-white">{itemName}</p>
               </div>
             </div>
@@ -126,8 +128,8 @@ export default function PurchaseSuccessModal({
                     <Ticket className="text-accent" size={24} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">획득한 응모권</p>
-                    <p className="text-xl font-bold text-white">+{ticketsEarned}장</p>
+                    <p className="text-xs text-gray-400">{language === 'ko' ? '획득한 응모권' : 'Vé rút thăm nhận được'}</p>
+                    <p className="text-xl font-bold text-white">+{ticketsEarned}{language === 'ko' ? '장' : ''}</p>
                   </div>
                 </div>
                 <Sparkles className="text-accent animate-pulse" size={32} />
@@ -140,7 +142,7 @@ export default function PurchaseSuccessModal({
               <div className="flex items-center gap-3">
                 <TrendingDown className="text-error" size={20} />
                 <div>
-                  <p className="text-xs text-gray-400">사용한 포인트</p>
+                  <p className="text-xs text-gray-400">{language === 'ko' ? '사용한 포인트' : 'Điểm đã dùng'}</p>
                   <p className="text-sm font-bold text-error">-{formatShoppingPoints(pointsSpent)}</p>
                 </div>
               </div>
@@ -150,7 +152,7 @@ export default function PurchaseSuccessModal({
           <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-primary/30 animate-slide-up" style={{ animationDelay: '0.5s' }}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-400">남은 포인트</p>
+                <p className="text-xs text-gray-400">{language === 'ko' ? '남은 포인트' : 'Điểm còn lại'}</p>
                 <p className="text-xl font-bold text-white">{formatShoppingPoints(remainingPoints)}</p>
               </div>
             </div>
@@ -163,7 +165,7 @@ export default function PurchaseSuccessModal({
           className="btn btn-primary w-full animate-slide-up"
           style={{ animationDelay: '0.6s' }}
         >
-          확인
+          {language === 'ko' ? '확인' : 'Xác nhận'}
         </button>
       </div>
 

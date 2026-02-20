@@ -100,6 +100,8 @@ const mockCampaign = {
   deadline: '2026-04-15',
   startDate: '2026-03-01',
   campaignType: 'cash' as 'cash' | 'points', // 현금 지급 vs 포인트 지급
+  platforms: ['instagram', 'tiktok'] as string[],
+  applicants: 7,
 
   // Marketing & UX Optimization data
   urgency: {

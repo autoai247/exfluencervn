@@ -15,11 +15,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabaseAdmin
       .from('campaigns')
-      .select(\`
-        *,
-        advertiser:users!advertiser_id(name),
-        advertiser_profile:advertiser_profiles!advertiser_id(company_name, company_logo)
-      \`)
+      .select('*')
       .eq('status', status)
       .order('created_at', { ascending: false });
 
@@ -47,13 +43,13 @@ export async function GET(request: NextRequest) {
     // Transform data to match frontend MockCampaign interface
     const campaigns = data?.map((c: any) => ({
       id: c.id,
-      title: c.title,
-      company: c.advertiser_profile?.company_name || c.advertiser?.name || 'Unknown',
-      companyLogo: c.advertiser_profile?.company_logo || \`https://ui-avatars.com/api/?name=\${encodeURIComponent(c.advertiser?.name || 'Company')}&background=FF6B6B&color=fff\`,
-      description: c.description,
-      budget: c.budget,
-      type: c.campaign_type,
-      deadline: c.deadline,
+      title: c.title || 'Untitled Campaign',
+      company: 'Company', // TODO: Join with advertiser later
+      companyLogo: `https://ui-avatars.com/api/?name=Company&background=FF6B6B&color=fff`,
+      description: c.description || '',
+      budget: c.budget || 0,
+      type: c.campaign_type || 'cash',
+      deadline: c.deadline || '',
       location: c.location || 'Toàn quốc',
       platforms: c.platforms || [],
       categories: c.categories || [],

@@ -12,11 +12,11 @@ export async function GET(request: NextRequest) {
 
     let query = supabaseAdmin
       .from('applications')
-      .select(\`
+      .select(`
         *,
         campaign:campaigns(id, title, thumbnail, budget, company:users!advertiser_id(name)),
         influencer:users!influencer_id(name, email)
-      \`)
+      `)
       .order('applied_at', { ascending: false });
 
     // Filters

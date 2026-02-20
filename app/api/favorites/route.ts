@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabaseAdmin
       .from('favorites')
-      .select(\`
+      .select(`
         campaign_id,
         created_at,
         campaign:campaigns(*)
-      \`)
+      `)
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 

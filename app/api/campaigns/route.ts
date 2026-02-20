@@ -1,182 +1,108 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase';
 
-
-export const dynamic = 'force-dynamic';
-/**
- * GET /api/campaigns
- * 캠페인 목록 조회
- *
- * Query Parameters:
- * - status?: 'recruiting' | 'in_progress' | 'completed' | 'cancelled'
- * - genre?: string
- * - platform?: 'instagram' | 'tiktok' | 'youtube'
- * - search?: string
- * - limit?: number
- * - offset?: number
- */
+// GET /api/campaigns - 캠페인 목록 가져오기
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl;
-    const status = searchParams.get('status');
-    const genre = searchParams.get('genre');
+    const { searchParams } = new URL(request.url);
+
+    // Query params
     const platform = searchParams.get('platform');
-    const search = searchParams.get('search');
-    const limit = parseInt(searchParams.get('limit') || '20');
-    const offset = parseInt(searchParams.get('offset') || '0');
+    const category = searchParams.get('category');
+    const location = searchParams.get('location');
+    const type = searchParams.get('type'); // cash or points
+    const status = searchParams.get('status') || 'active';
 
-    const supabase = createClient();
-
-    let query = supabase
+    let query = supabaseAdmin
       .from('campaigns')
-      .select('*, advertiser:profiles!advertiser_id(*)', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
+      .select(\`
+        *,
+        advertiser:users!advertiser_id(name),
+        advertiser_profile:advertiser_profiles!advertiser_id(company_name, company_logo)
+      \`)
+      .eq('status', status)
+      .order('created_at', { ascending: false });
 
-    if (status) {
-      query = query.eq('status', status);
-    }
-
-    if (genre) {
-      query = query.contains('genres', [genre]);
-    }
-
+    // Filters
     if (platform) {
       query = query.contains('platforms', [platform]);
     }
-
-    if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+    if (category) {
+      query = query.contains('categories', [category]);
+    }
+    if (location) {
+      query = query.eq('location', location);
+    }
+    if (type) {
+      query = query.eq('campaign_type', type);
     }
 
-    const { data, error, count } = await query;
+    const { data, error } = await query;
 
     if (error) {
+      console.error('Campaigns fetch error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ campaigns: data, total: count });
+    // Transform data to match frontend MockCampaign interface
+    const campaigns = data?.map((c: any) => ({
+      id: c.id,
+      title: c.title,
+      company: c.advertiser_profile?.company_name || c.advertiser?.name || 'Unknown',
+      companyLogo: c.advertiser_profile?.company_logo || \`https://ui-avatars.com/api/?name=\${encodeURIComponent(c.advertiser?.name || 'Company')}&background=FF6B6B&color=fff\`,
+      description: c.description,
+      budget: c.budget,
+      type: c.campaign_type,
+      deadline: c.deadline,
+      location: c.location || 'Toàn quốc',
+      platforms: c.platforms || [],
+      categories: c.categories || [],
+      applicants: c.applicants_count || 0,
+      thumbnail: c.thumbnail || 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800',
+      requirements: c.requirements || {},
+      isDemoMode: c.is_demo || false,
+    })) || [];
+
+    return NextResponse.json(campaigns);
 
   } catch (error: any) {
-    console.error('Get campaigns error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-/**
- * POST /api/campaigns
- * 캠페인 생성
- *
- * 요청 Body:
- * {
- *   title: string;
- *   titleVi?: string;
- *   description: string;
- *   descriptionVi?: string;
- *   requirements?: string;
- *   requirementsVi?: string;
- *   budgetMin: number;
- *   budgetMax: number;
- *   recruitCount: number;
- *   platforms: string[];
- *   genres?: string[];
- *   startDate: string (YYYY-MM-DD);
- *   endDate: string (YYYY-MM-DD);
- *   deadline: string (YYYY-MM-DD);
- *   isProductProvided: boolean;
- *   productValue?: number;
- *   images?: string[];
- * }
- */
+// POST /api/campaigns - 새 캠페인 생성 (광고주만)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validation
-    const requiredFields = [
-      'title',
-      'description',
-      'budgetMin',
-      'budgetMax',
-      'recruitCount',
-      'platforms',
-      'startDate',
-      'endDate',
-      'deadline'
-    ];
+    // TODO: Get advertiser_id from auth session
+    // For now, use from body
+    const { advertiser_id, ...campaignData } = body;
 
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
-      }
-    }
-
-    const supabase = createClient();
-
-    // 인증 확인
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!advertiser_id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // 사업자 인증 확인
-    const { data: verification } = await supabase
-      .from('business_verifications')
-      .select('status')
-      .eq('user_id', user.id)
-      .single();
-
-    if (!verification || verification.status !== 'approved') {
-      return NextResponse.json(
-        { error: 'Business verification required' },
-        { status: 403 }
-      );
-    }
-
-    // 캠페인 생성
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('campaigns')
       .insert({
-        advertiser_id: user.id,
-        title: body.title,
-        title_vi: body.titleVi,
-        description: body.description,
-        description_vi: body.descriptionVi,
-        requirements: body.requirements,
-        requirements_vi: body.requirementsVi,
-        budget_min: body.budgetMin,
-        budget_max: body.budgetMax,
-        recruit_count: body.recruitCount,
-        platforms: body.platforms,
-        genres: body.genres || [],
-        start_date: body.startDate,
-        end_date: body.endDate,
-        deadline: body.deadline,
-        is_product_provided: body.isProductProvided,
-        product_value: body.productValue,
-        images: body.images || [],
+        advertiser_id,
+        ...campaignData,
+        status: 'active',
       })
       .select()
       .single();
 
     if (error) {
+      console.error('Campaign creation error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ campaign: data }, { status: 201 });
+    return NextResponse.json(data, { status: 201 });
 
   } catch (error: any) {
-    console.error('Create campaign error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

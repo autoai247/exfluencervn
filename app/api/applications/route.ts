@@ -1,41 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase';
 
-
-export const dynamic = 'force-dynamic';
-/**
- * GET /api/applications
- * 내 지원 내역 조회 (인플루언서용)
- *
- * Query Parameters:
- * - status?: 'pending' | 'selected' | 'rejected'
- */
+// GET /api/applications - 지원서 목록 가져오기
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl;
+    const { searchParams } = new URL(request.url);
+    
+    const campaignId = searchParams.get('campaign_id');
+    const influencerId = searchParams.get('influencer_id');
     const status = searchParams.get('status');
-    const supabase = createClient();
 
-    // 인증 확인
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // 지원 내역 조회
-    let query = supabase
-      .from('campaign_applications')
-      .select(`
+    let query = supabaseAdmin
+      .from('applications')
+      .select(\`
         *,
-        campaign:campaigns(
-          *,
-          advertiser:profiles!advertiser_id(*)
-        )
-      `)
-      .eq('influencer_id', user.id)
+        campaign:campaigns(id, title, thumbnail, budget, company:users!advertiser_id(name)),
+        influencer:users!influencer_id(name, email)
+      \`)
       .order('applied_at', { ascending: false });
 
+    // Filters
+    if (campaignId) {
+      query = query.eq('campaign_id', campaignId);
+    }
+    if (influencerId) {
+      query = query.eq('influencer_id', influencerId);
+    }
     if (status) {
       query = query.eq('status', status);
     }
@@ -43,117 +33,103 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query;
 
     if (error) {
+      console.error('Applications fetch error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ applications: data });
+    return NextResponse.json(data || []);
 
   } catch (error: any) {
-    console.error('Get applications error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-/**
- * POST /api/applications
- * 캠페인 지원
- *
- * 요청 Body:
- * {
- *   campaignId: string;
- *   portfolioUrl?: string;
- *   message?: string;
- * }
- */
+// POST /api/applications - 새 지원서 제출
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { campaignId, portfolioUrl, message } = body;
+    const { campaign_id, influencer_id, name, zalo, platform_url, followers_range, message } = body;
 
-    // Validation
-    if (!campaignId) {
-      return NextResponse.json(
-        { error: 'Campaign ID is required' },
-        { status: 400 }
-      );
+    if (!campaign_id || !name || !zalo || !platform_url || !followers_range) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const supabase = createClient();
-
-    // 인증 확인
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // 캠페인 존재 및 상태 확인
-    const { data: campaign, error: campaignError } = await supabase
-      .from('campaigns')
-      .select('status, deadline')
-      .eq('id', campaignId)
-      .single();
-
-    if (campaignError || !campaign) {
-      return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
-    }
-
-    if (campaign.status !== 'recruiting') {
-      return NextResponse.json(
-        { error: 'Campaign is not recruiting' },
-        { status: 400 }
-      );
-    }
-
-    if (new Date(campaign.deadline) < new Date()) {
-      return NextResponse.json(
-        { error: 'Application deadline has passed' },
-        { status: 400 }
-      );
-    }
-
-    // 중복 지원 확인
-    const { data: existing } = await supabase
-      .from('campaign_applications')
+    // Check if already applied
+    const { data: existing } = await supabaseAdmin
+      .from('applications')
       .select('id')
-      .eq('campaign_id', campaignId)
-      .eq('influencer_id', user.id)
+      .eq('campaign_id', campaign_id)
+      .eq('influencer_id', influencer_id || '00000000-0000-0000-0000-000000000000')
       .single();
 
     if (existing) {
-      return NextResponse.json(
-        { error: 'Already applied to this campaign' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Already applied to this campaign' }, { status: 409 });
     }
 
-    // 지원 생성
-    const { data, error } = await supabase
-      .from('campaign_applications')
+    const { data, error } = await supabaseAdmin
+      .from('applications')
       .insert({
-        campaign_id: campaignId,
-        influencer_id: user.id,
-        portfolio_url: portfolioUrl,
-        message,
+        campaign_id,
+        influencer_id: influencer_id || '00000000-0000-0000-0000-000000000000', // Guest user
+        applicant_name: name,
+        zalo,
+        platform_url,
+        followers_range,
+        message: message || '',
         status: 'pending',
       })
       .select()
       .single();
 
     if (error) {
+      console.error('Application creation error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ application: data }, { status: 201 });
+    return NextResponse.json(data, { status: 201 });
 
   } catch (error: any) {
-    console.error('Apply error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// PATCH /api/applications - 지원서 상태 업데이트 (광고주)
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { application_id, status, rejection_reason } = body;
+
+    if (!application_id || !status) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const updateData: any = {
+      status,
+      reviewed_at: new Date().toISOString(),
+    };
+
+    if (rejection_reason) {
+      updateData.rejection_reason = rejection_reason;
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from('applications')
+      .update(updateData)
+      .eq('id', application_id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Application update error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+
+  } catch (error: any) {
+    console.error('API error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

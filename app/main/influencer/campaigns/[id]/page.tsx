@@ -862,17 +862,17 @@ export default function CampaignDetailPage() {
                 onClick={() => setShowApplyModal(true)}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-lg shadow-xl shadow-primary/40 active:scale-95 transition-transform flex items-center justify-center gap-2"
               >
-                🎯 Ứng tuyển ngay — {formatPoints(campaign.budget)} VND
+                {language === 'ko' ? `🎯 지금 지원 — ${formatPoints(campaign.budget)} VND` : `🎯 Ứng tuyển ngay — ${formatPoints(campaign.budget)} VND`}
               </button>
             ) : applySubmitted ? (
               <div className="w-full py-4 rounded-xl bg-success/20 border-2 border-success text-success font-bold text-center">
-                ✅ Đã ứng tuyển thành công!
+                {language === 'ko' ? '✅ 지원 완료!' : '✅ Đã ứng tuyển thành công!'}
               </div>
             ) : null}
 
             {/* Social proof micro-line */}
             <p className="text-center text-xs text-gray-500 mt-2">
-              🔥 {campaign.urgency?.recentApplications ?? campaign.applicants ?? 0} người đã ứng tuyển · Không cần đăng ký
+              🔥 {campaign.urgency?.recentApplications ?? campaign.applicants ?? 0} {language === 'ko' ? '명 지원 · 사전 등록 불필요' : 'người đã ứng tuyển · Không cần đăng ký'}
             </p>
           </div>
         </div>
@@ -1270,13 +1270,13 @@ export default function CampaignDetailPage() {
             onClick={() => setShowApplyModal(true)}
             className="w-full py-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-black text-xl shadow-2xl shadow-primary/40 active:scale-95 transition-all"
           >
-            🎯 Ứng tuyển ngay — Miễn phí
+            {language === 'ko' ? '🎯 지금 지원 — 무료' : '🎯 Ứng tuyển ngay — Miễn phí'}
           </button>
         )}
         {applySubmitted && (
           <div className="w-full py-4 rounded-2xl bg-success/20 border-2 border-success text-center">
-            <div className="text-success font-black text-lg">✅ Đã ứng tuyển thành công!</div>
-            <div className="text-success/70 text-xs mt-1">Nhà QC sẽ liên hệ qua Zalo trong 1-2 ngày</div>
+            <div className="text-success font-black text-lg">{language === 'ko' ? '✅ 지원 완료!' : '✅ Đã ứng tuyển thành công!'}</div>
+            <div className="text-success/70 text-xs mt-1">{language === 'ko' ? '광고주가 Zalo로 1-2일 내 연락드립니다' : 'Nhà QC sẽ liên hệ qua Zalo trong 1-2 ngày'}</div>
           </div>
         )}
 
@@ -1890,7 +1890,7 @@ export default function CampaignDetailPage() {
 
             {campaign.advertiserReviews.length > 3 && (
               <button className="w-full mt-3 py-2 text-sm text-gray-300 hover:text-white border border-dark-500 rounded-lg hover:bg-dark-600 transition-colors">
-                Xem tất cả đánh giá ({campaign.advertiserReviews.length})
+                {language === 'ko' ? `전체 리뷰 보기 (${campaign.advertiserReviews.length})` : `Xem tất cả đánh giá (${campaign.advertiserReviews.length})`}
               </button>
             )}
           </div>
@@ -1899,10 +1899,11 @@ export default function CampaignDetailPage() {
           <div className="bg-success/10 border border-success/30 rounded-lg p-3 flex items-start gap-3">
             <CheckCircle size={20} className="text-success flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-sm font-bold text-white mb-1">Đảm bảo thanh toán từ nền tảng</h4>
+              <h4 className="text-sm font-bold text-white mb-1">{language === 'ko' ? '플랫폼 결제 보장' : 'Đảm bảo thanh toán từ nền tảng'}</h4>
               <p className="text-xs text-gray-300 leading-relaxed">
-                Chiến dịch này được nền tảng đảm bảo thanh toán. Nếu nhà QC không thanh toán sau khi hoàn thành công việc,
-                nền tảng sẽ chi trả thay. Yên tâm ứng tuyển!
+                {language === 'ko'
+                  ? '이 캠페인은 플랫폼이 결제를 보장합니다. 작업 완료 후 광고주가 결제하지 않으면 플랫폼이 대신 지급합니다. 안심하고 지원하세요!'
+                  : 'Chiến dịch này được nền tảng đảm bảo thanh toán. Nếu nhà QC không thanh toán sau khi hoàn thành công việc, nền tảng sẽ chi trả thay. Yên tâm ứng tuyển!'}
               </p>
             </div>
           </div>
@@ -2389,11 +2390,11 @@ export default function CampaignDetailPage() {
                   disabled={!applyForm.name || !applyForm.zalo || !applyForm.platformUrl || !applyForm.followers}
                   className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-lg shadow-xl shadow-primary/30 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all"
                 >
-                  🚀 Gửi đơn ứng tuyển
+                  {language === 'ko' ? '🚀 지원서 제출' : '🚀 Gửi đơn ứng tuyển'}
                 </button>
 
                 <p className="text-center text-xs text-gray-500">
-                  Miễn phí · Không cần đăng ký trước · Kết quả trong 1-2 ngày
+                  {language === 'ko' ? '무료 · 사전 등록 불필요 · 1-2일 내 결과 안내' : 'Miễn phí · Không cần đăng ký trước · Kết quả trong 1-2 ngày'}
                 </p>
               </form>
             ) : (
@@ -2402,15 +2403,18 @@ export default function CampaignDetailPage() {
                 <div className="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto animate-bounce">
                   <span className="text-5xl">🎉</span>
                 </div>
-                <h3 className="text-2xl font-black text-white">Đã gửi thành công!</h3>
+                <h3 className="text-2xl font-black text-white">{language === 'ko' ? '제출 완료!' : 'Đã gửi thành công!'}</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Đơn ứng tuyển của <span className="text-white font-bold">{applyForm.name}</span> đã được gửi đến <span className="text-primary font-bold">{campaign.company}</span>.<br/><br/>
-                  Nhà QC sẽ liên hệ bạn qua Zalo/Facebook trong <span className="text-accent font-bold">1-2 ngày làm việc</span>.
+                  {language === 'ko' ? (
+                    <><span className="text-white font-bold">{applyForm.name}</span>님의 지원서가 <span className="text-primary font-bold">{campaign.company}</span>에 전달되었습니다.<br/><br/>광고주가 <span className="text-accent font-bold">1-2 영업일</span> 내에 Zalo/Facebook으로 연락드립니다.</>
+                  ) : (
+                    <>Đơn ứng tuyển của <span className="text-white font-bold">{applyForm.name}</span> đã được gửi đến <span className="text-primary font-bold">{campaign.company}</span>.<br/><br/>Nhà QC sẽ liên hệ bạn qua Zalo/Facebook trong <span className="text-accent font-bold">1-2 ngày làm việc</span>.</>
+                  )}
                 </p>
                 <div className="bg-dark-600 rounded-xl p-4 text-left space-y-2">
-                  <div className="text-xs text-gray-400">📋 Tóm tắt đơn</div>
+                  <div className="text-xs text-gray-400">📋 {language === 'ko' ? '지원서 요약' : 'Tóm tắt đơn'}</div>
                   <div className="text-sm text-white font-semibold">{campaign.title}</div>
-                  <div className="text-xs text-gray-400">Liên hệ: {applyForm.zalo}</div>
+                  <div className="text-xs text-gray-400">{language === 'ko' ? '연락처' : 'Liên hệ'}: {applyForm.zalo}</div>
                   <div className="text-xs text-gray-400">Link: {applyForm.platformUrl}</div>
                 </div>
                 <button

@@ -173,7 +173,7 @@ const mockCampaignDetail = {
 
 export default function CampaignDetailPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // State management for applicants
   const [pendingApplicants, setPendingApplicants] = useState(mockCampaignDetail.pendingApplicants);
@@ -1063,9 +1063,12 @@ export default function CampaignDetailPage() {
 
               {/* Tags */}
               <div className="mb-4">
-                <label className="text-sm font-semibold text-gray-900 mb-2 block">Chọn nhãn</label>
+                <label className="text-sm font-semibold text-gray-900 mb-2 block">{language === 'ko' ? '태그 선택' : 'Chọn nhãn'}</label>
                 <div className="flex flex-wrap gap-2">
-                  {['Chăm chỉ', 'Giao tiếp tốt', 'Chất lượng cao', 'Sáng tạo', 'Đúng hạn', 'Chuyên nghiệp', 'Nhiệt tình'].map((tag) => (
+                  {(language === 'ko'
+                    ? ['성실함', '소통 잘됨', '고품질', '창의적', '기한 준수', '전문적', '열정적']
+                    : ['Chăm chỉ', 'Giao tiếp tốt', 'Chất lượng cao', 'Sáng tạo', 'Đúng hạn', 'Chuyên nghiệp', 'Nhiệt tình']
+                  ).map((tag) => (
                     <button
                       key={tag}
                       onClick={() => {
@@ -1096,7 +1099,7 @@ export default function CampaignDetailPage() {
                     onChange={(e) => setReviewData({ ...reviewData, wouldRecommend: e.target.checked })}
                     className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                   />
-                  <span className="text-sm text-gray-700">Tôi giới thiệu KOL này cho nhà quảng cáo khác</span>
+                  <span className="text-sm text-gray-700">{language === 'ko' ? '이 KOL을 다른 광고주에게 추천합니다' : 'Tôi giới thiệu KOL này cho nhà quảng cáo khác'}</span>
                 </label>
               </div>
 
@@ -1106,16 +1109,19 @@ export default function CampaignDetailPage() {
                   onClick={() => setShowReviewModal(false)}
                   className="flex-1 py-3 border border-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
                 >
-                  Hủy
+                  {language === 'ko' ? '취소' : 'Hủy'}
                 </button>
                 <button
                   onClick={() => {
-                    alert(`Đã lưu đánh giá!\nĐiểm: ${reviewData.rating}\nNhãn: ${reviewData.tags.join(', ')}\nGiới thiệu: ${reviewData.wouldRecommend ? 'Có' : 'Không'}`);
+                    alert(language === 'ko'
+                      ? `평가가 저장되었습니다!\n점수: ${reviewData.rating}\n태그: ${reviewData.tags.join(', ')}\n추천: ${reviewData.wouldRecommend ? '예' : '아니오'}`
+                      : `Đã lưu đánh giá!\nĐiểm: ${reviewData.rating}\nNhãn: ${reviewData.tags.join(', ')}\nGiới thiệu: ${reviewData.wouldRecommend ? 'Có' : 'Không'}`
+                    );
                     setShowReviewModal(false);
                   }}
                   className="flex-1 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800"
                 >
-                  Gửi đánh giá
+                  {language === 'ko' ? '평가 제출' : 'Gửi đánh giá'}
                 </button>
               </div>
             </div>

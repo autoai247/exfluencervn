@@ -158,13 +158,60 @@ export default function CreateCampaignPage() {
 
   const generateBriefText = () => {
     const tags = form.hashtags || '#[hashtag]';
-    const budget = form.budget ? formatCash(parseInt(form.budget)) : '[Thương lượng]';
+    const isKo = language === 'ko';
+    const budget = form.budget ? formatCash(parseInt(form.budget)) : (isKo ? '[협의]' : '[Thương lượng]');
     const platformLabels = form.platform.map(p =>
       PLATFORMS.find(x => x.id === p)?.label || p
-    ).join(', ') || '[Chọn nền tảng]';
+    ).join(', ') || (isKo ? '[플랫폼 선택]' : '[Chọn nền tảng]');
     const deliverableLabels = form.deliverable.map(d =>
       DELIVERABLES.find(x => x.id === d)?.label || d
-    ).join(' + ') || '[Chọn loại nội dung]';
+    ).join(' + ') || (isKo ? '[콘텐츠 유형 선택]' : '[Chọn loại nội dung]');
+
+    if (isKo) {
+      return `📋 캠페인 브리프
+──────────────────────────
+🏢 브랜드: ${form.brand || '[브랜드명]'}
+📌 캠페인명: ${form.title || '[캠페인명]'}
+📱 플랫폼: ${platformLabels}
+🎬 콘텐츠 유형: ${deliverableLabels}
+
+📝 캠페인 설명:
+${form.description || '[홍보할 제품/서비스 설명]'}
+
+──────────────────────────
+✅ KOL 요구사항
+• 최소 팔로워: ${parseInt(form.minFollowers || '0').toLocaleString()}
+• 최소 참여율: ${form.minEngagement || '3'}%
+• 성별: ${form.gender === 'female' ? '여성' : form.gender === 'male' ? '남성' : '제한 없음'}
+• 연령대: ${form.ageRange}
+• 지역: ${form.location}
+
+──────────────────────────
+💰 보수
+• KOL당 예산: ${budget}
+• KOL 모집 수: ${form.slots}명
+
+──────────────────────────
+📅 일정
+• 시작일: ${form.startDate || '[DD/MM/YYYY]'}
+• 종료일: ${form.endDate || '[DD/MM/YYYY]'}
+
+──────────────────────────
+#️⃣ 필수 해시태그:
+${tags}
+
+📋 진행 가이드:
+${form.guidelines || '[KOL에게 전달할 구체적인 가이드 작성]'}
+
+🎁 브랜드 제공 사항:
+${form.provided || '[제품/샘플/기타 비용]'}
+
+──────────────────────────
+📩 지원하기:
+🔗 https://exfluencervn.vercel.app/main/influencer/campaigns
+
+⚡ 빠른 지원 — Google Form 없이 바로 지원!`;
+    }
 
     return `📋 BRIEF CHIẾN DỊCH
 ──────────────────────────
@@ -216,6 +263,23 @@ ${form.provided || '[Sản phẩm/mẫu thử/chi phí khác]'}
     const platformLabels = form.platform.map(p =>
       PLATFORMS.find(x => x.id === p)?.label || p
     ).join(' + ') || '...';
+    if (language === 'ko') {
+      return `🔥 [신규 캠페인] ${form.title || 'KOL 모집'}
+
+🏢 ${form.brand || '브랜드'}
+📱 플랫폼: ${platformLabels}
+💰 수입: ${budget}/KOL
+👥 ${form.slots || '3'}자리 — 마감: ${form.endDate || 'TBD'}
+
+${form.description ? form.description.slice(0, 150) + (form.description.length > 150 ? '...' : '') : ''}
+
+✅ 조건: ${parseInt(form.minFollowers || '0').toLocaleString()}+ 팔로워, ER ${form.minEngagement || '3'}%+
+
+📩 지금 지원 — Google Form 없이 바로:
+👉 https://exfluencervn.vercel.app/main/influencer/campaigns
+
+#KOL #influencer #campaign #${(form.niche[0] || 'beauty').toLowerCase()}`;
+    }
     return `🔥 [CHIẾN DỊCH MỚI] ${form.title || 'Tuyển KOL'}
 
 🏢 ${form.brand || 'Thương hiệu'}

@@ -234,7 +234,7 @@ export default function InfluencerProfilePage() {
               </div>
             ))}
             <div className="px-4 py-2.5 bg-dark-700/50 border-t border-dark-500">
-              <p className="text-[11px] text-gray-500">* Giá có thể thương lượng tùy chiến dịch. Liên hệ để biết thêm chi tiết.</p>
+              <p className="text-[11px] text-gray-500">{language === 'ko' ? '* 캠페인에 따라 가격 협의 가능. 자세한 내용은 문의해 주세요.' : '* Giá có thể thương lượng tùy chiến dịch. Liên hệ để biết thêm chi tiết.'}</p>
             </div>
           </div>
         </div>
@@ -242,8 +242,8 @@ export default function InfluencerProfilePage() {
         {/* ── Past Campaigns ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">Chiến dịch đã thực hiện</h3>
-            <Link href="/main/influencer/completed" className="text-xs text-primary">Xem tất cả</Link>
+            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '완료한 캠페인' : 'Chiến dịch đã thực hiện'}</h3>
+            <Link href="/main/influencer/completed" className="text-xs text-primary">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
           </div>
 
           <div className="space-y-3">
@@ -272,12 +272,12 @@ export default function InfluencerProfilePage() {
 
         {/* ── Quick Links ── */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">Hoạt động</h3>
+          <h3 className="text-sm font-semibold text-gray-400 px-1">{language === 'ko' ? '활동' : 'Hoạt động'}</h3>
 
           {[
-            { href: '/main/influencer/jobs', icon: Briefcase, label: 'Chiến dịch đang thực hiện', badge: '3', color: 'bg-primary/20', iconColor: 'text-primary' },
-            { href: '/main/influencer/earnings', icon: BarChart2, label: 'Lịch sử thu nhập', color: 'bg-accent/20', iconColor: 'text-accent' },
-            { href: '/main/messages', icon: MessageCircle, label: 'Tin nhắn', badge: '3', color: 'bg-blue-500/20', iconColor: 'text-blue-400' },
+            { href: '/main/influencer/jobs', icon: Briefcase, label: language === 'ko' ? '진행 중인 캠페인' : 'Chiến dịch đang thực hiện', badge: '3', color: 'bg-primary/20', iconColor: 'text-primary' },
+            { href: '/main/influencer/earnings', icon: BarChart2, label: language === 'ko' ? '수입 내역' : 'Lịch sử thu nhập', color: 'bg-accent/20', iconColor: 'text-accent' },
+            { href: '/main/messages', icon: MessageCircle, label: language === 'ko' ? '메시지' : 'Tin nhắn', badge: '3', color: 'bg-blue-500/20', iconColor: 'text-blue-400' },
           ].map(item => (
             <Link key={item.href} href={item.href}>
               <div className="flex items-center gap-3 bg-dark-600 rounded-xl px-4 py-3 border border-dark-500">

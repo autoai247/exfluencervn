@@ -60,7 +60,9 @@ export interface GeneratedCampaign {
 }
 
 const STORAGE_KEY = 'exfluencer_auto_generation_settings';
-const CAMPAIGNS_STORAGE_KEY = 'exfluencer_generated_campaigns';
+const CAMPAIGNS_STORAGE_KEY_BASE = 'exfluencer_generated_campaigns';
+const getCampaignsKey = (lang?: string) => lang ? `${CAMPAIGNS_STORAGE_KEY_BASE}_${lang}` : CAMPAIGNS_STORAGE_KEY_BASE;
+const CAMPAIGNS_STORAGE_KEY = CAMPAIGNS_STORAGE_KEY_BASE; // backward compat
 
 // 기본 설정 (리얼하게 설정됨)
 const DEFAULT_SETTINGS: AutoGenerationSettings = {

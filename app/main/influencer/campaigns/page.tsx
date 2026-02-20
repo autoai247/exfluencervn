@@ -1156,14 +1156,18 @@ function CampaignsPageContent() {
         <div className="container-mobile py-3">
           <div className="rounded-2xl bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/40 p-4 flex items-center justify-between gap-3">
             <div>
-              <div className="text-sm font-bold text-white">🎉 Đăng ký miễn phí để ứng tuyển</div>
-              <div className="text-xs text-gray-300 mt-0.5">Không qua Google Form · 0% hoa hồng · 1K+ followers là đủ</div>
+              <div className="text-sm font-bold text-white">
+                {language === 'ko' ? '🎉 무료로 가입하고 지원하세요' : '🎉 Đăng ký miễn phí để ứng tuyển'}
+              </div>
+              <div className="text-xs text-gray-300 mt-0.5">
+                {language === 'ko' ? 'Google Form 없음 · 수수료 0% · 팔로워 1K+ 이상이면 OK' : 'Không qua Google Form · 0% hoa hồng · 1K+ followers là đủ'}
+              </div>
             </div>
             <Link
               href="/auth/register?type=influencer"
               className="flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold whitespace-nowrap"
             >
-              Đăng ký →
+              {language === 'ko' ? '가입하기 →' : 'Đăng ký →'}
             </Link>
           </div>
         </div>
@@ -1262,7 +1266,7 @@ function CampaignsPageContent() {
                             ))}
                           </div>
                           <span className="text-xs text-gray-300">
-                            {campaign.applicants > 4 && `+${campaign.applicants - 4} `}đã ứng tuyển
+                            {campaign.applicants > 4 && `+${campaign.applicants - 4} `}{language === 'ko' ? '명 지원' : 'đã ứng tuyển'}
                           </span>
                         </div>
                       )}
@@ -1431,10 +1435,12 @@ function CampaignsPageContent() {
                       </div>
                       <div className="flex-1">
                         <div className="text-sm font-semibold text-white">
-                          {campaign.applicants} người đã ứng tuyển
+                          {campaign.applicants} {language === 'ko' ? '명 지원' : 'người đã ứng tuyển'}
                         </div>
                         <div className="text-xs text-gray-300">
-                          {campaign.applicants > 6 ? `+${campaign.applicants - 6} người nữa` : 'Ứng viên gần đây'}
+                          {campaign.applicants > 6
+                            ? `+${campaign.applicants - 6} ${language === 'ko' ? '명 더' : 'người nữa'}`
+                            : (language === 'ko' ? '최근 지원자' : 'Ứng viên gần đây')}
                         </div>
                       </div>
                     </div>

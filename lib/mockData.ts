@@ -2533,8 +2533,9 @@ export function getMockCampaigns(language: Language): MockCampaign[] {
   // Load auto-generated campaigns (only in browser)
   if (typeof window !== 'undefined') {
     try {
-      // Load generated campaigns
-      const stored = localStorage.getItem('exfluencer_generated_campaigns');
+      // Load language-specific generated campaigns first
+      const langKey = `exfluencer_generated_campaigns_${language}`;
+      const stored = localStorage.getItem(langKey) || localStorage.getItem('exfluencer_generated_campaigns');
       if (stored) {
         const generatedCampaigns = JSON.parse(stored);
         // Combine static + auto-generated campaigns

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { translations } from '@/lib/i18n/translations';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 // Mock data
@@ -70,6 +71,7 @@ type StatusType = 'all' | 'active' | 'completed' | 'draft';
 
 export default function CampaignsClient() {
   const { language } = useLanguage();
+  const t = translations[language].advertiser.campaigns;
   const searchParams = useSearchParams();
   const statusParam = searchParams.get('status') as StatusType | null;
 
@@ -77,42 +79,6 @@ export default function CampaignsClient() {
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const t = {
-    ko: {
-      createCampaign: '새 캠페인 만들기',
-      search: '캠페인 검색...',
-      all: '전체',
-      active: '진행중',
-      completed: '완료',
-      draft: '임시저장',
-      budget: '예산',
-      spent: '사용',
-      applicants: '지원자',
-      accepted: '승인',
-      views: '조회수',
-      deadline: '마감',
-      noCampaigns: '캠페인이 없습니다',
-      createFirst: '첫 번째 캠페인을 만들어보세요',
-    },
-    vi: {
-      createCampaign: 'Tạo chiến dịch mới',
-      search: 'Tìm kiếm chiến dịch...',
-      all: 'Tất cả',
-      active: 'Đang chạy',
-      completed: 'Hoàn thành',
-      draft: 'Nháp',
-      budget: 'Ngân sách',
-      spent: 'Đã dùng',
-      applicants: 'Ứng viên',
-      accepted: 'Chấp nhận',
-      views: 'Lượt xem',
-      deadline: 'Hạn chót',
-      noCampaigns: 'Không có chiến dịch',
-      createFirst: 'Tạo chiến dịch đầu tiên của bạn',
-    },
-  };
-
-  const text = t[language];
 
   const filteredCampaigns = mockCampaigns.filter((c) => {
     const matchesStatus = activeTab === 'all' || c.status === activeTab;
@@ -180,7 +146,7 @@ export default function CampaignsClient() {
       <Link href="/main/advertiser/campaigns/create">
         <button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center">
           <Plus size={20} className="mr-2" />
-          {text.createCampaign}
+          {t.createCampaign}
         </button>
       </Link>
 
@@ -192,7 +158,7 @@ export default function CampaignsClient() {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={text.search}
+          placeholder={t.search}
           className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 transition-colors"
         />
       </div>
@@ -219,12 +185,12 @@ export default function CampaignsClient() {
         {filteredCampaigns.length === 0 ? (
           <div className="bg-white border border-gray-200 rounded-lg text-center py-12 px-6">
             <TrendingUp size={48} className="text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{text.noCampaigns}</h3>
-            <p className="text-sm text-gray-500 mb-6">{text.createFirst}</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t.noCampaigns}</h3>
+            <p className="text-sm text-gray-500 mb-6">{t.createFirst}</p>
             <Link href="/main/advertiser/campaigns/create">
               <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors inline-flex items-center">
                 <Plus size={18} className="mr-2" />
-                {text.createCampaign}
+                {t.createCampaign}
               </button>
             </Link>
           </div>
@@ -237,7 +203,7 @@ export default function CampaignsClient() {
                     <h4 className="font-semibold text-gray-900 mb-1">{campaign.title}</h4>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <Clock size={12} />
-                      {text.deadline}: {campaign.deadline}
+                      {t.deadline}: {campaign.deadline}
                     </div>
                   </div>
                   <span className={`px-3 py-1 ${getStatusColor(campaign.status)} text-xs font-medium rounded-full whitespace-nowrap ml-2`}>
@@ -249,7 +215,7 @@ export default function CampaignsClient() {
                 {campaign.status !== 'draft' && (
                   <div className="mb-4">
                     <div className="flex justify-between text-xs mb-1.5">
-                      <span className="text-gray-500">{text.budget} {language === 'ko' ? '사용' : 'sử dụng'}</span>
+                      <span className="text-gray-500">{t.budget} {t.budgetUsed}</span>
                       <span className="text-gray-900 font-semibold">
                         {((campaign.spent / campaign.budget) * 100).toFixed(0)}%
                       </span>
@@ -271,23 +237,23 @@ export default function CampaignsClient() {
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
                     <div className="font-semibold text-gray-900">{campaign.applicants}</div>
-                    <div className="text-gray-500 mt-1">{text.applicants}</div>
+                    <div className="text-gray-500 mt-1">{t.applicants}</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
                     <div className="font-semibold text-gray-900">{campaign.accepted}</div>
-                    <div className="text-gray-500 mt-1">{text.accepted}</div>
+                    <div className="text-gray-500 mt-1">{t.accepted}</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
                     <div className="font-semibold text-gray-900">
                       {campaign.views > 0 ? `${(campaign.views / 1000).toFixed(0)}K` : '0'}
                     </div>
-                    <div className="text-gray-500 mt-1">{text.views}</div>
+                    <div className="text-gray-500 mt-1">{t.views}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
                   <span className="text-xs text-gray-500 font-medium">
-                    {language === 'ko' ? '상세 정보 보기' : 'Xem chi tiết'}
+                    {t.viewDetails}
                   </span>
                   <ChevronRight size={16} className="text-gray-400" />
                 </div>

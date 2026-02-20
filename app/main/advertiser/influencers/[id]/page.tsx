@@ -28,7 +28,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 export default function InfluencerProfilePage() {
   const params = useParams();
   const router = useRouter();
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
 
@@ -306,186 +306,6 @@ export default function InfluencerProfilePage() {
     ],
   };
 
-  const t = {
-    ko: {
-      followers: '팔로워',
-      totalFollowers: '총 팔로워',
-      engagement: '참여율',
-      avgViews: '평균 조회수',
-      completed: '완료 캠페인',
-      rating: '평점',
-      verified: '인증됨',
-      categories: '카테고리',
-      location: '위치',
-      snsChannels: 'SNS 채널',
-      recentWorks: '최근 작업물',
-      views: '조회수',
-      contact: '제안하기',
-      contactTitle: '캠페인 제안',
-      sendProposal: '제안 보내기',
-      cancel: '취소',
-      profileInfo: '프로필 정보',
-      gender: '성별',
-      age: '연령대',
-      skinType: '피부 타입',
-      skinTone: '피부 톤',
-      hasVehicle: '차량 보유',
-      yes: '예',
-      no: '아니오',
-      male: '남성',
-      female: '여성',
-      // 완료 캠페인
-      completedCampaigns: '완료한 캠페인',
-      completedDate: '완료일',
-      payment: '보상',
-      deliverables: '제출물',
-      results: '성과',
-      campaignInfo: '캠페인 정보',
-      brand: '브랜드',
-      close: '닫기',
-      likes: '좋아요',
-      comments: '댓글',
-      saves: '저장',
-      // 상세 정보
-      basicInfo: '기본 정보',
-      lifestyleInfo: '생활 정보',
-      languageEducation: '언어 & 교육',
-      interestsTitle: '관심사',
-      maritalStatus: '결혼 여부',
-      children: '자녀',
-      pets: '반려동물',
-      languages_label: '구사 언어',
-      education: '학력',
-      occupation: '직업',
-      lifestyle: '라이프스타일',
-      smoker: '흡연',
-      drinker: '음주',
-      // 값
-      single: '미혼',
-      married: '기혼',
-      divorced: '이혼',
-      prefer_not_to_say: '비공개',
-      dog: '강아지',
-      cat: '고양이',
-      bird: '새',
-      fish: '물고기',
-      other: '기타',
-      korean: '한국어',
-      vietnamese: '베트남어',
-      english: '영어',
-      highschool: '고등학교',
-      bachelor: '학사',
-      master: '석사',
-      phd: '박사',
-      content_creator: '콘텐츠 크리에이터',
-      beauty: '뷰티',
-      fashion: '패션',
-      travel: '여행',
-      food: '음식',
-      fitness: '피트니스',
-      never: '안함',
-      occasionally: '가끔',
-      regularly: '자주',
-      // 리뷰
-      reviews: '광고주 리뷰',
-      reviewsCount: '개 리뷰',
-      wouldRecommend: '추천함',
-      overallRating: '종합 평점',
-      basedOnReviews: '개 리뷰 기준',
-      viewAll: '전체 보기',
-      workStyle: '작업 스타일',
-    },
-    vi: {
-      followers: 'Người theo dõi',
-      totalFollowers: 'Tổng người theo dõi',
-      engagement: 'Tương tác',
-      avgViews: 'Lượt xem TB',
-      completed: 'Chiến dịch hoàn thành',
-      rating: 'Đánh giá',
-      verified: 'Đã xác minh',
-      categories: 'Danh mục',
-      location: 'Vị trí',
-      snsChannels: 'Kênh mạng xã hội',
-      recentWorks: 'Công việc gần đây',
-      views: 'Lượt xem',
-      contact: 'Đề xuất',
-      contactTitle: 'Đề xuất chiến dịch',
-      sendProposal: 'Gửi đề xuất',
-      cancel: 'Hủy',
-      profileInfo: 'Thông tin hồ sơ',
-      gender: 'Giới tính',
-      age: 'Độ tuổi',
-      skinType: 'Loại da',
-      skinTone: 'Màu da',
-      hasVehicle: 'Có xe',
-      yes: 'Có',
-      no: 'Không',
-      male: 'Nam',
-      female: 'Nữ',
-      // 완료 캠페인
-      completedCampaigns: 'Chiến dịch đã hoàn thành',
-      completedDate: 'Ngày hoàn thành',
-      payment: 'Thanh toán',
-      deliverables: 'Sản phẩm',
-      results: 'Kết quả',
-      campaignInfo: 'Thông tin chiến dịch',
-      brand: 'Thương hiệu',
-      close: 'Đóng',
-      likes: 'Thích',
-      comments: 'Bình luận',
-      saves: 'Lưu',
-      // 상세 정보
-      basicInfo: 'Thông tin cơ bản',
-      lifestyleInfo: 'Thông tin cuộc sống',
-      languageEducation: 'Ngôn ngữ & Giáo dục',
-      interestsTitle: 'Sở thích',
-      maritalStatus: 'Tình trạng hôn nhân',
-      children: 'Con cái',
-      pets: 'Thú cưng',
-      languages_label: 'Ngôn ngữ',
-      education: 'Học vấn',
-      occupation: 'Nghề nghiệp',
-      lifestyle: 'Lối sống',
-      smoker: 'Hút thuốc',
-      drinker: 'Uống rượu',
-      // 값
-      single: 'Độc thân',
-      married: 'Đã kết hôn',
-      divorced: 'Ly hôn',
-      prefer_not_to_say: 'Không tiết lộ',
-      dog: 'Chó',
-      cat: 'Mèo',
-      bird: 'Chim',
-      fish: 'Cá',
-      other: 'Khác',
-      korean: 'Tiếng Hàn',
-      vietnamese: 'Tiếng Việt',
-      english: 'Tiếng Anh',
-      highschool: 'Trung học',
-      bachelor: 'Cử nhân',
-      master: 'Thạc sĩ',
-      phd: 'Tiến sĩ',
-      content_creator: 'Nhà sáng tạo nội dung',
-      beauty: 'Làm đẹp',
-      fashion: 'Thời trang',
-      travel: 'Du lịch',
-      food: 'Ẩm thực',
-      fitness: 'Thể hình',
-      never: 'Không bao giờ',
-      occasionally: 'Thỉnh thoảng',
-      regularly: 'Thường xuyên',
-      // 리뷰
-      reviews: 'Đánh giá từ nhà quảng cáo',
-      reviewsCount: 'đánh giá',
-      wouldRecommend: 'Khuyên dùng',
-      overallRating: 'Đánh giá tổng thể',
-      basedOnReviews: 'dựa trên',
-      viewAll: 'Xem tất cả',
-      workStyle: 'Phong cách làm việc',
-    },
-  };
-
-  const text = t[language];
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
@@ -568,7 +388,7 @@ export default function InfluencerProfilePage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-gray-50 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">{text.totalFollowers}</div>
+            <div className="text-xs text-gray-500 mb-1">{t.advertiser.influencerDetail.totalFollowers}</div>
             <div className="text-2xl font-bold text-gray-900">
               {(influencer.followers / 1000).toFixed(0)}K
             </div>
@@ -589,20 +409,20 @@ export default function InfluencerProfilePage() {
           </div>
           <div className="bg-gray-50 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">{influencer.engagement}%</div>
-            <div className="text-xs text-gray-500 mt-1">{text.engagement}</div>
+            <div className="text-xs text-gray-500 mt-1">{t.advertiser.influencerDetail.engagement}</div>
           </div>
           <div className="bg-gray-50 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">
               {(influencer.avgViews / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-500 mt-1">{text.avgViews}</div>
+            <div className="text-xs text-gray-500 mt-1">{t.advertiser.influencerDetail.avgViews}</div>
           </div>
         </div>
 
         {/* SNS Channels */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {text.snsChannels} ({influencer.platforms.length}개)
+            {t.advertiser.influencerDetail.snsChannels} ({influencer.platforms.length}개)
           </h3>
           <div className="space-y-3">
             {influencer.platforms.map((platData: any) => {
@@ -638,7 +458,7 @@ export default function InfluencerProfilePage() {
 
         {/* Categories */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-900 mb-2">{text.categories}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.categories}</h3>
           <div className="flex flex-wrap gap-2">
             {influencer.categories.map((cat) => (
               <span
@@ -655,9 +475,9 @@ export default function InfluencerProfilePage() {
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">{text.reviews}</h3>
+              <h3 className="text-sm font-semibold text-gray-900">{t.advertiser.influencerDetail.reviews}</h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                {influencer.reviews.length} {text.reviewsCount}
+                {influencer.reviews.length} {t.advertiser.influencerDetail.reviewsCount}
               </p>
             </div>
             <div className="text-right">
@@ -665,7 +485,7 @@ export default function InfluencerProfilePage() {
                 <Star size={18} className="text-yellow-500 fill-yellow-500" />
                 <span className="text-xl font-bold text-gray-900">{influencer.rating}</span>
               </div>
-              <p className="text-xs text-gray-500">{text.overallRating}</p>
+              <p className="text-xs text-gray-500">{t.advertiser.influencerDetail.overallRating}</p>
             </div>
           </div>
 
@@ -710,38 +530,38 @@ export default function InfluencerProfilePage() {
 
           {influencer.reviews.length > 3 && (
             <button className="w-full mt-4 py-2 text-sm text-gray-700 hover:text-gray-900 font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              {text.viewAll} ({influencer.reviews.length})
+              {t.advertiser.influencerDetail.viewAll} ({influencer.reviews.length})
             </button>
           )}
         </div>
 
         {/* Profile Information - 기본 정보 */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.basicInfo}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.basicInfo}</h3>
           <div className="space-y-3">
             {influencer.gender && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.gender}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.gender}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {influencer.gender === 'male' ? text.male : text.female}
+                  {influencer.gender === 'male' ? t.advertiser.influencerDetail.male : t.advertiser.influencerDetail.female}
                 </span>
               </div>
             )}
             {influencer.ageRange && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.age}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.age}</span>
                 <span className="text-sm font-semibold text-gray-900">{influencer.ageRange}</span>
               </div>
             )}
             {influencer.skinType && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.skinType}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.skinType}</span>
                 <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinType}</span>
               </div>
             )}
             {influencer.skinTone && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.skinTone}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.skinTone}</span>
                 <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinTone}</span>
               </div>
             )}
@@ -750,11 +570,11 @@ export default function InfluencerProfilePage() {
 
         {/* 생활 정보 */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.lifestyleInfo}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.lifestyleInfo}</h3>
           <div className="space-y-3">
             {influencer.maritalStatus && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.maritalStatus}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.maritalStatus}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {text[influencer.maritalStatus as keyof typeof text] || influencer.maritalStatus}
                 </span>
@@ -762,28 +582,28 @@ export default function InfluencerProfilePage() {
             )}
             {influencer.hasChildren !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.children}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.children}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {influencer.hasChildren ? `${text.yes} (${influencer.numberOfChildren})` : text.no}
+                  {influencer.hasChildren ? `${t.advertiser.influencerDetail.yes} (${influencer.numberOfChildren})` : t.advertiser.influencerDetail.no}
                 </span>
               </div>
             )}
             {influencer.hasPets !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.pets}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.pets}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {influencer.hasPets
                     ? influencer.petTypes.map((pet: string) => text[pet as keyof typeof text] || pet).join(', ')
-                    : text.no
+                    : t.advertiser.influencerDetail.no
                   }
                 </span>
               </div>
             )}
             {influencer.hasVehicle !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.hasVehicle}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.hasVehicle}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {influencer.hasVehicle ? text.yes : text.no}
+                  {influencer.hasVehicle ? t.advertiser.influencerDetail.yes : t.advertiser.influencerDetail.no}
                 </span>
               </div>
             )}
@@ -792,11 +612,11 @@ export default function InfluencerProfilePage() {
 
         {/* 언어 & 교육 */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.languageEducation}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.languageEducation}</h3>
           <div className="space-y-3">
             {influencer.languages && (
               <div className="flex items-start justify-between">
-                <span className="text-sm text-gray-600">{text.languages_label}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.languages_label}</span>
                 <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                   {influencer.languages.map((lang: string) => (
                     <span key={lang} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
@@ -808,7 +628,7 @@ export default function InfluencerProfilePage() {
             )}
             {influencer.education && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.education}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.education}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {text[influencer.education as keyof typeof text] || influencer.education}
                 </span>
@@ -816,7 +636,7 @@ export default function InfluencerProfilePage() {
             )}
             {influencer.occupation && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.occupation}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.occupation}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {text[influencer.occupation as keyof typeof text] || influencer.occupation}
                 </span>
@@ -828,7 +648,7 @@ export default function InfluencerProfilePage() {
         {/* 관심사 */}
         {influencer.interests && influencer.interests.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">{text.interestsTitle}</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.interestsTitle}</h3>
             <div className="flex flex-wrap gap-2">
               {influencer.interests.map((interest: string) => (
                 <span
@@ -844,19 +664,19 @@ export default function InfluencerProfilePage() {
 
         {/* 라이프스타일 */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{text.lifestyle}</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.lifestyle}</h3>
           <div className="space-y-3">
             {influencer.smoker !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.smoker}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.smoker}</span>
                 <span className="text-sm font-semibold text-gray-900">
-                  {influencer.smoker ? text.yes : text.no}
+                  {influencer.smoker ? t.advertiser.influencerDetail.yes : t.advertiser.influencerDetail.no}
                 </span>
               </div>
             )}
             {influencer.drinker && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{text.drinker}</span>
+                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.drinker}</span>
                 <span className="text-sm font-semibold text-gray-900">
                   {text[influencer.drinker as keyof typeof text] || influencer.drinker}
                 </span>
@@ -868,7 +688,7 @@ export default function InfluencerProfilePage() {
         {/* Recent Works - 개선된 버전 */}
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {text.recentWorks}
+            {t.advertiser.influencerDetail.recentWorks}
             <span className="text-xs text-gray-500 font-normal ml-2">
               ({language === 'ko' ? '콘텐츠 스타일 확인용' : 'Kiểm tra phong cách nội dung'})
             </span>
@@ -921,7 +741,7 @@ export default function InfluencerProfilePage() {
         {/* 완료한 캠페인 */}
         <div>
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {text.completedCampaigns} ({influencer.completedCampaigns}개)
+            {t.advertiser.influencerDetail.completedCampaigns} ({influencer.completedCampaigns}개)
           </h3>
           <div className="space-y-3">
             {influencer.completedCampaignsList.slice(0, 5).map((campaign: any) => (
@@ -972,13 +792,13 @@ export default function InfluencerProfilePage() {
         {/* Additional Info */}
         <div className="bg-gray-50 rounded-xl p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">{text.completed}</span>
+            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.completed}</span>
             <span className="text-sm font-semibold text-gray-900">
               {influencer.completedCampaigns}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">{text.rating}</span>
+            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.rating}</span>
             <div className="flex items-center gap-1">
               <Star size={16} className="text-yellow-500 fill-yellow-500" />
               <span className="text-sm font-semibold text-gray-900">{influencer.rating}</span>
@@ -992,7 +812,7 @@ export default function InfluencerProfilePage() {
           className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
         >
           <Send size={18} />
-          {text.contact}
+          {t.advertiser.influencerDetail.contact}
         </button>
       </div>
 
@@ -1000,7 +820,7 @@ export default function InfluencerProfilePage() {
       {showContactModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">{text.contactTitle}</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">{t.advertiser.influencerDetail.contactTitle}</h3>
             <p className="text-sm text-gray-600 mb-4">
               {language === 'ko'
                 ? '캠페인 상세 정보를 입력하고 인플루언서에게 제안을 보내세요.'
@@ -1011,7 +831,7 @@ export default function InfluencerProfilePage() {
                 onClick={() => setShowContactModal(false)}
                 className="flex-1 py-3 border border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50"
               >
-                {text.cancel}
+                {t.advertiser.influencerDetail.cancel}
               </button>
               <button
                 onClick={() => {
@@ -1020,7 +840,7 @@ export default function InfluencerProfilePage() {
                 }}
                 className="flex-1 py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800"
               >
-                {text.sendProposal}
+                {t.advertiser.influencerDetail.sendProposal}
               </button>
             </div>
           </div>
@@ -1033,7 +853,7 @@ export default function InfluencerProfilePage() {
           <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* 헤더 */}
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{text.campaignInfo}</h3>
+              <h3 className="text-lg font-bold text-gray-900">{t.advertiser.influencerDetail.campaignInfo}</h3>
               <button
                 onClick={() => setSelectedCampaign(null)}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
@@ -1078,7 +898,7 @@ export default function InfluencerProfilePage() {
 
               {/* 제출물 */}
               <div className="bg-gray-50 rounded-xl p-4">
-                <h5 className="text-sm font-semibold text-gray-900 mb-2">{text.deliverables}</h5>
+                <h5 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.deliverables}</h5>
                 <ul className="space-y-1">
                   {selectedCampaign.deliverables.map((item: string, index: number) => (
                     <li key={index} className="flex items-center gap-2 text-sm text-gray-700">
@@ -1091,12 +911,12 @@ export default function InfluencerProfilePage() {
 
               {/* 성과 지표 */}
               <div>
-                <h5 className="text-sm font-semibold text-gray-900 mb-3">{text.results}</h5>
+                <h5 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.results}</h5>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-blue-50 rounded-xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
                       <Eye size={16} className="text-blue-600" />
-                      <span className="text-sm text-blue-600 font-semibold">{text.views}</span>
+                      <span className="text-sm text-blue-600 font-semibold">{t.advertiser.influencerDetail.views}</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                       {(selectedCampaign.results.views / 1000).toFixed(1)}K
@@ -1105,7 +925,7 @@ export default function InfluencerProfilePage() {
                   <div className="bg-pink-50 rounded-xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
                       <Heart size={16} className="text-pink-600" />
-                      <span className="text-sm text-pink-600 font-semibold">{text.likes}</span>
+                      <span className="text-sm text-pink-600 font-semibold">{t.advertiser.influencerDetail.likes}</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                       {(selectedCampaign.results.likes / 1000).toFixed(1)}K
@@ -1114,7 +934,7 @@ export default function InfluencerProfilePage() {
                   <div className="bg-purple-50 rounded-xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
                       <MessageCircle size={16} className="text-purple-600" />
-                      <span className="text-sm text-purple-600 font-semibold">{text.comments}</span>
+                      <span className="text-sm text-purple-600 font-semibold">{t.advertiser.influencerDetail.comments}</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                       {selectedCampaign.results.comments}
@@ -1123,7 +943,7 @@ export default function InfluencerProfilePage() {
                   <div className="bg-yellow-50 rounded-xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
                       <Bookmark size={16} className="text-yellow-600" />
-                      <span className="text-sm text-yellow-600 font-semibold">{text.saves}</span>
+                      <span className="text-sm text-yellow-600 font-semibold">{t.advertiser.influencerDetail.saves}</span>
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
                       {selectedCampaign.results.saves}
@@ -1165,7 +985,7 @@ export default function InfluencerProfilePage() {
                   {selectedCampaign.advertiserReview.wouldRecommend && (
                     <div className="flex items-center gap-1 text-xs text-green-700">
                       <CheckCircle size={14} />
-                      <span className="font-medium">{text.wouldRecommend}</span>
+                      <span className="font-medium">{t.advertiser.influencerDetail.wouldRecommend}</span>
                     </div>
                   )}
                 </div>
@@ -1176,7 +996,7 @@ export default function InfluencerProfilePage() {
                 onClick={() => setSelectedCampaign(null)}
                 className="w-full py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800"
               >
-                {text.close}
+                {t.advertiser.influencerDetail.close}
               </button>
             </div>
           </div>

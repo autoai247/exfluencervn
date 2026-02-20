@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { translations } from '@/lib/i18n/translations';
 import { ArrowLeft, Building2, FileText, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function BusinessVerificationPage() {
   const { language } = useLanguage();
+  const t = translations[language].advertiser.verification;
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -49,26 +51,24 @@ export default function BusinessVerificationPage() {
             <CheckCircle2 size={32} className="text-green-500" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">
-            {language === 'ko' ? '인증 신청 완료' : 'Đã gửi yêu cầu xác minh'}
+            {t.submitted}
           </h2>
           <p className="text-gray-400 mb-6">
-            {language === 'ko'
-              ? '사업자 인증 신청이 접수되었습니다. 1-2 영업일 내에 검토 후 알려드리겠습니다.'
-              : 'Yêu cầu xác minh đã được gửi. Chúng tôi sẽ xem xét trong vòng 1-2 ngày làm việc.'}
+            {t.submittedMessage}
           </p>
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6 text-left">
             <p className="text-sm text-gray-300">
-              📧 {language === 'ko' ? '이메일' : 'Email'}: {formData.email}
+              📧 {t.email}: {formData.email}
             </p>
             <p className="text-sm text-gray-300 mt-1">
-              📞 {language === 'ko' ? '연락처' : 'Điện thoại'}: {formData.phone}
+              📞 {t.phone}: {formData.phone}
             </p>
           </div>
           <button
             onClick={() => router.push('/main/advertiser/dashboard')}
             className="w-full bg-mint text-black py-3 rounded-xl font-bold hover:bg-mint/90 transition-all"
           >
-            {language === 'ko' ? '대시보드로 이동' : 'Đến bảng điều khiển'}
+            {t.goToDashboard}
           </button>
         </div>
       </div>
@@ -89,10 +89,10 @@ export default function BusinessVerificationPage() {
             </Link>
             <div>
               <h1 className="text-xl font-bold text-white">
-                {language === 'ko' ? '사업자 인증 신청' : 'Đăng ký xác minh doanh nghiệp'}
+                {t.title}
               </h1>
               <p className="text-sm text-gray-400">
-                {language === 'ko' ? '캠페인 등록을 위해 필요합니다' : 'Bắt buộc để tạo chiến dịch'}
+                {t.subtitle}
               </p>
             </div>
           </div>
@@ -106,12 +106,10 @@ export default function BusinessVerificationPage() {
           <AlertCircle size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-gray-300">
             <p className="font-medium text-blue-400 mb-1">
-              {language === 'ko' ? '왜 필요한가요?' : 'Tại sao cần xác minh?'}
+              {t.whyNeeded}
             </p>
             <p>
-              {language === 'ko'
-                ? '사업자 인증은 인플루언서에게 신뢰를 제공하고, 결제 미지급 등의 사기를 방지하기 위해 필수입니다.'
-                : 'Xác minh doanh nghiệp là bắt buộc để tạo niềm tin với influencer và ngăn chặn gian lận.'}
+              {t.whyNeededDesc}
             </p>
           </div>
         </div>
@@ -123,18 +121,18 @@ export default function BusinessVerificationPage() {
               <Building2 size={20} className="text-mint" />
             </div>
             <h2 className="text-lg font-bold text-white">
-              {language === 'ko' ? '회사 정보' : 'Thông tin công ty'}
+              {t.companyInfo}
             </h2>
           </div>
 
           {/* Company Name */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-300">
-              {language === 'ko' ? '회사명' : 'Tên công ty'} <span className="text-red-500">*</span>
+              {t.companyName} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              placeholder={language === 'ko' ? '한국어 회사명' : 'Tên công ty (Tiếng Hàn)'}
+              placeholder={t.companyNameKo}
               value={formData.companyName}
               onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
               className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
@@ -142,7 +140,7 @@ export default function BusinessVerificationPage() {
             />
             <input
               type="text"
-              placeholder={language === 'ko' ? '베트남어 회사명' : 'Tên công ty (Tiếng Việt)'}
+              placeholder={t.companyNameVi}
               value={formData.companyNameVi}
               onChange={(e) => setFormData({ ...formData, companyNameVi: e.target.value })}
               className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
@@ -154,7 +152,7 @@ export default function BusinessVerificationPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-300">
-                {language === 'ko' ? '사업자 등록번호' : 'Số ĐKKD'} <span className="text-red-500">*</span>
+                {t.businessRegNumber} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -168,7 +166,7 @@ export default function BusinessVerificationPage() {
 
             <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-300">
-                {language === 'ko' ? '세금 코드 (MST)' : 'Mã số thuế (MST)'} <span className="text-red-500">*</span>
+                {t.taxCode} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -184,30 +182,30 @@ export default function BusinessVerificationPage() {
           {/* Business Type */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-300">
-              {language === 'ko' ? '사업자 형태' : 'Loại hình doanh nghiệp'}
+              {t.businessType}
             </label>
             <select
               value={formData.businessType}
               onChange={(e) => setFormData({ ...formData, businessType: e.target.value as any })}
               className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white focus:border-mint focus:outline-none"
             >
-              <option value="limited_company">{language === 'ko' ? '유한책임회사' : 'Công ty TNHH'}</option>
-              <option value="joint_stock">{language === 'ko' ? '주식회사' : 'Công ty cổ phần'}</option>
-              <option value="partnership">{language === 'ko' ? '합명회사' : 'Công ty hợp danh'}</option>
-              <option value="private_enterprise">{language === 'ko' ? '개인사업자' : 'Doanh nghiệp tư nhân'}</option>
-              <option value="household_business">{language === 'ko' ? '가구 사업' : 'Hộ kinh doanh'}</option>
+              <option value="limited_company">{t.businessTypes.limitedCompany}</option>
+              <option value="joint_stock">{t.businessTypes.jointStock}</option>
+              <option value="partnership">{t.businessTypes.partnership}</option>
+              <option value="private_enterprise">{t.businessTypes.privateEnterprise}</option>
+              <option value="household_business">{t.businessTypes.householdBusiness}</option>
             </select>
           </div>
 
           {/* Address */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-300">
-              {language === 'ko' ? '사업장 주소' : 'Địa chỉ đăng ký'} <span className="text-red-500">*</span>
+              {t.address} <span className="text-red-500">*</span>
             </label>
             <textarea
               value={formData.registeredAddress}
               onChange={(e) => setFormData({ ...formData, registeredAddress: e.target.value })}
-              placeholder={language === 'ko' ? '상세 주소 입력' : 'Nhập địa chỉ chi tiết'}
+              placeholder={t.addressPlaceholder}
               rows={3}
               className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none resize-none"
               required
@@ -217,13 +215,13 @@ export default function BusinessVerificationPage() {
           {/* Legal Representative */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-300">
-              {language === 'ko' ? '대표자명' : 'Người đại diện pháp luật'} <span className="text-red-500">*</span>
+              {t.legalRepresentative} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.legalRepresentative}
               onChange={(e) => setFormData({ ...formData, legalRepresentative: e.target.value })}
-              placeholder={language === 'ko' ? '대표자 이름' : 'Tên người đại diện'}
+              placeholder={t.legalRepresentativePlaceholder}
               className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
               required
             />
@@ -233,13 +231,13 @@ export default function BusinessVerificationPage() {
         {/* Contact Info */}
         <section className="bg-dark-100 border border-dark-200 rounded-xl p-6 space-y-6">
           <h3 className="text-lg font-bold text-white">
-            {language === 'ko' ? '연락처 정보' : 'Thông tin liên hệ'}
+            {t.contactInfo}
           </h3>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-300">
-                {language === 'ko' ? '이메일' : 'Email'} <span className="text-red-500">*</span>
+                {t.emailLabel} <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -253,7 +251,7 @@ export default function BusinessVerificationPage() {
 
             <div className="space-y-3">
               <label className="block text-sm font-medium text-gray-300">
-                {language === 'ko' ? '전화번호' : 'Số điện thoại'} <span className="text-red-500">*</span>
+                {t.phoneLabel} <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
@@ -274,13 +272,13 @@ export default function BusinessVerificationPage() {
               <FileText size={20} className="text-purple-500" />
             </div>
             <h2 className="text-lg font-bold text-white">
-              {language === 'ko' ? '서류 제출' : 'Tài liệu'}
+              {t.documents}
             </h2>
           </div>
 
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-300">
-              {language === 'ko' ? '사업자등록증 이미지' : 'Giấy phép kinh doanh'} <span className="text-red-500">*</span>
+              {t.businessLicense} <span className="text-red-500">*</span>
             </label>
             <input
               type="url"
@@ -291,9 +289,7 @@ export default function BusinessVerificationPage() {
               required
             />
             <p className="text-xs text-gray-500">
-              {language === 'ko'
-                ? '📌 실제 서비스에서는 파일 업로드 기능을 사용합니다. 지금은 이미지 URL을 입력하세요.'
-                : '📌 Trong dịch vụ thực tế, sử dụng chức năng tải lên tệp. Hiện tại nhập URL hình ảnh.'}
+              {t.businessLicenseNote}
             </p>
             {formData.certificateImage && (
               <img
@@ -311,13 +307,13 @@ export default function BusinessVerificationPage() {
             href="/main/advertiser/dashboard"
             className="flex-1 bg-dark-100 border border-dark-200 text-white py-4 rounded-xl font-bold text-center hover:bg-dark-200 transition-all"
           >
-            {language === 'ko' ? '취소' : 'Hủy'}
+            {t.cancel}
           </Link>
           <button
             type="submit"
             className="flex-1 bg-mint text-black py-4 rounded-xl font-bold hover:bg-mint/90 transition-all"
           >
-            {language === 'ko' ? '인증 신청' : 'Gửi yêu cầu'}
+            {t.submit}
           </button>
         </div>
       </form>

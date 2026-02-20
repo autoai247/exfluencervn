@@ -27,6 +27,7 @@ import {
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { translations } from '@/lib/i18n/translations';
 
 type UploadedDocument = {
   file: File;
@@ -38,6 +39,7 @@ type UploadedDocument = {
 export default function AdvertiserProfileEditPage() {
   const router = useRouter();
   const { language } = useLanguage();
+  const t = translations[language].advertiser.profileEdit;
 
   const [loading, setLoading] = useState(false);
   const [logoPreview, setLogoPreview] = useState<string>('');
@@ -88,201 +90,6 @@ export default function AdvertiserProfileEditPage() {
       : 'Thương hiệu thời trang hàng đầu Việt Nam. Chuyên về thời trang trẻ và streetwear. Từ năm 2020, chúng tôi đã vận hành hơn 50 cửa hàng trên toàn quốc.',
   });
 
-  const t = {
-    ko: {
-      title: '프로필 수정',
-
-      // 섹션
-      basicInfo: '기본 정보',
-      businessInfo: '사업자 정보',
-      contactInfo: '연락처 정보',
-      snsInfo: 'SNS 계정',
-      addressInfo: '주소 정보',
-      companyIntro: '회사 소개',
-      documentsSection: '사업자 서류',
-
-      // 기본 정보
-      logo: '회사 로고',
-      uploadLogo: '로고 업로드',
-      changeLogo: '로고 변경',
-      logoNote: '권장: 정사각형 500x500px 이상, 최대 5MB (PNG, JPG)',
-      country: '국가',
-      selectCountry: '국가를 선택하세요',
-      companyName: '회사명 (상호)',
-      companyNamePlaceholder: '주식회사 데모브랜드',
-      ceoName: '대표자명',
-      ceoNamePlaceholder: '홍길동',
-      contactPerson: '담당자명',
-      contactPersonPlaceholder: '김영희',
-
-      // 사업자 정보
-      businessRegNumber: '사업자 등록 번호 / Business Reg. No.',
-      businessRegNumberPlaceholder: '한국: 123-45-67890 / 베트남: 0123456789',
-      taxCode: '납세자 번호 / Tax ID',
-      taxCodePlaceholder: '세금 식별 번호',
-      businessType: '업종 / Business Type',
-      businessTypePlaceholder: '도소매업, 제조업, 서비스업 등',
-      businessCategory: '업태 / Business Category',
-      businessCategoryPlaceholder: '패션/의류, 화장품, 식품 등',
-      establishmentDate: '설립일',
-      employeeCount: '직원 수',
-      employeeCountPlaceholder: '예: 10-50명, 50-100명',
-      capital: '자본금 (VND)',
-      capitalPlaceholder: '1,000,000,000',
-
-      // 연락처
-      email: '이메일',
-      emailPlaceholder: 'company@example.com',
-      phone: '전화번호',
-      phonePlaceholder: '+84 XXX XXX XXX',
-      fax: '팩스',
-      faxPlaceholder: '+84 28 XXXX XXXX',
-      website: '웹사이트',
-      websitePlaceholder: 'https://yourcompany.com',
-
-      // SNS
-      facebook: 'Facebook',
-      facebookPlaceholder: 'https://facebook.com/yourcompany',
-      instagram: 'Instagram',
-      instagramPlaceholder: 'https://instagram.com/yourcompany',
-      tiktok: 'TikTok',
-      tiktokPlaceholder: '@yourcompany',
-      youtube: 'YouTube',
-      youtubePlaceholder: 'https://youtube.com/@yourcompany',
-
-      // 주소
-      address: '본사 주소',
-      addressPlaceholder: '도로명 주소를 입력하세요',
-      addressDetail: '상세 주소',
-      addressDetailPlaceholder: '건물명, 층, 호수 등',
-
-      // 회사 소개
-      bio: '회사 소개',
-      bioPlaceholder: '회사 소개를 상세히 입력하세요 (최대 500자)',
-
-      // 서류
-      businessLicense: '사업자 등록증',
-      businessLicenseDesc: '사업자 등록증 스캔 본 또는 사진',
-      ecommerceLicense: '통신판매업 신고증',
-      ecommerceLicenseDesc: '온라인 판매업 신고증 (있는 경우)',
-      otherDocuments: '기타 인증서',
-      otherDocumentsDesc: '품질인증서, 특허증 등 추가 서류',
-      selectFile: '파일 선택',
-      changeFile: '파일 변경',
-      removeDocument: '삭제',
-      documentNote: '최대 10MB (PDF, JPG, PNG)',
-      uploaded: '업로드됨',
-
-      // 버튼
-      saveChanges: '변경사항 저장',
-      saving: '저장 중...',
-      cancel: '취소',
-
-      // 메시지
-      successTitle: '저장 완료',
-      successMessage: '프로필이 성공적으로 업데이트되었습니다.',
-      required: '필수',
-      optional: '선택',
-    },
-    vi: {
-      title: 'Chỉnh sửa hồ sơ',
-
-      // 섹션
-      basicInfo: 'Thông tin cơ bản',
-      businessInfo: 'Thông tin doanh nghiệp',
-      contactInfo: 'Thông tin liên hệ',
-      snsInfo: 'Tài khoản mạng xã hội',
-      addressInfo: 'Địa chỉ',
-      companyIntro: 'Giới thiệu công ty',
-      documentsSection: 'Giấy tờ doanh nghiệp',
-
-      // 기본 정보
-      logo: 'Logo công ty',
-      uploadLogo: 'Tải logo lên',
-      changeLogo: 'Đổi logo',
-      logoNote: 'Khuyến nghị: Vuông 500x500px trở lên, tối đa 5MB (PNG, JPG)',
-      country: 'Quốc gia',
-      selectCountry: 'Chọn quốc gia',
-      companyName: 'Tên công ty',
-      companyNamePlaceholder: 'Công ty TNHH Demo Brand',
-      ceoName: 'Tên giám đốc',
-      ceoNamePlaceholder: 'Nguyễn Văn A',
-      contactPerson: 'Người liên hệ',
-      contactPersonPlaceholder: 'Trần Thị B',
-
-      // 사업자 정보
-      businessRegNumber: 'Mã số doanh nghiệp / Business Reg. No.',
-      businessRegNumberPlaceholder: 'VN: 0123456789 / KR: 123-45-67890',
-      taxCode: 'Mã số thuế / Tax ID',
-      taxCodePlaceholder: 'Mã định danh thuế',
-      businessType: 'Loại hình / Business Type',
-      businessTypePlaceholder: 'Bán lẻ, Sản xuất, Dịch vụ',
-      businessCategory: 'Ngành nghề / Category',
-      businessCategoryPlaceholder: 'Thời trang, Mỹ phẩm, Thực phẩm',
-      establishmentDate: 'Ngày thành lập',
-      employeeCount: 'Số lượng nhân viên',
-      employeeCountPlaceholder: 'VD: 10-50, 50-100',
-      capital: 'Vốn điều lệ (VND)',
-      capitalPlaceholder: '1,000,000,000',
-
-      // 연락처
-      email: 'Email',
-      emailPlaceholder: 'company@example.com',
-      phone: 'Số điện thoại',
-      phonePlaceholder: '+84 XXX XXX XXX',
-      fax: 'Fax',
-      faxPlaceholder: '+84 28 XXXX XXXX',
-      website: 'Website',
-      websitePlaceholder: 'https://yourcompany.com',
-
-      // SNS
-      facebook: 'Facebook',
-      facebookPlaceholder: 'https://facebook.com/yourcompany',
-      instagram: 'Instagram',
-      instagramPlaceholder: 'https://instagram.com/yourcompany',
-      tiktok: 'TikTok',
-      tiktokPlaceholder: '@yourcompany',
-      youtube: 'YouTube',
-      youtubePlaceholder: 'https://youtube.com/@yourcompany',
-
-      // 주소
-      address: 'Địa chỉ trụ sở',
-      addressPlaceholder: 'Nhập địa chỉ đường phố',
-      addressDetail: 'Địa chỉ chi tiết',
-      addressDetailPlaceholder: 'Tòa nhà, tầng, phòng',
-
-      // 회사 소개
-      bio: 'Giới thiệu công ty',
-      bioPlaceholder: 'Nhập giới thiệu chi tiết về công ty (tối đa 500 ký tự)',
-
-      // 서류
-      businessLicense: 'Giấy phép kinh doanh',
-      businessLicenseDesc: 'Bản scan hoặc ảnh giấy phép kinh doanh',
-      ecommerceLicense: 'Giấy phép TMĐT',
-      ecommerceLicenseDesc: 'Giấy phép thương mại điện tử (nếu có)',
-      otherDocuments: 'Chứng chỉ khác',
-      otherDocumentsDesc: 'Chứng chỉ chất lượng, bằng sáng chế, v.v.',
-      selectFile: 'Chọn file',
-      changeFile: 'Đổi file',
-      removeDocument: 'Xóa',
-      documentNote: 'Tối đa 10MB (PDF, JPG, PNG)',
-      uploaded: 'Đã tải lên',
-
-      // 버튼
-      saveChanges: 'Lưu thay đổi',
-      saving: 'Đang lưu...',
-      cancel: 'Hủy',
-
-      // 메시지
-      successTitle: 'Đã lưu',
-      successMessage: 'Hồ sơ đã được cập nhật thành công.',
-      required: 'Bắt buộc',
-      optional: 'Tùy chọn',
-    },
-  };
-
-  const text = t[language];
-
   // Cleanup FileReaders on unmount to prevent memory leaks
   useEffect(() => {
     return () => {
@@ -300,12 +107,12 @@ export default function AdvertiserProfileEditPage() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert(language === 'ko' ? '이미지 파일만 업로드 가능합니다.' : 'Chỉ có thể tải lên file hình ảnh.');
+      alert(t.imageOnly);
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert(language === 'ko' ? '파일 크기는 5MB 이하여야 합니다.' : 'Kích thước file phải dưới 5MB.');
+      alert(t.fileSizeError);
       return;
     }
 
@@ -335,12 +142,12 @@ export default function AdvertiserProfileEditPage() {
 
     const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
     if (!allowedTypes.includes(file.type)) {
-      alert(language === 'ko' ? 'PDF, JPG, PNG 파일만 업로드 가능합니다.' : 'Chỉ có thể tải lên PDF, JPG, PNG.');
+      alert(t.fileTypeError);
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      alert(language === 'ko' ? '파일 크기는 10MB 이하여야 합니다.' : 'Kích thước file phải dưới 10MB.');
+      alert(language === 'ko' ? `${t.maxFileSize} 10MB` : 'Kích thước file phải dưới 10MB');
       return;
     }
 
@@ -382,14 +189,14 @@ export default function AdvertiserProfileEditPage() {
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    alert(`${text.successTitle}\n\n${text.successMessage}`);
+    alert(`${t.successTitle}\n\n${t.successMessage}`);
     setLoading(false);
     router.push('/main/advertiser/profile');
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <MobileHeader title={text.title} showBack />
+      <MobileHeader title={t.title} showBack />
 
       <main className="container-mobile pb-24 pt-6">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -401,10 +208,10 @@ export default function AdvertiserProfileEditPage() {
               </div>
               <div>
                 <h3 className="text-gray-900 font-bold text-sm">
-                  {language === 'ko' ? '기업 계정 정보 관리' : 'Quản lý thông tin doanh nghiệp'}
+                  {t.accountManagement}
                 </h3>
                 <p className="text-gray-500 text-xs mt-0.5">
-                  {language === 'ko' ? '정확한 정보 입력으로 신뢰도를 높이세요' : 'Tăng độ tin cậy bằng thông tin chính xác'}
+                  {t.accountManagementDesc}
                 </p>
               </div>
             </div>
@@ -414,7 +221,7 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Camera size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.logo}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.logo}</h3>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -432,7 +239,7 @@ export default function AdvertiserProfileEditPage() {
                 <div className="w-full">
                   <label className="w-full py-2.5 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center font-semibold text-sm">
                     <Upload size={18} className="mr-2" />
-                    {logoPreview ? text.changeLogo : text.uploadLogo}
+                    {logoPreview ? t.changeLogo : t.uploadLogo}
                     <input
                       type="file"
                       accept="image/*"
@@ -440,7 +247,7 @@ export default function AdvertiserProfileEditPage() {
                       className="hidden"
                     />
                   </label>
-                  <p className="text-xs text-gray-500 text-center mt-2">{text.logoNote}</p>
+                  <p className="text-xs text-gray-500 text-center mt-2">{t.logoNote}</p>
                 </div>
               </div>
             </div>
@@ -450,13 +257,13 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <User size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.basicInfo}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.basicInfo}</h3>
             </div>
 
             {/* Country Select */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.country}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.country}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <select
@@ -465,7 +272,7 @@ export default function AdvertiserProfileEditPage() {
                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               >
-                <option value="">{text.selectCountry}</option>
+                <option value="">{t.selectCountry}</option>
                 <option value="VN">Viet Nam</option>
                 <option value="KR">Han Quoc</option>
                 <option value="US">United States</option>
@@ -473,19 +280,17 @@ export default function AdvertiserProfileEditPage() {
                 <option value="CN">Trung Quoc</option>
                 <option value="TH">Thai Lan</option>
                 <option value="SG">Singapore</option>
-                <option value="OTHER">{language === 'ko' ? '기타' : 'Khac'}</option>
+                <option value="OTHER">{t.other}</option>
               </select>
               <p className="text-xs text-gray-500 mt-2">
-                {language === 'ko'
-                  ? '회사가 등록된 국가를 선택하세요. 사업자 정보 양식이 국가에 맞게 조정됩니다.'
-                  : 'Chọn quốc gia đăng ký công ty. Mẫu thông tin doanh nghiệp sẽ được điều chỉnh theo quốc gia.'}
+                {t.countryNote}
               </p>
             </div>
 
             {/* Company Name */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.companyName}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.companyName}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
@@ -495,7 +300,7 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                  placeholder={text.companyNamePlaceholder}
+                  placeholder={t.companyNamePlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -504,7 +309,7 @@ export default function AdvertiserProfileEditPage() {
             {/* CEO Name */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.ceoName}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.ceoName}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <input
@@ -512,7 +317,7 @@ export default function AdvertiserProfileEditPage() {
                 required
                 value={formData.ceo_name}
                 onChange={(e) => setFormData({ ...formData, ceo_name: e.target.value })}
-                placeholder={text.ceoNamePlaceholder}
+                placeholder={t.ceoNamePlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -520,7 +325,7 @@ export default function AdvertiserProfileEditPage() {
             {/* Contact Person */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.contactPerson}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.contactPerson}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <input
@@ -528,7 +333,7 @@ export default function AdvertiserProfileEditPage() {
                 required
                 value={formData.contact_person}
                 onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                placeholder={text.contactPersonPlaceholder}
+                placeholder={t.contactPersonPlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -538,13 +343,13 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Briefcase size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.businessInfo}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.businessInfo}</h3>
             </div>
 
             {/* Business Registration Number */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.businessRegNumber}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.businessRegNumber}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <input
@@ -552,7 +357,7 @@ export default function AdvertiserProfileEditPage() {
                 required
                 value={formData.business_registration_number}
                 onChange={(e) => setFormData({ ...formData, business_registration_number: e.target.value })}
-                placeholder={text.businessRegNumberPlaceholder}
+                placeholder={t.businessRegNumberPlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -560,13 +365,13 @@ export default function AdvertiserProfileEditPage() {
             {/* Tax Code */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.taxCode}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.taxCode}</span>
               </label>
               <input
                 type="text"
                 value={formData.tax_code}
                 onChange={(e) => setFormData({ ...formData, tax_code: e.target.value })}
-                placeholder={text.taxCodePlaceholder}
+                placeholder={t.taxCodePlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -575,7 +380,7 @@ export default function AdvertiserProfileEditPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.businessType}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.businessType}</span>
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
@@ -583,13 +388,13 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.business_type}
                   onChange={(e) => setFormData({ ...formData, business_type: e.target.value })}
-                  placeholder={text.businessTypePlaceholder}
+                  placeholder={t.businessTypePlaceholder}
                   className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.businessCategory}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.businessCategory}</span>
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
@@ -597,7 +402,7 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.business_category}
                   onChange={(e) => setFormData({ ...formData, business_category: e.target.value })}
-                  placeholder={text.businessCategoryPlaceholder}
+                  placeholder={t.businessCategoryPlaceholder}
                   className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -606,7 +411,7 @@ export default function AdvertiserProfileEditPage() {
             {/* Establishment Date */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.establishmentDate}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.establishmentDate}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
@@ -625,7 +430,7 @@ export default function AdvertiserProfileEditPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.employeeCount}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.employeeCount}</span>
                 </label>
                 <div className="relative">
                   <Users size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -633,20 +438,20 @@ export default function AdvertiserProfileEditPage() {
                     type="text"
                     value={formData.employee_count}
                     onChange={(e) => setFormData({ ...formData, employee_count: e.target.value })}
-                    placeholder={text.employeeCountPlaceholder}
+                    placeholder={t.employeeCountPlaceholder}
                     className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.capital}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.capital}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.capital}
                   onChange={(e) => setFormData({ ...formData, capital: e.target.value })}
-                  placeholder={text.capitalPlaceholder}
+                  placeholder={t.capitalPlaceholder}
                   className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -655,9 +460,9 @@ export default function AdvertiserProfileEditPage() {
             {/* Business License */}
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-gray-900">{text.businessLicense}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.businessLicense}</span>
                 <span className="text-red-500 ml-1">*</span>
-                <p className="text-xs text-gray-500 mt-1">{text.businessLicenseDesc}</p>
+                <p className="text-xs text-gray-500 mt-1">{t.businessLicenseDesc}</p>
               </label>
 
               {businessLicense ? (
@@ -666,7 +471,7 @@ export default function AdvertiserProfileEditPage() {
                     <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-gray-900 font-semibold truncate">{businessLicense.name}</p>
-                      <p className="text-xs text-gray-500">{text.uploaded}</p>
+                      <p className="text-xs text-gray-500">{t.uploaded}</p>
                     </div>
                   </div>
                   <button
@@ -680,7 +485,7 @@ export default function AdvertiserProfileEditPage() {
               ) : (
                 <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors cursor-pointer font-semibold text-sm">
                   <Upload size={18} className="mr-2" />
-                  {text.selectFile}
+                  {t.selectFile}
                   <input
                     type="file"
                     accept="image/*,application/pdf"
@@ -689,15 +494,15 @@ export default function AdvertiserProfileEditPage() {
                   />
                 </label>
               )}
-              <p className="text-xs text-gray-500 mt-2">{text.documentNote}</p>
+              <p className="text-xs text-gray-500 mt-2">{t.documentNote}</p>
             </div>
 
             {/* E-commerce License */}
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-gray-900">{text.ecommerceLicense}</span>
-                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-500 mt-1">{text.ecommerceLicenseDesc}</p>
+                <span className="text-sm font-semibold text-gray-900">{t.ecommerceLicense}</span>
+                <span className="text-xs text-gray-500 ml-2">({t.optional})</span>
+                <p className="text-xs text-gray-500 mt-1">{t.ecommerceLicenseDesc}</p>
               </label>
 
               {ecommerceLicense ? (
@@ -706,7 +511,7 @@ export default function AdvertiserProfileEditPage() {
                     <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-gray-900 font-semibold truncate">{ecommerceLicense.name}</p>
-                      <p className="text-xs text-gray-500">{text.uploaded}</p>
+                      <p className="text-xs text-gray-500">{t.uploaded}</p>
                     </div>
                   </div>
                   <button
@@ -720,7 +525,7 @@ export default function AdvertiserProfileEditPage() {
               ) : (
                 <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer font-semibold text-sm">
                   <Upload size={18} className="mr-2" />
-                  {text.selectFile}
+                  {t.selectFile}
                   <input
                     type="file"
                     accept="image/*,application/pdf"
@@ -734,9 +539,9 @@ export default function AdvertiserProfileEditPage() {
             {/* Other Documents */}
             <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               <label className="block mb-3">
-                <span className="text-sm font-semibold text-gray-900">{text.otherDocuments}</span>
-                <span className="text-xs text-gray-500 ml-2">({text.optional})</span>
-                <p className="text-xs text-gray-500 mt-1">{text.otherDocumentsDesc}</p>
+                <span className="text-sm font-semibold text-gray-900">{t.otherDocuments}</span>
+                <span className="text-xs text-gray-500 ml-2">({t.optional})</span>
+                <p className="text-xs text-gray-500 mt-1">{t.otherDocumentsDesc}</p>
               </label>
 
               {/* Uploaded Documents List */}
@@ -748,7 +553,7 @@ export default function AdvertiserProfileEditPage() {
                         <CheckCircle size={20} className="text-gray-600 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-gray-900 font-semibold truncate">{doc.name}</p>
-                          <p className="text-xs text-gray-500">{text.uploaded}</p>
+                          <p className="text-xs text-gray-500">{t.uploaded}</p>
                         </div>
                       </div>
                       <button
@@ -765,7 +570,7 @@ export default function AdvertiserProfileEditPage() {
 
               <label className="inline-flex items-center justify-center w-full py-2.5 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer font-semibold text-sm">
                 <Upload size={18} className="mr-2" />
-                {text.selectFile}
+                {t.selectFile}
                 <input
                   type="file"
                   accept="image/*,application/pdf"
@@ -781,13 +586,13 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Phone size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.contactInfo}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.contactInfo}</h3>
             </div>
 
             {/* Email */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.email}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.email}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
@@ -797,7 +602,7 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={text.emailPlaceholder}
+                  placeholder={t.emailPlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -807,7 +612,7 @@ export default function AdvertiserProfileEditPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.phone}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.phone}</span>
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <div className="relative">
@@ -817,20 +622,20 @@ export default function AdvertiserProfileEditPage() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder={text.phonePlaceholder}
+                    placeholder={t.phonePlaceholder}
                     className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <label className="block mb-2">
-                  <span className="text-sm font-semibold text-gray-900">{text.fax}</span>
+                  <span className="text-sm font-semibold text-gray-900">{t.fax}</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.fax}
                   onChange={(e) => setFormData({ ...formData, fax: e.target.value })}
-                  placeholder={text.faxPlaceholder}
+                  placeholder={t.faxPlaceholder}
                   className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -839,7 +644,7 @@ export default function AdvertiserProfileEditPage() {
             {/* Website */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.website}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.website}</span>
               </label>
               <div className="relative">
                 <Globe size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -847,7 +652,7 @@ export default function AdvertiserProfileEditPage() {
                   type="url"
                   value={formData.website}
                   onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  placeholder={text.websitePlaceholder}
+                  placeholder={t.websitePlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -858,14 +663,14 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Share2 size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.snsInfo}</h3>
-              <span className="text-xs text-gray-500">({text.optional})</span>
+              <h3 className="text-sm font-bold text-gray-700">{t.snsInfo}</h3>
+              <span className="text-xs text-gray-500">({t.optional})</span>
             </div>
 
             {/* Facebook */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.facebook}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.facebook}</span>
               </label>
               <div className="relative">
                 <Facebook size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -873,7 +678,7 @@ export default function AdvertiserProfileEditPage() {
                   type="url"
                   value={formData.facebook}
                   onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
-                  placeholder={text.facebookPlaceholder}
+                  placeholder={t.facebookPlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -882,7 +687,7 @@ export default function AdvertiserProfileEditPage() {
             {/* Instagram */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.instagram}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.instagram}</span>
               </label>
               <div className="relative">
                 <Instagram size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -890,7 +695,7 @@ export default function AdvertiserProfileEditPage() {
                   type="url"
                   value={formData.instagram}
                   onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                  placeholder={text.instagramPlaceholder}
+                  placeholder={t.instagramPlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -899,13 +704,13 @@ export default function AdvertiserProfileEditPage() {
             {/* TikTok */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.tiktok}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.tiktok}</span>
               </label>
               <input
                 type="text"
                 value={formData.tiktok}
                 onChange={(e) => setFormData({ ...formData, tiktok: e.target.value })}
-                placeholder={text.tiktokPlaceholder}
+                placeholder={t.tiktokPlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -913,7 +718,7 @@ export default function AdvertiserProfileEditPage() {
             {/* YouTube */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.youtube}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.youtube}</span>
               </label>
               <div className="relative">
                 <Youtube size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -921,7 +726,7 @@ export default function AdvertiserProfileEditPage() {
                   type="url"
                   value={formData.youtube}
                   onChange={(e) => setFormData({ ...formData, youtube: e.target.value })}
-                  placeholder={text.youtubePlaceholder}
+                  placeholder={t.youtubePlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -932,13 +737,13 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <MapPin size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.addressInfo}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.addressInfo}</h3>
             </div>
 
             {/* Address */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.address}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.address}</span>
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <div className="relative">
@@ -948,7 +753,7 @@ export default function AdvertiserProfileEditPage() {
                   required
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder={text.addressPlaceholder}
+                  placeholder={t.addressPlaceholder}
                   className="w-full px-4 pl-12 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 />
               </div>
@@ -957,13 +762,13 @@ export default function AdvertiserProfileEditPage() {
             {/* Address Detail */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.addressDetail}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.addressDetail}</span>
               </label>
               <input
                 type="text"
                 value={formData.address_detail}
                 onChange={(e) => setFormData({ ...formData, address_detail: e.target.value })}
-                placeholder={text.addressDetailPlaceholder}
+                placeholder={t.addressDetailPlaceholder}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
@@ -973,17 +778,17 @@ export default function AdvertiserProfileEditPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <FileText size={18} className="text-gray-600" />
-              <h3 className="text-sm font-bold text-gray-700">{text.companyIntro}</h3>
+              <h3 className="text-sm font-bold text-gray-700">{t.companyIntro}</h3>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <label className="block mb-2">
-                <span className="text-sm font-semibold text-gray-900">{text.bio}</span>
+                <span className="text-sm font-semibold text-gray-900">{t.bio}</span>
               </label>
               <textarea
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                placeholder={text.bioPlaceholder}
+                placeholder={t.bioPlaceholder}
                 maxLength={500}
                 rows={6}
                 className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none"
@@ -1003,7 +808,7 @@ export default function AdvertiserProfileEditPage() {
               disabled={loading}
             >
               <X size={18} className="mr-2" />
-              {text.cancel}
+              {t.cancel}
             </button>
             <button
               type="submit"
@@ -1013,12 +818,12 @@ export default function AdvertiserProfileEditPage() {
               {loading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  {text.saving}
+                  {t.saving}
                 </>
               ) : (
                 <>
                   <Save size={18} className="mr-2" />
-                  {text.saveChanges}
+                  {t.saveChanges}
                 </>
               )}
             </button>

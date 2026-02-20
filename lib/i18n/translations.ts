@@ -108,6 +108,302 @@ export interface Translations {
   advertiser: {
     brandAccount: string;
     verifiedAdvertiser: string;
+    // Verification page
+    verification: {
+      title: string;
+      subtitle: string;
+      submitted: string;
+      submittedMessage: string;
+      email: string;
+      phone: string;
+      goToDashboard: string;
+      whyNeeded: string;
+      whyNeededDesc: string;
+      companyInfo: string;
+      companyName: string;
+      companyNameKo: string;
+      companyNameVi: string;
+      businessRegNumber: string;
+      taxCode: string;
+      businessType: string;
+      address: string;
+      addressPlaceholder: string;
+      legalRepresentative: string;
+      legalRepresentativePlaceholder: string;
+      contactInfo: string;
+      emailLabel: string;
+      phoneLabel: string;
+      documents: string;
+      businessLicense: string;
+      businessLicenseNote: string;
+      cancel: string;
+      submit: string;
+      required: string;
+      businessTypes: {
+        limitedCompany: string;
+        jointStock: string;
+        partnership: string;
+        privateEnterprise: string;
+        householdBusiness: string;
+      };
+    };
+    // Influencer detail page
+    influencerDetail: {
+      influencers: string;
+      totalFollowers: string;
+      allPlatforms: string;
+      avgFollowers: string;
+      perPlatform: string;
+      engagement: string;
+      avgViews: string;
+      completedCampaigns: string;
+      rating: string;
+      snsChannels: string;
+      channels: string;
+      engagementRate: string;
+      categories: string;
+      reviews: string;
+      reviewsCount: string;
+      overallRating: string;
+      viewAll: string;
+      workStyle: string;
+      basicInfo: string;
+      gender: string;
+      male: string;
+      female: string;
+      age: string;
+      skinType: string;
+      skinTone: string;
+      lifestyleInfo: string;
+      maritalStatus: string;
+      single: string;
+      married: string;
+      divorced: string;
+      preferNotToSay: string;
+      children: string;
+      yes: string;
+      no: string;
+      pets: string;
+      dog: string;
+      cat: string;
+      bird: string;
+      fish: string;
+      other: string;
+      hasVehicle: string;
+      languageEducation: string;
+      languages: string;
+      korean: string;
+      vietnamese: string;
+      english: string;
+      education: string;
+      bachelor: string;
+      master: string;
+      phd: string;
+      occupation: string;
+      contentCreator: string;
+      interests: string;
+      beauty: string;
+      fashion: string;
+      travel: string;
+      food: string;
+      fitness: string;
+      lifestyle: string;
+      smoker: string;
+      drinker: string;
+      never: string;
+      occasionally: string;
+      regularly: string;
+      recentWorks: string;
+      contentStyleCheck: string;
+      contentStyleTip: string;
+      views: string;
+      contact: string;
+      contactTitle: string;
+      contactMessage: string;
+      sendProposal: string;
+      proposalSent: string;
+      campaignInfo: string;
+      brand: string;
+      completedDate: string;
+      payment: string;
+      deliverables: string;
+      results: string;
+      likes: string;
+      comments: string;
+      saves: string;
+      close: string;
+      advertiserReview: string;
+      wouldRecommend: string;
+      profilePagePreparing: string;
+    };
+    // Profile edit page
+    profileEdit: {
+      title: string;
+      accountManagement: string;
+      accountManagementDesc: string;
+      logo: string;
+      uploadLogo: string;
+      changeLogo: string;
+      logoNote: string;
+      basicInfo: string;
+      country: string;
+      selectCountry: string;
+      countryNote: string;
+      other: string;
+      companyName: string;
+      companyNamePlaceholder: string;
+      ceoName: string;
+      ceoNamePlaceholder: string;
+      contactPerson: string;
+      contactPersonPlaceholder: string;
+      businessInfo: string;
+      businessRegNumber: string;
+      businessRegNumberPlaceholder: string;
+      taxCode: string;
+      taxCodePlaceholder: string;
+      businessType: string;
+      businessTypePlaceholder: string;
+      businessCategory: string;
+      businessCategoryPlaceholder: string;
+      establishmentDate: string;
+      employeeCount: string;
+      employeeCountPlaceholder: string;
+      capital: string;
+      capitalPlaceholder: string;
+      businessLicense: string;
+      businessLicenseDesc: string;
+      ecommerceLicense: string;
+      ecommerceLicenseDesc: string;
+      otherDocuments: string;
+      otherDocumentsDesc: string;
+      selectFile: string;
+      changeFile: string;
+      removeDocument: string;
+      documentNote: string;
+      uploaded: string;
+      contactInfo: string;
+      email: string;
+      emailPlaceholder: string;
+      phone: string;
+      phonePlaceholder: string;
+      fax: string;
+      faxPlaceholder: string;
+      website: string;
+      websitePlaceholder: string;
+      snsInfo: string;
+      facebook: string;
+      facebookPlaceholder: string;
+      instagram: string;
+      instagramPlaceholder: string;
+      tiktok: string;
+      tiktokPlaceholder: string;
+      youtube: string;
+      youtubePlaceholder: string;
+      addressInfo: string;
+      address: string;
+      addressPlaceholder: string;
+      addressDetail: string;
+      addressDetailPlaceholder: string;
+      companyIntro: string;
+      bio: string;
+      bioPlaceholder: string;
+      saveChanges: string;
+      saving: string;
+      cancel: string;
+      successTitle: string;
+      successMessage: string;
+      required: string;
+      optional: string;
+      imageOnly: string;
+      maxFileSize: string;
+      fileSizeError: string;
+      allowedFileTypes: string;
+      fileTypeError: string;
+    };
+    // Analytics page
+    analytics: {
+      overview: string;
+      budget: string;
+      roi: string;
+      performance: string;
+      totalSpent: string;
+      totalBudget: string;
+      avgCampaignBudget: string;
+      totalReach: string;
+      avgROI: string;
+      totalInfluencers: string;
+      activeCampaigns: string;
+      completedCampaigns: string;
+      budgetUtilization: string;
+      topPerformingCampaigns: string;
+      budgetAnalysis: string;
+      roiAnalysis: string;
+      roiDesc: string;
+      overallPerformance: string;
+      performanceDesc: string;
+      dataInfo: string;
+      dataInfoDesc: string;
+    };
+    // Campaigns page
+    campaigns: {
+      createCampaign: string;
+      search: string;
+      all: string;
+      active: string;
+      completed: string;
+      draft: string;
+      budget: string;
+      budgetUsed: string;
+      spent: string;
+      applicants: string;
+      accepted: string;
+      views: string;
+      deadline: string;
+      noCampaigns: string;
+      createFirst: string;
+      viewDetails: string;
+    };
+    // Profile page
+    profile: {
+      title: string;
+      businessAccount: string;
+      businessSubtitle: string;
+      verified: string;
+      activityStats: string;
+      totalCampaigns: string;
+      activeCampaigns: string;
+      completedCampaigns: string;
+      totalBudget: string;
+      totalBudgetDesc: string;
+      totalInfluencers: string;
+      accountManagement: string;
+      editProfile: string;
+      verification: string;
+      verificationDesc: string;
+      settings: string;
+      logout: string;
+      memberSince: string;
+      snsChannels: string;
+    };
+  };
+
+  // Analytics
+  analyticsPage: {
+    title: string;
+    performanceAnalytics: string;
+    trackActivity: string;
+    thisMonth: string;
+    totalStats: string;
+    recentCampaigns: string;
+    campaigns: string;
+    earnings: string;
+    views: string;
+    engagement: string;
+    totalCampaigns: string;
+    totalEarnings: string;
+    followers: string;
+    avgRating: string;
+    completed: string;
   };
 
   // Profile
@@ -794,6 +1090,14 @@ export interface Translations {
     earnings: string;
     campaigns: string;
     fullList: string;
+    fullRankings: string;
+    hero: {
+      title: string;
+      subtitle: string;
+    };
+    resetInfo: string;
+    campaignsUnit: string;
+    you: string;
     season: {
       currentSeason: string;
       seasonEnd: string;
@@ -846,6 +1150,43 @@ export interface Translations {
     emptyMessage: string;
   };
 
+  // My Campaigns
+  myCampaigns: {
+    title: string;
+    subtitle: string;
+    stats: {
+      active: string;
+      completed: string;
+      totalEarnings: string;
+      pending: string;
+    };
+    tabs: {
+      all: string;
+      active: string;
+      completed: string;
+      rejected: string;
+    };
+    empty: {
+      all: string;
+      active: string;
+      completed: string;
+      rejected: string;
+    };
+    viewDetails: string;
+    appliedAt: string;
+    selectedAt: string;
+    completedAt: string;
+    paymentAgreed: string;
+    paymentAgreement: string;
+    paymentAgreementDesc: string;
+    paymentCompleted: string;
+    deliveryTracking: string;
+    courier: string;
+    trackingNumber: string;
+    estimatedDelivery: string;
+    rejectionReason: string;
+  };
+
   // Completed
   completed: {
     title: string;
@@ -863,6 +1204,12 @@ export interface Translations {
     infoPoints: string;
     infoRating: string;
     infoReceipt: string;
+    receiptContent: {
+      campaignName: string;
+      status: string;
+      statusPaid: string;
+      note: string;
+    };
   };
 
   // Raffle
@@ -2195,6 +2542,294 @@ export const translations: Record<Language, Translations> = {
     advertiser: {
       brandAccount: 'Tài khoản thương hiệu',
       verifiedAdvertiser: '💼 Nhà quảng cáo đã xác minh',
+      verification: {
+        title: 'Đăng ký xác minh doanh nghiệp',
+        subtitle: 'Bắt buộc để tạo chiến dịch',
+        submitted: 'Đã gửi yêu cầu xác minh',
+        submittedMessage: 'Yêu cầu xác minh đã được gửi. Chúng tôi sẽ xem xét trong vòng 1-2 ngày làm việc.',
+        email: 'Email',
+        phone: 'Điện thoại',
+        goToDashboard: 'Đến bảng điều khiển',
+        whyNeeded: 'Tại sao cần xác minh?',
+        whyNeededDesc: 'Xác minh doanh nghiệp là bắt buộc để tạo niềm tin với influencer và ngăn chặn gian lận.',
+        companyInfo: 'Thông tin công ty',
+        companyName: 'Tên công ty',
+        companyNameKo: 'Tên công ty (Tiếng Hàn)',
+        companyNameVi: 'Tên công ty (Tiếng Việt)',
+        businessRegNumber: 'Số ĐKKD',
+        taxCode: 'Mã số thuế (MST)',
+        businessType: 'Loại hình doanh nghiệp',
+        address: 'Địa chỉ đăng ký',
+        addressPlaceholder: 'Nhập địa chỉ chi tiết',
+        legalRepresentative: 'Người đại diện pháp luật',
+        legalRepresentativePlaceholder: 'Tên người đại diện',
+        contactInfo: 'Thông tin liên hệ',
+        emailLabel: 'Email',
+        phoneLabel: 'Số điện thoại',
+        documents: 'Tài liệu',
+        businessLicense: 'Giấy phép kinh doanh',
+        businessLicenseNote: '📌 Trong dịch vụ thực tế, sử dụng chức năng tải lên tệp. Hiện tại nhập URL hình ảnh.',
+        cancel: 'Hủy',
+        submit: 'Gửi yêu cầu',
+        required: 'Bắt buộc',
+        businessTypes: {
+          limitedCompany: 'Công ty TNHH',
+          jointStock: 'Công ty cổ phần',
+          partnership: 'Công ty hợp danh',
+          privateEnterprise: 'Doanh nghiệp tư nhân',
+          householdBusiness: 'Hộ kinh doanh',
+        },
+      },
+      influencerDetail: {
+        influencers: 'Influencers',
+        totalFollowers: 'Tổng người theo dõi',
+        allPlatforms: 'Tổng tất cả nền tảng',
+        avgFollowers: 'TB người theo dõi',
+        perPlatform: 'Trung bình mỗi nền tảng',
+        engagement: 'Tương tác',
+        avgViews: 'Lượt xem TB',
+        completedCampaigns: 'Chiến dịch hoàn thành',
+        rating: 'Đánh giá',
+        snsChannels: 'Kênh mạng xã hội',
+        channels: 'kênh',
+        engagementRate: 'Tỷ lệ tương tác',
+        categories: 'Danh mục',
+        reviews: 'Đánh giá từ nhà quảng cáo',
+        reviewsCount: 'đánh giá',
+        overallRating: 'Đánh giá tổng thể',
+        viewAll: 'Xem tất cả',
+        workStyle: 'Phong cách làm việc',
+        basicInfo: 'Thông tin cơ bản',
+        gender: 'Giới tính',
+        male: 'Nam',
+        female: 'Nữ',
+        age: 'Độ tuổi',
+        skinType: 'Loại da',
+        skinTone: 'Màu da',
+        lifestyleInfo: 'Thông tin cuộc sống',
+        maritalStatus: 'Tình trạng hôn nhân',
+        single: 'Độc thân',
+        married: 'Đã kết hôn',
+        divorced: 'Ly hôn',
+        preferNotToSay: 'Không tiết lộ',
+        children: 'Con cái',
+        yes: 'Có',
+        no: 'Không',
+        pets: 'Thú cưng',
+        dog: 'Chó',
+        cat: 'Mèo',
+        bird: 'Chim',
+        fish: 'Cá',
+        other: 'Khác',
+        hasVehicle: 'Có xe',
+        languageEducation: 'Ngôn ngữ & Giáo dục',
+        languages: 'Ngôn ngữ',
+        korean: 'Tiếng Hàn',
+        vietnamese: 'Tiếng Việt',
+        english: 'Tiếng Anh',
+        education: 'Học vấn',
+        bachelor: 'Cử nhân',
+        master: 'Thạc sĩ',
+        phd: 'Tiến sĩ',
+        occupation: 'Nghề nghiệp',
+        contentCreator: 'Nhà sáng tạo nội dung',
+        interests: 'Sở thích',
+        beauty: 'Làm đẹp',
+        fashion: 'Thời trang',
+        travel: 'Du lịch',
+        food: 'Ẩm thực',
+        fitness: 'Thể hình',
+        lifestyle: 'Lối sống',
+        smoker: 'Hút thuốc',
+        drinker: 'Uống rượu',
+        never: 'Không bao giờ',
+        occasionally: 'Thỉnh thoảng',
+        regularly: 'Thường xuyên',
+        recentWorks: 'Công việc gần đây',
+        contentStyleCheck: 'Kiểm tra phong cách nội dung',
+        contentStyleTip: 'Xem phong cách nội dung, chất lượng chỉnh sửa và tone của influencer qua các công việc gần đây',
+        views: 'Lượt xem',
+        contact: 'Đề xuất',
+        contactTitle: 'Đề xuất chiến dịch',
+        contactMessage: 'Nhập thông tin chi tiết chiến dịch và gửi đề xuất cho influencer.',
+        sendProposal: 'Gửi đề xuất',
+        proposalSent: 'Đề xuất đã được gửi!',
+        campaignInfo: 'Thông tin chiến dịch',
+        brand: 'Thương hiệu',
+        completedDate: 'Ngày hoàn thành',
+        payment: 'Thanh toán',
+        deliverables: 'Sản phẩm',
+        results: 'Kết quả',
+        likes: 'Thích',
+        comments: 'Bình luận',
+        saves: 'Lưu',
+        close: 'Đóng',
+        advertiserReview: 'Đánh giá từ nhà quảng cáo',
+        wouldRecommend: 'Khuyên dùng',
+        profilePagePreparing: 'Trang hồ sơ',
+      },
+      profileEdit: {
+        title: 'Chỉnh sửa hồ sơ',
+        accountManagement: 'Quản lý thông tin doanh nghiệp',
+        accountManagementDesc: 'Tăng độ tin cậy bằng thông tin chính xác',
+        logo: 'Logo công ty',
+        uploadLogo: 'Tải logo lên',
+        changeLogo: 'Đổi logo',
+        logoNote: 'Khuyến nghị: Vuông 500x500px trở lên, tối đa 5MB (PNG, JPG)',
+        basicInfo: 'Thông tin cơ bản',
+        country: 'Quốc gia',
+        selectCountry: 'Chọn quốc gia',
+        countryNote: 'Chọn quốc gia đăng ký công ty. Mẫu thông tin doanh nghiệp sẽ được điều chỉnh theo quốc gia.',
+        other: 'Khác',
+        companyName: 'Tên công ty',
+        companyNamePlaceholder: 'Công ty TNHH Demo Brand',
+        ceoName: 'Tên giám đốc',
+        ceoNamePlaceholder: 'Nguyễn Văn A',
+        contactPerson: 'Người liên hệ',
+        contactPersonPlaceholder: 'Trần Thị B',
+        businessInfo: 'Thông tin doanh nghiệp',
+        businessRegNumber: 'Mã số doanh nghiệp / Business Reg. No.',
+        businessRegNumberPlaceholder: 'VN: 0123456789 / KR: 123-45-67890',
+        taxCode: 'Mã số thuế / Tax ID',
+        taxCodePlaceholder: 'Mã định danh thuế',
+        businessType: 'Loại hình / Business Type',
+        businessTypePlaceholder: 'Bán lẻ, Sản xuất, Dịch vụ',
+        businessCategory: 'Ngành nghề / Category',
+        businessCategoryPlaceholder: 'Thời trang, Mỹ phẩm, Thực phẩm',
+        establishmentDate: 'Ngày thành lập',
+        employeeCount: 'Số lượng nhân viên',
+        employeeCountPlaceholder: 'VD: 10-50, 50-100',
+        capital: 'Vốn điều lệ (VND)',
+        capitalPlaceholder: '1,000,000,000',
+        businessLicense: 'Giấy phép kinh doanh',
+        businessLicenseDesc: 'Bản scan hoặc ảnh giấy phép kinh doanh',
+        ecommerceLicense: 'Giấy phép TMĐT',
+        ecommerceLicenseDesc: 'Giấy phép thương mại điện tử (nếu có)',
+        otherDocuments: 'Chứng chỉ khác',
+        otherDocumentsDesc: 'Chứng chỉ chất lượng, bằng sáng chế, v.v.',
+        selectFile: 'Chọn file',
+        changeFile: 'Đổi file',
+        removeDocument: 'Xóa',
+        documentNote: 'Tối đa 10MB (PDF, JPG, PNG)',
+        uploaded: 'Đã tải lên',
+        contactInfo: 'Thông tin liên hệ',
+        email: 'Email',
+        emailPlaceholder: 'company@example.com',
+        phone: 'Số điện thoại',
+        phonePlaceholder: '+84 XXX XXX XXX',
+        fax: 'Fax',
+        faxPlaceholder: '+84 28 XXXX XXXX',
+        website: 'Website',
+        websitePlaceholder: 'https://yourcompany.com',
+        snsInfo: 'Tài khoản mạng xã hội',
+        facebook: 'Facebook',
+        facebookPlaceholder: 'https://facebook.com/yourcompany',
+        instagram: 'Instagram',
+        instagramPlaceholder: 'https://instagram.com/yourcompany',
+        tiktok: 'TikTok',
+        tiktokPlaceholder: '@yourcompany',
+        youtube: 'YouTube',
+        youtubePlaceholder: 'https://youtube.com/@yourcompany',
+        addressInfo: 'Địa chỉ',
+        address: 'Địa chỉ trụ sở',
+        addressPlaceholder: 'Nhập địa chỉ đường phố',
+        addressDetail: 'Địa chỉ chi tiết',
+        addressDetailPlaceholder: 'Tòa nhà, tầng, phòng',
+        companyIntro: 'Giới thiệu công ty',
+        bio: 'Giới thiệu công ty',
+        bioPlaceholder: 'Nhập giới thiệu chi tiết về công ty (tối đa 500 ký tự)',
+        saveChanges: 'Lưu thay đổi',
+        saving: 'Đang lưu...',
+        cancel: 'Hủy',
+        successTitle: 'Đã lưu',
+        successMessage: 'Hồ sơ đã được cập nhật thành công.',
+        required: 'Bắt buộc',
+        optional: 'Tùy chọn',
+        imageOnly: 'Chỉ có thể tải lên file hình ảnh.',
+        maxFileSize: 'Kích thước file phải dưới',
+        fileSizeError: 'Kích thước file phải dưới 5MB.',
+        allowedFileTypes: 'Chỉ có thể tải lên PDF, JPG, PNG.',
+        fileTypeError: 'Chỉ có thể tải lên PDF, JPG, PNG.',
+      },
+      analytics: {
+        overview: 'Tổng quan',
+        budget: 'Ngân sách',
+        roi: 'ROI',
+        performance: 'Hiệu suất',
+        totalSpent: 'Tổng chi tiêu',
+        totalBudget: 'Tổng ngân sách',
+        avgCampaignBudget: 'Ngân sách TB mỗi chiến dịch',
+        totalReach: 'Tổng охват',
+        avgROI: 'ROI trung bình',
+        totalInfluencers: 'KOL hợp tác',
+        activeCampaigns: 'Chiến dịch đang chạy',
+        completedCampaigns: 'Chiến dịch hoàn thành',
+        budgetUtilization: 'Tỷ lệ sử dụng ngân sách',
+        topPerformingCampaigns: 'Chiến dịch hiệu quả nhất',
+        budgetAnalysis: 'Phân tích ngân sách',
+        roiAnalysis: 'Phân tích ROI',
+        roiDesc: 'Dữ liệu ROI theo chiến dịch sẽ hiển thị ở đây. Trong vận hành thực tế, biểu đồ phân tích ROI chi tiết và insights sẽ được cung cấp.',
+        overallPerformance: 'Tổng hiệu suất',
+        performanceDesc: 'Bảng xếp hạng chiến dịch hiệu quả nhất sẽ hiển thị ở đây. Trong vận hành thực tế, các chỉ số chi tiết như lượt xem, tỷ lệ tham gia, tỷ lệ chuyển đổi sẽ được cung cấp.',
+        dataInfo: 'Thông tin dữ liệu phân tích',
+        dataInfoDesc: 'Hiện đang hiển thị dữ liệu demo. Trong vận hành thực tế, dữ liệu thời gian thực và biểu đồ phân tích chi tiết sẽ được cung cấp.',
+      },
+      campaigns: {
+        createCampaign: 'Tạo chiến dịch mới',
+        search: 'Tìm kiếm chiến dịch...',
+        all: 'Tất cả',
+        active: 'Đang chạy',
+        completed: 'Hoàn thành',
+        draft: 'Nháp',
+        budget: 'Ngân sách',
+        budgetUsed: 'sử dụng',
+        spent: 'Đã dùng',
+        applicants: 'Ứng viên',
+        accepted: 'Chấp nhận',
+        views: 'Lượt xem',
+        deadline: 'Hạn chót',
+        noCampaigns: 'Không có chiến dịch',
+        createFirst: 'Tạo chiến dịch đầu tiên của bạn',
+        viewDetails: 'Xem chi tiết',
+      },
+      profile: {
+        title: 'Hồ sơ',
+        businessAccount: 'Tài khoản doanh nghiệp',
+        businessSubtitle: 'Tài khoản thương hiệu/doanh nghiệp',
+        verified: 'Đã xác minh',
+        activityStats: 'Thống kê hoạt động',
+        totalCampaigns: 'Tổng chiến dịch',
+        activeCampaigns: 'Đang hoạt động',
+        completedCampaigns: 'Đã hoàn thành',
+        totalBudget: 'Tổng ngân sách',
+        totalBudgetDesc: 'Tổng chi tiêu quảng cáo',
+        totalInfluencers: 'Influencer hợp tác',
+        accountManagement: 'Quản lý tài khoản',
+        editProfile: 'Chỉnh sửa hồ sơ',
+        verification: 'Xác minh doanh nghiệp',
+        verificationDesc: 'Tăng độ tin cậy',
+        settings: 'Cài đặt',
+        logout: 'Đăng xuất',
+        memberSince: 'Ngày tham gia',
+        snsChannels: 'Kênh mạng xã hội',
+      },
+    },
+    analyticsPage: {
+      title: 'Thống kê',
+      performanceAnalytics: '📊 Phân tích hiệu suất',
+      trackActivity: 'Theo dõi thống kê hoạt động của bạn',
+      thisMonth: 'Tháng này',
+      totalStats: 'Tổng thống kê',
+      recentCampaigns: 'Chiến dịch gần đây',
+      campaigns: 'Chiến dịch',
+      earnings: 'Thu nhập',
+      views: 'Lượt xem',
+      engagement: 'Tương tác',
+      totalCampaigns: 'Tổng chiến dịch',
+      totalEarnings: 'Tổng thu nhập',
+      followers: 'Người theo dõi',
+      avgRating: 'Đánh giá TB',
+      completed: 'Hoàn thành',
     },
     profile: {
       basic: 'Thông tin cơ bản',
@@ -2852,6 +3487,14 @@ export const translations: Record<Language, Translations> = {
       earnings: 'Thu nhập',
       campaigns: 'Chiến dịch',
       fullList: 'Bảng xếp hạng đầy đủ',
+      fullRankings: 'Toàn bộ bảng xếp hạng',
+      hero: {
+        title: '🏆 Influencer Ranking',
+        subtitle: 'Top influencers this month',
+      },
+      resetInfo: 'Rankings reset on the 1st of each month at 00:00 KST',
+      campaignsUnit: 'chiến dịch',
+      you: '(You)',
       season: {
         currentSeason: 'Thử thách Siêu sao Tháng 2',
         seasonEnd: 'Mùa kết thúc sau',
@@ -2901,6 +3544,41 @@ export const translations: Record<Language, Translations> = {
       items: 'mục',
       emptyMessage: 'Lưu chiến dịch yêu thích để xem sau',
     },
+    myCampaigns: {
+      title: 'Chiến dịch của tôi',
+      subtitle: 'Xem tất cả chiến dịch đã ứng tuyển và đang tiến hành',
+      stats: {
+        active: 'Đang tiến hành',
+        completed: 'Hoàn thành',
+        totalEarnings: 'Tổng thu nhập',
+        pending: 'Chờ thanh toán',
+      },
+      tabs: {
+        all: 'Tất cả',
+        active: 'Đang tiến hành',
+        completed: 'Hoàn thành',
+        rejected: 'Không được chọn',
+      },
+      empty: {
+        all: 'Chưa có chiến dịch nào.',
+        active: 'Không có chiến dịch đang tiến hành.',
+        completed: 'Chưa hoàn thành chiến dịch nào.',
+        rejected: 'Không có chiến dịch bị từ chối.',
+      },
+      viewDetails: 'Xem chi tiết',
+      appliedAt: 'Ngày ứng tuyển',
+      selectedAt: 'Ngày được chọn',
+      completedAt: 'Ngày hoàn thành',
+      paymentAgreed: 'Đang thỏa thuận thanh toán',
+      paymentCompleted: 'Đã thanh toán',
+      paymentAgreement: 'Đang thỏa thuận thanh toán',
+      paymentAgreementDesc: 'Thỏa thuận phương thức thanh toán trực tiếp với nhà quảng cáo. (Chuyển khoản, Momo, Zalo Pay, v.v.)',
+      deliveryTracking: 'Theo dõi vận chuyển',
+      courier: 'Đơn vị vận chuyển',
+      trackingNumber: 'Mã vận đơn',
+      estimatedDelivery: 'Dự kiến giao',
+      rejectionReason: 'Lý do từ chối',
+    },
     completed: {
       title: 'Đã hoàn thành',
       totalCompleted: 'Tổng số hoàn thành',
@@ -2917,6 +3595,12 @@ export const translations: Record<Language, Translations> = {
       infoPoints: 'Điểm mua sắm: Được cộng ngay lập tức (có thể sử dụng tại cửa hàng)',
       infoRating: 'Đánh giá & nhận xét: Đánh giá mức độ hài lòng của nhà quảng cáo',
       infoReceipt: 'Chứng từ: Có thể sử dụng khi khai báo thuế',
+      receiptContent: {
+        campaignName: 'Tên chiến dịch',
+        status: 'Trạng thái',
+        statusPaid: 'Đã thanh toán',
+        note: '※ Trong vận hành thực tế sẽ tải xuống file PDF.',
+      },
     },
     raffle: {
       myTickets: 'Vé của tôi',
@@ -3799,6 +4483,294 @@ export const translations: Record<Language, Translations> = {
     advertiser: {
       brandAccount: '브랜드 계정',
       verifiedAdvertiser: '💼 인증된 광고주',
+      verification: {
+        title: '사업자 인증 신청',
+        subtitle: '캠페인 등록을 위해 필요합니다',
+        submitted: '인증 신청 완료',
+        submittedMessage: '사업자 인증 신청이 접수되었습니다. 1-2 영업일 내에 검토 후 알려드리겠습니다.',
+        email: '이메일',
+        phone: '연락처',
+        goToDashboard: '대시보드로 이동',
+        whyNeeded: '왜 필요한가요?',
+        whyNeededDesc: '사업자 인증은 인플루언서에게 신뢰를 제공하고, 결제 미지급 등의 사기를 방지하기 위해 필수입니다.',
+        companyInfo: '회사 정보',
+        companyName: '회사명',
+        companyNameKo: '한국어 회사명',
+        companyNameVi: '베트남어 회사명',
+        businessRegNumber: '사업자 등록번호',
+        taxCode: '세금 코드 (MST)',
+        businessType: '사업자 형태',
+        address: '사업장 주소',
+        addressPlaceholder: '상세 주소 입력',
+        legalRepresentative: '대표자명',
+        legalRepresentativePlaceholder: '대표자 이름',
+        contactInfo: '연락처 정보',
+        emailLabel: '이메일',
+        phoneLabel: '전화번호',
+        documents: '서류 제출',
+        businessLicense: '사업자등록증 이미지',
+        businessLicenseNote: '📌 실제 서비스에서는 파일 업로드 기능을 사용합니다. 지금은 이미지 URL을 입력하세요.',
+        cancel: '취소',
+        submit: '인증 신청',
+        required: '필수',
+        businessTypes: {
+          limitedCompany: '유한책임회사',
+          jointStock: '주식회사',
+          partnership: '합명회사',
+          privateEnterprise: '개인사업자',
+          householdBusiness: '가구 사업',
+        },
+      },
+      influencerDetail: {
+        influencers: '인플루언서',
+        totalFollowers: '총 팔로워',
+        allPlatforms: '전체 플랫폼 합계',
+        avgFollowers: '평균 팔로워',
+        perPlatform: '플랫폼당 평균',
+        engagement: '참여율',
+        avgViews: '평균 조회수',
+        completedCampaigns: '완료 캠페인',
+        rating: '평점',
+        snsChannels: 'SNS 채널',
+        channels: '개',
+        engagementRate: '참여율',
+        categories: '카테고리',
+        reviews: '광고주 리뷰',
+        reviewsCount: '개 리뷰',
+        overallRating: '종합 평점',
+        viewAll: '전체 보기',
+        workStyle: '작업 스타일',
+        basicInfo: '기본 정보',
+        gender: '성별',
+        male: '남성',
+        female: '여성',
+        age: '연령대',
+        skinType: '피부 타입',
+        skinTone: '피부 톤',
+        lifestyleInfo: '생활 정보',
+        maritalStatus: '결혼 여부',
+        single: '미혼',
+        married: '기혼',
+        divorced: '이혼',
+        preferNotToSay: '비공개',
+        children: '자녀',
+        yes: '예',
+        no: '아니오',
+        pets: '반려동물',
+        dog: '강아지',
+        cat: '고양이',
+        bird: '새',
+        fish: '물고기',
+        other: '기타',
+        hasVehicle: '차량 보유',
+        languageEducation: '언어 & 교육',
+        languages: '구사 언어',
+        korean: '한국어',
+        vietnamese: '베트남어',
+        english: '영어',
+        education: '학력',
+        bachelor: '학사',
+        master: '석사',
+        phd: '박사',
+        occupation: '직업',
+        contentCreator: '콘텐츠 크리에이터',
+        interests: '관심사',
+        beauty: '뷰티',
+        fashion: '패션',
+        travel: '여행',
+        food: '음식',
+        fitness: '피트니스',
+        lifestyle: '라이프스타일',
+        smoker: '흡연',
+        drinker: '음주',
+        never: '안함',
+        occasionally: '가끔',
+        regularly: '자주',
+        recentWorks: '최근 작업물',
+        contentStyleCheck: '콘텐츠 스타일 확인용',
+        contentStyleTip: '최근 작업물을 통해 인플루언서의 콘텐츠 스타일, 편집 퀄리티, 톤앤매너를 확인하세요',
+        views: '조회수',
+        contact: '제안하기',
+        contactTitle: '캠페인 제안',
+        contactMessage: '캠페인 상세 정보를 입력하고 인플루언서에게 제안을 보내세요.',
+        sendProposal: '제안 보내기',
+        proposalSent: '제안이 전송되었습니다!',
+        campaignInfo: '캠페인 정보',
+        brand: '브랜드',
+        completedDate: '완료일',
+        payment: '보상',
+        deliverables: '제출물',
+        results: '성과',
+        likes: '좋아요',
+        comments: '댓글',
+        saves: '저장',
+        close: '닫기',
+        advertiserReview: '광고주 평가',
+        wouldRecommend: '추천함',
+        profilePagePreparing: '프로필 페이지',
+      },
+      profileEdit: {
+        title: '프로필 수정',
+        accountManagement: '기업 계정 정보 관리',
+        accountManagementDesc: '정확한 정보 입력으로 신뢰도를 높이세요',
+        logo: '회사 로고',
+        uploadLogo: '로고 업로드',
+        changeLogo: '로고 변경',
+        logoNote: '권장: 정사각형 500x500px 이상, 최대 5MB (PNG, JPG)',
+        basicInfo: '기본 정보',
+        country: '국가',
+        selectCountry: '국가를 선택하세요',
+        countryNote: '회사가 등록된 국가를 선택하세요. 사업자 정보 양식이 국가에 맞게 조정됩니다.',
+        other: '기타',
+        companyName: '회사명 (상호)',
+        companyNamePlaceholder: '주식회사 데모브랜드',
+        ceoName: '대표자명',
+        ceoNamePlaceholder: '홍길동',
+        contactPerson: '담당자명',
+        contactPersonPlaceholder: '김영희',
+        businessInfo: '사업자 정보',
+        businessRegNumber: '사업자 등록 번호 / Business Reg. No.',
+        businessRegNumberPlaceholder: '한국: 123-45-67890 / 베트남: 0123456789',
+        taxCode: '납세자 번호 / Tax ID',
+        taxCodePlaceholder: '세금 식별 번호',
+        businessType: '업종 / Business Type',
+        businessTypePlaceholder: '도소매업, 제조업, 서비스업 등',
+        businessCategory: '업태 / Business Category',
+        businessCategoryPlaceholder: '패션/의류, 화장품, 식품 등',
+        establishmentDate: '설립일',
+        employeeCount: '직원 수',
+        employeeCountPlaceholder: '예: 10-50명, 50-100명',
+        capital: '자본금 (VND)',
+        capitalPlaceholder: '1,000,000,000',
+        businessLicense: '사업자 등록증',
+        businessLicenseDesc: '사업자 등록증 스캔 본 또는 사진',
+        ecommerceLicense: '통신판매업 신고증',
+        ecommerceLicenseDesc: '온라인 판매업 신고증 (있는 경우)',
+        otherDocuments: '기타 인증서',
+        otherDocumentsDesc: '품질인증서, 특허증 등 추가 서류',
+        selectFile: '파일 선택',
+        changeFile: '파일 변경',
+        removeDocument: '삭제',
+        documentNote: '최대 10MB (PDF, JPG, PNG)',
+        uploaded: '업로드됨',
+        contactInfo: '연락처 정보',
+        email: '이메일',
+        emailPlaceholder: 'company@example.com',
+        phone: '전화번호',
+        phonePlaceholder: '+84 XXX XXX XXX',
+        fax: '팩스',
+        faxPlaceholder: '+84 28 XXXX XXXX',
+        website: '웹사이트',
+        websitePlaceholder: 'https://yourcompany.com',
+        snsInfo: 'SNS 계정',
+        facebook: 'Facebook',
+        facebookPlaceholder: 'https://facebook.com/yourcompany',
+        instagram: 'Instagram',
+        instagramPlaceholder: 'https://instagram.com/yourcompany',
+        tiktok: 'TikTok',
+        tiktokPlaceholder: '@yourcompany',
+        youtube: 'YouTube',
+        youtubePlaceholder: 'https://youtube.com/@yourcompany',
+        addressInfo: '주소 정보',
+        address: '본사 주소',
+        addressPlaceholder: '도로명 주소를 입력하세요',
+        addressDetail: '상세 주소',
+        addressDetailPlaceholder: '건물명, 층, 호수 등',
+        companyIntro: '회사 소개',
+        bio: '회사 소개',
+        bioPlaceholder: '회사 소개를 상세히 입력하세요 (최대 500자)',
+        saveChanges: '변경사항 저장',
+        saving: '저장 중...',
+        cancel: '취소',
+        successTitle: '저장 완료',
+        successMessage: '프로필이 성공적으로 업데이트되었습니다.',
+        required: '필수',
+        optional: '선택',
+        imageOnly: '이미지 파일만 업로드 가능합니다.',
+        maxFileSize: '파일 크기는',
+        fileSizeError: '파일 크기는 5MB 이하여야 합니다.',
+        allowedFileTypes: 'PDF, JPG, PNG 파일만 업로드 가능합니다.',
+        fileTypeError: 'PDF, JPG, PNG 파일만 업로드 가능합니다.',
+      },
+      analytics: {
+        overview: '개요',
+        budget: '예산',
+        roi: 'ROI',
+        performance: '성과',
+        totalSpent: '총 지출',
+        totalBudget: '총 예산',
+        avgCampaignBudget: '평균 캠페인 예산',
+        totalReach: '총 도달',
+        avgROI: '평균 ROI',
+        totalInfluencers: '협업 인플루언서',
+        activeCampaigns: '진행중 캠페인',
+        completedCampaigns: '완료된 캠페인',
+        budgetUtilization: '예산 사용률',
+        topPerformingCampaigns: '최고 성과 캠페인',
+        budgetAnalysis: '예산 분석',
+        roiAnalysis: 'ROI 분석',
+        roiDesc: '캠페인별 ROI 데이터가 여기에 표시됩니다. 실제 운영 시 상세한 ROI 분석 차트와 인사이트가 제공됩니다.',
+        overallPerformance: '전체 성과',
+        performanceDesc: '최고 성과 캠페인 순위가 여기에 표시됩니다. 실제 운영 시 조회수, 참여율, 전환율 등의 상세 지표가 제공됩니다.',
+        dataInfo: '분석 데이터 안내',
+        dataInfoDesc: '현재는 데모 데이터가 표시됩니다. 실제 운영 시에는 실시간 데이터와 상세한 분석 차트가 제공됩니다.',
+      },
+      campaigns: {
+        createCampaign: '새 캠페인 만들기',
+        search: '캠페인 검색...',
+        all: '전체',
+        active: '진행중',
+        completed: '완료',
+        draft: '임시저장',
+        budget: '예산',
+        budgetUsed: '사용',
+        spent: '사용',
+        applicants: '지원자',
+        accepted: '승인',
+        views: '조회수',
+        deadline: '마감',
+        noCampaigns: '캠페인이 없습니다',
+        createFirst: '첫 번째 캠페인을 만들어보세요',
+        viewDetails: '상세 정보 보기',
+      },
+      profile: {
+        title: '프로필',
+        businessAccount: '비즈니스 계정',
+        businessSubtitle: '브랜드/기업 계정',
+        verified: '인증됨',
+        activityStats: '활동 통계',
+        totalCampaigns: '전체 캠페인',
+        activeCampaigns: '진행 중',
+        completedCampaigns: '완료',
+        totalBudget: '총 광고비',
+        totalBudgetDesc: '총 광고 집행 금액',
+        totalInfluencers: '협업 인플루언서',
+        accountManagement: '기업 계정 관리',
+        editProfile: '프로필 수정',
+        verification: '사업자 인증',
+        verificationDesc: '신뢰도 향상',
+        settings: '설정',
+        logout: '로그아웃',
+        memberSince: '가입일',
+        snsChannels: 'SNS 채널',
+      },
+    },
+    analyticsPage: {
+      title: '통계',
+      performanceAnalytics: '📊 성과 분석',
+      trackActivity: '나의 활동 통계를 확인하세요',
+      thisMonth: '이번 달',
+      totalStats: '전체 통계',
+      recentCampaigns: '최근 캠페인',
+      campaigns: '캠페인',
+      earnings: '수익',
+      views: '조회수',
+      engagement: '참여율',
+      totalCampaigns: '총 캠페인',
+      totalEarnings: '총 수익',
+      followers: '팔로워',
+      avgRating: '평균 평점',
+      completed: '완료',
     },
     profile: {
       basic: '기본 정보',
@@ -4456,6 +5428,14 @@ export const translations: Record<Language, Translations> = {
       earnings: '수익',
       campaigns: '캠페인',
       fullList: '전체 랭킹',
+      fullRankings: '전체 랭킹',
+      hero: {
+        title: '🏆 인플루언서 랭킹',
+        subtitle: '이번 달 최고의 인플루언서들',
+      },
+      resetInfo: '랭킹은 매월 1일 00:00 (KST)에 초기화됩니다',
+      campaignsUnit: '캠페인',
+      you: '(You)',
       season: {
         currentSeason: '2월 슈퍼스타 챌린지',
         seasonEnd: '시즌 종료까지',
@@ -4505,6 +5485,41 @@ export const translations: Record<Language, Translations> = {
       items: '개',
       emptyMessage: '관심있는 캠페인을 찜하고 나중에 쉽게 확인하세요',
     },
+    myCampaigns: {
+      title: '내 캠페인',
+      subtitle: '지원하고 진행 중인 캠페인을 한눈에 확인하세요',
+      stats: {
+        active: '진행 중',
+        completed: '완료',
+        totalEarnings: '총 수익',
+        pending: '정산 대기',
+      },
+      tabs: {
+        all: '전체',
+        active: '진행 중',
+        completed: '완료',
+        rejected: '탈락',
+      },
+      empty: {
+        all: '아직 지원한 캠페인이 없습니다.',
+        active: '진행 중인 캠페인이 없습니다.',
+        completed: '완료된 캠페인이 없습니다.',
+        rejected: '탈락한 캠페인이 없습니다.',
+      },
+      viewDetails: '자세히 보기',
+      appliedAt: '지원일',
+      selectedAt: '선정일',
+      completedAt: '완료일',
+      paymentAgreed: '결제 협의 중',
+      paymentCompleted: '정산 완료',
+      paymentAgreement: '결제 협의 중',
+      paymentAgreementDesc: '광고주와 직접 결제 방법을 협의하세요. (은행 이체, Momo, Zalo Pay 등)',
+      deliveryTracking: '배송 추적',
+      courier: '택배사',
+      trackingNumber: '운송장 번호',
+      estimatedDelivery: '예상 도착',
+      rejectionReason: '반려 사유',
+    },
     completed: {
       title: '완료됨',
       totalCompleted: '총 완료 수',
@@ -4521,6 +5536,12 @@ export const translations: Record<Language, Translations> = {
       infoPoints: '쇼핑 포인트: 즉시 적립 (상점에서 사용 가능)',
       infoRating: '평점 & 리뷰: 광고주 만족도 평가',
       infoReceipt: '증빙서류: 세금 신고 시 활용 가능',
+      receiptContent: {
+        campaignName: '캠페인명',
+        status: '상태',
+        statusPaid: '지급 완료',
+        note: '※ 실제 운영 시 PDF 파일로 다운로드됩니다.',
+      },
     },
     raffle: {
       myTickets: '내 응모권',

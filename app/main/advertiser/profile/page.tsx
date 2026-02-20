@@ -6,10 +6,12 @@ import { Building2, Mail, Phone, Globe, Edit, Settings, LogOut, BarChart3, Packa
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { translations } from '@/lib/i18n/translations';
 import { formatPoints } from '@/lib/points';
 
 export default function AdvertiserProfilePage() {
   const { language } = useLanguage();
+  const t = translations[language].advertiser.profile;
 
   const [advertiser] = useState({
     name: 'Demo Brand Company',
@@ -17,9 +19,7 @@ export default function AdvertiserProfilePage() {
     phone: '+84 909 876 543',
     company_name: 'Demo Brand VN',
     website: 'https://demobrand.com',
-    bio: language === 'ko'
-      ? '베트남을 대표하는 패션 브랜드. 청년 패션과 스트릿웨어 전문.'
-      : 'Thương hiệu thời trang hàng đầu Việt Nam. Chuyên về thời trang trẻ và streetwear.',
+    bio: language === 'ko' ? '베트남을 대표하는 패션 브랜드. 청년 패션과 스트릿웨어 전문.' : 'Thương hiệu thời trang hàng đầu Việt Nam. Chuyên về thời trang trẻ và streetwear.',
     created_at: '2026-01-15',
     verified: true,
     totalCampaigns: 12,
@@ -34,58 +34,6 @@ export default function AdvertiserProfilePage() {
     youtube: 'https://youtube.com/@demobrand',
   });
 
-  const t = {
-    ko: {
-      title: '프로필',
-      businessAccount: '비즈니스 계정',
-      businessSubtitle: '브랜드/기업 계정',
-      verified: '인증됨',
-      stats: {
-        title: '활동 통계',
-        totalCampaigns: '전체 캠페인',
-        activeCampaigns: '진행 중',
-        completedCampaigns: '완료',
-        totalBudget: '총 광고비',
-        totalBudgetDesc: '총 광고 집행 금액',
-        totalInfluencers: '협업 인플루언서',
-      },
-      actions: {
-        title: '기업 계정 관리',
-        edit: '프로필 수정',
-        verification: '사업자 인증',
-        verificationDesc: '신뢰도 향상',
-        settings: '설정',
-        logout: '로그아웃',
-      },
-      memberSince: '가입일',
-    },
-    vi: {
-      title: 'Hồ sơ',
-      businessAccount: 'Tài khoản doanh nghiệp',
-      businessSubtitle: 'Tài khoản thương hiệu/doanh nghiệp',
-      verified: 'Đã xác minh',
-      stats: {
-        title: 'Thống kê hoạt động',
-        totalCampaigns: 'Tổng chiến dịch',
-        activeCampaigns: 'Đang hoạt động',
-        completedCampaigns: 'Đã hoàn thành',
-        totalBudget: 'Tổng ngân sách',
-        totalBudgetDesc: 'Tổng chi tiêu quảng cáo',
-        totalInfluencers: 'Influencer hợp tác',
-      },
-      actions: {
-        title: 'Quản lý tài khoản',
-        edit: 'Chỉnh sửa hồ sơ',
-        verification: 'Xác minh doanh nghiệp',
-        verificationDesc: 'Tăng độ tin cậy',
-        settings: 'Cài đặt',
-        logout: 'Đăng xuất',
-      },
-      memberSince: 'Ngày tham gia',
-    },
-  };
-
-  const text = t[language];
 
   const handleLogout = () => {
     if (typeof window !== 'undefined') {
@@ -96,7 +44,7 @@ export default function AdvertiserProfilePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <MobileHeader title={text.title} showBack />
+      <MobileHeader title={t.title} showBack />
 
       <main className="container-mobile pb-24 pt-16">
         {/* Business Account Banner */}
@@ -107,9 +55,9 @@ export default function AdvertiserProfilePage() {
             </div>
             <div className="flex-1">
               <h3 className="text-gray-900 font-semibold text-sm mb-0.5">
-                {text.businessAccount}
+                {t.businessAccount}
               </h3>
-              <p className="text-gray-500 text-xs">{text.businessSubtitle}</p>
+              <p className="text-gray-500 text-xs">{t.businessSubtitle}</p>
             </div>
           </div>
         </div>
@@ -130,7 +78,7 @@ export default function AdvertiserProfilePage() {
                 </h2>
                 {advertiser.verified && (
                   <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full flex-shrink-0">
-                    {text.verified}
+                    {t.verified}
                   </span>
                 )}
               </div>
@@ -165,7 +113,7 @@ export default function AdvertiserProfilePage() {
               <div className="flex items-center gap-2 mb-3">
                 <Share2 size={16} className="text-gray-400" />
                 <span className="text-sm font-medium text-gray-700">
-                  {language === 'ko' ? 'SNS 채널' : 'Kênh mạng xã hội'}
+                  {t.snsChannels}
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -222,7 +170,7 @@ export default function AdvertiserProfilePage() {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 size={20} className="text-gray-700" />
-            <h3 className="text-base font-semibold text-gray-900">{text.stats.title}</h3>
+            <h3 className="text-base font-semibold text-gray-900">{t.stats.title}</h3>
           </div>
 
           {/* Top Stats - Clickable */}
@@ -231,7 +179,7 @@ export default function AdvertiserProfilePage() {
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                   <Package size={18} className="text-gray-600" />
-                  <span className="text-xs text-gray-500">{text.stats.totalCampaigns}</span>
+                  <span className="text-xs text-gray-500">{t.stats.totalCampaigns}</span>
                 </div>
                 <div className="text-2xl font-semibold text-gray-900">{advertiser.totalCampaigns}</div>
               </div>
@@ -241,7 +189,7 @@ export default function AdvertiserProfilePage() {
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
                 <div className="flex items-center gap-2 mb-2">
                   <BarChart3 size={18} className="text-gray-600" />
-                  <span className="text-xs text-gray-500">{text.stats.activeCampaigns}</span>
+                  <span className="text-xs text-gray-500">{t.stats.activeCampaigns}</span>
                 </div>
                 <div className="text-2xl font-semibold text-gray-900">{advertiser.activeCampaigns}</div>
               </div>
@@ -252,14 +200,14 @@ export default function AdvertiserProfilePage() {
           <div className="grid grid-cols-2 gap-3 mb-3">
             <Link href="/main/advertiser/campaigns?status=completed">
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
-                <div className="text-xs text-gray-500 mb-1">{text.stats.completedCampaigns}</div>
+                <div className="text-xs text-gray-500 mb-1">{t.stats.completedCampaigns}</div>
                 <div className="text-xl font-semibold text-gray-900">{advertiser.completedCampaigns}</div>
               </div>
             </Link>
 
             <Link href="/main/advertiser/influencers">
               <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer">
-                <div className="text-xs text-gray-500 mb-1">{text.stats.totalInfluencers}</div>
+                <div className="text-xs text-gray-500 mb-1">{t.stats.totalInfluencers}</div>
                 <div className="text-xl font-semibold text-gray-900">{advertiser.totalInfluencers}</div>
               </div>
             </Link>
@@ -268,9 +216,9 @@ export default function AdvertiserProfilePage() {
           {/* Total Budget - Highlighted & Clickable */}
           <Link href="/main/advertiser/analytics">
             <div className="bg-white rounded-lg p-5 border border-gray-300 hover:border-gray-400 transition-all cursor-pointer">
-              <div className="text-xs text-gray-500 font-medium mb-2">{text.stats.totalBudget}</div>
+              <div className="text-xs text-gray-500 font-medium mb-2">{t.stats.totalBudget}</div>
               <div className="text-2xl font-semibold text-gray-900">{formatPoints(advertiser.totalBudget)} VND</div>
-              <div className="text-xs text-gray-400 mt-1">{text.stats.totalBudgetDesc}</div>
+              <div className="text-xs text-gray-400 mt-1">{t.stats.totalBudgetDesc}</div>
             </div>
           </Link>
         </div>
@@ -279,7 +227,7 @@ export default function AdvertiserProfilePage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-2 px-1">
             <Building2 size={18} className="text-gray-600" />
-            <h3 className="text-sm font-medium text-gray-600">{text.actions.title}</h3>
+            <h3 className="text-sm font-medium text-gray-600">{t.actions.title}</h3>
           </div>
 
           {/* Edit Profile */}
@@ -289,7 +237,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <Edit size={20} className="text-white" />
-              <span className="text-white font-medium">{text.actions.edit}</span>
+              <span className="text-white font-medium">{t.actions.edit}</span>
             </div>
             <span className="text-white">›</span>
           </Link>
@@ -303,8 +251,8 @@ export default function AdvertiserProfilePage() {
               <div className="flex items-center gap-3">
                 <Building2 size={20} className="text-gray-700" />
                 <div>
-                  <span className="text-gray-900 font-medium block">{text.actions.verification}</span>
-                  <span className="text-xs text-gray-500">{text.actions.verificationDesc}</span>
+                  <span className="text-gray-900 font-medium block">{t.actions.verification}</span>
+                  <span className="text-xs text-gray-500">{t.actions.verificationDesc}</span>
                 </div>
               </div>
               <span className="text-gray-400">›</span>
@@ -318,7 +266,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <Settings size={20} className="text-gray-700" />
-              <span className="text-gray-900 font-medium">{text.actions.settings}</span>
+              <span className="text-gray-900 font-medium">{t.actions.settings}</span>
             </div>
             <span className="text-gray-400">›</span>
           </Link>
@@ -330,7 +278,7 @@ export default function AdvertiserProfilePage() {
           >
             <div className="flex items-center gap-3">
               <LogOut size={20} className="text-gray-700" />
-              <span className="text-gray-900 font-medium">{text.actions.logout}</span>
+              <span className="text-gray-900 font-medium">{t.actions.logout}</span>
             </div>
             <span className="text-gray-400">›</span>
           </button>
@@ -338,7 +286,7 @@ export default function AdvertiserProfilePage() {
 
         {/* Member Since */}
         <div className="text-center text-gray-400 text-xs mt-8">
-          {text.memberSince}: {new Date(advertiser.created_at).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
+          {t.memberSince}: {new Date(advertiser.created_at).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
         </div>
       </main>
 

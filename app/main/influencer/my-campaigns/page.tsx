@@ -21,7 +21,7 @@ import { formatPoints } from '@/lib/points';
 type TabType = 'all' | 'active' | 'completed' | 'rejected';
 
 export default function MyCampaignsPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<TabType>('active');
 
   const allCampaigns = mockMyCampaigns;
@@ -41,82 +41,25 @@ export default function MyCampaignsPage() {
   const totalEarnings = getTotalEarnings();
   const pendingPayments = getPendingPayments();
 
-  const t = {
-    ko: {
-      title: '내 캠페인',
-      subtitle: '지원하고 진행 중인 캠페인을 한눈에 확인하세요',
-      stats: {
-        active: '진행 중',
-        completed: '완료',
-        totalEarnings: '총 수익',
-        pending: '정산 대기',
-      },
-      tabs: {
-        all: '전체',
-        active: '진행 중',
-        completed: '완료',
-        rejected: '탈락',
-      },
-      empty: {
-        all: '아직 지원한 캠페인이 없습니다.',
-        active: '진행 중인 캠페인이 없습니다.',
-        completed: '완료된 캠페인이 없습니다.',
-        rejected: '탈락한 캠페인이 없습니다.',
-      },
-      viewDetails: '자세히 보기',
-      appliedAt: '지원일',
-      selectedAt: '선정일',
-      completedAt: '완료일',
-    },
-    vi: {
-      title: 'Chiến dịch của tôi',
-      subtitle: 'Xem tất cả chiến dịch đã ứng tuyển và đang tiến hành',
-      stats: {
-        active: 'Đang tiến hành',
-        completed: 'Hoàn thành',
-        totalEarnings: 'Tổng thu nhập',
-        pending: 'Chờ thanh toán',
-      },
-      tabs: {
-        all: 'Tất cả',
-        active: 'Đang tiến hành',
-        completed: 'Hoàn thành',
-        rejected: 'Không được chọn',
-      },
-      empty: {
-        all: 'Chưa có chiến dịch nào.',
-        active: 'Không có chiến dịch đang tiến hành.',
-        completed: 'Chưa hoàn thành chiến dịch nào.',
-        rejected: 'Không có chiến dịch bị từ chối.',
-      },
-      viewDetails: 'Xem chi tiết',
-      appliedAt: 'Ngày ứng tuyển',
-      selectedAt: 'Ngày được chọn',
-      completedAt: 'Ngày hoàn thành',
-    },
-  };
-
-  const text = t[language];
-
   return (
     <div className="min-h-screen bg-dark pb-20 overflow-x-hidden">
       {/* Header */}
       <MobileHeader
-        title={text.title}
+        title={t.myCampaigns.title}
         showBack
       />
 
       <div className="w-full max-w-[430px] mx-auto">
         {/* Hero Section - 개선된 통계 */}
         <div className="bg-gradient-to-br from-primary/10 to-dark px-6 py-8 border-b border-dark-500">
-          <p className="text-base text-gray-300 mb-6 font-medium">{text.subtitle}</p>
+          <p className="text-base text-gray-300 mb-6 font-medium">{t.myCampaigns.subtitle}</p>
 
           {/* Stats Grid - 간격 및 크기 개선 */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-primary/30 hover:border-primary/50 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">⏱️</span>
-                <span className="text-sm text-gray-400 font-medium">{text.stats.active}</span>
+                <span className="text-sm text-gray-400 font-medium">{t.myCampaigns.stats.active}</span>
               </div>
               <p className="text-3xl font-bold text-white">{getActiveCampaignsCount()}</p>
             </div>
@@ -124,7 +67,7 @@ export default function MyCampaignsPage() {
             <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-mint/30 hover:border-mint/50 transition-all shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">✅</span>
-                <span className="text-sm text-gray-400 font-medium">{text.stats.completed}</span>
+                <span className="text-sm text-gray-400 font-medium">{t.myCampaigns.stats.completed}</span>
               </div>
               <p className="text-3xl font-bold text-white">{getCompletedCampaignsCount()}</p>
             </div>
@@ -132,7 +75,7 @@ export default function MyCampaignsPage() {
             <div className="bg-dark-600 backdrop-blur-sm rounded-2xl p-5 border-2 border-green-500/30 hover:border-green-500/50 transition-all col-span-2 shadow-xl">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">💵</span>
-                <span className="text-sm text-gray-400 font-medium">{text.stats.totalEarnings}</span>
+                <span className="text-sm text-gray-400 font-medium">{t.myCampaigns.stats.totalEarnings}</span>
               </div>
               <p className="text-2xl font-bold text-green-500">{formatPoints(totalEarnings)} VND</p>
             </div>
@@ -152,7 +95,7 @@ export default function MyCampaignsPage() {
                     : 'bg-dark-600 text-gray-400 hover:bg-dark-500 hover:text-gray-300'
                 }`}
               >
-                {text.tabs[tab]}
+                {t.myCampaigns.tabs[tab]}
               </button>
             ))}
           </div>
@@ -165,7 +108,7 @@ export default function MyCampaignsPage() {
               <div className="w-20 h-20 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FileText size={32} className="text-gray-600" />
               </div>
-              <p className="text-gray-500 text-sm">{text.empty[activeTab]}</p>
+              <p className="text-gray-500 text-sm">{t.myCampaigns.empty[activeTab]}</p>
             </div>
           ) : (
             displayCampaigns.map((campaign) => {
@@ -208,11 +151,11 @@ export default function MyCampaignsPage() {
                     {/* Dates */}
                     <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                       <span>
-                        {text.appliedAt}: {new Date(campaign.appliedAt).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
+                        {t.myCampaigns.appliedAt}: {new Date(campaign.appliedAt).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
                       </span>
                       {campaign.selectedAt && (
                         <span>
-                          {text.selectedAt}: {new Date(campaign.selectedAt).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
+                          {t.myCampaigns.selectedAt}: {new Date(campaign.selectedAt).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
                         </span>
                       )}
                     </div>
@@ -238,7 +181,7 @@ export default function MyCampaignsPage() {
                       href={`/main/influencer/campaigns/${campaign.campaignId}`}
                       className="text-sm text-primary hover:text-mint transition-colors flex items-center justify-center gap-2"
                     >
-                      {text.viewDetails}
+                      {t.myCampaigns.viewDetails}
                       <ArrowLeft size={14} className="rotate-180" />
                     </Link>
                   </div>
@@ -249,7 +192,7 @@ export default function MyCampaignsPage() {
                       <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-3 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <DollarSign size={16} className="text-green-500" />
-                          <span className="text-sm text-gray-400">{language === 'ko' ? '정산 완료' : 'Đã thanh toán'}</span>
+                          <span className="text-sm text-gray-400">{t.myCampaigns.paymentCompleted}</span>
                         </div>
                         <span className="text-lg font-black text-green-500">
                           {formatPoints(campaign.paymentInfo.amount)} VND
@@ -266,7 +209,7 @@ export default function MyCampaignsPage() {
                           <div className="flex items-center gap-2">
                             <span className="text-xl">🤝</span>
                             <span className="text-sm font-bold text-white">
-                              {language === 'ko' ? '결제 협의 중' : 'Đang thỏa thuận thanh toán'}
+                              {t.myCampaigns.paymentAgreement}
                             </span>
                           </div>
                           <span className="text-lg font-black text-blue-400">
@@ -274,9 +217,7 @@ export default function MyCampaignsPage() {
                           </span>
                         </div>
                         <p className="text-xs text-gray-400">
-                          {language === 'ko'
-                            ? '광고주와 직접 결제 방법을 협의하세요. (은행 이체, Momo, Zalo Pay 등)'
-                            : 'Thỏa thuận phương thức thanh toán trực tiếp với nhà quảng cáo. (Chuyển khoản, Momo, Zalo Pay, v.v.)'}
+                          {t.myCampaigns.paymentAgreementDesc}
                         </p>
                       </div>
                     </div>
@@ -288,18 +229,18 @@ export default function MyCampaignsPage() {
                       <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3">
                         <div className="flex items-center gap-2 mb-2">
                           <Package size={16} className="text-blue-500" />
-                          <span className="text-sm font-bold text-white">{language === 'ko' ? '배송 추적' : 'Theo dõi vận chuyển'}</span>
+                          <span className="text-sm font-bold text-white">{t.myCampaigns.deliveryTracking}</span>
                         </div>
                         <div className="text-xs text-gray-400 space-y-1">
                           <p>
-                            {language === 'ko' ? '택배사' : 'Đơn vị vận chuyển'}: {campaign.trackingInfo.courier}
+                            {t.myCampaigns.courier}: {campaign.trackingInfo.courier}
                           </p>
                           <p>
-                            {language === 'ko' ? '운송장 번호' : 'Mã vận đơn'}: {campaign.trackingInfo.trackingNumber}
+                            {t.myCampaigns.trackingNumber}: {campaign.trackingInfo.trackingNumber}
                           </p>
                           {campaign.trackingInfo.estimatedDelivery && (
                             <p>
-                              {language === 'ko' ? '예상 도착' : 'Dự kiến giao'}:{' '}
+                              {t.myCampaigns.estimatedDelivery}:{' '}
                               {new Date(campaign.trackingInfo.estimatedDelivery).toLocaleDateString(language === 'ko' ? 'ko-KR' : 'vi-VN')}
                             </p>
                           )}
@@ -314,7 +255,7 @@ export default function MyCampaignsPage() {
                       <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-3">
                         <div className="flex items-center gap-2 mb-2">
                           <XCircle size={16} className="text-orange-500" />
-                          <span className="text-sm font-bold text-white">{language === 'ko' ? '반려 사유' : 'Lý do từ chối'}</span>
+                          <span className="text-sm font-bold text-white">{t.myCampaigns.rejectionReason}</span>
                         </div>
                         <p className="text-xs text-gray-400">{campaign.contentInfo.reviewComment}</p>
                       </div>

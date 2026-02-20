@@ -15,7 +15,7 @@ const mockRankings = [
 ];
 
 export default function RankingPage() {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   const getRankBadge = (rank: number) => {
     if (rank === 1) return { icon: Crown, color: 'from-yellow-400 to-yellow-600', text: 'text-yellow-600' };
@@ -26,7 +26,7 @@ export default function RankingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-dark-800 via-dark-700 to-dark-800 pb-20">
-      <MobileHeader title={language === 'ko' ? '랭킹' : 'Ranking'} showBack />
+      <MobileHeader title={t.ranking.title} showBack />
 
       <div className="container-mobile py-6 space-y-6">
         {/* Hero Section */}
@@ -34,10 +34,10 @@ export default function RankingPage() {
           <div className="relative z-10 text-center">
             <Trophy size={48} className="mx-auto mb-3" />
             <h2 className="text-2xl font-bold mb-2">
-              {language === 'ko' ? '🏆 인플루언서 랭킹' : '🏆 Influencer Ranking'}
+              {t.ranking.hero.title}
             </h2>
             <p className="text-sm text-white/90">
-              {language === 'ko' ? '이번 달 최고의 인플루언서들' : 'Top influencers this month'}
+              {t.ranking.hero.subtitle}
             </p>
           </div>
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
@@ -55,7 +55,7 @@ export default function RankingPage() {
             </div>
             <div className="text-center">
               <p className="text-white text-xs font-semibold truncate max-w-[80px]">{mockRankings[1].name.split(' ')[0]}</p>
-              <p className="text-gray-400 text-[10px]">{mockRankings[1].campaigns} 캠페인</p>
+              <p className="text-gray-400 text-[10px]">{mockRankings[1].campaigns} {t.ranking.campaignsUnit}</p>
             </div>
           </div>
 
@@ -69,7 +69,7 @@ export default function RankingPage() {
             </div>
             <div className="text-center">
               <p className="text-yellow-400 text-sm font-bold truncate max-w-[90px]">{mockRankings[0].name.split(' ')[0]}</p>
-              <p className="text-gray-300 text-xs">{mockRankings[0].campaigns} 캠페인</p>
+              <p className="text-gray-300 text-xs">{mockRankings[0].campaigns} {t.ranking.campaignsUnit}</p>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export default function RankingPage() {
             </div>
             <div className="text-center">
               <p className="text-white text-xs font-semibold truncate max-w-[80px]">{mockRankings[2].name.split(' ')[0]}</p>
-              <p className="text-gray-400 text-[10px]">{mockRankings[2].campaigns} 캠페인</p>
+              <p className="text-gray-400 text-[10px]">{mockRankings[2].campaigns} {t.ranking.campaignsUnit}</p>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function RankingPage() {
         {/* Full Rankings */}
         <div className="space-y-6">
           <h3 className="text-lg font-bold text-white px-2">
-            {language === 'ko' ? '전체 랭킹' : 'Full Rankings'}
+            {t.ranking.fullRankings}
           </h3>
 
           {mockRankings.map((user) => {
@@ -124,7 +124,7 @@ export default function RankingPage() {
                     <div className="flex-1 min-w-0">
                       <p className={`font-bold truncate ${isCurrentUser ? 'text-primary' : 'text-white'}`}>
                         {user.name}
-                        {isCurrentUser && <span className="text-xs ml-2 text-primary">(You)</span>}
+                        {isCurrentUser && <span className="text-xs ml-2 text-primary">{t.ranking.you}</span>}
                       </p>
                       <div className="flex items-center gap-3 text-xs text-gray-400 mt-1">
                         <span className="flex items-center gap-1">
@@ -142,7 +142,7 @@ export default function RankingPage() {
                   {/* Campaigns */}
                   <div className="text-right">
                     <div className="text-white font-bold text-lg">{user.campaigns}</div>
-                    <div className="text-xs text-gray-400">캠페인</div>
+                    <div className="text-xs text-gray-400">{t.ranking.campaignsUnit}</div>
                   </div>
                 </div>
               </div>
@@ -153,9 +153,7 @@ export default function RankingPage() {
         {/* Info */}
         <div className="bg-dark-600/50 backdrop-blur-sm rounded-xl p-4 border-2 border-dark-500/50 shadow-xl">
           <p className="text-xs text-gray-400 text-center">
-            {language === 'ko'
-              ? '랭킹은 매월 1일 00:00 (KST)에 초기화됩니다'
-              : 'Rankings reset on the 1st of each month at 00:00 KST'}
+            {t.ranking.resetInfo}
           </p>
         </div>
       </div>

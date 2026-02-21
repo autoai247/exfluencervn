@@ -54,7 +54,7 @@ export default function EditProfilePage() {
     // Demographics
     gender: 'female',
     ageRange: '25-34',
-    location: 'Hồ Chí Minh',
+    location: ['Hồ Chí Minh'] as string[],
 
     // Categories (max 5)
     categories: ['beauty', 'lifestyle'] as string[],
@@ -82,6 +82,14 @@ export default function EditProfilePage() {
       setFormData({ ...formData, categories: formData.categories.filter(c => c !== cat) });
     } else {
       setFormData({ ...formData, categories: [...formData.categories, cat] });
+    }
+  };
+
+  const toggleLocation = (loc: string) => {
+    if (formData.location.includes(loc)) {
+      setFormData({ ...formData, location: formData.location.filter(l => l !== loc) });
+    } else {
+      setFormData({ ...formData, location: [...formData.location, loc] });
     }
   };
 
@@ -244,41 +252,59 @@ export default function EditProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '도시' : 'Thành phố'} <span className="text-error">*</span></label>
-              <select
-                required
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="input"
-              >
-                <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
-                <optgroup label={language === 'ko' ? '── 남부 ──' : '── Miền Nam ──'}>
-                  <option value="Hồ Chí Minh">{language === 'ko' ? '호치민' : 'TP.HCM'}</option>
-                  <option value="Bình Dương">{language === 'ko' ? '빈즈엉' : 'Bình Dương'}</option>
-                  <option value="Đồng Nai">{language === 'ko' ? '동나이' : 'Đồng Nai'}</option>
-                  <option value="Vũng Tàu">{language === 'ko' ? '붕따우' : 'Vũng Tàu'}</option>
-                  <option value="Cần Thơ">{language === 'ko' ? '껀터' : 'Cần Thơ'}</option>
-                  <option value="Long An">{language === 'ko' ? '롱안' : 'Long An'}</option>
-                  <option value="Tiền Giang">{language === 'ko' ? '띠엔장' : 'Tiền Giang'}</option>
-                </optgroup>
-                <optgroup label={language === 'ko' ? '── 중부 ──' : '── Miền Trung ──'}>
-                  <option value="Đà Nẵng">{language === 'ko' ? '다낭' : 'Đà Nẵng'}</option>
-                  <option value="Huế">{language === 'ko' ? '후에' : 'Huế'}</option>
-                  <option value="Hội An">{language === 'ko' ? '호이안' : 'Hội An'}</option>
-                  <option value="Nha Trang">{language === 'ko' ? '나트랑' : 'Nha Trang'}</option>
-                  <option value="Quy Nhơn">{language === 'ko' ? '퀴논' : 'Quy Nhơn'}</option>
-                  <option value="Đà Lạt">{language === 'ko' ? '달랏' : 'Đà Lạt'}</option>
-                </optgroup>
-                <optgroup label={language === 'ko' ? '── 북부 ──' : '── Miền Bắc ──'}>
-                  <option value="Hà Nội">{language === 'ko' ? '하노이' : 'Hà Nội'}</option>
-                  <option value="Hải Phòng">{language === 'ko' ? '하이퐁' : 'Hải Phòng'}</option>
-                  <option value="Hạ Long">{language === 'ko' ? '하롱' : 'Hạ Long'}</option>
-                  <option value="Thái Nguyên">{language === 'ko' ? '타이응우옌' : 'Thái Nguyên'}</option>
-                  <option value="Bắc Ninh">{language === 'ko' ? '박닌' : 'Bắc Ninh'}</option>
-                  <option value="Nam Định">{language === 'ko' ? '남딘' : 'Nam Định'}</option>
-                </optgroup>
-                <option value="Khác">{language === 'ko' ? '기타' : 'Khác'}</option>
-              </select>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                {language === 'ko' ? '도시' : 'Thành phố'} <span className="text-error">*</span>
+                {formData.location.length > 0 && (
+                  <span className="ml-2 text-xs text-primary font-normal">{formData.location.length}{language === 'ko' ? '개 선택' : ' đã chọn'}</span>
+                )}
+              </label>
+              {[
+                { groupKo: '남부', groupVi: 'Miền Nam', cities: [
+                  { value: 'Hồ Chí Minh', ko: '호치민', vi: 'TP.HCM' },
+                  { value: 'Bình Dương', ko: '빈즈엉', vi: 'Bình Dương' },
+                  { value: 'Đồng Nai', ko: '동나이', vi: 'Đồng Nai' },
+                  { value: 'Vũng Tàu', ko: '붕따우', vi: 'Vũng Tàu' },
+                  { value: 'Cần Thơ', ko: '껀터', vi: 'Cần Thơ' },
+                  { value: 'Long An', ko: '롱안', vi: 'Long An' },
+                  { value: 'Tiền Giang', ko: '띠엔장', vi: 'Tiền Giang' },
+                ]},
+                { groupKo: '중부', groupVi: 'Miền Trung', cities: [
+                  { value: 'Đà Nẵng', ko: '다낭', vi: 'Đà Nẵng' },
+                  { value: 'Huế', ko: '후에', vi: 'Huế' },
+                  { value: 'Hội An', ko: '호이안', vi: 'Hội An' },
+                  { value: 'Nha Trang', ko: '나트랑', vi: 'Nha Trang' },
+                  { value: 'Quy Nhơn', ko: '퀴논', vi: 'Quy Nhơn' },
+                  { value: 'Đà Lạt', ko: '달랏', vi: 'Đà Lạt' },
+                ]},
+                { groupKo: '북부', groupVi: 'Miền Bắc', cities: [
+                  { value: 'Hà Nội', ko: '하노이', vi: 'Hà Nội' },
+                  { value: 'Hải Phòng', ko: '하이퐁', vi: 'Hải Phòng' },
+                  { value: 'Hạ Long', ko: '하롱', vi: 'Hạ Long' },
+                  { value: 'Thái Nguyên', ko: '타이응우옌', vi: 'Thái Nguyên' },
+                  { value: 'Bắc Ninh', ko: '박닌', vi: 'Bắc Ninh' },
+                  { value: 'Nam Định', ko: '남딘', vi: 'Nam Định' },
+                ]},
+              ].map(group => (
+                <div key={group.groupKo} className="mb-2">
+                  <div className="text-xs text-gray-500 mb-1">{language === 'ko' ? group.groupKo : group.groupVi}</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {group.cities.map(city => (
+                      <button
+                        key={city.value}
+                        type="button"
+                        onClick={() => toggleLocation(city.value)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                          formData.location.includes(city.value)
+                            ? 'bg-primary/20 border-primary text-primary'
+                            : 'bg-dark-700 border-dark-400 text-gray-400'
+                        }`}
+                      >
+                        {language === 'ko' ? city.ko : city.vi}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

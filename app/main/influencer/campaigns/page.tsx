@@ -417,7 +417,7 @@ function CampaignsPageContent() {
       categories,
       minBudget: searchParams.get('minBudget') || '',
       maxBudget: searchParams.get('maxBudget') || '',
-      location: searchParams.get('location') || '',
+      location: searchParams.get('location')?.split(',').filter(Boolean) || [] as string[],
       type: (searchParams.get('type') || '') as '' | 'cash' | 'points',
       eligibleOnly: searchParams.get('eligibleOnly') === 'true',
       requiresVehicle: searchParams.get('requiresVehicle') === 'true',
@@ -488,7 +488,7 @@ function CampaignsPageContent() {
     }
     if (filters.minBudget) params.set('minBudget', filters.minBudget);
     if (filters.maxBudget) params.set('maxBudget', filters.maxBudget);
-    if (filters.location) params.set('location', filters.location);
+    if (filters.location.length > 0) params.set('location', filters.location.join(','));
     if (filters.type) params.set('type', filters.type);
     if (filters.eligibleOnly) params.set('eligibleOnly', 'true');
     if (filters.requiresVehicle) params.set('requiresVehicle', 'true');
@@ -627,8 +627,9 @@ function CampaignsPageContent() {
     }
 
     // Location filter
-    if (filters.location) {
-      if (!campaign.location.toLowerCase().includes(filters.location.toLowerCase())) {
+    if (filters.location.length > 0) {
+      const campaignCity = campaign.location.split(',')[0].trim();
+      if (campaign.location !== 'Online' && !filters.location.some(loc => campaign.location.includes(loc) || campaignCity.includes(loc))) {
         return false;
       }
     }
@@ -676,6 +677,15 @@ function CampaignsPageContent() {
       platforms: prev.platforms.includes(platform)
         ? prev.platforms.filter((p) => p !== platform)
         : [...prev.platforms, platform],
+    }));
+  }, []);
+
+  const toggleLocation = useCallback((loc: string) => {
+    setFilters(prev => ({
+      ...prev,
+      location: prev.location.includes(loc)
+        ? prev.location.filter(l => l !== loc)
+        : [...prev.location, loc],
     }));
   }, []);
 
@@ -968,14 +978,51 @@ function CampaignsPageContent() {
             <div>
               <label className="text-sm font-medium text-gray-300 mb-2 block">
                 {t.campaignFilters.location}
+                {filters.location.length > 0 && (
+                  <span className="ml-2 text-xs text-primary font-normal">({filters.location.length})</span>
+                )}
               </label>
-              <input
-                type="text"
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                placeholder={t.campaignFilters.locationPlaceholder}
-                className="input text-sm"
-              />
+              {[
+                { groupKo: '남부', groupVi: 'Miền Nam', cities: [
+                  { value: 'Hồ Chí Minh', ko: '호치민', vi: 'TP.HCM' },
+                  { value: 'Bình Dương', ko: '빈즈엉', vi: 'Bình Dương' },
+                  { value: 'Đồng Nai', ko: '동나이', vi: 'Đồng Nai' },
+                  { value: 'Vũng Tàu', ko: '붕따우', vi: 'Vũng Tàu' },
+                  { value: 'Cần Thơ', ko: '껀터', vi: 'Cần Thơ' },
+                ]},
+                { groupKo: '중부', groupVi: 'Miền Trung', cities: [
+                  { value: 'Đà Nẵng', ko: '다낭', vi: 'Đà Nẵng' },
+                  { value: 'Huế', ko: '후에', vi: 'Huế' },
+                  { value: 'Nha Trang', ko: '나트랑', vi: 'Nha Trang' },
+                  { value: 'Đà Lạt', ko: '달랏', vi: 'Đà Lạt' },
+                ]},
+                { groupKo: '북부', groupVi: 'Miền Bắc', cities: [
+                  { value: 'Hà Nội', ko: '하노이', vi: 'Hà Nội' },
+                  { value: 'Hải Phòng', ko: '하이퐁', vi: 'Hải Phòng' },
+                  { value: 'Hạ Long', ko: '하롱', vi: 'Hạ Long' },
+                  { value: 'Bắc Ninh', ko: '박닌', vi: 'Bắc Ninh' },
+                ]},
+              ].map(group => (
+                <div key={group.groupKo} className="mb-2">
+                  <div className="text-xs text-gray-500 mb-1">{language === 'ko' ? group.groupKo : group.groupVi}</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {group.cities.map(city => (
+                      <button
+                        key={city.value}
+                        type="button"
+                        onClick={() => toggleLocation(city.value)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                          filters.location.includes(city.value)
+                            ? 'bg-primary/20 border-primary text-primary'
+                            : 'bg-dark-700 border-dark-500 text-gray-400 hover:border-dark-400'
+                        }`}
+                      >
+                        {language === 'ko' ? city.ko : city.vi}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Budget Filter */}
@@ -1105,7 +1152,7 @@ function CampaignsPageContent() {
               const activeFilterCount = [
                 filters.platforms.length > 0,
                 filters.categories.length > 0,
-                filters.location,
+                filters.location.length > 0,
                 filters.minBudget || filters.maxBudget,
                 filters.type,
                 filters.eligibleOnly,
@@ -1134,7 +1181,7 @@ function CampaignsPageContent() {
                   categories: [],
                   minBudget: '',
                   maxBudget: '',
-                  location: '',
+                  location: [],
                   type: '',
                   eligibleOnly: false,
                   requiresVehicle: false,
@@ -1552,7 +1599,7 @@ function CampaignsPageContent() {
                   categories: [],
                   minBudget: '',
                   maxBudget: '',
-                  location: '',
+                  location: [],
                   type: '',
                   eligibleOnly: false,
                   requiresVehicle: false,

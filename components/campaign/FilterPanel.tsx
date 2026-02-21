@@ -42,7 +42,7 @@ interface FilterPanelProps {
     categories: Category[];
     minBudget: string;
     maxBudget: string;
-    location: string;
+    location: string[];
     type: '' | 'cash' | 'points';
     eligibleOnly: boolean;
     requiresVehicle: boolean;
@@ -53,8 +53,10 @@ interface FilterPanelProps {
   setFilters: (filters: any) => void;
   togglePlatform: (platform: Platform) => void;
   toggleCategory: (category: Category) => void;
+  toggleLocation: (loc: string) => void;
   onClose: () => void;
   t: any;
+  language: string;
 }
 
 export default function FilterPanel({
@@ -62,8 +64,10 @@ export default function FilterPanel({
   setFilters,
   togglePlatform,
   toggleCategory,
+  toggleLocation,
   onClose,
   t,
+  language,
 }: FilterPanelProps) {
   const resetFilters = () => {
     setFilters({
@@ -71,7 +75,7 @@ export default function FilterPanel({
       categories: [],
       minBudget: '',
       maxBudget: '',
-      location: '',
+      location: [],
       type: '',
       eligibleOnly: false,
       requiresVehicle: false,
@@ -182,14 +186,51 @@ export default function FilterPanel({
         <label className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
           <MapPin size={16} />
           {t.campaignFilters.location}
+          {filters.location.length > 0 && (
+            <span className="ml-1 text-xs text-primary font-normal">({filters.location.length})</span>
+          )}
         </label>
-        <input
-          type="text"
-          placeholder={t.campaignFilters.locationPlaceholder}
-          value={filters.location}
-          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-          className="input"
-        />
+        {[
+          { groupKo: '남부', groupVi: 'Miền Nam', cities: [
+            { value: 'Hồ Chí Minh', ko: '호치민', vi: 'TP.HCM' },
+            { value: 'Bình Dương', ko: '빈즈엉', vi: 'Bình Dương' },
+            { value: 'Đồng Nai', ko: '동나이', vi: 'Đồng Nai' },
+            { value: 'Vũng Tàu', ko: '붕따우', vi: 'Vũng Tàu' },
+            { value: 'Cần Thơ', ko: '껀터', vi: 'Cần Thơ' },
+          ]},
+          { groupKo: '중부', groupVi: 'Miền Trung', cities: [
+            { value: 'Đà Nẵng', ko: '다낭', vi: 'Đà Nẵng' },
+            { value: 'Huế', ko: '후에', vi: 'Huế' },
+            { value: 'Nha Trang', ko: '나트랑', vi: 'Nha Trang' },
+            { value: 'Đà Lạt', ko: '달랏', vi: 'Đà Lạt' },
+          ]},
+          { groupKo: '북부', groupVi: 'Miền Bắc', cities: [
+            { value: 'Hà Nội', ko: '하노이', vi: 'Hà Nội' },
+            { value: 'Hải Phòng', ko: '하이퐁', vi: 'Hải Phòng' },
+            { value: 'Hạ Long', ko: '하롱', vi: 'Hạ Long' },
+            { value: 'Bắc Ninh', ko: '박닌', vi: 'Bắc Ninh' },
+          ]},
+        ].map(group => (
+          <div key={group.groupKo} className="mb-2">
+            <div className="text-xs text-gray-500 mb-1">{language === 'ko' ? group.groupKo : group.groupVi}</div>
+            <div className="flex flex-wrap gap-1.5">
+              {group.cities.map(city => (
+                <button
+                  key={city.value}
+                  type="button"
+                  onClick={() => toggleLocation(city.value)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                    filters.location.includes(city.value)
+                      ? 'bg-primary/20 border-primary text-primary'
+                      : 'bg-dark-700 border-dark-500 text-gray-400 hover:border-dark-400'
+                  }`}
+                >
+                  {language === 'ko' ? city.ko : city.vi}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Campaign Type */}

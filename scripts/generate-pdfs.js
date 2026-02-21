@@ -737,6 +737,566 @@ async function generateCaptionHooks(lang) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 4. CAMPAIGN BRIEF TEMPLATE (광고주용)
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function generateCampaignBrief(lang) {
+  const fontPath = lang === 'ko' ? KO_FONT : VI_FONT;
+  const { doc, font } = await createDoc(fontPath);
+  const page = addPage(doc);
+  const { width, height } = page.getSize();
+
+  const T = lang === 'ko' ? {
+    title: '캠페인 브리프 템플릿',
+    subtitle: '인플루언서(KOL)에게 전달하는 공식 브리프',
+    tip: '* [] 안의 내용을 실제 정보로 채워서 KOL에게 전달하세요.',
+    s1: '브랜드 & 캠페인 기본 정보',
+    brandName: '브랜드명',
+    brandNamePh: '[브랜드 이름]',
+    product: '제품/서비스명',
+    productPh: '[제품 또는 서비스 이름]',
+    campaignName: '캠페인명',
+    campaignNamePh: '[캠페인 제목]',
+    period: '캠페인 기간',
+    periodPh: '[시작일] ~ [종료일]',
+    budget: 'KOL당 예산',
+    budgetPh: '[금액] VND',
+    s2: '캠페인 목표',
+    objective: '주요 목표',
+    objectives: ['브랜드 인지도 향상', '제품 판매 증대', '앱 다운로드/가입 유도', '이벤트 홍보', '신제품 런칭'],
+    kpi: '성과 지표 (KPI)',
+    kpiPh: '[목표 조회수, 도달 수, 클릭 수, 전환율 등]',
+    s3: '타겟 오디언스',
+    targetAge: '나이',
+    targetAgePh: '[예: 20-35세]',
+    targetGender: '성별',
+    targetGenderPh: '[전체 / 여성 / 남성]',
+    targetLocation: '지역',
+    targetLocationPh: '[도시 또는 전국]',
+    targetInterest: '관심사',
+    targetInterestPh: '[뷰티, 패션, 음식, 라이프스타일 등]',
+    s4: '콘텐츠 가이드라인',
+    platform: '플랫폼 및 형식',
+    platformRows: [
+      ['Instagram', '피드 게시물 _개 + 스토리 _개'],
+      ['TikTok', '영상 _개 (최소 _초)'],
+      ['YouTube', '영상 _개 (최소 _분)'],
+    ],
+    mustInclude: '반드시 포함할 사항',
+    mustItems: [
+      '제품명 및 주요 특징 언급',
+      '브랜드 계정 태그: @[계정명]',
+      '지정 해시태그: #[해시태그1] #[해시태그2]',
+      '구매 링크 또는 할인 코드 포함',
+    ],
+    prohibited: '금지 사항',
+    prohibitedItems: [
+      '경쟁 브랜드 제품과 직접 비교',
+      '의학적/과학적 근거 없는 효능 과장',
+      '제품 재판매 또는 타인 양도',
+      '게시물 조기 삭제 (캠페인 종료 후 _일까지 유지)',
+    ],
+    tone: '톤 & 매너',
+    toneOptions: ['자연스럽고 진솔한 리뷰', '전문적이고 신뢰감 있는', '밝고 에너지 넘치는', '라이프스타일 중심'],
+    s5: '제공 사항',
+    provide: '광고주 제공 항목',
+    provideItems: [
+      '제품 샘플 _개 (무상 제공)',
+      '캠페인 브리핑 자료 (이 문서)',
+      '제품 사진/영상 자료',
+      '전용 할인 코드: [코드]',
+    ],
+    s6: '타임라인',
+    timeline: [
+      ['브리프 발송', '[날짜]'],
+      ['지원 마감', '[날짜]'],
+      ['KOL 선정 완료', '[날짜]'],
+      ['제품 발송', '[날짜]'],
+      ['콘텐츠 초안 제출', '[날짜]'],
+      ['검토 & 피드백', '[날짜]'],
+      ['게시 마감', '[날짜]'],
+      ['결제 완료', '[날짜]'],
+    ],
+    s7: '연락처',
+    contact: '담당자',
+    contactPh: '[이름]',
+    contactEmail: '이메일',
+    contactEmailPh: '[email@brand.com]',
+    contactPhone: '전화/카카오',
+    contactPhonePh: '[번호 또는 ID]',
+    footer: 'Exfluencer VN | exfluencer.vn | 인플루언서 마케팅 플랫폼',
+  } : {
+    title: 'Mẫu Campaign Brief',
+    subtitle: 'Brief chính thức gửi đến Influencer (KOL)',
+    tip: '* Điền thông tin thực vào các ô [] và gửi cho KOL.',
+    s1: 'Thông Tin Cơ Bản',
+    brandName: 'Tên thương hiệu',
+    brandNamePh: '[Tên thương hiệu]',
+    product: 'Tên sản phẩm/dịch vụ',
+    productPh: '[Tên sản phẩm hoặc dịch vụ]',
+    campaignName: 'Tên chiến dịch',
+    campaignNamePh: '[Tiêu đề chiến dịch]',
+    period: 'Thời gian chiến dịch',
+    periodPh: '[Ngày bắt đầu] ~ [Ngày kết thúc]',
+    budget: 'Ngân sách mỗi KOL',
+    budgetPh: '[Số tiền] VND',
+    s2: 'Mục Tiêu Chiến Dịch',
+    objective: 'Mục tiêu chính',
+    objectives: ['Tăng nhận diện thương hiệu', 'Tăng doanh số sản phẩm', 'Thúc đẩy tải app/đăng ký', 'Quảng bá sự kiện', 'Ra mắt sản phẩm mới'],
+    kpi: 'Chỉ số đo lường (KPI)',
+    kpiPh: '[Lượt xem, reach, click, tỉ lệ chuyển đổi mục tiêu,...]',
+    s3: 'Đối Tượng Mục Tiêu',
+    targetAge: 'Độ tuổi',
+    targetAgePh: '[VD: 20-35 tuổi]',
+    targetGender: 'Giới tính',
+    targetGenderPh: '[Tất cả / Nữ / Nam]',
+    targetLocation: 'Khu vực',
+    targetLocationPh: '[Thành phố hoặc toàn quốc]',
+    targetInterest: 'Sở thích',
+    targetInterestPh: '[Làm đẹp, thời trang, ẩm thực, lifestyle,...]',
+    s4: 'Hướng Dẫn Nội Dung',
+    platform: 'Nền tảng & Định dạng',
+    platformRows: [
+      ['Instagram', 'Feed post _cái + Story _cái'],
+      ['TikTok', 'Video _cái (tối thiểu _giây)'],
+      ['YouTube', 'Video _cái (tối thiểu _phút)'],
+    ],
+    mustInclude: 'Nội dung bắt buộc',
+    mustItems: [
+      'Đề cập tên sản phẩm và tính năng chính',
+      'Tag tài khoản thương hiệu: @[tên tài khoản]',
+      'Hashtag chỉ định: #[hashtag1] #[hashtag2]',
+      'Bao gồm link mua hàng hoặc mã giảm giá',
+    ],
+    prohibited: 'Điều cấm',
+    prohibitedItems: [
+      'So sánh trực tiếp với sản phẩm cạnh tranh',
+      'Phóng đại công dụng không có cơ sở khoa học',
+      'Bán lại hoặc chuyển nhượng sản phẩm',
+      'Xóa bài trước hạn (giữ đến _ ngày sau khi campaign kết thúc)',
+    ],
+    tone: 'Tone & Manner',
+    toneOptions: ['Review tự nhiên, chân thực', 'Chuyên nghiệp, đáng tin cậy', 'Năng động, tràn đầy năng lượng', 'Trung tâm là lifestyle'],
+    s5: 'Quyền Lợi KOL',
+    provide: 'Thương hiệu cung cấp',
+    provideItems: [
+      'Mẫu sản phẩm _ cái (miễn phí)',
+      'Tài liệu brief (tài liệu này)',
+      'Ảnh/video sản phẩm sẵn có',
+      'Mã giảm giá độc quyền: [mã]',
+    ],
+    s6: 'Timeline',
+    timeline: [
+      ['Gửi brief', '[Ngày]'],
+      ['Deadline ứng tuyển', '[Ngày]'],
+      ['Chốt danh sách KOL', '[Ngày]'],
+      ['Gửi sản phẩm', '[Ngày]'],
+      ['Nộp bản nháp nội dung', '[Ngày]'],
+      ['Review & Feedback', '[Ngày]'],
+      ['Deadline đăng bài', '[Ngày]'],
+      ['Thanh toán hoàn tất', '[Ngày]'],
+    ],
+    s7: 'Thông Tin Liên Hệ',
+    contact: 'Người phụ trách',
+    contactPh: '[Tên]',
+    contactEmail: 'Email',
+    contactEmailPh: '[email@brand.com]',
+    contactPhone: 'Điện thoại/Zalo',
+    contactPhonePh: '[Số hoặc ID]',
+    footer: 'Exfluencer VN | exfluencer.vn | Nền tảng Influencer Marketing',
+  };
+
+  let y = height - 40;
+
+  // Header
+  drawRect(page, 0, height - 90, width, 90, C.secondary);
+  page.drawText(T.title, { x: 40, y: height - 48, size: 26, font, color: C.white });
+  page.drawText(T.subtitle, { x: 40, y: height - 72, size: 11, font, color: rgb(0.9,1,1) });
+  drawRect(page, 460, height - 80, 100, 70, rgb(0.2,0.6,0.6));
+  page.drawText('Exfluencer', { x: 464, y: height - 52, size: 10, font, color: C.white });
+  page.drawText('VN', { x: 490, y: height - 65, size: 16, font, color: C.white });
+
+  y = height - 104;
+  page.drawText(T.tip, { x: 40, y, size: 9, font, color: C.gray });
+  y -= 18;
+
+  // S1 기본 정보
+  y = sectionHeader(page, font, T.s1, y);
+  const f1 = [
+    [T.brandName, T.brandNamePh],
+    [T.product, T.productPh],
+    [T.campaignName, T.campaignNamePh],
+    [T.period, T.periodPh],
+    [T.budget, T.budgetPh],
+  ];
+  for (const [label, ph] of f1) {
+    page.drawText(label, { x: 50, y, size: 10, font, color: C.gray });
+    drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+    page.drawText(ph, { x: 215, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+    y -= 26;
+  }
+  y -= 4;
+  y = divider(page, y);
+
+  // S2 목표
+  y = sectionHeader(page, font, T.s2, y);
+  page.drawText(T.objective, { x: 50, y, size: 10, font, color: C.gray });
+  y -= 18;
+  T.objectives.forEach((obj, i) => {
+    const bg = i % 2 === 0 ? C.lightGray : C.white;
+    drawRect(page, 50, y - 3, 505, 18, bg);
+    drawRect(page, 50, y + 5, 8, 8, C.secondary);
+    page.drawText(obj, { x: 64, y: y + 1, size: 9, font, color: C.black });
+    y -= 20;
+  });
+  y -= 4;
+  page.drawText(T.kpi, { x: 50, y, size: 10, font, color: C.gray });
+  drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+  page.drawText(T.kpiPh, { x: 215, y: y + 1, size: 8, font, color: rgb(0.6,0.6,0.6) });
+  y -= 28;
+  y = divider(page, y);
+
+  // S3 타겟
+  y = sectionHeader(page, font, T.s3, y);
+  const targetFields = [
+    [T.targetAge, T.targetAgePh],
+    [T.targetGender, T.targetGenderPh],
+    [T.targetLocation, T.targetLocationPh],
+    [T.targetInterest, T.targetInterestPh],
+  ];
+  for (const [label, ph] of targetFields) {
+    page.drawText(label, { x: 50, y, size: 10, font, color: C.gray });
+    drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+    page.drawText(ph, { x: 215, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+    y -= 26;
+  }
+  y -= 4;
+  y = divider(page, y);
+
+  // S4 콘텐츠 가이드라인
+  y = sectionHeader(page, font, T.s4, y);
+
+  // 플랫폼 테이블
+  page.drawText(T.platform, { x: 50, y, size: 10, font, color: C.gray });
+  y -= 18;
+  drawRect(page, 50, y - 4, 505, 20, rgb(0.2,0.2,0.2));
+  page.drawText(lang === 'ko' ? '플랫폼' : 'Nền tảng', { x: 56, y: y + 1, size: 9, font, color: C.white });
+  page.drawText(lang === 'ko' ? '요구 사항' : 'Yêu cầu', { x: 200, y: y + 1, size: 9, font, color: C.white });
+  y -= 22;
+  T.platformRows.forEach(([platform, req], i) => {
+    drawRect(page, 50, y - 4, 505, 20, i % 2 === 0 ? C.lightGray : C.white);
+    page.drawText(platform, { x: 56, y: y + 1, size: 9, font, color: C.black });
+    page.drawText(req, { x: 200, y: y + 1, size: 9, font, color: rgb(0.5,0.5,0.5) });
+    y -= 22;
+  });
+  y -= 6;
+
+  // 반드시 포함
+  page.drawText(T.mustInclude, { x: 50, y, size: 10, font, color: C.gray });
+  y -= 18;
+  T.mustItems.forEach((item, i) => {
+    drawRect(page, 50, y - 3, 505, 18, i % 2 === 0 ? rgb(0.94,1,0.94) : C.white);
+    page.drawText('✓', { x: 56, y: y + 1, size: 9, font, color: rgb(0.1,0.6,0.1) });
+    page.drawText(item, { x: 70, y: y + 1, size: 9, font, color: C.black });
+    y -= 20;
+  });
+  y -= 4;
+
+  // 금지 사항
+  page.drawText(T.prohibited, { x: 50, y, size: 10, font, color: C.gray });
+  y -= 18;
+  T.prohibitedItems.forEach((item, i) => {
+    drawRect(page, 50, y - 3, 505, 18, i % 2 === 0 ? rgb(1,0.95,0.95) : C.white);
+    page.drawText('✗', { x: 56, y: y + 1, size: 9, font, color: rgb(0.8,0.1,0.1) });
+    page.drawText(item, { x: 70, y: y + 1, size: 9, font, color: C.black });
+    y -= 20;
+  });
+  y -= 6;
+  y = divider(page, y);
+
+  // S5 제공 사항
+  y = sectionHeader(page, font, T.s5, y);
+  page.drawText(T.provide, { x: 50, y, size: 10, font, color: C.gray });
+  y -= 18;
+  T.provideItems.forEach((item, i) => {
+    drawRect(page, 50, y - 3, 505, 18, i % 2 === 0 ? C.lightGray : C.white);
+    page.drawText('•', { x: 56, y: y + 1, size: 9, font, color: C.secondary });
+    page.drawText(item, { x: 66, y: y + 1, size: 9, font, color: C.black });
+    y -= 20;
+  });
+  y -= 6;
+  y = divider(page, y);
+
+  // S6 타임라인
+  y = sectionHeader(page, font, T.s6, y);
+  drawRect(page, 50, y - 4, 505, 20, rgb(0.2,0.2,0.2));
+  page.drawText(lang === 'ko' ? '단계' : 'Giai đoạn', { x: 56, y: y + 1, size: 9, font, color: C.white });
+  page.drawText(lang === 'ko' ? '날짜' : 'Ngày', { x: 360, y: y + 1, size: 9, font, color: C.white });
+  y -= 22;
+  T.timeline.forEach(([step, date], i) => {
+    drawRect(page, 50, y - 3, 505, 18, i % 2 === 0 ? C.lightGray : C.white);
+    page.drawText(step, { x: 56, y: y + 1, size: 9, font, color: C.black });
+    drawRect(page, 350, y - 3, 205, 18, i % 2 === 0 ? rgb(0.88,0.88,0.88) : rgb(0.95,0.95,0.95) );
+    page.drawText(date, { x: 360, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+    y -= 20;
+  });
+  y -= 6;
+  y = divider(page, y);
+
+  // S7 연락처
+  y = sectionHeader(page, font, T.s7, y);
+  [[T.contact, T.contactPh],[T.contactEmail, T.contactEmailPh],[T.contactPhone, T.contactPhonePh]].forEach(([label, ph]) => {
+    page.drawText(label, { x: 50, y, size: 10, font, color: C.gray });
+    drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+    page.drawText(ph, { x: 215, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+    y -= 26;
+  });
+
+  // Footer
+  drawRect(page, 0, 0, width, 30, C.black);
+  page.drawText(T.footer, { x: 40, y: 10, size: 8, font, color: rgb(0.6,0.6,0.6) });
+
+  const bytes = await doc.save();
+  const outPath = path.join(OUT_DIR, `campaign-brief-${lang}.pdf`);
+  fs.writeFileSync(outPath, bytes);
+  console.log(`✅ ${outPath}`);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. KOL 선정 체크리스트 (광고주용)
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function generateKolChecklist(lang) {
+  const fontPath = lang === 'ko' ? KO_FONT : VI_FONT;
+  const { doc, font } = await createDoc(fontPath);
+  const page = addPage(doc);
+  const { width, height } = page.getSize();
+
+  const T = lang === 'ko' ? {
+    title: 'KOL 선정 체크리스트',
+    subtitle: '올바른 KOL을 선택하는 10단계 검증 프레임워크',
+    intro: 'KOL 후보를 이 체크리스트로 평가하세요. 총점 70점 이상이면 협업 권장입니다.',
+    kolName: 'KOL 이름/계정',
+    kolNamePh: '[@계정명]',
+    platform: '주요 플랫폼',
+    platformPh: '[Instagram / TikTok / YouTube]',
+    sections: [
+      {
+        title: '1. 기본 지표 (25점)',
+        color: C.primary,
+        items: [
+          { label: '팔로워 수가 캠페인 요건에 맞는가?', score: 5 },
+          { label: '참여율(ER)이 3% 이상인가?', score: 10 },
+          { label: '평균 조회수/도달이 팔로워 수의 20% 이상인가?', score: 5 },
+          { label: '최근 30일 내 게시물이 있는 활성 계정인가?', score: 5 },
+        ],
+      },
+      {
+        title: '2. 오디언스 품질 (20점)',
+        color: C.secondary,
+        items: [
+          { label: '팔로워의 연령/성별이 타겟과 일치하는가?', score: 10 },
+          { label: '팔로워의 지역이 타겟 시장과 일치하는가?', score: 5 },
+          { label: '가짜 팔로워/봇 의심 지표가 없는가?', score: 5 },
+        ],
+      },
+      {
+        title: '3. 콘텐츠 품질 (20점)',
+        color: rgb(0.4,0.2,0.8),
+        items: [
+          { label: '콘텐츠 품질이 브랜드 이미지와 일치하는가?', score: 10 },
+          { label: '이전 협업 광고가 자연스럽게 녹아있는가?', score: 5 },
+          { label: '캡션/스토리텔링이 오디언스와 잘 소통하는가?', score: 5 },
+        ],
+      },
+      {
+        title: '4. 브랜드 적합성 (20점)',
+        color: rgb(0.9,0.5,0.0),
+        items: [
+          { label: '콘텐츠 niche가 우리 제품 카테고리와 일치하는가?', score: 10 },
+          { label: '경쟁 브랜드와 현재 독점 계약이 없는가?', score: 5 },
+          { label: '과거 논란이나 부정적 이슈가 없는가?', score: 5 },
+        ],
+      },
+      {
+        title: '5. 실무 검토 (15점)',
+        color: rgb(0.2,0.7,0.4),
+        items: [
+          { label: '캠페인 기간과 일정이 맞는가?', score: 5 },
+          { label: '제안 단가가 예산 범위 내인가?', score: 5 },
+          { label: '소통이 원활하고 응답이 빠른가?', score: 5 },
+        ],
+      },
+    ],
+    totalScore: '총점',
+    maxScore: '/ 100점',
+    recommend: '70점 이상: 협업 권장 ✓   50-69점: 조건부 협업 △   49점 이하: 재고 권장 ✗',
+    memo: '추가 메모',
+    memoPh: '[KOL에 대한 기타 의견이나 특이사항을 적어주세요]',
+    decision: '최종 결정',
+    decisionOptions: ['✓ 협업 진행', '△ 추가 검토 필요', '✗ 부적합'],
+    footer: 'Exfluencer VN | exfluencer.vn | 인플루언서 마케팅 플랫폼',
+  } : {
+    title: 'Checklist Chọn KOL',
+    subtitle: 'Khung đánh giá 10 bước để chọn đúng KOL',
+    intro: 'Đánh giá từng KOL ứng viên. Tổng điểm từ 70 trở lên được khuyến nghị hợp tác.',
+    kolName: 'Tên/tài khoản KOL',
+    kolNamePh: '[@tên tài khoản]',
+    platform: 'Nền tảng chính',
+    platformPh: '[Instagram / TikTok / YouTube]',
+    sections: [
+      {
+        title: '1. Chỉ Số Cơ Bản (25 điểm)',
+        color: C.primary,
+        items: [
+          { label: 'Số followers có đáp ứng yêu cầu chiến dịch không?', score: 5 },
+          { label: 'ER (Engagement Rate) có trên 3% không?', score: 10 },
+          { label: 'Lượt xem TB/reach có trên 20% followers không?', score: 5 },
+          { label: 'Có đăng bài trong 30 ngày gần nhất không?', score: 5 },
+        ],
+      },
+      {
+        title: '2. Chất Lượng Đối Tượng (20 điểm)',
+        color: C.secondary,
+        items: [
+          { label: 'Độ tuổi/giới tính followers có khớp target không?', score: 10 },
+          { label: 'Khu vực followers có khớp thị trường mục tiêu không?', score: 5 },
+          { label: 'Không có dấu hiệu follower ảo/bot?', score: 5 },
+        ],
+      },
+      {
+        title: '3. Chất Lượng Nội Dung (20 điểm)',
+        color: rgb(0.4,0.2,0.8),
+        items: [
+          { label: 'Chất lượng nội dung có phù hợp hình ảnh thương hiệu?', score: 10 },
+          { label: 'Quảng cáo hợp tác trước đây có tự nhiên không?', score: 5 },
+          { label: 'Caption/kể chuyện có tương tác tốt với followers?', score: 5 },
+        ],
+      },
+      {
+        title: '4. Độ Phù Hợp Thương Hiệu (20 điểm)',
+        color: rgb(0.9,0.5,0.0),
+        items: [
+          { label: 'Niche nội dung có khớp với danh mục sản phẩm?', score: 10 },
+          { label: 'Hiện không có hợp đồng độc quyền với đối thủ?', score: 5 },
+          { label: 'Không có lịch sử tranh cãi hoặc scandal?', score: 5 },
+        ],
+      },
+      {
+        title: '5. Đánh Giá Thực Tế (15 điểm)',
+        color: rgb(0.2,0.7,0.4),
+        items: [
+          { label: 'Thời gian chiến dịch có phù hợp lịch KOL?', score: 5 },
+          { label: 'Mức phí đề xuất có trong ngân sách không?', score: 5 },
+          { label: 'Giao tiếp thuận lợi và phản hồi nhanh?', score: 5 },
+        ],
+      },
+    ],
+    totalScore: 'Tổng điểm',
+    maxScore: '/ 100 điểm',
+    recommend: '70+: Khuyến nghị ✓   50-69: Hợp tác có điều kiện △   <50: Cân nhắc lại ✗',
+    memo: 'Ghi chú thêm',
+    memoPh: '[Các ý kiến hoặc đặc điểm khác về KOL này]',
+    decision: 'Quyết định cuối',
+    decisionOptions: ['✓ Tiến hành hợp tác', '△ Cần xem xét thêm', '✗ Không phù hợp'],
+    footer: 'Exfluencer VN | exfluencer.vn | Nền tảng Influencer Marketing',
+  };
+
+  let y = height - 40;
+
+  // Header
+  drawRect(page, 0, height - 90, width, 90, C.primary);
+  page.drawText(T.title, { x: 40, y: height - 48, size: 24, font, color: C.white });
+  page.drawText(T.subtitle, { x: 40, y: height - 72, size: 10, font, color: rgb(1,0.9,0.9) });
+  drawRect(page, 460, height - 80, 100, 70, rgb(0.8,0.2,0.2));
+  page.drawText('Exfluencer', { x: 464, y: height - 52, size: 10, font, color: C.white });
+  page.drawText('VN', { x: 490, y: height - 65, size: 16, font, color: C.white });
+
+  y = height - 104;
+  page.drawText(T.intro, { x: 40, y, size: 9, font, color: C.gray });
+  y -= 18;
+
+  // KOL 정보
+  page.drawText(T.kolName, { x: 50, y, size: 10, font, color: C.gray });
+  drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+  page.drawText(T.kolNamePh, { x: 215, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+  y -= 26;
+  page.drawText(T.platform, { x: 50, y, size: 10, font, color: C.gray });
+  drawRect(page, 210, y - 4, 340, 18, C.lightGray);
+  page.drawText(T.platformPh, { x: 215, y: y + 1, size: 9, font, color: rgb(0.6,0.6,0.6) });
+  y -= 30;
+  y = divider(page, y);
+
+  // 섹션별 체크리스트
+  let totalMax = 0;
+  for (const section of T.sections) {
+    y = sectionHeader(page, font, section.title, y);
+
+    // 테이블 헤더
+    drawRect(page, 40, y - 4, 515, 20, rgb(0.2,0.2,0.2));
+    page.drawText(lang === 'ko' ? '항목' : 'Tiêu chí', { x: 50, y: y + 1, size: 9, font, color: C.white });
+    page.drawText(lang === 'ko' ? '배점' : 'Điểm tối đa', { x: 390, y: y + 1, size: 9, font, color: C.white });
+    page.drawText(lang === 'ko' ? '내 점수' : 'Điểm của tôi', { x: 450, y: y + 1, size: 9, font, color: C.white });
+    y -= 22;
+
+    for (let i = 0; i < section.items.length; i++) {
+      const item = section.items[i];
+      totalMax += item.score;
+      const bg = i % 2 === 0 ? C.lightGray : C.white;
+      drawRect(page, 40, y - 4, 515, 20, bg);
+      // 체크박스
+      drawRect(page, 46, y - 1, 14, 14, C.white);
+      drawRect(page, 47, y, 12, 12, rgb(0.9,0.9,0.9));
+      page.drawText(item.label, { x: 66, y: y + 1, size: 9, font, color: C.black });
+      page.drawText(`${item.score}점`, { x: 395, y: y + 1, size: 9, font, color: C.gray });
+      // 점수 입력 박스
+      drawRect(page, 448, y - 2, 40, 16, C.white);
+      y -= 22;
+    }
+    y -= 6;
+  }
+
+  // 총점
+  drawRect(page, 40, y - 8, 515, 30, rgb(0.15,0.15,0.15));
+  page.drawText(T.totalScore, { x: 50, y: y + 3, size: 12, font, color: C.white });
+  page.drawText(T.maxScore, { x: 390, y: y + 3, size: 11, font, color: C.secondary });
+  drawRect(page, 440, y - 6, 60, 26, rgb(0.3,0.3,0.3));
+  y -= 20;
+  y -= 12;
+
+  // 권장 기준
+  drawRect(page, 40, y - 6, 515, 22, rgb(1,0.97,0.85));
+  page.drawText(T.recommend, { x: 50, y: y + 1, size: 8, font, color: rgb(0.5,0.4,0.0) });
+  y -= 28;
+  y = divider(page, y);
+
+  // 메모
+  y = sectionHeader(page, font, T.memo, y);
+  drawRect(page, 40, y - 54, 515, 58, C.lightGray);
+  page.drawText(T.memoPh, { x: 50, y: y - 8, size: 9, font, color: rgb(0.7,0.7,0.7) });
+  y -= 66;
+  y = divider(page, y);
+
+  // 최종 결정
+  y = sectionHeader(page, font, T.decision, y);
+  const decX = [50, 220, 390];
+  T.decisionOptions.forEach((opt, i) => {
+    drawRect(page, decX[i], y - 4, 150, 22, C.lightGray);
+    drawRect(page, decX[i] + 4, y, 14, 14, C.white);
+    page.drawText(opt, { x: decX[i] + 22, y: y + 2, size: 9, font, color: C.black });
+  });
+
+  // Footer
+  drawRect(page, 0, 0, width, 30, C.black);
+  page.drawText(T.footer, { x: 40, y: 10, size: 8, font, color: rgb(0.6,0.6,0.6) });
+
+  const bytes = await doc.save();
+  const outPath = path.join(OUT_DIR, `kol-checklist-${lang}.pdf`);
+  fs.writeFileSync(outPath, bytes);
+  console.log(`✅ ${outPath}`);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -748,5 +1308,9 @@ async function generateCaptionHooks(lang) {
   await generateRateCard('vi');
   await generateCaptionHooks('ko');
   await generateCaptionHooks('vi');
+  await generateCampaignBrief('ko');
+  await generateCampaignBrief('vi');
+  await generateKolChecklist('ko');
+  await generateKolChecklist('vi');
   console.log('🎉 모든 PDF 생성 완료!');
 })();

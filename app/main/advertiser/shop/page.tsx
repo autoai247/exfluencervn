@@ -13,6 +13,8 @@ import {
   BadgeCheck,
   ExternalLink,
   TrendingUp,
+  Download,
+  ClipboardList,
 } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
@@ -104,6 +106,39 @@ const tips = [
   { icon: '🤝', tipKo: '충분한 지원(샘플, 명확한 브리프)을 받은 KOL이 더 좋은 콘텐츠 제작', tipVi: 'KOL được hỗ trợ tốt (sample, brief rõ ràng) tạo nội dung chất lượng hơn' },
 ];
 
+const advertiserTemplates = [
+  {
+    id: 'campaign-brief',
+    icon: FileText,
+    color: 'from-secondary to-accent',
+    titleKo: '캠페인 브리프 템플릿',
+    titleVi: 'Mẫu Campaign Brief',
+    descKo: 'KOL에게 전달하는 공식 캠페인 브리프 양식',
+    descVi: 'Mẫu brief chính thức gửi cho KOL',
+    tagsKo: ['PDF', '무료', 'A4'],
+    tagsVi: ['PDF', 'Miễn phí', 'A4'],
+    urlKo: '/templates/campaign-brief-ko.pdf',
+    urlVi: '/templates/campaign-brief-vi.pdf',
+    filenameKo: '캠페인_브리프_템플릿.pdf',
+    filenameVi: 'Campaign_Brief_Template.pdf',
+  },
+  {
+    id: 'kol-checklist',
+    icon: ClipboardList,
+    color: 'from-primary to-secondary',
+    titleKo: 'KOL 선정 체크리스트',
+    titleVi: 'Checklist Chọn KOL',
+    descKo: '100점 만점 KOL 검증 프레임워크 (5개 영역)',
+    descVi: 'Khung đánh giá 100 điểm để chọn đúng KOL',
+    tagsKo: ['PDF', '무료', '100점'],
+    tagsVi: ['PDF', 'Miễn phí', '100 điểm'],
+    urlKo: '/templates/kol-checklist-ko.pdf',
+    urlVi: '/templates/kol-checklist-vi.pdf',
+    filenameKo: 'KOL_선정_체크리스트.pdf',
+    filenameVi: 'KOL_Selection_Checklist.pdf',
+  },
+];
+
 export default function AdvertiserResourcesPage() {
   const { language } = useLanguage();
   return (
@@ -184,6 +219,52 @@ export default function AdvertiserResourcesPage() {
                 <p className="text-xs text-gray-300 leading-relaxed">{language === 'ko' ? item.tipKo : item.tipVi}</p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* ── 무료 템플릿 다운로드 ── */}
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-gray-300 px-1 flex items-center gap-2">
+            <Download size={14} className="text-primary" />
+            {language === 'ko' ? '무료 다운로드 템플릿' : 'Mẫu tải về miễn phí'}
+          </h3>
+
+          <div className="space-y-2">
+            {advertiserTemplates.map((tpl) => {
+              const Icon = tpl.icon;
+              const title = language === 'ko' ? tpl.titleKo : tpl.titleVi;
+              const desc = language === 'ko' ? tpl.descKo : tpl.descVi;
+              const tags = language === 'ko' ? tpl.tagsKo : tpl.tagsVi;
+              const pdfUrl = language === 'ko' ? tpl.urlKo : tpl.urlVi;
+              const filename = language === 'ko' ? tpl.filenameKo : tpl.filenameVi;
+              return (
+                <div key={tpl.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${tpl.color} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={20} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-bold text-white">{title}</div>
+                      <div className="text-xs text-gray-400 mt-0.5 truncate">{desc}</div>
+                      <div className="flex gap-1.5 mt-1">
+                        {tags.map((tag) => (
+                          <span key={tag} className="text-[9px] px-1.5 py-0.5 bg-dark-500 text-gray-400 rounded-md">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <a
+                      href={pdfUrl}
+                      download={filename}
+                      className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Download size={12} />
+                      {language === 'ko' ? '다운로드' : 'Tải về'}
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

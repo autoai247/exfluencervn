@@ -31,10 +31,10 @@ import { getMockUserProfile } from '@/lib/mockData';
 
 // ─── Mock Rate Card Data ────────────────────────────────────
 const rateCard = [
-  { type: 'Post / Feed', price: 500000, note: '1 bài đăng + caption' },
-  { type: 'Story (3 frames)', price: 200000, note: '3 khung story liên tiếp' },
-  { type: 'Reel / Short', price: 800000, note: 'Video 15–60 giây' },
-  { type: 'Package (Post + Story + Reel)', price: 1200000, note: 'Combo đủ gói' },
+  { type: 'Post / Feed', price: 500000, noteKo: '게시물 1개 + 캡션', noteVi: '1 bài đăng + caption' },
+  { type: 'Story (3 frames)', price: 200000, noteKo: '스토리 3프레임 연속', noteVi: '3 khung story liên tiếp' },
+  { type: 'Reel / Short', price: 800000, noteKo: '영상 15–60초', noteVi: 'Video 15–60 giây' },
+  { type: 'Package (Post + Story + Reel)', price: 1200000, noteKo: '풀 패키지 콤보', noteVi: 'Combo đủ gói' },
 ];
 
 const pastCampaigns = [
@@ -43,7 +43,8 @@ const pastCampaigns = [
     brand: 'Laneige Vietnam',
     title: 'Water Sleeping Mask Review',
     platform: 'instagram' as const,
-    result: '45K lượt xem · 3.2K likes',
+    resultKo: '45K 조회수 · 3.2K 좋아요',
+    resultVi: '45K lượt xem · 3.2K likes',
     thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&h=200&fit=crop',
   },
   {
@@ -51,7 +52,8 @@ const pastCampaigns = [
     brand: 'FitLife App',
     title: 'Fitness Challenge Vlog',
     platform: 'tiktok' as const,
-    result: '120K lượt xem · 8.5K shares',
+    resultKo: '120K 조회수 · 8.5K 공유',
+    resultVi: '120K lượt xem · 8.5K shares',
     thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=200&fit=crop',
   },
   {
@@ -59,7 +61,8 @@ const pastCampaigns = [
     brand: 'K-Beauty Co.',
     title: 'Spring Makeup Look',
     platform: 'instagram' as const,
-    result: '32K lượt xem · 2.1K saves',
+    resultKo: '32K 조회수 · 2.1K 저장',
+    resultVi: '32K lượt xem · 2.1K saves',
     thumbnail: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=300&h=200&fit=crop',
   },
 ];
@@ -96,7 +99,9 @@ export default function InfluencerProfilePage() {
 
   const shareProfile = async () => {
     const url = `https://exfluencer.vn/kol/${userProfile.name.toLowerCase().replace(/\s+/g, '-')}`;
-    const text = `📊 Rate card của ${userProfile.name}\nXem hồ sơ KOL trên Exfluencer VN: ${url}`;
+    const text = language === 'ko'
+      ? `📊 ${userProfile.name}의 Rate Card\nExfluencer VN에서 KOL 프로필 보기: ${url}`
+      : `📊 Rate card của ${userProfile.name}\nXem hồ sơ KOL trên Exfluencer VN: ${url}`;
     if (navigator.share) {
       await navigator.share({ title: `${userProfile.name} - KOL Profile`, text, url });
     } else {
@@ -108,7 +113,7 @@ export default function InfluencerProfilePage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title="Hồ sơ của tôi" showNotification />
+      <MobileHeader title={language === 'ko' ? '내 프로필' : 'Hồ sơ của tôi'} showNotification />
 
       <div className="container-mobile space-y-4 py-5">
 
@@ -125,7 +130,7 @@ export default function InfluencerProfilePage() {
               <div className="flex items-center gap-1.5 mt-1">
                 <Star size={13} className="text-accent fill-accent" />
                 <span className="text-sm font-bold text-accent">{userProfile.stats.rating.toFixed(1)}</span>
-                <span className="text-xs text-gray-500">· {userProfile.stats.completedCampaigns} chiến dịch</span>
+                <span className="text-xs text-gray-500">· {userProfile.stats.completedCampaigns} {language === 'ko' ? '캠페인' : 'chiến dịch'}</span>
                 <span className="text-xs text-green-400 font-semibold">· ER {userProfile.engagementRate}%</span>
               </div>
               <div className="flex items-center gap-1 mt-1">
@@ -175,8 +180,8 @@ export default function InfluencerProfilePage() {
         {/* ── Social Accounts ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">Kênh mạng xã hội</h3>
-            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">Chỉnh sửa</Link>
+            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? 'SNS 채널' : 'Kênh mạng xã hội'}</h3>
+            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">{language === 'ko' ? '편집' : 'Chỉnh sửa'}</Link>
           </div>
 
           {userProfile.socialAccounts.map((acc: { platform: keyof typeof platformIcons; username: string; followers: number; connected: boolean; verified: boolean; lastUpdated?: string }) => {
@@ -212,8 +217,8 @@ export default function InfluencerProfilePage() {
         {/* ── Rate Card ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">Bảng giá dịch vụ</h3>
-            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">Cập nhật</Link>
+            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '서비스 요금표' : 'Bảng giá dịch vụ'}</h3>
+            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">{language === 'ko' ? '업데이트' : 'Cập nhật'}</Link>
           </div>
 
           <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl p-0 overflow-hidden">
@@ -226,7 +231,7 @@ export default function InfluencerProfilePage() {
               >
                 <div>
                   <div className="text-sm font-semibold text-white">{item.type}</div>
-                  <div className="text-[11px] text-gray-500 mt-0.5">{item.note}</div>
+                  <div className="text-[11px] text-gray-500 mt-0.5">{language === 'ko' ? item.noteKo : item.noteVi}</div>
                 </div>
                 <div className="text-sm font-bold text-accent flex-shrink-0 ml-3">
                   {(item.price / 1000).toFixed(0)}K VND
@@ -262,7 +267,7 @@ export default function InfluencerProfilePage() {
                       <span className="text-[11px] text-gray-400">{c.brand}</span>
                     </div>
                     <div className="text-sm font-semibold text-white leading-tight truncate">{c.title}</div>
-                    <div className="text-[11px] text-accent mt-1">{c.result}</div>
+                    <div className="text-[11px] text-accent mt-1">{language === 'ko' ? c.resultKo : c.resultVi}</div>
                   </div>
                 </div>
               );
@@ -298,14 +303,14 @@ export default function InfluencerProfilePage() {
 
         {/* ── Settings ── */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">Cài đặt & Hỗ trợ</h3>
+          <h3 className="text-sm font-semibold text-gray-400 px-1">{language === 'ko' ? '설정 & 지원' : 'Cài đặt & Hỗ trợ'}</h3>
 
           {[
-            { href: '/settings/notifications', icon: Bell, label: 'Thông báo' },
-            { href: '/settings', icon: Settings, label: 'Cài đặt tài khoản' },
-            { href: '/help', icon: HelpCircle, label: 'Trợ giúp' },
-            { href: '/terms', icon: FileText, label: 'Điều khoản dịch vụ' },
-            { href: '/privacy', icon: Shield, label: 'Chính sách bảo mật' },
+            { href: '/settings/notifications', icon: Bell, label: language === 'ko' ? '알림' : 'Thông báo' },
+            { href: '/settings', icon: Settings, label: language === 'ko' ? '계정 설정' : 'Cài đặt tài khoản' },
+            { href: '/help', icon: HelpCircle, label: language === 'ko' ? '도움말' : 'Trợ giúp' },
+            { href: '/terms', icon: FileText, label: language === 'ko' ? '이용약관' : 'Điều khoản dịch vụ' },
+            { href: '/privacy', icon: Shield, label: language === 'ko' ? '개인정보처리방침' : 'Chính sách bảo mật' },
           ].map(item => (
             <Link key={item.href} href={item.href}>
               <div className="flex items-center gap-3 bg-dark-600 rounded-xl px-4 py-3 border border-dark-500">
@@ -323,7 +328,7 @@ export default function InfluencerProfilePage() {
           className="w-full py-3 rounded-xl bg-dark-600 border border-red-500/30 text-red-400 text-sm font-semibold flex items-center justify-center gap-2"
         >
           <LogOut size={16} />
-          Đăng xuất
+          {language === 'ko' ? '로그아웃' : 'Đăng xuất'}
         </button>
 
         <div className="text-center text-xs text-gray-600">Exfluencer VN v1.0.0</div>

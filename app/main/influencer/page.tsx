@@ -66,9 +66,9 @@ const mockData = {
 
   // 신청 중 (결과 대기)
   applying: [
-    { id: 'a1', title: 'Food Review Campaign', company: 'Pho House', reward: 300000, appliedAt: '2 ngày trước', status: 'pending' },
-    { id: 'a2', title: 'Tech Unboxing', company: 'TechStore VN', reward: 800000, appliedAt: '3 ngày trước', status: 'rejected' },
-    { id: 'a3', title: 'Travel Vlog', company: 'VietTravel', reward: 1200000, appliedAt: '1 ngày trước', status: 'pending' },
+    { id: 'a1', title: 'Food Review Campaign', company: 'Pho House', reward: 300000, appliedAtKo: '2일 전', appliedAtVi: '2 ngày trước', status: 'pending' },
+    { id: 'a2', title: 'Tech Unboxing', company: 'TechStore VN', reward: 800000, appliedAtKo: '3일 전', appliedAtVi: '3 ngày trước', status: 'rejected' },
+    { id: 'a3', title: 'Travel Vlog', company: 'VietTravel', reward: 1200000, appliedAtKo: '1일 전', appliedAtVi: '1 ngày trước', status: 'pending' },
   ],
 
   // 수익 내역 (광고주가 입금 확인한 것들)
@@ -265,7 +265,7 @@ export default function InfluencerDashboard() {
               <div key={a.id} className="flex items-center gap-3 bg-dark-600 rounded-xl px-4 py-3 border border-dark-500">
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-white truncate">{a.title}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{a.company} · {a.appliedAt}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{a.company} · {language === 'ko' ? a.appliedAtKo : a.appliedAtVi}</div>
                 </div>
                 <div className="flex-shrink-0 flex items-center gap-2">
                   <span className="text-sm font-bold text-gray-300">{formatCash(a.reward)}</span>

@@ -34,7 +34,8 @@ const mockData = {
       id: '1',
       title: 'Skincare Product Review',
       platform: 'Facebook + TikTok',
-      deliverable: 'Bài đăng × 1 · Story × 3',
+      deliverableKo: '게시물 × 1 · 스토리 × 3',
+      deliverableVi: 'Bài đăng × 1 · Story × 3',
       budget: 500000,
       accepted: 8,
       deadline: '15/03',
@@ -287,7 +288,7 @@ export default function AdvertiserDashboard() {
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-white text-sm truncate">{c.title}</h4>
                       <div className="text-xs text-gray-400 mt-0.5">{c.platform}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{c.deliverable}</div>
+                      <div className="text-xs text-gray-500 mt-0.5">{language === 'ko' ? (c.deliverableKo || c.deliverable) : (c.deliverableVi || c.deliverable)}</div>
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
                       <div className="text-sm font-bold text-accent">{formatCash(c.budget)}<span className="text-xs text-gray-500">/KOL</span></div>

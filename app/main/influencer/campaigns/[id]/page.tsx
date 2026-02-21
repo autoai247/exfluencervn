@@ -30,17 +30,23 @@ const avatarColors = [
 ];
 
 // 지원 시간 생성 (리얼하게)
-const generateApplyTime = (seed: number, index: number): string => {
-  const minutes = [
+const generateApplyTime = (seed: number, index: number, lang: 'ko' | 'vi' = 'vi'): string => {
+  const minutesVi = [
     'vừa xong', '5 phút trước', '12 phút trước', '23 phút trước', '35 phút trước', '48 phút trước',
     '1 giờ trước', '2 giờ trước', '3 giờ trước', '5 giờ trước', '8 giờ trước',
     '12 giờ trước', '1 ngày trước', '2 ngày trước', '3 ngày trước', '5 ngày trước', '7 ngày trước'
   ];
-  return minutes[(seed + index) % minutes.length];
+  const minutesKo = [
+    '방금 전', '5분 전', '12분 전', '23분 전', '35분 전', '48분 전',
+    '1시간 전', '2시간 전', '3시간 전', '5시간 전', '8시간 전',
+    '12시간 전', '1일 전', '2일 전', '3일 전', '5일 전', '7일 전'
+  ];
+  const arr = lang === 'ko' ? minutesKo : minutesVi;
+  return arr[(seed + index) % arr.length];
 };
 
 // 인플루언서 뱃지 생성
-const generateBadge = (seed: number, index: number, followers: number): {
+const generateBadge = (seed: number, index: number, followers: number, lang: 'ko' | 'vi' = 'vi'): {
   type: 'verified' | 'popular' | 'rising' | 'new' | null;
   label: string;
   color: string;
@@ -49,19 +55,19 @@ const generateBadge = (seed: number, index: number, followers: number): {
   const rand = (seed + index) % 100;
 
   if (followers > 30000) {
-    if (rand < 60) return { type: 'verified', label: 'Xác minh', color: 'bg-blue-500' };
-    if (rand < 80) return { type: 'popular', label: 'Nổi bật', color: 'bg-purple-500' };
+    if (rand < 60) return { type: 'verified', label: lang === 'ko' ? '인증' : 'Xác minh', color: 'bg-blue-500' };
+    if (rand < 80) return { type: 'popular', label: lang === 'ko' ? '인기' : 'Nổi bật', color: 'bg-purple-500' };
   } else if (followers > 15000) {
-    if (rand < 40) return { type: 'verified', label: 'Xác minh', color: 'bg-blue-500' };
-    if (rand < 60) return { type: 'rising', label: 'Đang hot', color: 'bg-green-500' };
+    if (rand < 40) return { type: 'verified', label: lang === 'ko' ? '인증' : 'Xác minh', color: 'bg-blue-500' };
+    if (rand < 60) return { type: 'rising', label: lang === 'ko' ? '급상승' : 'Đang hot', color: 'bg-green-500' };
   } else if (followers < 8000) {
-    if (rand < 30) return { type: 'new', label: 'Mới', color: 'bg-yellow-500' };
+    if (rand < 30) return { type: 'new', label: lang === 'ko' ? '신규' : 'Mới', color: 'bg-yellow-500' };
   }
 
   return null;
 };
 
-const generateApplicantAvatars = (campaignId: string, applicantsCount: number, showCount: number = 10) => {
+const generateApplicantAvatars = (campaignId: string, applicantsCount: number, showCount: number = 10, lang: 'ko' | 'vi' = 'vi') => {
   const seed = campaignId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const avatars = [];
 
@@ -71,8 +77,8 @@ const generateApplicantAvatars = (campaignId: string, applicantsCount: number, s
     const name = vietnamNames[nameIndex];
     const color = avatarColors[colorIndex];
     const followers = Math.floor(((seed + i * 7) % 40000)) + 5000; // 5K-45K followers
-    const applyTime = generateApplyTime(seed, i);
-    const badge = generateBadge(seed, i, followers);
+    const applyTime = generateApplyTime(seed, i, lang);
+    const badge = generateBadge(seed, i, followers, lang);
     const isOnline = i < 3; // 상위 3명은 온라인
 
     avatars.push({
@@ -120,8 +126,8 @@ const mockCampaign = {
   earningsBreakdown: {
     basePayment: 500000, // VND
     bonusOpportunities: [
-      { type: 'Thưởng lượt xem', condition: 'Trên 10.000 lượt xem', amount: 100000 },
-      { type: 'Thưởng review chất lượng', condition: 'Đánh giá 4.5+', amount: 50000 },
+      { typeKo: '조회수 보너스', typeVi: 'Thưởng lượt xem', conditionKo: '10,000 조회수 초과', conditionVi: 'Trên 10.000 lượt xem', amount: 100000 },
+      { typeKo: '고품질 리뷰 보너스', typeVi: 'Thưởng review chất lượng', conditionKo: '평점 4.5+', conditionVi: 'Đánh giá 4.5+', amount: 50000 },
     ],
     productValue: 2400000, // Total value of provided products
   },
@@ -932,7 +938,7 @@ export default function CampaignDetailPage() {
 
           {/* 지원자 아바타 그리드 (개선!) */}
           <div className="grid grid-cols-5 gap-3 mb-4">
-            {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 10).map((avatar, idx) => (
+            {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 10, language as 'ko' | 'vi').map((avatar, idx) => (
               <div
                 key={idx}
                 className="flex flex-col items-center gap-1 group animate-fade-in"
@@ -1192,8 +1198,8 @@ export default function CampaignDetailPage() {
                     {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
                       <div key={idx} className="flex items-center justify-between text-xs">
                         <div>
-                          <p className="text-white font-semibold">{bonus.type}</p>
-                          <p className="text-gray-300">{bonus.condition}</p>
+                          <p className="text-white font-semibold">{language === 'ko' ? bonus.typeKo : bonus.typeVi}</p>
+                          <p className="text-gray-300">{language === 'ko' ? bonus.conditionKo : bonus.conditionVi}</p>
                         </div>
                         <span className="text-accent font-bold">+{formatPoints(bonus.amount)}</span>
                       </div>
@@ -1204,7 +1210,7 @@ export default function CampaignDetailPage() {
 
               {/* Total Potential */}
               <div className="bg-gradient-to-r from-accent to-secondary rounded-lg p-4 text-center">
-                <p className="text-xs text-white/80 mb-1">{t.campaignDetail.earnings.maxPotential || 'Thu nhập tối đa ước tính'}</p>
+                <p className="text-xs text-white/80 mb-1">{t.campaignDetail.earnings.maxPotential || (language === 'ko' ? '예상 최대 수익' : 'Thu nhập tối đa ước tính')}</p>
                 <p className="text-3xl font-bold text-white">
                   {formatPoints(
                     campaign.earningsBreakdown.basePayment +
@@ -2887,7 +2893,7 @@ export default function CampaignDetailPage() {
             </div>
 
             <div className="space-y-3">
-              {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 20).map((avatar, idx) => (
+              {generateApplicantAvatars(params?.id as string || '1', campaign.urgency.recentApplications, 20, language as 'ko' | 'vi').map((avatar, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-dark-600 rounded-lg hover:bg-dark-500 transition-all">
                   <div className="relative">
                     <img
@@ -2977,8 +2983,8 @@ export default function CampaignDetailPage() {
                     {campaign.earningsBreakdown.bonusOpportunities.map((bonus: any, idx: number) => (
                       <div key={idx} className="flex items-start justify-between text-xs">
                         <div className="flex-1">
-                          <p className="text-white font-medium">{bonus.type}</p>
-                          <p className="text-gray-300">{bonus.condition}</p>
+                          <p className="text-white font-medium">{language === 'ko' ? bonus.typeKo : bonus.typeVi}</p>
+                          <p className="text-gray-300">{language === 'ko' ? bonus.conditionKo : bonus.conditionVi}</p>
                         </div>
                         <span className="text-warning font-bold">+{formatPoints(bonus.amount)}</span>
                       </div>

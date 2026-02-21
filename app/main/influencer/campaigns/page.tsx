@@ -1166,8 +1166,8 @@ function CampaignsPageContent() {
                 <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg">
                   <div className="text-xs text-primary font-semibold">
                     ✅ {activeFilterCount}{t.campaignFilters.filtersApplied}
-                    {filters.platforms.length > 1 && ` (${filters.platforms.length} nền tảng)`}
-                    {filters.categories.length > 1 && ` (${filters.categories.length} danh mục)`}
+                    {filters.platforms.length > 1 && ` (${filters.platforms.length} ${language === 'ko' ? '플랫폼' : 'nền tảng'})`}
+                    {filters.categories.length > 1 && ` (${filters.categories.length} ${language === 'ko' ? '카테고리' : 'danh mục'})`}
                   </div>
                 </div>
               ) : null;

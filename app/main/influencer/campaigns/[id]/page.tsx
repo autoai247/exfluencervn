@@ -952,8 +952,8 @@ export default function CampaignDetailPage() {
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🔥</span>
                 <div>
-                  <h3 className="text-lg font-bold text-white">{t.campaignDetail.urgency.hotCampaign || 'Chiến dịch đang hot'}</h3>
-                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.recentApps || `${campaign.urgency.recentApplications} người đã ứng tuyển gần đây`}</p>
+                  <h3 className="text-lg font-bold text-white">{t.campaignDetail.urgency.hotCampaign || (language === 'ko' ? '인기 캠페인' : 'Chiến dịch đang hot')}</h3>
+                  <p className="text-xs text-gray-300">{t.campaignDetail.urgency.recentApps || (language === 'ko' ? `최근 ${campaign.urgency.recentApplications}명 지원` : `${campaign.urgency.recentApplications} người đã ứng tuyển gần đây`)}</p>
                 </div>
               </div>
               {campaign.urgency.isTrending && (
@@ -1174,23 +1174,23 @@ export default function CampaignDetailPage() {
           <div className="card bg-gradient-to-br from-info/10 to-primary/10 border-2 border-info/30 shadow-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-xl">⚡</span>
-              <h3 className="text-lg font-bold text-white">{t.campaignDetail.difficulty.title || 'Độ khó & Thời gian'}</h3>
+              <h3 className="text-lg font-bold text-white">{t.campaignDetail.difficulty.title || (language === 'ko' ? '난이도 & 소요 시간' : 'Độ khó & Thời gian')}</h3>
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.difficultyLevel || 'Độ khó'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.difficultyLevel || (language === 'ko' ? '난이도' : 'Độ khó')}</p>
                 <div className={`text-lg font-bold ${
                   campaign.difficulty.level === 'easy' ? 'text-success' :
                   campaign.difficulty.level === 'medium' ? 'text-warning' : 'text-error'
                 }`}>
-                  {campaign.difficulty.level === 'easy' ? (t.campaignDetail.difficulty.easy || 'Dễ') :
-                   campaign.difficulty.level === 'medium' ? (t.campaignDetail.difficulty.medium || 'Trung bình') :
-                   (t.campaignDetail.difficulty.hard || 'Khó')}
+                  {campaign.difficulty.level === 'easy' ? (t.campaignDetail.difficulty.easy || (language === 'ko' ? '쉬움' : 'Dễ')) :
+                   campaign.difficulty.level === 'medium' ? (t.campaignDetail.difficulty.medium || (language === 'ko' ? '보통' : 'Trung bình')) :
+                   (t.campaignDetail.difficulty.hard || (language === 'ko' ? '어려움' : 'Khó'))}
                 </div>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.timeRequired || 'Thời gian'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.difficulty.timeRequired || (language === 'ko' ? '소요 시간' : 'Thời gian')}</p>
                 <div className="text-lg font-bold text-primary">
                   {campaign.difficulty.estimatedHours}{t.campaignDetail.difficulty.hoursUnit || ' giờ'}
                 </div>
@@ -1301,11 +1301,11 @@ export default function CampaignDetailPage() {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.completionRate || 'Tỉ lệ hoàn thành'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.completionRate || (language === 'ko' ? '완료율' : 'Tỉ lệ hoàn thành')}</p>
                 <p className="text-2xl font-bold text-success">{campaign.socialProof.completionRate}%</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || 'Thời gian phản hồi'}</p>
+                <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || (language === 'ko' ? '평균 응답 시간' : 'Thời gian phản hồi')}</p>
                 <p className="text-lg font-bold text-primary">{language === 'ko' ? (campaign.qualityAssurance?.avgResponseTimeKo || '2시간') : (campaign.qualityAssurance?.avgResponseTimeVi || '2 giờ')}</p>
               </div>
             </div>

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import {
   BookOpen,
@@ -31,23 +30,31 @@ const templates = [
     id: 'media-kit',
     icon: FileText,
     color: 'from-primary to-secondary',
-    title: 'Media Kit Template',
+    titleKo: '미디어 킷 템플릿',
+    titleVi: 'Media Kit Template',
     descKo: '광고주에게 나를 전문적으로 소개하는 미디어 킷',
     descVi: 'Giới thiệu bản thân đến nhà quảng cáo một cách chuyên nghiệp',
-    tagsKo: ['Canva', '무료'],
-    tagsVi: ['Canva', 'Miễn phí'],
-    url: 'https://www.canva.com/templates/search/media-kit/',
+    tagsKo: ['PDF', '무료', 'A4'],
+    tagsVi: ['PDF', 'Miễn phí', 'A4'],
+    urlKo: '/templates/media-kit-ko.pdf',
+    urlVi: '/templates/media-kit-vi.pdf',
+    filenameKo: '미디어킷_템플릿.pdf',
+    filenameVi: 'Media_Kit_Template.pdf',
   },
   {
     id: 'rate-card',
     icon: BarChart3,
     color: 'from-secondary to-accent',
-    title: 'Rate Card Template',
+    titleKo: '서비스 요금표 템플릿',
+    titleVi: 'Rate Card Template',
     descKo: '모든 플랫폼에 맞는 표준 서비스 요금표',
     descVi: 'Bảng báo giá dịch vụ chuẩn cho mọi nền tảng',
-    tagsKo: ['Google Docs', '무료'],
-    tagsVi: ['Google Docs', 'Miễn phí'],
-    url: 'https://docs.google.com/document/create',
+    tagsKo: ['PDF', '무료', 'A4'],
+    tagsVi: ['PDF', 'Miễn phí', 'A4'],
+    urlKo: '/templates/rate-card-ko.pdf',
+    urlVi: '/templates/rate-card-vi.pdf',
+    filenameKo: '서비스요금표_템플릿.pdf',
+    filenameVi: 'Rate_Card_Template.pdf',
   },
   {
     id: 'caption',
@@ -57,9 +64,12 @@ const templates = [
     titleVi: 'Caption Hooks (50 mẫu)',
     descKo: '높은 참여율을 이끄는 50가지 캡션 오프너',
     descVi: '50 câu mở đầu caption thu hút tương tác cao',
-    tagsKo: ['PDF', '무료'],
-    tagsVi: ['PDF', 'Miễn phí'],
-    url: null,
+    tagsKo: ['PDF', '무료', '50가지'],
+    tagsVi: ['PDF', 'Miễn phí', '50 mẫu'],
+    urlKo: '/templates/caption-hooks-ko.pdf',
+    urlVi: '/templates/caption-hooks-vi.pdf',
+    filenameKo: '캡션훅_50가지.pdf',
+    filenameVi: 'Caption_Hooks_50.pdf',
   },
 ];
 
@@ -156,14 +166,6 @@ const campaignTips = [
 
 export default function ResourcesPage() {
   const { language } = useLanguage();
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  const handleCopy = (id: string, text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
-    });
-  };
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
@@ -328,11 +330,11 @@ export default function ResourcesPage() {
           <div className="space-y-2">
             {templates.map((tpl) => {
               const Icon = tpl.icon;
-              const title = 'titleKo' in tpl
-                ? (language === 'ko' ? tpl.titleKo : tpl.titleVi)
-                : tpl.title;
+              const title = language === 'ko' ? tpl.titleKo : tpl.titleVi;
               const desc = language === 'ko' ? tpl.descKo : tpl.descVi;
               const tags = language === 'ko' ? tpl.tagsKo : tpl.tagsVi;
+              const pdfUrl = language === 'ko' ? tpl.urlKo : tpl.urlVi;
+              const filename = language === 'ko' ? tpl.filenameKo : tpl.filenameVi;
               return (
                 <div key={tpl.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
                   <div className="flex items-center gap-3">
@@ -348,26 +350,15 @@ export default function ResourcesPage() {
                         ))}
                       </div>
                     </div>
-                    {tpl.url ? (
-                      <a
-                        href={tpl.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ExternalLink size={12} />
-                        {language === 'ko' ? '열기' : 'Mở'}
-                      </a>
-                    ) : (
-                      <button
-                        className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
-                        onClick={() => handleCopy(tpl.id, title as string)}
-                      >
-                        {copiedId === tpl.id ? <CheckCircle size={12} /> : <Download size={12} />}
-                        {copiedId === tpl.id ? 'OK' : (language === 'ko' ? '가져오기' : 'Lấy')}
-                      </button>
-                    )}
+                    <a
+                      href={pdfUrl}
+                      download={filename}
+                      className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary/20 text-primary rounded-lg text-xs font-bold"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Download size={12} />
+                      {language === 'ko' ? '다운로드' : 'Tải về'}
+                    </a>
                   </div>
                 </div>
               );

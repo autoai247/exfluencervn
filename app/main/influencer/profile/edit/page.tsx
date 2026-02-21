@@ -252,12 +252,31 @@ export default function EditProfilePage() {
                 className="input"
               >
                 <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
-                <option value="Hồ Chí Minh">{language === 'ko' ? '호치민' : 'TP.HCM'}</option>
-                <option value="Hà Nội">{language === 'ko' ? '하노이' : 'Hà Nội'}</option>
-                <option value="Đà Nẵng">{language === 'ko' ? '다낭' : 'Đà Nẵng'}</option>
-                <option value="Cần Thơ">{language === 'ko' ? '껀터' : 'Cần Thơ'}</option>
-                <option value="Hải Phòng">{language === 'ko' ? '하이퐁' : 'Hải Phòng'}</option>
-                <option value="Bình Dương">{language === 'ko' ? '빈즈엉' : 'Bình Dương'}</option>
+                <optgroup label={language === 'ko' ? '── 남부 ──' : '── Miền Nam ──'}>
+                  <option value="Hồ Chí Minh">{language === 'ko' ? '호치민' : 'TP.HCM'}</option>
+                  <option value="Bình Dương">{language === 'ko' ? '빈즈엉' : 'Bình Dương'}</option>
+                  <option value="Đồng Nai">{language === 'ko' ? '동나이' : 'Đồng Nai'}</option>
+                  <option value="Vũng Tàu">{language === 'ko' ? '붕따우' : 'Vũng Tàu'}</option>
+                  <option value="Cần Thơ">{language === 'ko' ? '껀터' : 'Cần Thơ'}</option>
+                  <option value="Long An">{language === 'ko' ? '롱안' : 'Long An'}</option>
+                  <option value="Tiền Giang">{language === 'ko' ? '띠엔장' : 'Tiền Giang'}</option>
+                </optgroup>
+                <optgroup label={language === 'ko' ? '── 중부 ──' : '── Miền Trung ──'}>
+                  <option value="Đà Nẵng">{language === 'ko' ? '다낭' : 'Đà Nẵng'}</option>
+                  <option value="Huế">{language === 'ko' ? '후에' : 'Huế'}</option>
+                  <option value="Hội An">{language === 'ko' ? '호이안' : 'Hội An'}</option>
+                  <option value="Nha Trang">{language === 'ko' ? '나트랑' : 'Nha Trang'}</option>
+                  <option value="Quy Nhơn">{language === 'ko' ? '퀴논' : 'Quy Nhơn'}</option>
+                  <option value="Đà Lạt">{language === 'ko' ? '달랏' : 'Đà Lạt'}</option>
+                </optgroup>
+                <optgroup label={language === 'ko' ? '── 북부 ──' : '── Miền Bắc ──'}>
+                  <option value="Hà Nội">{language === 'ko' ? '하노이' : 'Hà Nội'}</option>
+                  <option value="Hải Phòng">{language === 'ko' ? '하이퐁' : 'Hải Phòng'}</option>
+                  <option value="Hạ Long">{language === 'ko' ? '하롱' : 'Hạ Long'}</option>
+                  <option value="Thái Nguyên">{language === 'ko' ? '타이응우옌' : 'Thái Nguyên'}</option>
+                  <option value="Bắc Ninh">{language === 'ko' ? '박닌' : 'Bắc Ninh'}</option>
+                  <option value="Nam Định">{language === 'ko' ? '남딘' : 'Nam Định'}</option>
+                </optgroup>
                 <option value="Khác">{language === 'ko' ? '기타' : 'Khác'}</option>
               </select>
             </div>

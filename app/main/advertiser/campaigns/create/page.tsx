@@ -78,6 +78,8 @@ export default function CreateCampaignPage() {
     gender: 'any' as 'any' | 'female' | 'male',
     ageRange: '18-35',
     location: 'TP.HCM',
+    requiresPet: [] as string[],   // dog/cat/bird/rabbit/fish/other
+    requiresChildren: '',          // '' | 'none' | 'has_children'
 
     // Step 3: Details
     startDate: '',
@@ -138,6 +140,14 @@ export default function CreateCampaignPage() {
       niche: f.niche.includes(n)
         ? f.niche.filter(x => x !== n)
         : [...f.niche, n],
+    }));
+
+  const toggleRequiresPet = (p: string) =>
+    setForm(f => ({
+      ...f,
+      requiresPet: f.requiresPet.includes(p)
+        ? f.requiresPet.filter(x => x !== p)
+        : [...f.requiresPet, p],
     }));
 
   const addHashtag = () => {
@@ -594,6 +604,62 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             placeholder={language === 'ko' ? '예: 서울, 경기, 전국' : 'VD: TP.HCM, Hà Nội, Toàn quốc'}
             className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
           />
+        </div>
+
+        {/* 반려동물 보유 KOL 조건 */}
+        <div>
+          <label className="text-xs text-gray-400 mb-2 block">{language === 'ko' ? '반려동물 보유 KOL' : 'KOL nuôi thú cưng'}</label>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: 'dog', ko: '강아지 🐶', vi: 'Chó 🐶' },
+              { id: 'cat', ko: '고양이 🐱', vi: 'Mèo 🐱' },
+              { id: 'bird', ko: '새 🐦', vi: 'Chim 🐦' },
+              { id: 'rabbit', ko: '토끼 🐰', vi: 'Thỏ 🐰' },
+              { id: 'fish', ko: '물고기 🐟', vi: 'Cá 🐟' },
+              { id: 'other', ko: '기타', vi: 'Khác' },
+            ].map(pet => (
+              <button
+                key={pet.id}
+                type="button"
+                onClick={() => toggleRequiresPet(pet.id)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all ${
+                  form.requiresPet.includes(pet.id)
+                    ? 'bg-primary/20 border-primary text-primary'
+                    : 'bg-dark-700 border-dark-400 text-gray-400'
+                }`}
+              >
+                {language === 'ko' ? pet.ko : pet.vi}
+              </button>
+            ))}
+          </div>
+          {form.requiresPet.length === 0 && (
+            <p className="text-xs text-gray-600 mt-1">{language === 'ko' ? '선택 안 하면 제한 없음' : 'Không chọn = không giới hạn'}</p>
+          )}
+        </div>
+
+        {/* 자녀 보유 KOL 조건 */}
+        <div>
+          <label className="text-xs text-gray-400 mb-2 block">{language === 'ko' ? '자녀 보유 KOL' : 'KOL có con nhỏ'}</label>
+          <div className="flex gap-2">
+            {[
+              { id: '', ko: '제한 없음', vi: 'Không giới hạn' },
+              { id: 'none', ko: '자녀 없음', vi: 'Không có con' },
+              { id: 'has_children', ko: '자녀 있음', vi: 'Có con' },
+            ].map(opt => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setForm(f => ({ ...f, requiresChildren: opt.id }))}
+                className={`flex-1 py-1.5 rounded-xl text-xs font-medium border transition-all ${
+                  form.requiresChildren === opt.id
+                    ? 'bg-secondary/20 border-secondary text-secondary'
+                    : 'bg-dark-700 border-dark-400 text-gray-400'
+                }`}
+              >
+                {language === 'ko' ? opt.ko : opt.vi}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -23,8 +23,15 @@ const guides = [
     id: 'brief',
     icon: FileText,
     color: 'from-primary to-secondary',
-    title: 'Cách viết Brief chuẩn',
-    points: [
+    titleKo: '표준 Brief 작성 방법',
+    titleVi: 'Cách viết Brief chuẩn',
+    pointsKo: [
+      '캠페인 목표 명확히 기술: 브랜드 인지도 향상 또는 매출 증가?',
+      '플랫폼, 콘텐츠 형식, 구체적인 타임라인 명시',
+      'KOL에게 핵심 메시지와 절대 언급하면 안 되는 사항 안내',
+      'KOL이 스타일을 이해할 수 있도록 샘플 또는 무드보드 제공',
+    ],
+    pointsVi: [
       'Mô tả rõ mục tiêu chiến dịch: nhận diện thương hiệu hay tăng doanh số?',
       'Nêu rõ nền tảng, định dạng nội dung và timeline cụ thể',
       'Cho KOL biết key message và những điều KHÔNG được nói',
@@ -35,8 +42,15 @@ const guides = [
     id: 'kol-select',
     icon: Users,
     color: 'from-secondary to-accent',
-    title: 'Chọn KOL phù hợp',
-    points: [
+    titleKo: '적합한 KOL 선택',
+    titleVi: 'Chọn KOL phù hợp',
+    pointsKo: [
+      'ER(참여율) > 3%가 팔로워 수보다 더 중요',
+      'Nano KOL(1K–10K)은 Mega KOL보다 전환율이 높은 경우가 많음',
+      'KOL의 오디언스가 타겟과 일치하는지 확인',
+      '이전 캠페인 이력을 통해 콘텐츠 품질 평가',
+    ],
+    pointsVi: [
       'ER (Engagement Rate) > 3% quan trọng hơn số followers',
       'Nano KOL (1K–10K) thường có tỉ lệ chuyển đổi cao hơn mega KOL',
       'Kiểm tra tệp khán giả của KOL có khớp với target của bạn không',
@@ -47,8 +61,15 @@ const guides = [
     id: 'budget',
     icon: BarChart3,
     color: 'from-accent to-green-500',
-    title: 'Tối ưu ngân sách',
-    points: [
+    titleKo: '예산 최적화',
+    titleVi: 'Tối ưu ngân sách',
+    pointsKo: [
+      '동일 예산으로 Macro KOL 1명보다 Nano KOL 3~5명이 더 효과적',
+      '플랫폼 다양화 우선: TikTok은 도달, Instagram은 참여',
+      '사전에 명확한 KPI 설정: 조회수, 클릭, 또는 전환?',
+      'KOL 게시 후 콘텐츠 부스팅을 위해 예산의 20% 유보',
+    ],
+    pointsVi: [
       '3–5 Nano KOL thường hiệu quả hơn 1 Macro KOL cùng mức ngân sách',
       'Ưu tiên đa dạng nền tảng: TikTok cho reach, Instagram cho engagement',
       'Đặt KPI rõ ràng trước: views, click, hay conversion?',
@@ -59,8 +80,15 @@ const guides = [
     id: 'relationship',
     icon: TrendingUp,
     color: 'from-purple-500 to-pink-500',
-    title: 'Xây dựng quan hệ KOL dài hạn',
-    points: [
+    titleKo: '장기 KOL 관계 구축',
+    titleVi: 'Xây dựng quan hệ KOL dài hạn',
+    pointsKo: [
+      '기한 내 결제 — KOL은 신뢰할 수 있는 광고주를 기억하고 우선시',
+      '캠페인 후 구체적인 피드백으로 다음 협업 개선',
+      '지속 협업 KOL은 단가가 낮고 브랜드를 더 잘 이해함',
+      '잠재적 KOL을 화이트리스트에 초대해 새 캠페인에서 우선 매칭',
+    ],
+    pointsVi: [
       'Thanh toán đúng hạn — KOL nhớ và ưu tiên nhà QC uy tín',
       'Feedback cụ thể sau mỗi chiến dịch giúp cải thiện lần sau',
       'KOL thường xuyên hợp tác có giá thấp hơn và hiểu thương hiệu hơn',
@@ -70,10 +98,10 @@ const guides = [
 ];
 
 const tips = [
-  { icon: '🎯', tip: 'Tạo brief chi tiết trên nền tảng → KOL chất lượng cao sẽ ứng tuyển nhiều hơn' },
-  { icon: '⚡', tip: 'Phản hồi đơn ứng tuyển trong 48h — KOL tốt thường có nhiều lựa chọn' },
-  { icon: '📊', tip: 'Yêu cầu KOL cung cấp insight sau chiến dịch để đo lường hiệu quả thực' },
-  { icon: '🤝', tip: 'KOL được hỗ trợ tốt (sample, brief rõ ràng) tạo nội dung chất lượng hơn' },
+  { icon: '🎯', tipKo: '플랫폼에서 자세한 브리프 작성 → 고품질 KOL이 더 많이 지원', tipVi: 'Tạo brief chi tiết trên nền tảng → KOL chất lượng cao sẽ ứng tuyển nhiều hơn' },
+  { icon: '⚡', tipKo: '48시간 내 지원서 응답 — 좋은 KOL은 선택지가 많음', tipVi: 'Phản hồi đơn ứng tuyển trong 48h — KOL tốt thường có nhiều lựa chọn' },
+  { icon: '📊', tipKo: '실제 성과 측정을 위해 캠페인 후 KOL에게 인사이트 자료 요청', tipVi: 'Yêu cầu KOL cung cấp insight sau chiến dịch để đo lường hiệu quả thực' },
+  { icon: '🤝', tipKo: '충분한 지원(샘플, 명확한 브리프)을 받은 KOL이 더 좋은 콘텐츠 제작', tipVi: 'KOL được hỗ trợ tốt (sample, brief rõ ràng) tạo nội dung chất lượng hơn' },
 ];
 
 export default function AdvertiserResourcesPage() {
@@ -118,16 +146,18 @@ export default function AdvertiserResourcesPage() {
           <div className="space-y-3">
             {guides.map((guide) => {
               const Icon = guide.icon;
+              const title = language === 'ko' ? guide.titleKo : guide.titleVi;
+              const points = language === 'ko' ? guide.pointsKo : guide.pointsVi;
               return (
                 <div key={guide.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
                   <div className="flex items-center gap-3 mb-3">
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${guide.color} flex items-center justify-center flex-shrink-0`}>
                       <Icon size={18} className="text-white" />
                     </div>
-                    <div className="font-bold text-white text-sm">{guide.title}</div>
+                    <div className="font-bold text-white text-sm">{title}</div>
                   </div>
                   <div className="space-y-1.5">
-                    {guide.points.map((point, idx) => (
+                    {points.map((point, idx) => (
                       <div key={idx} className="flex items-start gap-2">
                         <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
                         <p className="text-xs text-gray-300 leading-relaxed">{point}</p>
@@ -151,7 +181,7 @@ export default function AdvertiserResourcesPage() {
             {tips.map((item, idx) => (
               <div key={idx} className="flex items-start gap-3 px-4 py-3">
                 <span className="text-base flex-shrink-0">{item.icon}</span>
-                <p className="text-xs text-gray-300 leading-relaxed">{item.tip}</p>
+                <p className="text-xs text-gray-300 leading-relaxed">{language === 'ko' ? item.tipKo : item.tipVi}</p>
               </div>
             ))}
           </div>

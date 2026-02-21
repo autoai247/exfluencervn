@@ -1,6 +1,7 @@
 'use client';
 
 import { Clock, X, TrendingUp } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface SearchHistoryProps {
   history: string[];
@@ -19,6 +20,9 @@ export default function SearchHistory({
   popularSearches = [],
   language = 'vi',
 }: SearchHistoryProps) {
+  const { language: contextLanguage } = useLanguage();
+  const lang = (language !== 'vi' ? language : contextLanguage) as 'ko' | 'vi';
+
   const text = {
     ko: {
       recentSearches: '최근 검색',
@@ -34,7 +38,7 @@ export default function SearchHistory({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
 
   return (
     <div className="bg-dark-600 rounded-xl border border-dark-500 shadow-xl">

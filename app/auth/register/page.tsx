@@ -12,7 +12,7 @@ import { createClient } from '@/lib/supabase/client';
 export default function RegisterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [userType, setUserType] = useState<UserType | null>((searchParams.get('type') as UserType) || null);
   const [showPassword, setShowPassword] = useState(false);
@@ -259,7 +259,7 @@ export default function RegisterPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => alert('Tính năng đăng nhập Facebook sẽ sớm ra mắt.')}
+                  onClick={() => alert(language === 'ko' ? 'Facebook 로그인 기능은 곧 출시됩니다.' : 'Tính năng đăng nhập Facebook sẽ sớm ra mắt.')}
                   className="btn btn-ghost border-blue-500/30 hover:bg-blue-500/10 text-sm py-3"
                 >
                   <Facebook size={18} className="text-blue-500" />
@@ -267,7 +267,7 @@ export default function RegisterPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => alert('Tính năng đăng nhập Google sẽ sớm ra mắt.')}
+                  onClick={() => alert(language === 'ko' ? 'Google 로그인 기능은 곧 출시됩니다.' : 'Tính năng đăng nhập Google sẽ sớm ra mắt.')}
                   className="btn btn-ghost border-red-500/30 hover:bg-red-500/10 text-sm py-3"
                 >
                   <FaGoogle size={18} className="text-red-500" />

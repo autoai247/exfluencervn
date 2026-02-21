@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Bell, BellOff, X } from 'lucide-react';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface NotificationPromptProps {
   language?: 'ko' | 'vi';
@@ -15,6 +16,8 @@ export default function NotificationPrompt({
 }: NotificationPromptProps) {
   const [dismissed, setDismissed] = useState(false);
   const { isSupported, permission, requestPermission } = useNotifications();
+  const { language: contextLanguage } = useLanguage();
+  const lang = language !== 'vi' ? language : contextLanguage;
 
   // Check if prompt was already dismissed
   useEffect(() => {
@@ -51,7 +54,7 @@ export default function NotificationPrompt({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
 
   const handleAllow = async () => {
     const result = await requestPermission();

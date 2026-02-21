@@ -2,6 +2,7 @@
 
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme, type Theme } from '@/hooks/useTheme';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface ThemeToggleProps {
   variant?: 'icon' | 'button' | 'dropdown';
@@ -15,6 +16,8 @@ export default function ThemeToggle({
   language = 'vi',
 }: ThemeToggleProps) {
   const { theme, effectiveTheme, toggleTheme, setTheme, mounted } = useTheme();
+  const { language: contextLanguage } = useLanguage();
+  const lang = language !== 'vi' ? language : contextLanguage;
 
   const text = {
     ko: {
@@ -31,7 +34,7 @@ export default function ThemeToggle({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
 
   // Prevent hydration mismatch
   if (!mounted) {

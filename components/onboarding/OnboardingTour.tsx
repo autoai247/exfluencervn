@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface TourStep {
   title: string;
@@ -26,6 +27,8 @@ export default function OnboardingTour({
 }: OnboardingTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
+  const { language: contextLanguage } = useLanguage();
+  const lang = (language !== 'vi' ? language : contextLanguage) as 'ko' | 'vi';
 
   const text = {
     ko: {
@@ -44,7 +47,7 @@ export default function OnboardingTour({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
   const step = steps[currentStep];
   const isLastStep = currentStep === steps.length - 1;
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Download, FileJson, FileSpreadsheet, Copy, Check } from 'lucide-react';
 import { exportData, copyToClipboard, type ExportFormat } from '@/lib/dataExport';
 import { useToast } from './ToastContainer';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface ExportButtonProps {
   data: any[];
@@ -25,6 +26,8 @@ export default function ExportButton({
   const [showMenu, setShowMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const toast = useToast();
+  const { language: contextLanguage } = useLanguage();
+  const lang = language !== 'vi' ? language : contextLanguage;
 
   const text = {
     ko: {
@@ -59,7 +62,7 @@ export default function ExportButton({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
 
   const handleExport = async (format: ExportFormat) => {
     try {

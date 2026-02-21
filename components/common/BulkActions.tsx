@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CheckSquare, Square, Trash2, Archive, Download, Copy, X } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface BulkActionsProps {
   items: any[];
@@ -29,6 +30,8 @@ export default function BulkActions({
   language = 'vi',
 }: BulkActionsProps) {
   const [showConfirm, setShowConfirm] = useState<'delete' | 'archive' | null>(null);
+  const { language: contextLanguage } = useLanguage();
+  const lang = (language !== 'vi' ? language : contextLanguage) as 'ko' | 'vi';
 
   const text = {
     ko: {
@@ -59,7 +62,7 @@ export default function BulkActions({
     },
   };
 
-  const t = text[language];
+  const t = text[lang];
 
   const allSelected = items.length > 0 && selectedIds.length === items.length;
   const someSelected = selectedIds.length > 0 && selectedIds.length < items.length;

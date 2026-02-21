@@ -65,12 +65,13 @@ export default function EditProfilePage() {
     // Lifestyle — simple
     vehicle: '',           // none / motorbike / car / both
     maritalStatus: '',     // single / dating / married / divorced
-    hasChildren: false,
+    childrenCount: '',     // none / 1 / 2 / 3plus
+    childrenAge: [] as string[], // baby / toddler / school / teen
     travelFrequency: '',   // rarely / 1_2_year / often
     occupation: '',
 
     // Extra — only shown when relevant category selected
-    hasPets: false,
+    petTypes: [] as string[], // dog / cat / bird / rabbit / other
     skinType: '',         // beauty only
     height: '',           // fashion only
     weight: '',           // fashion only
@@ -358,15 +359,74 @@ export default function EditProfilePage() {
                 </button>
               ))}
             </div>
-            <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-xl cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.hasChildren}
-                onChange={(e) => setFormData({ ...formData, hasChildren: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-600 text-primary"
-              />
-              <span className="text-sm text-white">{language === 'ko' ? '👶 어린 자녀를 키우고 있습니다' : '👶 Tôi đang nuôi con nhỏ'}</span>
-            </label>
+            <div>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">👶 {language === 'ko' ? '자녀' : 'Con cái'}</label>
+              <div className="grid grid-cols-4 gap-2 mb-2">
+                {(language === 'ko' ? [
+                  { value: 'none', label: '없음' },
+                  { value: '1', label: '1명' },
+                  { value: '2', label: '2명' },
+                  { value: '3plus', label: '3명+' },
+                ] : [
+                  { value: 'none', label: 'Không có' },
+                  { value: '1', label: '1 bé' },
+                  { value: '2', label: '2 bé' },
+                  { value: '3plus', label: '3+ bé' },
+                ]).map((c) => (
+                  <button
+                    key={c.value}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, childrenCount: c.value, childrenAge: c.value === 'none' ? [] : formData.childrenAge })}
+                    className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                      formData.childrenCount === c.value
+                        ? 'bg-primary/20 border-primary text-white'
+                        : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+              {formData.childrenCount && formData.childrenCount !== 'none' && (
+                <div className="space-y-1">
+                  <p className="text-xs text-gray-500">{language === 'ko' ? '연령대 (복수 선택)' : 'Độ tuổi (chọn nhiều)'}</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(language === 'ko' ? [
+                      { value: 'baby', label: '0-2세' },
+                      { value: 'toddler', label: '3-6세' },
+                      { value: 'school', label: '7-12세' },
+                      { value: 'teen', label: '13세+' },
+                    ] : [
+                      { value: 'baby', label: '0-2 tuổi' },
+                      { value: 'toddler', label: '3-6 tuổi' },
+                      { value: 'school', label: '7-12 tuổi' },
+                      { value: 'teen', label: '13+ tuổi' },
+                    ]).map((a) => {
+                      const sel = formData.childrenAge.includes(a.value);
+                      return (
+                        <button
+                          key={a.value}
+                          type="button"
+                          onClick={() => setFormData({
+                            ...formData,
+                            childrenAge: sel
+                              ? formData.childrenAge.filter(x => x !== a.value)
+                              : [...formData.childrenAge, a.value],
+                          })}
+                          className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                            sel
+                              ? 'bg-secondary/20 border-secondary text-white'
+                              : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-secondary/50'
+                          }`}
+                        >
+                          {a.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Travel frequency */}
@@ -481,15 +541,47 @@ export default function EditProfilePage() {
 
             {/* Pet */}
             {isPet && (
-              <label className="flex items-center gap-3 p-3 bg-dark-600 rounded-xl cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.hasPets}
-                  onChange={(e) => setFormData({ ...formData, hasPets: e.target.checked })}
-                  className="w-5 h-5 rounded border-gray-600 text-primary"
-                />
-                <span className="text-sm text-white">{language === 'ko' ? '🐾 반려동물을 키우고 있습니다' : '🐾 Tôi đang nuôi thú cưng'}</span>
-              </label>
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">🐾 {language === 'ko' ? '반려동물 (복수 선택)' : 'Thú cưng (chọn nhiều)'}</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(language === 'ko' ? [
+                    { value: 'dog',    label: '🐕 강아지' },
+                    { value: 'cat',    label: '🐈 고양이' },
+                    { value: 'bird',   label: '🐦 새' },
+                    { value: 'rabbit', label: '🐇 토끼' },
+                    { value: 'fish',   label: '🐟 물고기' },
+                    { value: 'other',  label: '🐾 기타' },
+                  ] : [
+                    { value: 'dog',    label: '🐕 Chó' },
+                    { value: 'cat',    label: '🐈 Mèo' },
+                    { value: 'bird',   label: '🐦 Chim' },
+                    { value: 'rabbit', label: '🐇 Thỏ' },
+                    { value: 'fish',   label: '🐟 Cá' },
+                    { value: 'other',  label: '🐾 Khác' },
+                  ]).map((pt) => {
+                    const sel = formData.petTypes.includes(pt.value);
+                    return (
+                      <button
+                        key={pt.value}
+                        type="button"
+                        onClick={() => setFormData({
+                          ...formData,
+                          petTypes: sel
+                            ? formData.petTypes.filter(x => x !== pt.value)
+                            : [...formData.petTypes, pt.value],
+                        })}
+                        className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
+                          sel
+                            ? 'bg-primary/20 border-primary text-white'
+                            : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                        }`}
+                      >
+                        {pt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
         )}

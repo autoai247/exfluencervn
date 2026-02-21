@@ -4445,7 +4445,7 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: '홈',
       campaigns: '캠페인',
-      shop: '리소스',
+      shop: '가이드',
       favorites: '찜',
       messages: '메시지',
       stats: '통계',

@@ -167,7 +167,7 @@ export default function ResourcesPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title={language === 'ko' ? 'KOL 리소스' : 'Tài nguyên KOL'} showNotification />
+      <MobileHeader title={language === 'ko' ? 'KOL 가이드' : 'Tài nguyên KOL'} showNotification />
 
       <div className="container-mobile space-y-6 py-5">
 

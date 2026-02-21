@@ -108,7 +108,7 @@ export default function AdvertiserResourcesPage() {
   const { language } = useLanguage();
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <MobileHeader title={language === 'ko' ? '광고주 리소스' : 'Tài nguyên Nhà QC'} showNotification />
+      <MobileHeader title={language === 'ko' ? '광고주 가이드' : 'Tài nguyên Nhà QC'} showNotification />
 
       <div className="container-mobile space-y-6 py-5">
 

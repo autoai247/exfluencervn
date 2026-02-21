@@ -34,12 +34,12 @@ const PLATFORMS: { id: Platform; label: string; icon: typeof FaInstagram; color:
   { id: 'facebook', label: 'Facebook', icon: FaFacebook, color: 'text-blue-400' },
 ];
 
-const DELIVERABLES: { id: Deliverable; label: string; desc: string }[] = [
-  { id: 'post', label: 'Post / Feed', desc: 'Bài đăng cố định' },
-  { id: 'story', label: 'Story', desc: 'Đăng 24 giờ' },
-  { id: 'reel', label: 'Reel / Short', desc: 'Video ngắn' },
-  { id: 'video', label: 'Video dài', desc: 'YouTube / FB Watch' },
-  { id: 'live', label: 'Livestream', desc: 'Phát trực tiếp' },
+const DELIVERABLES: { id: Deliverable; label: string; descKo: string; descVi: string }[] = [
+  { id: 'post', label: 'Post / Feed', descKo: '고정 게시물', descVi: 'Bài đăng cố định' },
+  { id: 'story', label: 'Story', descKo: '24시간 게시', descVi: 'Đăng 24 giờ' },
+  { id: 'reel', label: 'Reel / Short', descKo: '짧은 영상', descVi: 'Video ngắn' },
+  { id: 'video', label: '긴 영상 / Long Video', descKo: 'YouTube / FB Watch', descVi: 'YouTube / FB Watch' },
+  { id: 'live', label: 'Livestream', descKo: '라이브 방송', descVi: 'Phát trực tiếp' },
 ];
 
 const NICHES = [
@@ -366,7 +366,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           <input
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-            placeholder="VD: Review serum dưỡng ẩm mùa hè"
+            placeholder={language === 'ko' ? '예: 여름 수분 세럼 리뷰' : 'VD: Review serum dưỡng ẩm mùa hè'}
             className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
           />
         </div>
@@ -377,7 +377,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
             rows={4}
-            placeholder="Mô tả sản phẩm, mục tiêu chiến dịch, thông điệp cần truyền tải..."
+            placeholder={language === 'ko' ? '제품 설명, 캠페인 목표, 전달할 메시지...' : 'Mô tả sản phẩm, mục tiêu chiến dịch, thông điệp cần truyền tải...'}
             className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
           />
         </div>
@@ -452,7 +452,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
               >
                 <div className="text-left">
                   <div className="text-sm font-medium">{d.label}</div>
-                  <div className="text-xs text-gray-500">{d.desc}</div>
+                  <div className="text-xs text-gray-500">{language === 'ko' ? d.descKo : d.descVi}</div>
                 </div>
                 {selected && <CheckCircle size={16} className="text-secondary flex-shrink-0" />}
               </button>
@@ -591,7 +591,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           <input
             value={form.location}
             onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-            placeholder="VD: TP.HCM, Hà Nội, Toàn quốc"
+            placeholder={language === 'ko' ? '예: 서울, 경기, 전국' : 'VD: TP.HCM, Hà Nội, Toàn quốc'}
             className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
           />
         </div>
@@ -695,7 +695,9 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           value={form.guidelines}
           onChange={e => setForm(f => ({ ...f, guidelines: e.target.value }))}
           rows={5}
-          placeholder={"• Chụp ảnh sản phẩm trên nền trắng hoặc phông sáng\n• Đề cập tên sản phẩm trong caption\n• Tag @[brand_account]\n• Giữ bài đăng ít nhất 30 ngày\n• Không được chỉnh sửa quá mức ảnh sản phẩm"}
+          placeholder={language === 'ko'
+            ? "• 흰색 또는 밝은 배경에서 제품 촬영\n• 캡션에 제품명 언급 필수\n• @[브랜드계정] 태그\n• 30일 이상 게시물 유지\n• 제품 이미지 과도한 편집 금지"
+            : "• Chụp ảnh sản phẩm trên nền trắng hoặc phông sáng\n• Đề cập tên sản phẩm trong caption\n• Tag @[brand_account]\n• Giữ bài đăng ít nhất 30 ngày\n• Không được chỉnh sửa quá mức ảnh sản phẩm"}
           className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
         />
       </div>
@@ -707,7 +709,9 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
           value={form.provided}
           onChange={e => setForm(f => ({ ...f, provided: e.target.value }))}
           rows={3}
-          placeholder={"• 1 bộ sản phẩm mẫu thử (miễn phí)\n• Freeship toàn quốc\n• Ảnh chất lượng cao để sử dụng"}
+          placeholder={language === 'ko'
+            ? "• 샘플 제품 1세트 (무료)\n• 전국 무료 배송\n• 사용 가능한 고화질 이미지"
+            : "• 1 bộ sản phẩm mẫu thử (miễn phí)\n• Freeship toàn quốc\n• Ảnh chất lượng cao để sử dụng"}
           className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary resize-none"
         />
       </div>

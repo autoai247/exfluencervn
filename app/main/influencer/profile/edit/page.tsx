@@ -7,28 +7,28 @@ import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const CATEGORIES = [
-  { value: 'beauty', label: '💄 Làm đẹp' },
-  { value: 'fashion', label: '👗 Thời trang' },
-  { value: 'food', label: '🍜 Ẩm thực' },
-  { value: 'travel', label: '✈️ Du lịch' },
-  { value: 'fitness', label: '💪 Thể dục' },
-  { value: 'tech', label: '📱 Công nghệ' },
-  { value: 'gaming', label: '🎮 Gaming' },
-  { value: 'lifestyle', label: '🌟 Lifestyle' },
-  { value: 'baby', label: '👶 Mẹ & Bé' },
-  { value: 'pet', label: '🐾 Thú cưng' },
-  { value: 'home', label: '🏠 Nội thất' },
-  { value: 'finance', label: '💰 Tài chính' },
+  { value: 'beauty', labelKo: '💄 뷰티', labelVi: '💄 Làm đẹp' },
+  { value: 'fashion', labelKo: '👗 패션', labelVi: '👗 Thời trang' },
+  { value: 'food', labelKo: '🍜 음식', labelVi: '🍜 Ẩm thực' },
+  { value: 'travel', labelKo: '✈️ 여행', labelVi: '✈️ Du lịch' },
+  { value: 'fitness', labelKo: '💪 피트니스', labelVi: '💪 Thể dục' },
+  { value: 'tech', labelKo: '📱 테크', labelVi: '📱 Công nghệ' },
+  { value: 'gaming', labelKo: '🎮 게이밍', labelVi: '🎮 Gaming' },
+  { value: 'lifestyle', labelKo: '🌟 라이프스타일', labelVi: '🌟 Lifestyle' },
+  { value: 'baby', labelKo: '👶 육아', labelVi: '👶 Mẹ & Bé' },
+  { value: 'pet', labelKo: '🐾 반려동물', labelVi: '🐾 Thú cưng' },
+  { value: 'home', labelKo: '🏠 인테리어', labelVi: '🏠 Nội thất' },
+  { value: 'finance', labelKo: '💰 재테크', labelVi: '💰 Tài chính' },
 ];
 
 const PRICE_RANGES = [
-  { value: 'under_500k', label: 'Dưới 500K' },
-  { value: '500k_1m', label: '500K – 1 triệu' },
-  { value: '1m_3m', label: '1 – 3 triệu' },
-  { value: '3m_5m', label: '3 – 5 triệu' },
-  { value: '5m_10m', label: '5 – 10 triệu' },
-  { value: 'over_10m', label: 'Trên 10 triệu' },
-  { value: 'negotiable', label: 'Thỏa thuận' },
+  { value: 'under_500k', labelKo: '50만 이하', labelVi: 'Dưới 500K' },
+  { value: '500k_1m', labelKo: '50만 – 100만', labelVi: '500K – 1 triệu' },
+  { value: '1m_3m', labelKo: '100만 – 300만', labelVi: '1 – 3 triệu' },
+  { value: '3m_5m', labelKo: '300만 – 500만', labelVi: '3 – 5 triệu' },
+  { value: '5m_10m', labelKo: '500만 – 1000만', labelVi: '5 – 10 triệu' },
+  { value: 'over_10m', labelKo: '1000만 이상', labelVi: 'Trên 10 triệu' },
+  { value: 'negotiable', labelKo: '협의 가능', labelVi: 'Thỏa thuận' },
 ];
 
 export default function EditProfilePage() {
@@ -86,7 +86,7 @@ export default function EditProfilePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Đã cập nhật hồ sơ thành công!');
+    alert(language === 'ko' ? '프로필이 성공적으로 업데이트되었습니다!' : 'Đã cập nhật hồ sơ thành công!');
     router.back();
   };
 
@@ -117,11 +117,11 @@ export default function EditProfilePage() {
         {/* ─── 1. Basic Info ─── */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-            <User size={14} /> Thông tin cơ bản
+            <User size={14} /> {language === 'ko' ? '기본 정보' : 'Thông tin cơ bản'}
           </h3>
 
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-1.5 block">Họ và tên <span className="text-error">*</span></label>
+            <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '이름' : 'Họ và tên'} <span className="text-error">*</span></label>
             <input
               type="text"
               required
@@ -134,7 +134,7 @@ export default function EditProfilePage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Số điện thoại</label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '전화번호' : 'Số điện thoại'}</label>
               <input
                 type="tel"
                 value={formData.phone}
@@ -157,12 +157,12 @@ export default function EditProfilePage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-1.5 block">Giới thiệu ngắn</label>
+            <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '자기소개' : 'Giới thiệu ngắn'}</label>
             <textarea
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value.slice(0, 150) })}
               rows={2}
-              placeholder="VD: Beauty creator tại HCM, chuyên review skincare và makeup..."
+              placeholder={language === 'ko' ? '예: HCM의 뷰티 크리에이터, 스킨케어 및 메이크업 리뷰 전문...' : 'VD: Beauty creator tại HCM, chuyên review skincare và makeup...'}
               className="input resize-none"
             />
             <p className="text-xs text-gray-600 text-right mt-0.5">{formData.bio.length}/150</p>
@@ -171,8 +171,8 @@ export default function EditProfilePage() {
 
         {/* ─── 2. SNS Accounts ─── */}
         <div className="space-y-4">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Tài khoản mạng xã hội</h3>
-          <p className="text-xs text-gray-500 -mt-2">Điền các kênh bạn đang hoạt động</p>
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? 'SNS 계정' : 'Tài khoản mạng xã hội'}</h3>
+          <p className="text-xs text-gray-500 -mt-2">{language === 'ko' ? '활동 중인 채널을 입력하세요' : 'Điền các kênh bạn đang hoạt động'}</p>
 
           {[
             { key: 'instagram', followersKey: 'instagramFollowers', icon: <FaInstagram className="text-pink-500" />, label: 'Instagram', placeholder: 'https://instagram.com/username' },
@@ -208,33 +208,33 @@ export default function EditProfilePage() {
 
         {/* ─── 3. Demographics ─── */}
         <div className="space-y-4">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Thông tin cá nhân</h3>
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '개인 정보' : 'Thông tin cá nhân'}</h3>
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Giới tính <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '성별' : 'Giới tính'} <span className="text-error">*</span></label>
               <select
                 required
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                 className="input"
               >
-                <option value="">Chọn</option>
-                <option value="female">Nữ</option>
-                <option value="male">Nam</option>
-                <option value="other">Khác</option>
+                <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
+                <option value="female">{language === 'ko' ? '여성' : 'Nữ'}</option>
+                <option value="male">{language === 'ko' ? '남성' : 'Nam'}</option>
+                <option value="other">{language === 'ko' ? '기타' : 'Khác'}</option>
               </select>
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Độ tuổi <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '연령대' : 'Độ tuổi'} <span className="text-error">*</span></label>
               <select
                 required
                 value={formData.ageRange}
                 onChange={(e) => setFormData({ ...formData, ageRange: e.target.value })}
                 className="input"
               >
-                <option value="">Chọn</option>
+                <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
                 <option value="18-24">18-24</option>
                 <option value="25-34">25-34</option>
                 <option value="35-44">35-44</option>
@@ -243,21 +243,21 @@ export default function EditProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Thành phố <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '도시' : 'Thành phố'} <span className="text-error">*</span></label>
               <select
                 required
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 className="input"
               >
-                <option value="">Chọn</option>
+                <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
                 <option value="Hồ Chí Minh">TP.HCM</option>
                 <option value="Hà Nội">Hà Nội</option>
                 <option value="Đà Nẵng">Đà Nẵng</option>
                 <option value="Cần Thơ">Cần Thơ</option>
                 <option value="Hải Phòng">Hải Phòng</option>
                 <option value="Bình Dương">Bình Dương</option>
-                <option value="Khác">Khác</option>
+                <option value="Khác">{language === 'ko' ? '기타' : 'Khác'}</option>
               </select>
             </div>
           </div>
@@ -266,12 +266,12 @@ export default function EditProfilePage() {
         {/* ─── 4. Content Categories ─── */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Lĩnh vực nội dung <span className="text-error">*</span></h3>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '콘텐츠 분야' : 'Lĩnh vực nội dung'} <span className="text-error">*</span></h3>
             <span className={`text-xs font-semibold ${formData.categories.length >= 5 ? 'text-warning' : 'text-gray-500'}`}>
               {formData.categories.length}/5
             </span>
           </div>
-          <p className="text-xs text-gray-500">Chọn tối đa 5 lĩnh vực bạn tạo nội dung</p>
+          <p className="text-xs text-gray-500">{language === 'ko' ? '최대 5개 분야 선택' : 'Chọn tối đa 5 lĩnh vực bạn tạo nội dung'}</p>
 
           <div className="grid grid-cols-3 gap-2">
             {CATEGORIES.map((cat) => {
@@ -291,7 +291,7 @@ export default function EditProfilePage() {
                       : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
                   }`}
                 >
-                  {cat.label}
+                  {language === 'ko' ? cat.labelKo : cat.labelVi}
                 </button>
               );
             })}
@@ -300,18 +300,18 @@ export default function EditProfilePage() {
 
         {/* ─── 5. Lifestyle ─── */}
         <div className="space-y-5">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Thông tin cuộc sống</h3>
-          <p className="text-xs text-gray-500 -mt-2">Giúp ghép chiến dịch phù hợp hơn (xe, du lịch, gia đình...)</p>
+          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '라이프스타일 정보' : 'Thông tin cuộc sống'}</h3>
+          <p className="text-xs text-gray-500 -mt-2">{language === 'ko' ? '캠페인 매칭 향상에 도움이 됩니다' : 'Giúp ghép chiến dịch phù hợp hơn (xe, du lịch, gia đình...)'}</p>
 
           {/* Vehicle */}
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">🚗 Phương tiện di chuyển</label>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">{language === 'ko' ? '🚗 이동 수단' : '🚗 Phương tiện di chuyển'}</label>
             <div className="grid grid-cols-4 gap-2">
               {[
-                { value: '', label: 'Không có' },
-                { value: 'motorbike', label: '🛵 Xe máy' },
-                { value: 'car', label: '🚗 Ô tô' },
-                { value: 'both', label: 'Cả hai' },
+                { value: '', labelKo: '없음', labelVi: 'Không có' },
+                { value: 'motorbike', labelKo: '🛵 오토바이', labelVi: '🛵 Xe máy' },
+                { value: 'car', labelKo: '🚗 자동차', labelVi: '🚗 Ô tô' },
+                { value: 'both', labelKo: '둘 다', labelVi: 'Cả hai' },
               ].map((v) => (
                 <button
                   key={v.value}
@@ -323,7 +323,7 @@ export default function EditProfilePage() {
                       : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
                   }`}
                 >
-                  {v.label}
+                  {language === 'ko' ? v.labelKo : v.labelVi}
                 </button>
               ))}
             </div>
@@ -365,18 +365,18 @@ export default function EditProfilePage() {
                 onChange={(e) => setFormData({ ...formData, hasChildren: e.target.checked })}
                 className="w-5 h-5 rounded border-gray-600 text-primary"
               />
-              <span className="text-sm text-white">👶 Tôi đang nuôi con nhỏ</span>
+              <span className="text-sm text-white">{language === 'ko' ? '👶 어린 자녀를 키우고 있습니다' : '👶 Tôi đang nuôi con nhỏ'}</span>
             </label>
           </div>
 
           {/* Travel frequency */}
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">✈️ Tần suất du lịch</label>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">{language === 'ko' ? '✈️ 여행 빈도' : '✈️ Tần suất du lịch'}</label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'rarely', label: 'Hiếm khi' },
-                { value: '1_2_year', label: '1-2 lần/năm' },
-                { value: 'often', label: 'Thường xuyên' },
+                { value: 'rarely', labelKo: '드물게', labelVi: 'Hiếm khi' },
+                { value: '1_2_year', labelKo: '연 1-2회', labelVi: '1-2 lần/năm' },
+                { value: 'often', labelKo: '자주', labelVi: 'Thường xuyên' },
               ].map((tf) => (
                 <button
                   key={tf.value}
@@ -388,7 +388,7 @@ export default function EditProfilePage() {
                       : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
                   }`}
                 >
-                  {tf.label}
+                  {language === 'ko' ? tf.labelKo : tf.labelVi}
                 </button>
               ))}
             </div>
@@ -396,21 +396,21 @@ export default function EditProfilePage() {
 
           {/* Occupation */}
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-2 block">💼 Nghề nghiệp</label>
+            <label className="text-sm font-medium text-gray-300 mb-2 block">{language === 'ko' ? '💼 직업' : '💼 Nghề nghiệp'}</label>
             <select
               value={formData.occupation}
               onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
               className="input"
             >
-              <option value="">Không muốn tiết lộ</option>
-              <option value="student">Sinh viên</option>
-              <option value="office">Nhân viên văn phòng</option>
-              <option value="self_employed">Tự kinh doanh</option>
-              <option value="creator">Creator / Nghệ sĩ</option>
-              <option value="healthcare">Y tế / Điều dưỡng</option>
-              <option value="education">Giáo dục</option>
-              <option value="homemaker">Nội trợ</option>
-              <option value="other">Khác</option>
+              <option value="">{language === 'ko' ? '공개하지 않음' : 'Không muốn tiết lộ'}</option>
+              <option value="student">{language === 'ko' ? '학생' : 'Sinh viên'}</option>
+              <option value="office">{language === 'ko' ? '사무직' : 'Nhân viên văn phòng'}</option>
+              <option value="self_employed">{language === 'ko' ? '자영업' : 'Tự kinh doanh'}</option>
+              <option value="creator">{language === 'ko' ? '크리에이터 / 아티스트' : 'Creator / Nghệ sĩ'}</option>
+              <option value="healthcare">{language === 'ko' ? '의료 / 간호' : 'Y tế / Điều dưỡng'}</option>
+              <option value="education">{language === 'ko' ? '교육' : 'Giáo dục'}</option>
+              <option value="homemaker">{language === 'ko' ? '전업주부' : 'Nội trợ'}</option>
+              <option value="other">{language === 'ko' ? '기타' : 'Khác'}</option>
             </select>
           </div>
         </div>
@@ -418,19 +418,19 @@ export default function EditProfilePage() {
         {/* ─── 7. Category-specific extras ─── */}
         {(isBeauty || isFashion || isPet) && (
           <div className="space-y-4">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Thông tin bổ sung</h3>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '추가 정보' : 'Thông tin bổ sung'}</h3>
 
             {/* Beauty: skin type */}
             {isBeauty && (
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-1.5 block">💄 Loại da</label>
+                <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '💄 피부 타입' : '💄 Loại da'}</label>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    { value: 'dry', label: 'Da khô' },
-                    { value: 'oily', label: 'Da dầu' },
-                    { value: 'combination', label: 'Da hỗn hợp' },
-                    { value: 'sensitive', label: 'Da nhạy cảm' },
-                    { value: 'normal', label: 'Da thường' },
+                    { value: 'dry', labelKo: '건성', labelVi: 'Da khô' },
+                    { value: 'oily', labelKo: '지성', labelVi: 'Da dầu' },
+                    { value: 'combination', labelKo: '복합성', labelVi: 'Da hỗn hợp' },
+                    { value: 'sensitive', labelKo: '민감성', labelVi: 'Da nhạy cảm' },
+                    { value: 'normal', labelKo: '보통', labelVi: 'Da thường' },
                   ].map((s) => (
                     <button
                       key={s.value}
@@ -442,7 +442,7 @@ export default function EditProfilePage() {
                           : 'bg-dark-600 border-dark-500 text-gray-300'
                       }`}
                     >
-                      {s.label}
+                      {language === 'ko' ? s.labelKo : s.labelVi}
                     </button>
                   ))}
                 </div>
@@ -453,7 +453,7 @@ export default function EditProfilePage() {
             {isFashion && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm font-medium text-gray-300 mb-1.5 block">👗 Chiều cao (cm)</label>
+                  <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '👗 키 (cm)' : '👗 Chiều cao (cm)'}</label>
                   <input
                     type="number"
                     value={formData.height}
@@ -465,7 +465,7 @@ export default function EditProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-300 mb-1.5 block">Cân nặng (kg)</label>
+                  <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '몸무게 (kg)' : 'Cân nặng (kg)'}</label>
                   <input
                     type="number"
                     value={formData.weight}
@@ -488,7 +488,7 @@ export default function EditProfilePage() {
                   onChange={(e) => setFormData({ ...formData, hasPets: e.target.checked })}
                   className="w-5 h-5 rounded border-gray-600 text-primary"
                 />
-                <span className="text-sm text-white">🐾 Tôi đang nuôi thú cưng</span>
+                <span className="text-sm text-white">{language === 'ko' ? '🐾 반려동물을 키우고 있습니다' : '🐾 Tôi đang nuôi thú cưng'}</span>
               </label>
             )}
           </div>
@@ -497,7 +497,7 @@ export default function EditProfilePage() {
         {/* ─── 8. Pricing ─── */}
         <div className="space-y-3">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-            <DollarSign size={14} /> Mức phí mong muốn / bài đăng
+            <DollarSign size={14} /> {language === 'ko' ? '희망 게시물 단가' : 'Mức phí mong muốn / bài đăng'}
           </h3>
           <div className="grid grid-cols-2 gap-2">
             {PRICE_RANGES.map((p) => (
@@ -511,16 +511,16 @@ export default function EditProfilePage() {
                     : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-accent/50'
                 }`}
               >
-                {p.label}
+                {language === 'ko' ? p.labelKo : p.labelVi}
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-500">Chỉ mang tính tham khảo, có thể thỏa thuận với nhà QC</p>
+          <p className="text-xs text-gray-500">{language === 'ko' ? '참고용이며, 광고주와 협의 가능합니다' : 'Chỉ mang tính tham khảo, có thể thỏa thuận với nhà QC'}</p>
         </div>
 
         <button type="submit" className="btn btn-primary w-full py-4 text-base font-black">
           <Save size={20} className="mr-2" />
-          Lưu hồ sơ
+          {language === 'ko' ? '프로필 저장' : 'Lưu hồ sơ'}
         </button>
 
       </form>

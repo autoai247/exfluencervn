@@ -97,10 +97,12 @@ const generateApplicantAvatars = (campaignId: string, applicantsCount: number, s
 // Mock campaign detail
 const mockCampaign = {
   id: '1',
-  title: 'Review sản phẩm Skincare cao cấp mới ra mắt',
+  titleKo: '신규 출시 프리미엄 스킨케어 제품 리뷰',
+  titleVi: 'Review sản phẩm Skincare cao cấp mới ra mắt',
   company: 'Beauty Brand VN',
   companyLogo: 'https://ui-avatars.com/api/?name=Beauty+Brand&background=FF6B6B&color=fff',
-  description: 'Trải nghiệm dòng skincare premium mới ra mắt và chia sẻ đánh giá trung thực của bạn. Sản phẩm được cung cấp miễn phí, chúng tôi mong muốn nhận được phản hồi thật sự từ trải nghiệm của bạn.',
+  descriptionKo: '새로 출시된 프리미엄 스킨케어 라인을 직접 체험하고 솔직한 평가를 공유해주세요. 제품은 무료로 제공되며, 실제 사용 경험을 진심으로 담아주시길 바랍니다.',
+  descriptionVi: 'Trải nghiệm dòng skincare premium mới ra mắt và chia sẻ đánh giá trung thực của bạn. Sản phẩm được cung cấp miễn phí, chúng tôi mong muốn nhận được phản hồi thật sự từ trải nghiệm của bạn.',
   budget: 500000,
   status: 'not_applied' as 'not_applied' | 'pending' | 'in_progress' | 'completed', // not_applied, pending, in_progress, completed
   deadline: '2026-04-15',
@@ -120,7 +122,8 @@ const mockCampaign = {
   difficulty: {
     level: 'easy' as 'easy' | 'medium' | 'hard',
     estimatedHours: 4, // Total time investment
-    skillsRequired: ['Chụp ảnh sản phẩm', 'Dựng video cơ bản', 'Quản lý SNS'],
+    skillsRequiredKo: ['제품 사진 촬영', '기본 영상 편집', 'SNS 관리'],
+    skillsRequiredVi: ['Chụp ảnh sản phẩm', 'Dựng video cơ bản', 'Quản lý SNS'],
     successRate: 85, // 85% of applicants get selected
   },
   earningsBreakdown: {
@@ -133,8 +136,8 @@ const mockCampaign = {
   },
   socialProof: {
     recentReviews: [
-      { name: 'Nguyen T.', rating: 5, comment: 'Sản phẩm tốt, thanh toán nhanh!', hours: 2 },
-      { name: 'Tran M.', rating: 5, comment: 'Nhà QC rất thân thiện và chuyên nghiệp', hours: 5 },
+      { name: 'Nguyen T.', rating: 5, commentKo: '제품 품질 좋고, 결제 빨라요!', commentVi: 'Sản phẩm tốt, thanh toán nhanh!', hours: 2 },
+      { name: 'Tran M.', rating: 5, commentKo: '광고주 매우 친절하고 전문적이에요', commentVi: 'Nhà QC rất thân thiện và chuyên nghiệp', hours: 5 },
     ],
     averageRating: 4.9,
     completionRate: 95, // 95% of influencers complete successfully
@@ -142,7 +145,8 @@ const mockCampaign = {
   qualityAssurance: {
     verified: true, // Verified advertiser
     paymentGuarantee: true, // Payment guaranteed by platform
-    avgResponseTime: '2 giờ', // Average response time
+    avgResponseTimeKo: '2시간', // Average response time
+    avgResponseTimeVi: '2 giờ',
     contractProtection: true, // Legal contract protection
   },
 
@@ -156,9 +160,9 @@ const mockCampaign = {
       'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=800&h=800&fit=crop', // 세트
     ],
     exampleContent: [
-      { url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=800&fit=crop', caption: 'Ví dụ unboxing' },
-      { url: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=600&h=800&fit=crop', caption: 'Trước & sau khi dùng' },
-      { url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=800&fit=crop', caption: 'Chi tiết sản phẩm' },
+      { url: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=800&fit=crop', captionKo: '언박싱 예시', captionVi: 'Ví dụ unboxing' },
+      { url: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=600&h=800&fit=crop', captionKo: '사용 전/후', captionVi: 'Trước & sau khi dùng' },
+      { url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=800&fit=crop', captionKo: '제품 상세', captionVi: 'Chi tiết sản phẩm' },
     ],
     brandStory: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?w=1200&h=400&fit=crop',
   },
@@ -170,9 +174,13 @@ const mockCampaign = {
     minEngagement: 3.0,
     platforms: ['Instagram', 'TikTok'],
     categories: ['Làm đẹp', 'Phong cách sống'],
+    categoriesKo: ['뷰티', '라이프스타일'],
+    categoriesVi: ['Làm đẹp', 'Phong cách sống'],
     gender: 'female' as 'any' | 'male' | 'female',
     ageRange: '20-35',
     location: ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng'],
+    locationKo: ['호치민', '하노이', '다낭'],
+    locationVi: ['Hồ Chí Minh', 'Hà Nội', 'Đà Nẵng'],
 
     // Extended requirements - Beauty campaign specific
     skinType: ['combination', 'oily'], // For beauty campaign
@@ -195,8 +203,13 @@ const mockCampaign = {
       { name: 'Cleansing Foam 150ml', value: '400.000 VND', quantity: 1, type: 'fullsize' },
     ],
     totalValue: '2.400.000 VND',
-    shipping: 'Miễn phí vận chuyển (2-3 ngày làm việc)',
-    additionalBenefits: [
+    shippingKo: '무료 배송 (영업일 기준 2-3일)',
+    shippingVi: 'Miễn phí vận chuyển (2-3 ngày làm việc)',
+    additionalBenefitsKo: [
+      '신규 출시 제품 우선 체험 기회',
+      '리뷰 품질이 좋으면 장기 브랜드 앰배서더 기회',
+    ],
+    additionalBenefitsVi: [
       'Ưu tiên trải nghiệm sản phẩm mới ra mắt',
       'Cơ hội trở thành Brand Ambassador dài hạn nếu review chất lượng',
     ],
@@ -205,18 +218,31 @@ const mockCampaign = {
   // 상세 미션 가이드라인
   missionGuidelines: {
     contentFormat: [
-      { platform: 'Instagram', type: 'Feed post', count: 1, requirement: 'Bắt buộc có ảnh trước/sau khi dùng' },
-      { platform: 'Instagram', type: 'Stories', count: '3 trở lên', requirement: 'Unboxing, quá trình sử dụng, cảm nhận cuối' },
-      { platform: 'TikTok', type: 'Video ngắn', count: 1, requirement: 'Tối thiểu 1 phút, phải có phụ đề' },
+      { platform: 'Instagram', typeKo: '피드 게시물', typeVi: 'Feed post', count: 1, requirementKo: '사용 전/후 사진 필수', requirementVi: 'Bắt buộc có ảnh trước/sau khi dùng' },
+      { platform: 'Instagram', typeKo: '스토리', typeVi: 'Stories', count: '3 trở lên', requirementKo: '언박싱, 사용 과정, 최종 감상', requirementVi: 'Unboxing, quá trình sử dụng, cảm nhận cuối' },
+      { platform: 'TikTok', typeKo: '짧은 동영상', typeVi: 'Video ngắn', count: 1, requirementKo: '최소 1분, 자막 필수', requirementVi: 'Tối thiểu 1 phút, phải có phụ đề' },
     ],
-    mustInclude: [
+    mustIncludeKo: [
+      '정확한 제품명 언급',
+      '브랜드 계정 @beautybrand_vn 태그',
+      '해시태그: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand',
+      '솔직한 평가 (장단점 모두)',
+      '본인 피부 타입 언급',
+    ],
+    mustIncludeVi: [
       'Đề cập tên sản phẩm chính xác',
       'Tag tài khoản thương hiệu @beautybrand_vn',
       'Hashtag: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand',
       'Đánh giá trung thực (cả ưu và nhược điểm)',
       'Đề cập loại da của bạn',
     ],
-    prohibited: [
+    prohibitedKo: [
+      '다른 브랜드 제품과 비교 금지',
+      '의학적 효능 과장 금지 (예: "여드름 치료", "주름 완전 제거")',
+      '제품 재판매 또는 양도 금지',
+      '캠페인 종료 전 게시물 삭제 금지 (최소 30일)',
+    ],
+    prohibitedVi: [
       'Không so sánh với sản phẩm thương hiệu khác',
       'Không phóng đại hiệu quả y tế (VD: "chữa mụn", "xóa nếp nhăn hoàn toàn")',
       'Không bán lại hoặc chuyển nhượng sản phẩm',
@@ -229,7 +255,8 @@ const mockCampaign = {
   brandInfo: {
     name: 'Beauty Brand',
     founded: '2019',
-    description: 'Thương hiệu skincare vegan theo đuổi clean beauty. Nghiên cứu làn da phụ nữ Việt Nam để phát triển dòng sản phẩm premium.',
+    descriptionKo: '비건 스킨케어 브랜드로 클린 뷰티를 추구합니다. 베트남 여성 피부를 연구하여 프리미엄 제품 라인을 개발했습니다.',
+    descriptionVi: 'Thương hiệu skincare vegan theo đuổi clean beauty. Nghiên cứu làn da phụ nữ Việt Nam để phát triển dòng sản phẩm premium.',
     website: 'https://beautybrand.vn',
     instagram: '@beautybrand_official',
     previousCampaigns: 5,
@@ -237,7 +264,8 @@ const mockCampaign = {
     totalInfluencers: 127,
     verified: true,
     trustScore: 95, // 신뢰도 점수 (0-100)
-    badges: ['Thanh toán uy tín', 'Phản hồi nhanh', 'Brief rõ ràng'],
+    badgesKo: ['신뢰할 수 있는 결제', '빠른 응답', '명확한 브리핑'],
+    badgesVi: ['Thanh toán uy tín', 'Phản hồi nhanh', 'Brief rõ ràng'],
   },
 
   // 광고주에 대한 인플루언서 리뷰 (중요!)
@@ -247,10 +275,13 @@ const mockCampaign = {
       influencer: 'Nguyen T.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Nguyen+T&background=4ECDC4&color=fff',
       rating: 5.0,
-      comment: 'Sản phẩm tốt, thanh toán nhanh! Brief rõ ràng nên làm việc rất thuận tiện. Nhất định sẽ hợp tác lần sau.',
+      commentKo: '제품 좋고, 결제 빨라요! 브리핑이 명확해서 작업하기 편했어요. 다음에도 꼭 협업하고 싶어요.',
+      commentVi: 'Sản phẩm tốt, thanh toán nhanh! Brief rõ ràng nên làm việc rất thuận tiện. Nhất định sẽ hợp tác lần sau.',
       date: '2026-02-08',
-      campaignTitle: 'Chiến dịch Skincare Mùa Đông',
-      tags: ['Thanh toán nhanh', 'Giao tiếp tốt', 'Brief rõ ràng'],
+      campaignTitleKo: '겨울 스킨케어 캠페인',
+      campaignTitleVi: 'Chiến dịch Skincare Mùa Đông',
+      tagsKo: ['빠른 결제', '소통 원활', '명확한 브리핑'],
+      tagsVi: ['Thanh toán nhanh', 'Giao tiếp tốt', 'Brief rõ ràng'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -259,10 +290,13 @@ const mockCampaign = {
       influencer: 'Tran M.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Tran+M&background=FF6B6B&color=fff',
       rating: 4.8,
-      comment: 'Nhà QC thân thiện và chuyên nghiệp. Chất lượng sản phẩm xuất sắc nên mình tự tin review.',
+      commentKo: '광고주가 매우 친절하고 전문적이에요. 제품 품질이 좋아서 자신감 있게 리뷰했어요.',
+      commentVi: 'Nhà QC thân thiện và chuyên nghiệp. Chất lượng sản phẩm xuất sắc nên mình tự tin review.',
       date: '2026-02-05',
-      campaignTitle: 'Chiến dịch Review Sản Phẩm Mới',
-      tags: ['Thân thiện', 'Chuyên nghiệp', 'Sản phẩm tốt'],
+      campaignTitleKo: '신제품 리뷰 캠페인',
+      campaignTitleVi: 'Chiến dịch Review Sản Phẩm Mới',
+      tagsKo: ['친절함', '전문성', '좋은 제품'],
+      tagsVi: ['Thân thiện', 'Chuyên nghiệp', 'Sản phẩm tốt'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -271,10 +305,13 @@ const mockCampaign = {
       influencer: 'Le H.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Le+H&background=6C5CE7&color=fff',
       rating: 5.0,
-      comment: 'Hầu như không phải làm lại, họ tôn trọng sáng tạo của mình. Rất recommend!',
+      commentKo: '거의 수정 없이 진행했어요, 창의성을 존중해줘요. 강력 추천합니다!',
+      commentVi: 'Hầu như không phải làm lại, họ tôn trọng sáng tạo của mình. Rất recommend!',
       date: '2026-01-28',
-      campaignTitle: 'Chiến dịch Beauty Routine',
-      tags: ['Tôn trọng creative', 'Ít yêu cầu sửa', 'Được giới thiệu'],
+      campaignTitleKo: '뷰티 루틴 캠페인',
+      campaignTitleVi: 'Chiến dịch Beauty Routine',
+      tagsKo: ['창의성 존중', '적은 수정 요청', '추천'],
+      tagsVi: ['Tôn trọng creative', 'Ít yêu cầu sửa', 'Được giới thiệu'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -283,10 +320,13 @@ const mockCampaign = {
       influencer: 'Pham N.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Pham+N&background=00B894&color=fff',
       rating: 4.9,
-      comment: 'Hợp đồng rõ ràng, phản hồi nhanh chóng. Nhà QC đáng tin cậy.',
+      commentKo: '계약이 명확하고 빠른 피드백. 믿을 수 있는 광고주예요.',
+      commentVi: 'Hợp đồng rõ ràng, phản hồi nhanh chóng. Nhà QC đáng tin cậy.',
       date: '2026-01-20',
-      campaignTitle: 'Chiến dịch Tutorial Makeup',
-      tags: ['Hợp đồng rõ', 'Feedback nhanh', 'Tin cậy'],
+      campaignTitleKo: '메이크업 튜토리얼 캠페인',
+      campaignTitleVi: 'Chiến dịch Tutorial Makeup',
+      tagsKo: ['명확한 계약', '빠른 피드백', '신뢰'],
+      tagsVi: ['Hợp đồng rõ', 'Feedback nhanh', 'Tin cậy'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     },
@@ -295,10 +335,13 @@ const mockCampaign = {
       influencer: 'Hoang V.',
       influencerAvatar: 'https://ui-avatars.com/api/?name=Hoang+V&background=FFA502&color=fff',
       rating: 5.0,
-      comment: 'Hoàn hảo từ đầu đến cuối. Giao hàng nhanh, phản hồi tốt, làm việc không stress.',
+      commentKo: '처음부터 끝까지 완벽해요. 빠른 배송, 좋은 응답, 스트레스 없이 작업했어요.',
+      commentVi: 'Hoàn hảo từ đầu đến cuối. Giao hàng nhanh, phản hồi tốt, làm việc không stress.',
       date: '2026-01-15',
-      campaignTitle: 'Chiến dịch Review Skincare',
-      tags: ['Hoàn hảo', 'Giao hàng nhanh', 'Không stress'],
+      campaignTitleKo: '스킨케어 리뷰 캠페인',
+      campaignTitleVi: 'Chiến dịch Review Skincare',
+      tagsKo: ['완벽', '빠른 배송', '스트레스 없음'],
+      tagsVi: ['Hoàn hảo', 'Giao hàng nhanh', 'Không stress'],
       wasPaymentOnTime: true,
       wouldWorkAgain: true
     }
@@ -306,13 +349,20 @@ const mockCampaign = {
 
   // 선정 기준
   selectionCriteria: {
-    priority: [
+    priorityKo: [
+      '팔로워 참여율 (좋아요, 댓글, 저장)',
+      '콘텐츠 품질 (사진/영상)',
+      '이전 뷰티 캠페인 경험',
+      '팔로워 인구통계 (여성 20-35세)',
+    ],
+    priorityVi: [
       'Tỉ lệ tương tác followers (like, comment, save)',
       'Chất lượng nội dung (ảnh/video)',
       'Kinh nghiệm campaign beauty trước đây',
       'Demographics followers (nữ 20-35 tuổi)',
     ],
-    processTime: '1-2 ngày',
+    processTimeKo: '1-2일',
+    processTimeVi: '1-2 ngày',
     expectedApplicants: 50,
     selectedInfluencers: 10,
     selectionRate: '20%',
@@ -321,29 +371,37 @@ const mockCampaign = {
   // FAQ
   faq: [
     {
-      q: 'Khi nào tôi nhận được sản phẩm?',
-      a: 'Sau khi được duyệt, sản phẩm sẽ được giao trong 2-3 ngày đến địa chỉ đã đăng ký. Mã vận chuyển sẽ được thông báo riêng.',
+      qKo: '제품은 언제 받을 수 있나요?',
+      qVi: 'Khi nào tôi nhận được sản phẩm?',
+      aKo: '승인 후 등록된 주소로 2-3일 내 배송됩니다. 운송장 번호는 별도 안내됩니다.',
+      aVi: 'Sau khi được duyệt, sản phẩm sẽ được giao trong 2-3 ngày đến địa chỉ đã đăng ký. Mã vận chuyển sẽ được thông báo riêng.',
     },
     {
-      q: 'Da nhạy cảm có dùng được không?',
-      a: 'Công thức vegan ít kích ứng, phù hợp với da nhạy cảm. Tuy nhiên, khuyến nghị test patch trước khi dùng. Nếu có phản ứng, dừng ngay và liên hệ chúng tôi.',
+      qKo: '민감성 피부도 사용 가능한가요?',
+      qVi: 'Da nhạy cảm có dùng được không?',
+      aKo: '비건 포뮬러라 자극이 적어 민감성 피부에도 적합합니다. 다만 사용 전 패치 테스트를 권장드립니다. 반응이 있으면 즉시 중단하고 저희에게 연락해주세요.',
+      aVi: 'Công thức vegan ít kích ứng, phù hợp với da nhạy cảm. Tuy nhiên, khuyến nghị test patch trước khi dùng. Nếu có phản ứng, dừng ngay và liên hệ chúng tôi.',
     },
     {
-      q: 'Cần dùng sản phẩm bao lâu trước khi review?',
-      a: 'Vui lòng dùng ít nhất 2 tuần trước khi viết review. Khuyến nghị dùng 4 tuần để thấy rõ sự thay đổi.',
+      qKo: '리뷰 작성 전 얼마나 사용해야 하나요?',
+      qVi: 'Cần dùng sản phẩm bao lâu trước khi review?',
+      aKo: '리뷰 작성 전 최소 2주 이상 사용해 주세요. 변화를 더 명확히 보려면 4주 사용을 권장합니다.',
+      aVi: 'Vui lòng dùng ít nhất 2 tuần trước khi viết review. Khuyến nghị dùng 4 tuần để thấy rõ sự thay đổi.',
     },
     {
-      q: 'Bài đăng phải duy trì bao lâu?',
-      a: 'Ít nhất 30 ngày kể từ ngày đăng. Xóa sớm có thể dẫn đến hủy thanh toán.',
+      qKo: '게시물은 얼마나 유지해야 하나요?',
+      qVi: 'Bài đăng phải duy trì bao lâu?',
+      aKo: '게시일로부터 최소 30일 이상 유지해야 합니다. 조기 삭제 시 결제가 취소될 수 있습니다.',
+      aVi: 'Ít nhất 30 ngày kể từ ngày đăng. Xóa sớm có thể dẫn đến hủy thanh toán.',
     },
   ],
 
   deliverables: [
-    { id: 1, title: '1 bài đăng feed Instagram (ảnh trước/sau khi dùng)', submitted: true },
-    { id: 2, title: '3+ Stories Instagram (unboxing, sử dụng, cảm nhận)', submitted: true },
-    { id: 3, title: '1 video ngắn TikTok (tối thiểu 1 phút, có phụ đề)', submitted: false },
-    { id: 4, title: 'Hashtag bắt buộc: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand', submitted: false },
-    { id: 5, title: 'Tag tài khoản thương hiệu: @beautybrand_vn', submitted: false },
+    { id: 1, titleKo: 'Instagram 피드 게시물 1개 (사용 전/후 사진)', titleVi: '1 bài đăng feed Instagram (ảnh trước/sau khi dùng)', submitted: true },
+    { id: 2, titleKo: 'Instagram 스토리 3개 이상 (언박싱, 사용 과정, 감상)', titleVi: '3+ Stories Instagram (unboxing, sử dụng, cảm nhận)', submitted: true },
+    { id: 3, titleKo: 'TikTok 짧은 동영상 1개 (최소 1분, 자막 포함)', titleVi: '1 video ngắn TikTok (tối thiểu 1 phút, có phụ đề)', submitted: false },
+    { id: 4, titleKo: '필수 해시태그: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand', titleVi: 'Hashtag bắt buộc: #skincareroutine #beautyreview #sanphammoiquoc #BeautyBrand', submitted: false },
+    { id: 5, titleKo: '브랜드 계정 태그: @beautybrand_vn', titleVi: 'Tag tài khoản thương hiệu: @beautybrand_vn', submitted: false },
   ],
 
   submittedWork: [
@@ -395,10 +453,12 @@ export default function CampaignDetailPage() {
   // This ensures each campaign shows its own title/company/description/budget
   const campaign = currentCampaign ? {
     ...mockCampaign,
-    title: currentCampaign.title,
+    titleKo: currentCampaign.title,
+    titleVi: currentCampaign.title,
     company: currentCampaign.company,
     companyLogo: currentCampaign.companyLogo,
-    description: currentCampaign.description,
+    descriptionKo: currentCampaign.description,
+    descriptionVi: currentCampaign.description,
     budget: currentCampaign.budget,
     deadline: currentCampaign.deadline,
     images: { ...mockCampaign.images, mainBanner: currentCampaign.thumbnail },
@@ -478,7 +538,7 @@ export default function CampaignDetailPage() {
     // 지원 정보를 localStorage에 임시 저장
     const application = {
       campaignId: params.id,
-      campaignTitle: campaign.title,
+      campaignTitle: language === 'ko' ? campaign.titleKo : campaign.titleVi,
       ...applyForm,
       appliedAt: new Date().toISOString(),
     };
@@ -509,7 +569,9 @@ export default function CampaignDetailPage() {
 
     // Prepare share content
     const shareTitle = currentCampaign.title;
-    const shareText = `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 Ngân sách: ${formatPoints(currentCampaign.minBudget)} - ${formatPoints(currentCampaign.maxBudget)} VND\n📅 Hạn chót: ${new Date(currentCampaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
+    const shareText = language === 'ko'
+      ? `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 예산: ${formatPoints(currentCampaign.minBudget)} - ${formatPoints(currentCampaign.maxBudget)} VND\n📅 마감: ${new Date(currentCampaign.deadline).toLocaleDateString('ko-KR')}\n\n`
+      : `${currentCampaign.title}\n\n${currentCampaign.description}\n\n💰 Ngân sách: ${formatPoints(currentCampaign.minBudget)} - ${formatPoints(currentCampaign.maxBudget)} VND\n📅 Hạn chót: ${new Date(currentCampaign.deadline).toLocaleDateString('vi-VN')}\n\n`;
 
     // Try Web Share API first (works on mobile)
     if (navigator.share) {
@@ -646,51 +708,51 @@ export default function CampaignDetailPage() {
   const calculateMatchingPercentage = () => {
     const criteria: { name: string; match: boolean; weight: number }[] = [
       {
-        name: 'Số followers',
+        name: language === 'ko' ? '팔로워 수' : 'Số followers',
         match: mockUserProfile.followers >= campaign.requirements.minFollowers &&
                mockUserProfile.followers <= (campaign.requirements.maxFollowers || Infinity),
         weight: 20,
       },
       {
-        name: 'Tỉ lệ tương tác',
+        name: language === 'ko' ? '참여율' : 'Tỉ lệ tương tác',
         match: mockUserProfile.engagementRate >= campaign.requirements.minEngagement,
         weight: 20,
       },
       {
-        name: 'Nền tảng',
+        name: language === 'ko' ? '플랫폼' : 'Nền tảng',
         match: campaign.requirements.platforms.some((p: string) =>
           mockUserProfile.platforms.includes(p)
         ),
         weight: 15,
       },
       {
-        name: 'Lĩnh vực',
+        name: language === 'ko' ? '분야' : 'Lĩnh vực',
         match: campaign.requirements.categories.some((c: string) =>
           mockUserProfile.categories.includes(c)
         ),
         weight: 15,
       },
       {
-        name: 'Khu vực',
+        name: language === 'ko' ? '지역' : 'Khu vực',
         match: campaign.requirements.location.some((l: string) =>
           mockUserProfile.location.includes(l)
         ),
         weight: 10,
       },
       {
-        name: 'Giới tính',
+        name: language === 'ko' ? '성별' : 'Giới tính',
         match: campaign.requirements.gender === 'any' ||
                campaign.requirements.gender === mockUserProfile.gender,
         weight: 5,
       },
       {
-        name: 'Loại da',
+        name: language === 'ko' ? '피부 타입' : 'Loại da',
         match: !campaign.requirements.skinType ||
                campaign.requirements.skinType.includes(mockUserProfile.skinType),
         weight: 10,
       },
       {
-        name: 'Tông da',
+        name: language === 'ko' ? '피부 톤' : 'Tông da',
         match: !campaign.requirements.skinTone ||
                campaign.requirements.skinTone.includes(mockUserProfile.skinTone),
         weight: 5,
@@ -726,7 +788,7 @@ export default function CampaignDetailPage() {
         <Breadcrumb
           items={[
             { label: t.nav.campaigns, href: '/main/influencer/campaigns' },
-            { label: currentCampaign?.title || campaign.title },
+            { label: currentCampaign?.title || (language === 'ko' ? campaign.titleKo : campaign.titleVi) },
           ]}
           className="ml-9"
           dark
@@ -807,7 +869,7 @@ export default function CampaignDetailPage() {
             <div className="relative h-36 overflow-hidden">
               <img
                 src={campaign.images.mainBanner}
-                alt={campaign.title}
+                alt={language === 'ko' ? campaign.titleKo : campaign.titleVi}
                 className="w-full h-full object-cover opacity-60"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-dark-700" />
@@ -825,7 +887,7 @@ export default function CampaignDetailPage() {
 
           {/* Content */}
           <div className="relative px-4 pt-3 pb-4">
-            <h2 className="text-lg font-black text-white leading-tight mb-3">{campaign.title}</h2>
+            <h2 className="text-lg font-black text-white leading-tight mb-3">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</h2>
 
             {/* Key stats — 3 columns */}
             <div className="grid grid-cols-3 gap-2 mb-4">
@@ -835,7 +897,7 @@ export default function CampaignDetailPage() {
               </div>
               <div className="bg-dark-800/70 rounded-xl p-3 text-center border border-warning/30">
                 <div className="text-warning font-black text-lg leading-none">{campaign.urgency?.remainingSlots ?? '?'}</div>
-                <div className="text-gray-400 text-xs mt-1">Suất còn</div>
+                <div className="text-gray-400 text-xs mt-1">{language === 'ko' ? '남은 자리' : 'Suất còn'}</div>
               </div>
               <div className="bg-dark-800/70 rounded-xl p-3 text-center border border-error/30">
                 <div className="text-error font-black text-base leading-none">{campaign.deadline}</div>
@@ -911,7 +973,7 @@ export default function CampaignDetailPage() {
                   <p className="text-xs text-gray-300">{t.campaignDetail.urgency.slotsRemaining || 'Suất còn lại'}</p>
                 </div>
                 <p className="text-2xl font-bold text-warning">{campaign.urgency.remainingSlots}/{campaign.urgency.totalSlots}</p>
-                <p className="text-xs text-gray-300 mt-1">👆 Xem ứng viên</p>
+                <p className="text-xs text-gray-300 mt-1">👆 {language === 'ko' ? '지원자 보기' : 'Xem ứng viên'}</p>
               </div>
               <div className="bg-dark-600 rounded-lg p-3 border-2 border-error/50">
                 <div className="flex items-center gap-2 mb-1">
@@ -929,10 +991,10 @@ export default function CampaignDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users size={20} className="text-primary" />
-              <h3 className="text-lg font-bold text-white">Ứng viên gần đây</h3>
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? '최근 지원자' : 'Ứng viên gần đây'}</h3>
             </div>
             <span className="text-sm text-gray-300">
-              Tổng <span className="text-primary font-bold">{campaign.urgency.recentApplications}</span> người
+              {language === 'ko' ? '총' : 'Tổng'} <span className="text-primary font-bold">{campaign.urgency.recentApplications}</span> {language === 'ko' ? '명' : 'người'}
             </span>
           </div>
 
@@ -1004,7 +1066,7 @@ export default function CampaignDetailPage() {
                 ))}
               </div>
               <span className="text-sm text-gray-300">
-                Và <span className="text-primary font-bold">+{campaign.urgency.recentApplications - 10}</span> người khác đã ứng tuyển
+                {language === 'ko' ? '그 외' : 'Và'} <span className="text-primary font-bold">+{campaign.urgency.recentApplications - 10}</span> {language === 'ko' ? '명 더 지원함' : 'người khác đã ứng tuyển'}
               </span>
             </div>
           )}
@@ -1014,14 +1076,14 @@ export default function CampaignDetailPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Trophy size={16} className="text-warning" />
-                <span className="text-sm text-white font-semibold">Tỉ lệ cạnh tranh</span>
+                <span className="text-sm text-white font-semibold">{language === 'ko' ? '경쟁률' : 'Tỉ lệ cạnh tranh'}</span>
               </div>
               <span className="text-lg font-black text-warning">
                 {Math.round(campaign.urgency.recentApplications / campaign.urgency.totalSlots)}:1
               </span>
             </div>
             <div className="mt-2 text-xs text-gray-300">
-              💡 Dự kiến chọn {campaign.urgency.totalSlots} suất — ứng tuyển ngay!
+              💡 {language === 'ko' ? `${campaign.urgency.totalSlots}명 선발 예정 — 지금 지원하세요!` : `Dự kiến chọn ${campaign.urgency.totalSlots} suất — ứng tuyển ngay!`}
             </div>
           </div>
         </div>
@@ -1036,9 +1098,9 @@ export default function CampaignDetailPage() {
             />
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-xl font-bold text-white">{campaign.title}</h2>
+                <h2 className="text-xl font-bold text-white">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</h2>
                 {campaign.qualityAssurance?.verified && (
-                  <span className="text-primary" title={t.campaignDetail.quality.verified || 'Nhà QC đã xác minh'}>
+                  <span className="text-primary" title={t.campaignDetail.quality.verified || (language === 'ko' ? '광고주 인증됨' : 'Nhà QC đã xác minh')}>
                     <CheckCircle size={18} />
                   </span>
                 )}
@@ -1067,7 +1129,7 @@ export default function CampaignDetailPage() {
               </button>
             </div>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed">{campaign.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{language === 'ko' ? campaign.descriptionKo : campaign.descriptionVi}</p>
 
           {/* Quality Assurance Badges (클릭 가능!) */}
           {campaign.qualityAssurance && (
@@ -1078,7 +1140,7 @@ export default function CampaignDetailPage() {
                   className="flex items-center gap-2 text-xs bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-2 hover:bg-blue-500/20 hover:border-blue-500/50 transition-all cursor-pointer group"
                 >
                   <DollarSign size={14} className="text-blue-400" />
-                  <span className="text-blue-400 font-semibold flex-1 text-left">Hướng dẫn thanh toán</span>
+                  <span className="text-blue-400 font-semibold flex-1 text-left">{language === 'ko' ? '결제 안내' : 'Hướng dẫn thanh toán'}</span>
                   <span className="text-blue-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">ℹ️</span>
                 </button>
               )}
@@ -1144,7 +1206,7 @@ export default function CampaignDetailPage() {
             <div className="bg-dark-600 rounded-lg p-3">
               <h4 className="text-sm font-semibold text-white mb-2">{t.campaignDetail.difficulty.skillsNeeded || 'Kỹ năng cần có'}</h4>
               <div className="flex flex-wrap gap-2">
-                {campaign.difficulty.skillsRequired.map((skill: string, idx: number) => (
+                {(language === 'ko' ? campaign.difficulty.skillsRequiredKo : campaign.difficulty.skillsRequiredVi).map((skill: string, idx: number) => (
                   <span key={idx} className="px-2 py-1 bg-info/20 text-info text-xs rounded-full border border-info/30">
                     {skill}
                   </span>
@@ -1165,7 +1227,7 @@ export default function CampaignDetailPage() {
                 <span className="text-xl">💰</span>
                 <h3 className="text-lg font-bold text-white">{t.campaignDetail.earnings.title || 'Tính thu nhập'}</h3>
               </div>
-              <span className="text-xs text-gray-300">👆 Xem chi tiết</span>
+              <span className="text-xs text-gray-300">👆 {language === 'ko' ? '상세 보기' : 'Xem chi tiết'}</span>
             </div>
 
             <div className="space-y-3">
@@ -1244,7 +1306,7 @@ export default function CampaignDetailPage() {
               </div>
               <div className="bg-dark-600 rounded-lg p-3 text-center">
                 <p className="text-xs text-gray-300 mb-1">{t.campaignDetail.socialProof.avgResponseTime || 'Thời gian phản hồi'}</p>
-                <p className="text-lg font-bold text-primary">{campaign.qualityAssurance?.avgResponseTime || '2 giờ'}</p>
+                <p className="text-lg font-bold text-primary">{language === 'ko' ? (campaign.qualityAssurance?.avgResponseTimeKo || '2시간') : (campaign.qualityAssurance?.avgResponseTimeVi || '2 giờ')}</p>
               </div>
             </div>
 
@@ -1265,7 +1327,7 @@ export default function CampaignDetailPage() {
                       </div>
                       <span className="text-xs text-gray-300">{review.hours}{t.campaignDetail.socialProof.hoursAgo || ' giờ trước'}</span>
                     </div>
-                    <p className="text-sm text-gray-300">{review.comment}</p>
+                    <p className="text-sm text-gray-300">{language === 'ko' ? review.commentKo : review.commentVi}</p>
                   </div>
                 ))}
               </div>
@@ -1393,7 +1455,7 @@ export default function CampaignDetailPage() {
               <span className="text-primary mt-0.5">🎯</span>
               <div>
                 <span className="text-gray-300">{t.campaignDetail.category} </span>
-                <span className="text-white font-semibold">{campaign.requirements.categories.join(', ')}</span>
+                <span className="text-white font-semibold">{(language === 'ko' ? campaign.requirements.categoriesKo : campaign.requirements.categoriesVi).join(', ')}</span>
               </div>
             </div>
             <div className="flex items-start gap-2 text-sm">
@@ -1409,7 +1471,7 @@ export default function CampaignDetailPage() {
               <span className="text-primary mt-0.5">📍</span>
               <div>
                 <span className="text-gray-300">{t.campaignDetail.location} </span>
-                <span className="text-white font-semibold">{campaign.requirements.location.join(', ')}</span>
+                <span className="text-white font-semibold">{(language === 'ko' ? campaign.requirements.locationKo : campaign.requirements.locationVi).join(', ')}</span>
               </div>
             </div>
 
@@ -1459,13 +1521,19 @@ export default function CampaignDetailPage() {
                   <span className="text-white font-semibold">
                     {t.profile.hasChildren}
                     {campaign.requirements.childAgeRange && Array.isArray(campaign.requirements.childAgeRange) && campaign.requirements.childAgeRange.length > 0 && (
-                      <span className="text-gray-300"> ({(campaign.requirements.childAgeRange as any[]).map((age: string) => ({
+                      <span className="text-gray-300"> ({(campaign.requirements.childAgeRange as any[]).map((age: string) => (language === 'ko' ? ({
+                        '0-1': '0-1세',
+                        '1-3': '1-3세',
+                        '3-6': '3-6세',
+                        '6-12': '6-12세',
+                        '12-18': '12-18세'
+                      }[age]) : ({
                         '0-1': '0-1 tuổi',
                         '1-3': '1-3 tuổi',
                         '3-6': '3-6 tuổi',
                         '6-12': '6-12 tuổi',
                         '12-18': '12-18 tuổi'
-                      }[age])).join(', ')})</span>
+                      }[age]))).join(', ')})</span>
                     )}
                   </span>
                 </div>
@@ -1481,7 +1549,15 @@ export default function CampaignDetailPage() {
                   <span className="text-white font-semibold">
                     {t.profile.hasVehicle}
                     {campaign.requirements.vehicleTypes && campaign.requirements.vehicleTypes.length > 0 && (
-                      <span className="text-gray-300"> ({campaign.requirements.vehicleTypes.map((v: string) => ({
+                      <span className="text-gray-300"> ({campaign.requirements.vehicleTypes.map((v: string) => (language === 'ko' ? ({
+                        sedan: '세단',
+                        suv: 'SUV',
+                        truck: '트럭',
+                        electric: '전기차',
+                        hybrid: '하이브리드',
+                        motorcycle: '오토바이',
+                        scooter: '스쿠터'
+                      }[v]) : ({
                         sedan: 'Xe sedan',
                         suv: 'SUV',
                         truck: 'Xe tải',
@@ -1489,7 +1565,7 @@ export default function CampaignDetailPage() {
                         hybrid: 'Xe hybrid',
                         motorcycle: 'Xe máy',
                         scooter: 'Xe tay ga'
-                      }[v])).join(', ')})</span>
+                      }[v]))).join(', ')})</span>
                     )}
                   </span>
                 </div>
@@ -1523,13 +1599,19 @@ export default function CampaignDetailPage() {
                   <span className="text-white font-semibold">
                     {t.profile.hasPets}
                     {campaign.requirements.petTypes && campaign.requirements.petTypes.length > 0 && (
-                      <span className="text-gray-300"> ({campaign.requirements.petTypes.map((p: string) => ({
+                      <span className="text-gray-300"> ({campaign.requirements.petTypes.map((p: string) => (language === 'ko' ? ({
+                        dog: '강아지',
+                        cat: '고양이',
+                        bird: '새',
+                        fish: '물고기',
+                        other: '기타'
+                      }[p]) : ({
                         dog: 'Chó',
                         cat: 'Mèo',
                         bird: 'Chim',
                         fish: 'Cá',
                         other: 'Khác'
-                      }[p])).join(', ')})</span>
+                      }[p]))).join(', ')})</span>
                     )}
                   </span>
                 </div>
@@ -1613,17 +1695,17 @@ export default function CampaignDetailPage() {
                 <CheckCircle size={16} className="text-info" />
                 <h4 className="text-sm font-semibold text-white">{t.campaignDetail.shippingInfo}</h4>
               </div>
-              <p className="text-sm text-gray-300">{campaign.providedItems.shipping}</p>
+              <p className="text-sm text-gray-300">{language === 'ko' ? campaign.providedItems.shippingKo : campaign.providedItems.shippingVi}</p>
             </div>
 
-            {campaign.providedItems.additionalBenefits.length > 0 && (
+            {(language === 'ko' ? campaign.providedItems.additionalBenefitsKo : campaign.providedItems.additionalBenefitsVi).length > 0 && (
               <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/30 rounded-lg p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">🎁</span>
                   <h4 className="text-sm font-semibold text-white">{t.campaignDetail.additionalBenefits}</h4>
                 </div>
                 <ul className="space-y-1">
-                  {campaign.providedItems.additionalBenefits.map((benefit, idx) => (
+                  {(language === 'ko' ? campaign.providedItems.additionalBenefitsKo : campaign.providedItems.additionalBenefitsVi).map((benefit, idx) => (
                     <li key={idx} className="text-sm text-gray-300 flex items-start gap-2">
                       <span className="text-accent mt-0.5">•</span>
                       <span>{benefit}</span>
@@ -1667,11 +1749,11 @@ export default function CampaignDetailPage() {
               <div key={idx} className="relative group">
                 <img
                   src={example.url}
-                  alt={example.caption}
+                  alt={language === 'ko' ? example.captionKo : example.captionVi}
                   className="w-full h-32 object-cover rounded-lg"
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                  <p className="text-xs text-white font-semibold px-2 text-center">{example.caption}</p>
+                  <p className="text-xs text-white font-semibold px-2 text-center">{language === 'ko' ? example.captionKo : example.captionVi}</p>
                 </div>
               </div>
             ))}
@@ -1693,13 +1775,13 @@ export default function CampaignDetailPage() {
                 <div key={idx} className="bg-dark-600 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-bold text-white">
-                      {format.platform} - {format.type}
+                      {format.platform} - {language === 'ko' ? format.typeKo : format.typeVi}
                     </span>
                     <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full font-bold">
                       x{format.count}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-300">{format.requirement}</p>
+                  <p className="text-xs text-gray-300">{language === 'ko' ? format.requirementKo : format.requirementVi}</p>
                 </div>
               ))}
             </div>
@@ -1712,7 +1794,7 @@ export default function CampaignDetailPage() {
               {t.campaignDetail.mustInclude}
             </h4>
             <ul className="space-y-2">
-              {campaign.missionGuidelines.mustInclude.map((item, idx) => (
+              {(language === 'ko' ? campaign.missionGuidelines.mustIncludeKo : campaign.missionGuidelines.mustIncludeVi).map((item: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm bg-success/5 rounded-lg p-2 border border-success/20">
                   <CheckCircle size={16} className="text-success flex-shrink-0 mt-0.5" />
                   <span className="text-gray-300">{item}</span>
@@ -1728,7 +1810,7 @@ export default function CampaignDetailPage() {
               {t.campaignDetail.prohibited}
             </h4>
             <ul className="space-y-2">
-              {campaign.missionGuidelines.prohibited.map((item, idx) => (
+              {(language === 'ko' ? campaign.missionGuidelines.prohibitedKo : campaign.missionGuidelines.prohibitedVi).map((item: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm bg-error/5 rounded-lg p-2 border border-error/20">
                   <span className="text-error flex-shrink-0 mt-0.5">✗</span>
                   <span className="text-gray-300">{item}</span>
@@ -1759,7 +1841,7 @@ export default function CampaignDetailPage() {
             className="w-full h-32 object-cover rounded-lg mb-4"
           />
 
-          <p className="text-sm text-gray-300 leading-relaxed mb-4">{campaign.brandInfo.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed mb-4">{language === 'ko' ? campaign.brandInfo.descriptionKo : campaign.brandInfo.descriptionVi}</p>
 
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="bg-dark-600 rounded-lg p-2 text-center">
@@ -1802,14 +1884,14 @@ export default function CampaignDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <CheckCircle size={20} className="text-success" />
-              <h3 className="text-lg font-bold text-white">Độ tin cậy Nhà QC</h3>
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? '광고주 신뢰도' : 'Độ tin cậy Nhà QC'}</h3>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
                 <span className="text-xl font-bold text-success">{campaign.brandInfo.trustScore}</span>
               </div>
               <div className="text-right">
-                <div className="text-xs text-gray-300">Điểm tin cậy</div>
+                <div className="text-xs text-gray-300">{language === 'ko' ? '신뢰 점수' : 'Điểm tin cậy'}</div>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <div key={i} className={`w-1.5 h-1.5 rounded-full ${i < Math.floor(campaign.brandInfo.trustScore / 20) ? 'bg-success' : 'bg-gray-600'}`} />
@@ -1821,7 +1903,7 @@ export default function CampaignDetailPage() {
 
           {/* 신뢰 배지 */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {campaign.brandInfo.badges.map((badge: string, idx: number) => (
+            {(language === 'ko' ? campaign.brandInfo.badgesKo : campaign.brandInfo.badgesVi).map((badge: string, idx: number) => (
               <span key={idx} className="px-3 py-1.5 bg-success/20 text-success border border-success/30 rounded-full text-xs font-semibold flex items-center gap-1">
                 <CheckCircle size={12} />
                 {badge}
@@ -1830,7 +1912,7 @@ export default function CampaignDetailPage() {
             {campaign.brandInfo.verified && (
               <span className="px-3 py-1.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-semibold flex items-center gap-1">
                 <CheckCircle size={12} />
-                Nhà QC đã xác minh
+                {language === 'ko' ? '광고주 인증됨' : 'Nhà QC đã xác minh'}
               </span>
             )}
           </div>
@@ -1838,7 +1920,7 @@ export default function CampaignDetailPage() {
           {/* 인플루언서 리뷰 */}
           <div className="bg-dark-600 rounded-xl p-4 mb-4">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-bold text-white">Đánh giá từ KOL khác</h4>
+              <h4 className="text-sm font-bold text-white">{language === 'ko' ? '다른 인플루언서 리뷰' : 'Đánh giá từ KOL khác'}</h4>
               <div className="flex items-center gap-1">
                 <div className="text-yellow-400 text-lg font-bold">{campaign.brandInfo.averageRating}</div>
                 <div className="text-gray-300 text-xs">/ 5.0</div>
@@ -1863,12 +1945,12 @@ export default function CampaignDetailPage() {
                           ))}
                         </div>
                       </div>
-                      <p className="text-xs text-gray-300 mb-2">{review.campaignTitle}</p>
-                      <p className="text-sm text-gray-300 leading-relaxed mb-2">"{review.comment}"</p>
+                      <p className="text-xs text-gray-300 mb-2">{language === 'ko' ? review.campaignTitleKo : review.campaignTitleVi}</p>
+                      <p className="text-sm text-gray-300 leading-relaxed mb-2">"{language === 'ko' ? review.commentKo : review.commentVi}"</p>
 
                       {/* 태그 */}
                       <div className="flex flex-wrap gap-1.5 mb-2">
-                        {review.tags.map((tag: string, idx: number) => (
+                        {(language === 'ko' ? review.tagsKo : review.tagsVi).map((tag: string, idx: number) => (
                           <span key={idx} className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full border border-success/30">
                             ✓ {tag}
                           </span>
@@ -1880,13 +1962,13 @@ export default function CampaignDetailPage() {
                         {review.wasPaymentOnTime && (
                           <span className="text-success flex items-center gap-1">
                             <CheckCircle size={12} />
-                            Thanh toán đúng hạn
+                            {language === 'ko' ? '결제 제때 완료' : 'Thanh toán đúng hạn'}
                           </span>
                         )}
                         {review.wouldWorkAgain && (
                           <span className="text-primary flex items-center gap-1">
                             <CheckCircle size={12} />
-                            Muốn hợp tác lại
+                            {language === 'ko' ? '재협업 의향 있음' : 'Muốn hợp tác lại'}
                           </span>
                         )}
                         <span className="text-gray-300">{review.date}</span>
@@ -1943,7 +2025,7 @@ export default function CampaignDetailPage() {
           <div className="bg-dark-600 rounded-lg p-3 mb-3">
             <h4 className="text-sm font-semibold text-white mb-3">{t.campaignDetail.priorityCriteria}</h4>
             <ol className="space-y-2">
-              {campaign.selectionCriteria.priority.map((item, idx) => (
+              {(language === 'ko' ? campaign.selectionCriteria.priorityKo : campaign.selectionCriteria.priorityVi).map((item: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm">
                   <span className="w-5 h-5 rounded-full bg-secondary/20 text-secondary flex items-center justify-center text-xs font-bold flex-shrink-0">
                     {idx + 1}
@@ -1956,7 +2038,7 @@ export default function CampaignDetailPage() {
 
           <div className="bg-info/10 border border-info/30 rounded-lg p-3">
             <p className="text-xs text-gray-300 text-center">
-              ⏱️ <strong className="text-white">{t.campaignDetail.avgReviewTime.split(':')[0]}</strong>: {campaign.selectionCriteria.processTime}
+              ⏱️ <strong className="text-white">{t.campaignDetail.avgReviewTime.split(':')[0]}</strong>: {language === 'ko' ? campaign.selectionCriteria.processTimeKo : campaign.selectionCriteria.processTimeVi}
             </p>
           </div>
         </div>
@@ -1972,10 +2054,10 @@ export default function CampaignDetailPage() {
             {campaign.faq.map((item, idx) => (
               <details key={idx} className="bg-dark-600 rounded-lg">
                 <summary className="p-3 cursor-pointer text-sm font-semibold text-white hover:bg-dark-500 rounded-lg transition-colors">
-                  Q. {item.q}
+                  Q. {language === 'ko' ? item.qKo : item.qVi}
                 </summary>
                 <div className="px-3 pb-3">
-                  <p className="text-sm text-gray-300 leading-relaxed">{item.a}</p>
+                  <p className="text-sm text-gray-300 leading-relaxed">{language === 'ko' ? item.aKo : item.aVi}</p>
                 </div>
               </details>
             ))}
@@ -2014,7 +2096,7 @@ export default function CampaignDetailPage() {
                 {campaignShareCount > 0 ? (
                   <>✅ {campaignShareCount}{t.campaignDetail.shareSubmitted}</>
                 ) : (
-                  <>{`Chia sẻ trên nhóm Facebook → Nhận ${formatPoints(SHARE_BONUS_AMOUNT)} VND!`}</>
+                  <>{language === 'ko' ? `Facebook 그룹에 공유 → ${formatPoints(SHARE_BONUS_AMOUNT)} VND 획득!` : `Chia sẻ trên nhóm Facebook → Nhận ${formatPoints(SHARE_BONUS_AMOUNT)} VND!`}</>
                 )}
               </p>
               <p className="text-xs text-gray-300 mt-1">
@@ -2112,7 +2194,7 @@ export default function CampaignDetailPage() {
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
                   <Gift size={14} className="text-primary flex-shrink-0 mt-0.5" />
-                  <span>{`+${formatPoints(SHARE_BONUS_AMOUNT)} VND cho mỗi lượt chia sẻ (sau khi admin duyệt)`}</span>
+                  <span>{language === 'ko' ? `+${formatPoints(SHARE_BONUS_AMOUNT)} VND (관리자 승인 후 지급)` : `+${formatPoints(SHARE_BONUS_AMOUNT)} VND cho mỗi lượt chia sẻ (sau khi admin duyệt)`}</span>
                 </div>
 
                 <div className="flex items-start gap-2 text-xs text-gray-300">
@@ -2190,7 +2272,7 @@ export default function CampaignDetailPage() {
                   <div className="w-4 h-4 border-2 border-gray-600 rounded flex-shrink-0 mt-0.5" />
                 )}
                 <span className={item.submitted ? 'text-gray-300 line-through' : 'text-gray-300'}>
-                  {item.title}
+                  {language === 'ko' ? item.titleKo : item.titleVi}
                 </span>
               </li>
             ))}
@@ -2270,7 +2352,7 @@ export default function CampaignDetailPage() {
                 onClick={() => setShowApplyModal(true)}
                 className="flex-shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-base shadow-lg shadow-primary/30 active:scale-95 transition-transform"
               >
-                🎯 Ứng tuyển ngay
+                {language === 'ko' ? '🎯 지금 지원' : '🎯 Ứng tuyển ngay'}
               </button>
             </div>
           </div>
@@ -2306,12 +2388,12 @@ export default function CampaignDetailPage() {
                     <div key={i} className={`h-1 flex-1 rounded-full ${i <= 5 ? 'bg-primary/60' : 'bg-dark-500'}`}></div>
                   ))}
                 </div>
-                <p className="text-xs text-gray-400">Điền vào là xong — không cần tài khoản 🎉</p>
+                <p className="text-xs text-gray-400">{language === 'ko' ? '입력만 하면 완료 — 계정 불필요 🎉' : 'Điền vào là xong — không cần tài khoản 🎉'}</p>
 
                 {/* Field 1: Name */}
                 <div>
                   <label className="text-sm font-semibold text-white mb-1.5 block">
-                    👤 Họ tên của bạn <span className="text-error">*</span>
+                    👤 {language === 'ko' ? '이름' : 'Họ tên của bạn'} <span className="text-error">*</span>
                   </label>
                   <input
                     type="text"
@@ -2327,30 +2409,30 @@ export default function CampaignDetailPage() {
                 {/* Field 2: Zalo */}
                 <div>
                   <label className="text-sm font-semibold text-white mb-1.5 block">
-                    📱 Số Zalo / Facebook <span className="text-error">*</span>
+                    📱 {language === 'ko' ? 'Zalo / Facebook 번호' : 'Số Zalo / Facebook'} <span className="text-error">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={applyForm.zalo}
                     onChange={e => setApplyForm({...applyForm, zalo: e.target.value})}
-                    placeholder="+84 90 123 4567 hoặc link Facebook"
+                    placeholder={language === 'ko' ? '+84 90 123 4567 또는 Facebook 링크' : '+84 90 123 4567 hoặc link Facebook'}
                     className="input w-full"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Nhà QC sẽ liên hệ bạn qua đây</p>
+                  <p className="text-xs text-gray-500 mt-1">{language === 'ko' ? '광고주가 여기로 연락드립니다' : 'Nhà QC sẽ liên hệ bạn qua đây'}</p>
                 </div>
 
                 {/* Field 3: Platform URL */}
                 <div>
                   <label className="text-sm font-semibold text-white mb-1.5 block">
-                    📸 Link Instagram / TikTok chính <span className="text-error">*</span>
+                    📸 {language === 'ko' ? '주요 Instagram / TikTok 링크' : 'Link Instagram / TikTok chính'} <span className="text-error">*</span>
                   </label>
                   <input
                     type="url"
                     required
                     value={applyForm.platformUrl}
                     onChange={e => setApplyForm({...applyForm, platformUrl: e.target.value})}
-                    placeholder="https://instagram.com/ten_cua_ban"
+                    placeholder={language === 'ko' ? 'https://instagram.com/내아이디' : 'https://instagram.com/ten_cua_ban'}
                     className="input w-full"
                   />
                 </div>
@@ -2358,7 +2440,7 @@ export default function CampaignDetailPage() {
                 {/* Field 4: Followers */}
                 <div>
                   <label className="text-sm font-semibold text-white mb-1.5 block">
-                    👥 Số người theo dõi (khoảng) <span className="text-error">*</span>
+                    👥 {language === 'ko' ? '팔로워 수 (약)' : 'Số người theo dõi (khoảng)'} <span className="text-error">*</span>
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {['1K-5K', '5K-15K', '15K-50K', '50K-100K', '100K-500K', '500K+'].map(range => (
@@ -2381,12 +2463,12 @@ export default function CampaignDetailPage() {
                 {/* Field 5: Message (optional) */}
                 <div>
                   <label className="text-sm font-semibold text-white mb-1.5 block">
-                    💬 Lời nhắn ngắn <span className="text-gray-500 font-normal">(tùy chọn)</span>
+                    💬 {language === 'ko' ? '짧은 메시지' : 'Lời nhắn ngắn'} <span className="text-gray-500 font-normal">{language === 'ko' ? '(선택)' : '(tùy chọn)'}</span>
                   </label>
                   <textarea
                     value={applyForm.message}
                     onChange={e => setApplyForm({...applyForm, message: e.target.value.slice(0, 150)})}
-                    placeholder="Giới thiệu ngắn về bạn và lý do muốn tham gia..."
+                    placeholder={language === 'ko' ? '본인 소개 및 참여 이유를 간단히...' : 'Giới thiệu ngắn về bạn và lý do muốn tham gia...'}
                     rows={2}
                     className="input w-full resize-none"
                   />
@@ -2422,7 +2504,7 @@ export default function CampaignDetailPage() {
                 </p>
                 <div className="bg-dark-600 rounded-xl p-4 text-left space-y-2">
                   <div className="text-xs text-gray-400">📋 {language === 'ko' ? '지원서 요약' : 'Tóm tắt đơn'}</div>
-                  <div className="text-sm text-white font-semibold">{campaign.title}</div>
+                  <div className="text-sm text-white font-semibold">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</div>
                   <div className="text-xs text-gray-400">{language === 'ko' ? '연락처' : 'Liên hệ'}: {applyForm.zalo}</div>
                   <div className="text-xs text-gray-400">Link: {applyForm.platformUrl}</div>
                 </div>
@@ -2608,9 +2690,9 @@ export default function CampaignDetailPage() {
                   <span className="px-2 py-0.5 bg-primary text-white text-xs rounded-full">{t.campaignDetail.shareContent.stepBadge1}</span>
                 </h4>
                 <div className="bg-dark-600 rounded p-3 text-xs text-gray-300 leading-relaxed whitespace-pre-wrap">
-🎯 {campaign.title}
+🎯 {language === 'ko' ? campaign.titleKo : campaign.titleVi}
 
-{campaign.description}
+{language === 'ko' ? campaign.descriptionKo : campaign.descriptionVi}
 
 {t.campaignDetail.shareContent.expectedEarnings} {formatPoints(campaign.budget)} VND
 {t.campaignDetail.shareContent.company} {campaign.company}
@@ -2623,7 +2705,9 @@ export default function CampaignDetailPage() {
                 <button
                   onClick={() => {
                     const campaignUrl = `https://exfluencervn.vercel.app/main/influencer/campaigns/${params.id}`;
-                    const shareText = `🎯 ${campaign.title}\n\n${campaign.description}\n\n${t.campaignDetail.shareContent.expectedEarnings} ${formatPoints(campaign.budget)} VND\n${t.campaignDetail.shareContent.company} ${campaign.company}\n${t.campaignDetail.shareContent.deadline} ${campaign.deadline}\n\n${t.campaignDetail.shareContent.viewDetails} ${campaignUrl}\n\n#influencer #marketing #vietnam #ExfluencerVN #KOL`;
+                    const campaignTitle = language === 'ko' ? campaign.titleKo : campaign.titleVi;
+                    const campaignDescription = language === 'ko' ? campaign.descriptionKo : campaign.descriptionVi;
+                    const shareText = `🎯 ${campaignTitle}\n\n${campaignDescription}\n\n${t.campaignDetail.shareContent.expectedEarnings} ${formatPoints(campaign.budget)} VND\n${t.campaignDetail.shareContent.company} ${campaign.company}\n${t.campaignDetail.shareContent.deadline} ${campaign.deadline}\n\n${t.campaignDetail.shareContent.viewDetails} ${campaignUrl}\n\n#influencer #marketing #vietnam #ExfluencerVN #KOL`;
                     navigator.clipboard.writeText(shareText);
                     alert(t.campaignDetail.alerts.clipboardCopied);
                   }}
@@ -2721,7 +2805,7 @@ export default function CampaignDetailPage() {
                     <DollarSign size={24} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white">Hướng dẫn thanh toán</h3>
+                    <h3 className="text-xl font-black text-white">{language === 'ko' ? '결제 안내' : 'Hướng dẫn thanh toán'}</h3>
                     <p className="text-xs text-blue-400">Payment Information</p>
                   </div>
                 </div>
@@ -2738,18 +2822,20 @@ export default function CampaignDetailPage() {
               {/* Mô tả chính */}
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
                 <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                  🤝 Hệ thống thanh toán trực tiếp
+                  🤝 {language === 'ko' ? '직접 결제 시스템' : 'Hệ thống thanh toán trực tiếp'}
                 </h4>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Exfluencer là <span className="text-blue-400 font-bold">nền tảng kết nối</span>.
-                  Thanh toán do <span className="text-blue-400 font-bold">nhà QC và influencer tự thỏa thuận</span> trực tiếp.
-                  Nền tảng không trung gian hoặc giữ tiền thanh toán.
+                  {language === 'ko' ? (
+                    <>Exfluencer는 <span className="text-blue-400 font-bold">연결 플랫폼</span>입니다. 결제는 <span className="text-blue-400 font-bold">광고주와 인플루언서가 직접 협의</span>합니다. 플랫폼은 결제를 중개하거나 보관하지 않습니다.</>
+                  ) : (
+                    <>Exfluencer là <span className="text-blue-400 font-bold">nền tảng kết nối</span>. Thanh toán do <span className="text-blue-400 font-bold">nhà QC và influencer tự thỏa thuận</span> trực tiếp. Nền tảng không trung gian hoặc giữ tiền thanh toán.</>
+                  )}
                 </p>
               </div>
 
               {/* Phương thức thanh toán đề xuất */}
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-white">💳 Phương thức thanh toán đề xuất</h4>
+                <h4 className="text-sm font-bold text-white">💳 {language === 'ko' ? '권장 결제 방법' : 'Phương thức thanh toán đề xuất'}</h4>
 
                 <div className="bg-dark-600 rounded-lg p-4 border border-dark-500">
                   <div className="flex items-start gap-3">
@@ -2757,10 +2843,10 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">1</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">Chuyển khoản ngân hàng (Khuyến nghị)</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">{language === 'ko' ? '계좌이체 (권장)' : 'Chuyển khoản ngân hàng (Khuyến nghị)'}</h5>
                       <p className="text-xs text-gray-300">
-                        An toàn và có thể theo dõi.
-                        Vietcombank, Techcombank, VPBank, BIDV v.v.
+                        {language === 'ko' ? '안전하고 추적 가능합니다.' : 'An toàn và có thể theo dõi.'}
+                        {' '}Vietcombank, Techcombank, VPBank, BIDV v.v.
                       </p>
                     </div>
                   </div>
@@ -2772,10 +2858,10 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">2</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">Ví điện tử</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">{language === 'ko' ? '전자지갑' : 'Ví điện tử'}</h5>
                       <p className="text-xs text-gray-300">
-                        Nhanh và tiện lợi.
-                        Momo, Zalo Pay, ViettelPay, ShopeePay
+                        {language === 'ko' ? '빠르고 편리합니다.' : 'Nhanh và tiện lợi.'}
+                        {' '}Momo, Zalo Pay, ViettelPay, ShopeePay
                       </p>
                     </div>
                   </div>
@@ -2787,9 +2873,9 @@ export default function CampaignDetailPage() {
                       <span className="text-white text-xs font-bold">3</span>
                     </div>
                     <div>
-                      <h5 className="text-sm font-semibold text-white mb-1">Chuyển tiền quốc tế</h5>
+                      <h5 className="text-sm font-semibold text-white mb-1">{language === 'ko' ? '해외 송금' : 'Chuyển tiền quốc tế'}</h5>
                       <p className="text-xs text-gray-300">
-                        Với nhà QC nước ngoài: PayPal, Wise (trước là TransferWise) v.v.
+                        {language === 'ko' ? '해외 광고주의 경우: PayPal, Wise (구 TransferWise) 등' : 'Với nhà QC nước ngoài: PayPal, Wise (trước là TransferWise) v.v.'}
                       </p>
                     </div>
                   </div>
@@ -2798,7 +2884,7 @@ export default function CampaignDetailPage() {
 
               {/* Quy trình thanh toán */}
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-white">📋 Quy trình thanh toán</h4>
+                <h4 className="text-sm font-bold text-white">📋 {language === 'ko' ? '결제 절차' : 'Quy trình thanh toán'}</h4>
                 <div className="relative">
                   <div className="absolute left-4 top-8 bottom-8 w-0.5 bg-gradient-to-b from-blue-500 via-blue-500/50 to-transparent"></div>
 
@@ -2808,8 +2894,8 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">1</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">Thỏa thuận sau khi được chọn</h5>
-                        <p className="text-xs text-gray-300">Nhắn tin thỏa thuận số tiền, phương thức và lịch thanh toán</p>
+                        <h5 className="text-sm font-semibold text-white">{language === 'ko' ? '선정 후 협의' : 'Thỏa thuận sau khi được chọn'}</h5>
+                        <p className="text-xs text-gray-300">{language === 'ko' ? '금액, 방법, 결제 일정 메시지 협의' : 'Nhắn tin thỏa thuận số tiền, phương thức và lịch thanh toán'}</p>
                       </div>
                     </div>
 
@@ -2818,8 +2904,8 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">2</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">Thanh toán trực tiếp</h5>
-                        <p className="text-xs text-gray-300">Nhà QC chuyển khoản trực tiếp cho influencer</p>
+                        <h5 className="text-sm font-semibold text-white">{language === 'ko' ? '직접 결제' : 'Thanh toán trực tiếp'}</h5>
+                        <p className="text-xs text-gray-300">{language === 'ko' ? '광고주가 인플루언서에게 직접 이체' : 'Nhà QC chuyển khoản trực tiếp cho influencer'}</p>
                       </div>
                     </div>
 
@@ -2828,8 +2914,8 @@ export default function CampaignDetailPage() {
                         <span className="text-white text-sm font-bold">3</span>
                       </div>
                       <div className="flex-1 pt-1">
-                        <h5 className="text-sm font-semibold text-white">Xác nhận hai bên</h5>
-                        <p className="text-xs text-gray-300">Hai bên xác nhận "Hoàn tất thanh toán" trên nền tảng</p>
+                        <h5 className="text-sm font-semibold text-white">{language === 'ko' ? '양측 확인' : 'Xác nhận hai bên'}</h5>
+                        <p className="text-xs text-gray-300">{language === 'ko' ? '양측이 플랫폼에서 "결제 완료" 확인' : 'Hai bên xác nhận "Hoàn tất thanh toán" trên nền tảng'}</p>
                       </div>
                     </div>
                   </div>
@@ -2854,7 +2940,7 @@ export default function CampaignDetailPage() {
                 onClick={() => setShowPaymentGuaranteeModal(false)}
                 className="w-full btn btn-primary py-4"
               >
-                ✅ Đã hiểu
+                {language === 'ko' ? '✅ 확인했습니다' : '✅ Đã hiểu'}
               </button>
             </div>
           </div>
@@ -2884,7 +2970,7 @@ export default function CampaignDetailPage() {
             <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/30">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-300">{t.campaignDetail.totalApplicants}</span>
-                <span className="text-lg font-bold text-primary">{campaign.urgency.recentApplications} người</span>
+                <span className="text-lg font-bold text-primary">{campaign.urgency.recentApplications} {language === 'ko' ? '명' : 'người'}</span>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-sm text-gray-300">{t.campaignDetail.slotsLeft}</span>
@@ -3012,7 +3098,7 @@ export default function CampaignDetailPage() {
             </div>
 
             <p className="text-xs text-gray-300 mt-4 p-3 bg-info/10 rounded-lg border border-info/30">
-              💡 Tiền thưởng được trả khi đạt mục tiêu hiệu suất
+              💡 {language === 'ko' ? '보너스는 성과 목표 달성 시 지급됩니다' : 'Tiền thưởng được trả khi đạt mục tiêu hiệu suất'}
             </p>
           </div>
         </div>

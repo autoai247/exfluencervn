@@ -79,7 +79,7 @@ export default function EditProfilePage() {
   const toggleCategory = (cat: string) => {
     if (formData.categories.includes(cat)) {
       setFormData({ ...formData, categories: formData.categories.filter(c => c !== cat) });
-    } else if (formData.categories.length < 5) {
+    } else {
       setFormData({ ...formData, categories: [...formData.categories, cat] });
     }
   };
@@ -267,16 +267,16 @@ export default function EditProfilePage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '콘텐츠 분야' : 'Lĩnh vực nội dung'} <span className="text-error">*</span></h3>
-            <span className={`text-xs font-semibold ${formData.categories.length >= 5 ? 'text-warning' : 'text-gray-500'}`}>
-              {formData.categories.length}/5
+            <span className="text-xs font-semibold text-gray-500">
+              {formData.categories.length}{language === 'ko' ? '개 선택' : ' đã chọn'}
             </span>
           </div>
-          <p className="text-xs text-gray-500">{language === 'ko' ? '최대 5개 분야 선택' : 'Chọn tối đa 5 lĩnh vực bạn tạo nội dung'}</p>
+          <p className="text-xs text-gray-500">{language === 'ko' ? '해당하는 분야를 모두 선택하세요' : 'Chọn tất cả lĩnh vực phù hợp với bạn'}</p>
 
           <div className="grid grid-cols-3 gap-2">
             {CATEGORIES.map((cat) => {
               const selected = formData.categories.includes(cat.value);
-              const disabled = !selected && formData.categories.length >= 5;
+              const disabled = false;
               return (
                 <button
                   key={cat.value}

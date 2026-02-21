@@ -251,12 +251,12 @@ export default function EditProfilePage() {
                 className="input"
               >
                 <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
-                <option value="Hồ Chí Minh">TP.HCM</option>
-                <option value="Hà Nội">Hà Nội</option>
-                <option value="Đà Nẵng">Đà Nẵng</option>
-                <option value="Cần Thơ">Cần Thơ</option>
-                <option value="Hải Phòng">Hải Phòng</option>
-                <option value="Bình Dương">Bình Dương</option>
+                <option value="Hồ Chí Minh">{language === 'ko' ? '호치민' : 'TP.HCM'}</option>
+                <option value="Hà Nội">{language === 'ko' ? '하노이' : 'Hà Nội'}</option>
+                <option value="Đà Nẵng">{language === 'ko' ? '다낭' : 'Đà Nẵng'}</option>
+                <option value="Cần Thơ">{language === 'ko' ? '껀터' : 'Cần Thơ'}</option>
+                <option value="Hải Phòng">{language === 'ko' ? '하이퐁' : 'Hải Phòng'}</option>
+                <option value="Bình Dương">{language === 'ko' ? '빈즈엉' : 'Bình Dương'}</option>
                 <option value="Khác">{language === 'ko' ? '기타' : 'Khác'}</option>
               </select>
             </div>

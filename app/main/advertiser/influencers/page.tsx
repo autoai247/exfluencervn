@@ -706,7 +706,7 @@ export default function InfluencerSearchPage() {
                   selectedMatchScore.totalScore >= 80 ? 'bg-gray-800 text-white' :
                   'bg-gray-700 text-white'
                 }`}>
-                  {selectedMatchScore.totalScore} điểm
+                  {selectedMatchScore.totalScore} {language === 'ko' ? '점' : 'điểm'}
                 </div>
               </div>
 

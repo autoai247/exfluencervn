@@ -799,8 +799,8 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             <div className="text-sm text-gray-400">{language === 'ko' ? '이(가) 성공적으로 생성되었습니다!' : 'đã được tạo thành công!'}</div>
             <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
               <span className="px-2 py-1 bg-dark-600 rounded-lg">ID: {campaignId}</span>
-              <span className="px-2 py-1 bg-dark-600 rounded-lg">Ngân sách: {form.budget ? formatCash(parseInt(form.budget)) : '?'}/KOL</span>
-              <span className="px-2 py-1 bg-dark-600 rounded-lg">{form.slots || '3'} suất</span>
+              <span className="px-2 py-1 bg-dark-600 rounded-lg">{language === 'ko' ? '예산' : 'Ngân sách'}: {form.budget ? formatCash(parseInt(form.budget)) : '?'}/KOL</span>
+              <span className="px-2 py-1 bg-dark-600 rounded-lg">{form.slots || '3'} {language === 'ko' ? '자리' : 'suất'}</span>
             </div>
           </div>
 

@@ -77,7 +77,7 @@ export default function CreateCampaignPage() {
     minEngagement: '3',
     gender: 'any' as 'any' | 'female' | 'male',
     ageRange: '18-35',
-    location: 'TP.HCM',
+    location: '',
     requiresPet: [] as string[],   // dog/cat/bird/rabbit/fish/other
     requiresChildren: '',          // '' | 'none' | 'has_children'
 
@@ -598,12 +598,39 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
         </div>
         <div>
           <label className="text-xs text-gray-400 mb-1 block">{language === 'ko' ? '지역' : 'Khu vực'}</label>
-          <input
+          <select
             value={form.location}
             onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
-            placeholder={language === 'ko' ? '예: 서울, 경기, 전국' : 'VD: TP.HCM, Hà Nội, Toàn quốc'}
-            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-primary"
-          />
+            className="w-full bg-dark-700 border border-dark-400 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary"
+          >
+            <option value="">{language === 'ko' ? '제한 없음' : 'Không giới hạn'}</option>
+            <optgroup label={language === 'ko' ? '── 남부 ──' : '── Miền Nam ──'}>
+              <option value="Hồ Chí Minh">{language === 'ko' ? '호치민' : 'TP.HCM'}</option>
+              <option value="Bình Dương">{language === 'ko' ? '빈즈엉' : 'Bình Dương'}</option>
+              <option value="Đồng Nai">{language === 'ko' ? '동나이' : 'Đồng Nai'}</option>
+              <option value="Vũng Tàu">{language === 'ko' ? '붕따우' : 'Vũng Tàu'}</option>
+              <option value="Cần Thơ">{language === 'ko' ? '껀터' : 'Cần Thơ'}</option>
+              <option value="Long An">{language === 'ko' ? '롱안' : 'Long An'}</option>
+              <option value="Tiền Giang">{language === 'ko' ? '띠엔장' : 'Tiền Giang'}</option>
+            </optgroup>
+            <optgroup label={language === 'ko' ? '── 중부 ──' : '── Miền Trung ──'}>
+              <option value="Đà Nẵng">{language === 'ko' ? '다낭' : 'Đà Nẵng'}</option>
+              <option value="Huế">{language === 'ko' ? '후에' : 'Huế'}</option>
+              <option value="Hội An">{language === 'ko' ? '호이안' : 'Hội An'}</option>
+              <option value="Nha Trang">{language === 'ko' ? '나트랑' : 'Nha Trang'}</option>
+              <option value="Quy Nhơn">{language === 'ko' ? '퀴논' : 'Quy Nhơn'}</option>
+              <option value="Đà Lạt">{language === 'ko' ? '달랏' : 'Đà Lạt'}</option>
+            </optgroup>
+            <optgroup label={language === 'ko' ? '── 북부 ──' : '── Miền Bắc ──'}>
+              <option value="Hà Nội">{language === 'ko' ? '하노이' : 'Hà Nội'}</option>
+              <option value="Hải Phòng">{language === 'ko' ? '하이퐁' : 'Hải Phòng'}</option>
+              <option value="Hạ Long">{language === 'ko' ? '하롱' : 'Hạ Long'}</option>
+              <option value="Thái Nguyên">{language === 'ko' ? '타이응우옌' : 'Thái Nguyên'}</option>
+              <option value="Bắc Ninh">{language === 'ko' ? '박닌' : 'Bắc Ninh'}</option>
+              <option value="Nam Định">{language === 'ko' ? '남딘' : 'Nam Định'}</option>
+            </optgroup>
+            <option value="Toàn quốc">{language === 'ko' ? '전국' : 'Toàn quốc'}</option>
+          </select>
         </div>
 
         {/* 반려동물 보유 KOL 조건 */}

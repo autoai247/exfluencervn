@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Mail, Phone, Calendar, DollarSign, Star, Briefcase, Ban, CheckCircle, MessageCircle, Facebook } from 'lucide-react';
 import { FaFacebookMessenger } from 'react-icons/fa';
@@ -106,6 +107,7 @@ export default function AdminUserDetailPage() {
 
   const user = mockUsers[userId] || mockUsers['U001'];
   const isInfluencer = user.userType === 'influencer';
+  const [userStatus, setUserStatus] = useState(user.status);
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
@@ -137,9 +139,9 @@ export default function AdminUserDetailPage() {
               </span>
               <div className="mt-2">
                 <span className={`text-xs px-2 py-1 rounded ${
-                  user.status === 'active' ? 'bg-success/20 text-success' : 'bg-error/20 text-error'
+                  userStatus === 'active' ? 'bg-success/20 text-success' : 'bg-error/20 text-error'
                 }`}>
-                  {user.status === 'active' ? (language === 'ko' ? '활성' : 'Hoạt động') : (language === 'ko' ? '정지됨' : 'Đình chỉ')}
+                  {userStatus === 'active' ? (language === 'ko' ? '활성' : 'Hoạt động') : (language === 'ko' ? '정지됨' : 'Đình chỉ')}
                 </span>
               </div>
             </div>
@@ -402,13 +404,19 @@ export default function AdminUserDetailPage() {
           <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '관리자 작업' : 'Thao tác quản trị'}</h3>
 
           <div className="grid grid-cols-2 gap-3">
-            {user.status === 'active' ? (
-              <button className="btn bg-error/20 text-error hover:bg-error/30">
+            {userStatus === 'active' ? (
+              <button
+                onClick={() => setUserStatus('suspended')}
+                className="btn bg-error/20 text-error hover:bg-error/30"
+              >
                 <Ban size={16} className="mr-2" />
                 {language === 'ko' ? '계정 정지' : 'Đình chỉ tài khoản'}
               </button>
             ) : (
-              <button className="btn bg-success/20 text-success hover:bg-success/30">
+              <button
+                onClick={() => setUserStatus('active')}
+                className="btn bg-success/20 text-success hover:bg-success/30"
+              >
                 <CheckCircle size={16} className="mr-2" />
                 {language === 'ko' ? '정지 해제' : 'Bỏ đình chỉ'}
               </button>

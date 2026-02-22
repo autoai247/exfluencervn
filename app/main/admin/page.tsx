@@ -137,6 +137,44 @@ export default function AdminDashboardPage() {
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'campaigns' | 'withdrawals'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUsers] = useState(mockUsers);
+  const [campaigns, setCampaigns] = useState(mockCampaigns);
+  const [withdrawals, setWithdrawals] = useState(mockWithdrawals);
+  const [userTypeFilter, setUserTypeFilter] = useState<'all' | 'influencer' | 'advertiser'>('all');
+
+  const handleBanUser = (userId: string) => {
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: 'suspended' as UserStatus } : u));
+  };
+
+  const handleUnbanUser = (userId: string) => {
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: 'active' as UserStatus } : u));
+  };
+
+  const handleApproveCampaign = (campaignId: string) => {
+    setCampaigns(prev => prev.map(c => c.id === campaignId ? { ...c, status: 'published' as CampaignStatus } : c));
+  };
+
+  const handleRejectCampaign = (campaignId: string) => {
+    setCampaigns(prev => prev.map(c => c.id === campaignId ? { ...c, status: 'cancelled' as CampaignStatus } : c));
+  };
+
+  const handleApproveWithdrawal = (withdrawalId: string) => {
+    setWithdrawals(prev => prev.map(w => w.id === withdrawalId ? { ...w, status: 'completed' } : w));
+  };
+
+  const handleRejectWithdrawal = (withdrawalId: string) => {
+    setWithdrawals(prev => prev.map(w => w.id === withdrawalId ? { ...w, status: 'rejected' } : w));
+  };
+
+  const cycleUserTypeFilter = () => {
+    setUserTypeFilter(prev => prev === 'all' ? 'influencer' : prev === 'influencer' ? 'advertiser' : 'all');
+  };
+
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = !searchQuery || user.name.toLowerCase().includes(searchQuery.toLowerCase()) || user.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType = userTypeFilter === 'all' || user.userType === userTypeFilter;
+    return matchesSearch && matchesType;
+  });
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat(language === 'ko' ? 'ko-KR' : 'vi-VN').format(amount) + ' VND';
@@ -462,13 +500,29 @@ export default function AdminDashboardPage() {
                     className="input pl-10 pr-4"
                   />
                 </div>
-                <button className="btn-icon bg-dark-600 border-dark-500">
+                <button
+                  onClick={cycleUserTypeFilter}
+                  className={`btn-icon border transition-colors ${
+                    userTypeFilter === 'all'
+                      ? 'bg-dark-600 border-dark-500 text-gray-400'
+                      : userTypeFilter === 'influencer'
+                      ? 'bg-secondary/20 border-secondary text-secondary'
+                      : 'bg-primary/20 border-primary text-primary'
+                  }`}
+                  title={
+                    userTypeFilter === 'all'
+                      ? (language === 'ko' ? '전체' : 'Tất cả')
+                      : userTypeFilter === 'influencer'
+                      ? (language === 'ko' ? '인플루언서만' : 'Influencer')
+                      : (language === 'ko' ? '광고주만' : 'Nhà QC')
+                  }
+                >
                   <Filter size={20} />
                 </button>
               </div>
 
               <div className="space-y-3">
-                {mockUsers.map((user) => (
+                {filteredUsers.map((user) => (
                   <div key={user.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -524,12 +578,18 @@ export default function AdminDashboardPage() {
                         {language === 'ko' ? '상세보기' : 'Xem chi tiết'}
                       </Link>
                       {user.status === 'active' ? (
-                        <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleBanUser(user.id)}
+                          className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1"
+                        >
                           <Ban size={14} />
                           {language === 'ko' ? '계정정지' : 'Đình chỉ'}
                         </button>
                       ) : (
-                        <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleUnbanUser(user.id)}
+                          className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1"
+                        >
                           <CheckCircle size={14} />
                           {language === 'ko' ? '정지해제' : 'Bỏ đình chỉ'}
                         </button>
@@ -554,7 +614,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="space-y-3">
-                {mockCampaigns.map((campaign) => (
+                {campaigns.map((campaign) => (
                   <div key={campaign.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -586,11 +646,17 @@ export default function AdminDashboardPage() {
 
                     {campaign.status === 'pending' && (
                       <div className="flex gap-2">
-                        <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleApproveCampaign(campaign.id)}
+                          className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1"
+                        >
                           <CheckCircle size={14} />
                           {language === 'ko' ? '승인' : 'Duyệt'}
                         </button>
-                        <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleRejectCampaign(campaign.id)}
+                          className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1"
+                        >
                           <XCircle size={14} />
                           {language === 'ko' ? '거부' : 'Từ chối'}
                         </button>
@@ -615,7 +681,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="space-y-3">
-                {mockWithdrawals.map((withdrawal) => (
+                {withdrawals.map((withdrawal) => (
                   <div key={withdrawal.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -652,14 +718,34 @@ export default function AdminDashboardPage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <button className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1">
-                        <CheckCircle size={14} />
-                        {language === 'ko' ? '송금 완료' : 'Đã chuyển tiền'}
-                      </button>
-                      <button className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1">
-                        <XCircle size={14} />
-                        {language === 'ko' ? '거부' : 'Từ chối'}
-                      </button>
+                      {withdrawal.status === 'pending' ? (
+                        <>
+                          <button
+                            onClick={() => handleApproveWithdrawal(withdrawal.id)}
+                            className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1"
+                          >
+                            <CheckCircle size={14} />
+                            {language === 'ko' ? '송금 완료' : 'Đã chuyển tiền'}
+                          </button>
+                          <button
+                            onClick={() => handleRejectWithdrawal(withdrawal.id)}
+                            className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1"
+                          >
+                            <XCircle size={14} />
+                            {language === 'ko' ? '거부' : 'Từ chối'}
+                          </button>
+                        </>
+                      ) : (
+                        <div className={`flex-1 py-2 rounded-lg text-xs font-medium text-center ${
+                          withdrawal.status === 'completed'
+                            ? 'bg-success/10 text-success'
+                            : 'bg-error/10 text-error'
+                        }`}>
+                          {withdrawal.status === 'completed'
+                            ? (language === 'ko' ? '✓ 송금 완료됨' : '✓ Đã chuyển tiền')
+                            : (language === 'ko' ? '✗ 거부됨' : '✗ Đã từ chối')}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

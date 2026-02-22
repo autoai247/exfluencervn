@@ -59,21 +59,19 @@ export default function InfluencerProfilePage() {
         url: 'https://tiktok.com/@minji_official'
       },
     ],
-    followers: 125000, // 총합
-    engagement: 4.8, // 평균
-    platform: 'instagram', // 주력 플랫폼
+    followers: 125000,
+    engagement: 4.8,
+    platform: 'instagram',
     avgViews: 25000,
     rating: 4.9,
     completedCampaigns: 45,
     location: '호치민',
     verified: true,
-    // 기본 정보
     gender: 'female',
     ageRange: '25-34',
     skinType: 'combination',
     skinTone: 'light',
     hasVehicle: false,
-    // 상세 개인정보
     maritalStatus: 'single',
     hasChildren: false,
     numberOfChildren: 0,
@@ -123,7 +121,6 @@ export default function InfluencerProfilePage() {
         contentType: 'Video'
       },
     ],
-    // 광고주 리뷰 목록
     reviews: [
       {
         id: 'r1',
@@ -199,21 +196,12 @@ export default function InfluencerProfilePage() {
         completedDate: '2026-02-10',
         payment: 250000,
         rating: 5.0,
-        deliverables: language === 'ko'
-          ? ['Instagram 포스트 1개', '스토리 3개']
-          : ['1 bài đăng Instagram', '3 story'],
-        results: {
-          views: 32000,
-          likes: 2400,
-          comments: 156,
-          saves: 890
-        },
+        deliverables: language === 'ko' ? ['Instagram 포스트 1개', '스토리 3개'] : ['1 bài đăng Instagram', '3 story'],
+        results: { views: 32000, likes: 2400, comments: 156, saves: 890 },
         thumbnail: 'https://picsum.photos/seed/c1/400/400',
         advertiserReview: {
           rating: 5.0,
-          comment: language === 'ko'
-            ? '매우 성실하게 작업해주셨고, 소통도 원활했습니다. 콘텐츠 퀄리티가 기대 이상이었어요!'
-            : 'Rất chuyên nghiệp và nhiệt tình. Chất lượng nội dung vượt mong đợi!',
+          comment: language === 'ko' ? '매우 성실하게 작업해주셨고, 소통도 원활했습니다. 콘텐츠 퀄리티가 기대 이상이었어요!' : 'Rất chuyên nghiệp và nhiệt tình. Chất lượng nội dung vượt mong đợi!',
           wouldRecommend: true
         }
       },
@@ -224,21 +212,12 @@ export default function InfluencerProfilePage() {
         completedDate: '2026-01-25',
         payment: 300000,
         rating: 4.8,
-        deliverables: language === 'ko'
-          ? ['TikTok 영상 2개', 'Instagram 릴스 1개']
-          : ['2 video TikTok', '1 reel Instagram'],
-        results: {
-          views: 45000,
-          likes: 3200,
-          comments: 234,
-          saves: 1200
-        },
+        deliverables: language === 'ko' ? ['TikTok 영상 2개', 'Instagram 릴스 1개'] : ['2 video TikTok', '1 reel Instagram'],
+        results: { views: 45000, likes: 3200, comments: 234, saves: 1200 },
         thumbnail: 'https://picsum.photos/seed/c2/400/400',
         advertiserReview: {
           rating: 4.8,
-          comment: language === 'ko'
-            ? '창의적인 아이디어와 트렌디한 스타일링이 돋보였습니다. 기한도 정확히 지켜주셔서 좋았어요.'
-            : 'Ý tưởng sáng tạo và phong cách trendy. Đúng thời hạn cam kết.',
+          comment: language === 'ko' ? '창의적인 아이디어와 트렌디한 스타일링이 돋보였습니다. 기한도 정확히 지켜주셔서 좋았어요.' : 'Ý tưởng sáng tạo và phong cách trendy. Đúng thời hạn cam kết.',
           wouldRecommend: true
         }
       },
@@ -249,21 +228,12 @@ export default function InfluencerProfilePage() {
         completedDate: '2026-01-15',
         payment: 200000,
         rating: 4.9,
-        deliverables: language === 'ko'
-          ? ['Instagram 포스트 2개', '스토리 5개']
-          : ['2 bài đăng Instagram', '5 story'],
-        results: {
-          views: 28000,
-          likes: 2100,
-          comments: 189,
-          saves: 750
-        },
+        deliverables: language === 'ko' ? ['Instagram 포스트 2개', '스토리 5개'] : ['2 bài đăng Instagram', '5 story'],
+        results: { views: 28000, likes: 2100, comments: 189, saves: 750 },
         thumbnail: 'https://picsum.photos/seed/c3/400/400',
         advertiserReview: {
           rating: 4.9,
-          comment: language === 'ko'
-            ? '제품에 대한 이해도가 높고, 솔직한 리뷰를 작성해주셔서 감사합니다.'
-            : 'Hiểu sâu về sản phẩm và đánh giá trung thực.',
+          comment: language === 'ko' ? '제품에 대한 이해도가 높고, 솔직한 리뷰를 작성해주셔서 감사합니다.' : 'Hiểu sâu về sản phẩm và đánh giá trung thực.',
           wouldRecommend: true
         }
       },
@@ -274,15 +244,8 @@ export default function InfluencerProfilePage() {
         completedDate: '2025-12-20',
         payment: 400000,
         rating: 5.0,
-        deliverables: language === 'ko'
-          ? ['YouTube 영상 1개', 'Instagram 릴스 3개']
-          : ['1 video YouTube', '3 reel Instagram'],
-        results: {
-          views: 52000,
-          likes: 4100,
-          comments: 312,
-          saves: 1500
-        },
+        deliverables: language === 'ko' ? ['YouTube 영상 1개', 'Instagram 릴스 3개'] : ['1 video YouTube', '3 reel Instagram'],
+        results: { views: 52000, likes: 4100, comments: 312, saves: 1500 },
         thumbnail: 'https://picsum.photos/seed/c4/400/400'
       },
       {
@@ -292,29 +255,21 @@ export default function InfluencerProfilePage() {
         completedDate: '2025-12-05',
         payment: 280000,
         rating: 4.7,
-        deliverables: language === 'ko'
-          ? ['TikTok 영상 3개', '스토리 7개']
-          : ['3 video TikTok', '7 story'],
-        results: {
-          views: 38000,
-          likes: 2800,
-          comments: 198,
-          saves: 980
-        },
+        deliverables: language === 'ko' ? ['TikTok 영상 3개', '스토리 7개'] : ['3 video TikTok', '7 story'],
+        results: { views: 38000, likes: 2800, comments: 198, saves: 980 },
         thumbnail: 'https://picsum.photos/seed/c5/400/400'
       },
     ],
   };
 
-
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
       case 'instagram':
-        return <FaInstagram size={20} className="text-pink-600" />;
+        return <FaInstagram size={20} className="text-pink-400" />;
       case 'tiktok':
-        return <FaTiktok size={20} className="text-gray-900" />;
+        return <FaTiktok size={20} className="text-white" />;
       case 'youtube':
-        return <FaYoutube size={20} className="text-red-600" />;
+        return <FaYoutube size={20} className="text-red-500" />;
       default:
         return null;
     }
@@ -337,7 +292,7 @@ export default function InfluencerProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-dark-700 pb-20">
       <MobileHeader title="" showBack />
 
       <div className="container-mobile pt-4">
@@ -351,35 +306,37 @@ export default function InfluencerProfilePage() {
 
       <div className="container-mobile py-6 space-y-6">
         {/* Profile Header */}
-        <div className="flex items-start gap-4">
-          <div className="relative">
-            <img
-              src={influencer.avatar}
-              alt={influencer.name}
-              className="w-24 h-24 rounded-full object-cover border-2 border-gray-100"
-            />
-            {influencer.verified && (
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white">
-                <CheckCircle size={16} className="text-white" />
-              </div>
-            )}
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl font-bold text-gray-900">{influencer.name}</h1>
-              {getPlatformIcon(influencer.platform)}
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl">
+          <div className="flex items-start gap-4">
+            <div className="relative">
+              <img
+                src={influencer.avatar}
+                alt={influencer.name}
+                className="w-24 h-24 rounded-full object-cover border-2 border-primary/30"
+              />
+              {influencer.verified && (
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-secondary rounded-full flex items-center justify-center border-2 border-dark-700">
+                  <CheckCircle size={16} className="text-white" />
+                </div>
+              )}
             </div>
-            <p className="text-sm text-gray-600 mb-3">{influencer.bio}</p>
 
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <div className="flex items-center gap-1">
-                <MapPin size={14} />
-                <span>{influencer.location}</span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-xl font-bold text-white">{influencer.name}</h1>
+                {getPlatformIcon(influencer.platform)}
               </div>
-              <div className="flex items-center gap-1">
-                <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                <span className="text-gray-900 font-semibold">{influencer.rating}</span>
+              <p className="text-sm text-gray-300 mb-3">{influencer.bio}</p>
+
+              <div className="flex items-center gap-3 text-sm text-gray-400">
+                <div className="flex items-center gap-1">
+                  <MapPin size={14} />
+                  <span>{influencer.location}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Star size={14} className="text-accent fill-accent" />
+                  <span className="text-white font-semibold">{influencer.rating}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -387,41 +344,41 @@ export default function InfluencerProfilePage() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">{t.advertiser.influencerDetail.totalFollowers}</div>
-            <div className="text-2xl font-bold text-gray-900">
+          <div className="bg-gradient-to-br from-primary/15 to-dark-700 border border-primary/20 rounded-2xl p-4 shadow-xl">
+            <div className="text-xs text-gray-400 mb-1">{t.advertiser.influencerDetail.totalFollowers}</div>
+            <div className="text-2xl font-bold text-white">
               {(influencer.followers / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-xs text-gray-500 mt-1">
               {language === 'ko' ? '전체 플랫폼 합계' : 'Tổng tất cả nền tảng'}
             </div>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">
+          <div className="bg-gradient-to-br from-secondary/15 to-dark-700 border border-secondary/20 rounded-2xl p-4 shadow-xl">
+            <div className="text-xs text-gray-400 mb-1">
               {language === 'ko' ? '평균 팔로워' : 'TB người theo dõi'}
             </div>
-            <div className="text-2xl font-bold text-gray-900">
+            <div className="text-2xl font-bold text-white">
               {(influencer.followers / influencer.platforms.length / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-xs text-gray-500 mt-1">
               {language === 'ko' ? '플랫폼당 평균' : 'Trung bình mỗi nền tảng'}
             </div>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-gray-900">{influencer.engagement}%</div>
-            <div className="text-xs text-gray-500 mt-1">{t.advertiser.influencerDetail.engagement}</div>
+          <div className="bg-gradient-to-br from-accent/15 to-dark-700 border border-accent/20 rounded-2xl p-4 text-center shadow-xl">
+            <div className="text-2xl font-bold text-white">{influencer.engagement}%</div>
+            <div className="text-xs text-gray-400 mt-1">{t.advertiser.influencerDetail.engagement}</div>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-gray-900">
+          <div className="bg-gradient-to-br from-success/15 to-dark-700 border border-success/20 rounded-2xl p-4 text-center shadow-xl">
+            <div className="text-2xl font-bold text-white">
               {(influencer.avgViews / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-500 mt-1">{t.advertiser.influencerDetail.avgViews}</div>
+            <div className="text-xs text-gray-400 mt-1">{t.advertiser.influencerDetail.avgViews}</div>
           </div>
         </div>
 
         {/* SNS Channels */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">
             {t.advertiser.influencerDetail.snsChannels} ({influencer.platforms.length})
           </h3>
           <div className="space-y-3">
@@ -433,22 +390,22 @@ export default function InfluencerProfilePage() {
                   href={platData.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-3 bg-dark-700/60 border border-dark-400/30 rounded-xl hover:border-primary/30 transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-gray-200">
+                    <div className="w-10 h-10 bg-dark-600/80 rounded-full flex items-center justify-center border border-dark-400/40">
                       {icon}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900 capitalize">{platData.platform}</p>
-                      <p className="text-xs text-gray-500">{platData.username}</p>
+                      <p className="text-sm font-semibold text-white capitalize">{platData.platform}</p>
+                      <p className="text-xs text-gray-400">{platData.username}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-sm font-bold text-white">
                       {(platData.followers / 1000).toFixed(1)}K
                     </p>
-                    <p className="text-xs text-gray-500">{platData.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
+                    <p className="text-xs text-gray-400">{platData.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
                   </div>
                 </a>
               );
@@ -458,12 +415,12 @@ export default function InfluencerProfilePage() {
 
         {/* Categories */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.categories}</h3>
+          <h3 className="text-sm font-semibold text-white mb-2">{t.advertiser.influencerDetail.categories}</h3>
           <div className="flex flex-wrap gap-2">
             {influencer.categories.map((cat) => (
               <span
                 key={cat}
-                className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
+                className="px-3 py-1 bg-primary/15 text-primary border border-primary/20 text-sm rounded-full"
               >
                 {cat}
               </span>
@@ -471,57 +428,57 @@ export default function InfluencerProfilePage() {
           </div>
         </div>
 
-        {/* Reviews Section - 광고주 리뷰 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        {/* Reviews Section */}
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">{t.advertiser.influencerDetail.reviews}</h3>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <h3 className="text-sm font-semibold text-white">{t.advertiser.influencerDetail.reviews}</h3>
+              <p className="text-xs text-gray-400 mt-0.5">
                 {influencer.reviews.length} {t.advertiser.influencerDetail.reviewsCount}
               </p>
             </div>
             <div className="text-right">
               <div className="flex items-center gap-1">
-                <Star size={18} className="text-yellow-500 fill-yellow-500" />
-                <span className="text-xl font-bold text-gray-900">{influencer.rating}</span>
+                <Star size={18} className="text-accent fill-accent" />
+                <span className="text-xl font-bold text-white">{influencer.rating}</span>
               </div>
-              <p className="text-xs text-gray-500">{t.advertiser.influencerDetail.overallRating}</p>
+              <p className="text-xs text-gray-400">{t.advertiser.influencerDetail.overallRating}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             {influencer.reviews.slice(0, 3).map((review: any) => (
-              <div key={review.id} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+              <div key={review.id} className="pb-4 border-b border-dark-400/40 last:border-0 last:pb-0">
                 <div className="flex items-start gap-3 mb-2">
                   <img
                     src={review.advertiserLogo}
                     alt={review.advertiser}
-                    className="w-10 h-10 rounded-full border border-gray-200 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all"
+                    className="w-10 h-10 rounded-full border border-dark-400/40 cursor-pointer hover:ring-2 hover:ring-primary/30 transition-all"
                     onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h4
-                        className="text-sm font-semibold text-gray-900 cursor-pointer hover:text-gray-600 transition-colors"
+                        className="text-sm font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
                         onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
                       >
                         {review.advertiser}
                       </h4>
                       <div className="flex items-center gap-1">
-                        <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm font-bold text-gray-900">{review.rating.toFixed(1)}</span>
+                        <Star size={14} className="text-accent fill-accent" />
+                        <span className="text-sm font-bold text-white">{review.rating.toFixed(1)}</span>
                       </div>
                     </div>
                     <p className="text-xs text-gray-500 mb-2">{review.campaignTitle}</p>
-                    <p className="text-sm text-gray-700 leading-relaxed mb-2">{review.comment}</p>
+                    <p className="text-sm text-gray-300 leading-relaxed mb-2">{review.comment}</p>
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {review.tags.map((tag: string, idx: number) => (
-                        <span key={idx} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full border border-green-200">
+                        <span key={idx} className="px-2 py-0.5 bg-success/10 text-success text-xs rounded-full border border-success/20">
                           ✓ {tag}
                         </span>
                       ))}
                     </div>
-                    <p className="text-xs text-gray-400">{formatDate(review.date)}</p>
+                    <p className="text-xs text-gray-500">{formatDate(review.date)}</p>
                   </div>
                 </div>
               </div>
@@ -529,69 +486,69 @@ export default function InfluencerProfilePage() {
           </div>
 
           {influencer.reviews.length > 3 && (
-            <button className="w-full mt-4 py-2 text-sm text-gray-700 hover:text-gray-900 font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="w-full mt-4 py-2 text-sm text-gray-300 hover:text-white font-medium border border-dark-400/40 hover:border-primary/30 rounded-xl transition-all">
               {t.advertiser.influencerDetail.viewAll} ({influencer.reviews.length})
             </button>
           )}
         </div>
 
         {/* Profile Information - 기본 정보 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.basicInfo}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{t.advertiser.influencerDetail.basicInfo}</h3>
           <div className="space-y-3">
             {influencer.gender && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.gender}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.gender}</span>
+                <span className="text-sm font-semibold text-white">
                   {influencer.gender === 'male' ? t.advertiser.influencerDetail.male : t.advertiser.influencerDetail.female}
                 </span>
               </div>
             )}
             {influencer.ageRange && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.age}</span>
-                <span className="text-sm font-semibold text-gray-900">{influencer.ageRange}</span>
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.age}</span>
+                <span className="text-sm font-semibold text-white">{influencer.ageRange}</span>
               </div>
             )}
             {influencer.skinType && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.skinType}</span>
-                <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinType}</span>
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.skinType}</span>
+                <span className="text-sm font-semibold text-white capitalize">{influencer.skinType}</span>
               </div>
             )}
             {influencer.skinTone && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.skinTone}</span>
-                <span className="text-sm font-semibold text-gray-900 capitalize">{influencer.skinTone}</span>
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.skinTone}</span>
+                <span className="text-sm font-semibold text-white capitalize">{influencer.skinTone}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* 생활 정보 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.lifestyleInfo}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{t.advertiser.influencerDetail.lifestyleInfo}</h3>
           <div className="space-y-3">
             {influencer.maritalStatus && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.maritalStatus}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.maritalStatus}</span>
+                <span className="text-sm font-semibold text-white">
                   {t.advertiser.influencerDetail[influencer.maritalStatus as keyof typeof t.advertiser.influencerDetail] || influencer.maritalStatus}
                 </span>
               </div>
             )}
             {influencer.hasChildren !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.children}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.children}</span>
+                <span className="text-sm font-semibold text-white">
                   {influencer.hasChildren ? `${t.advertiser.influencerDetail.yes} (${influencer.numberOfChildren})` : t.advertiser.influencerDetail.no}
                 </span>
               </div>
             )}
             {influencer.hasPets !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.pets}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.pets}</span>
+                <span className="text-sm font-semibold text-white">
                   {influencer.hasPets
                     ? influencer.petTypes.map((pet: string) => t.advertiser.influencerDetail[pet as keyof typeof t.advertiser.influencerDetail] || pet).join(', ')
                     : t.advertiser.influencerDetail.no
@@ -601,8 +558,8 @@ export default function InfluencerProfilePage() {
             )}
             {influencer.hasVehicle !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.hasVehicle}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.hasVehicle}</span>
+                <span className="text-sm font-semibold text-white">
                   {influencer.hasVehicle ? t.advertiser.influencerDetail.yes : t.advertiser.influencerDetail.no}
                 </span>
               </div>
@@ -611,15 +568,15 @@ export default function InfluencerProfilePage() {
         </div>
 
         {/* 언어 & 교육 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.languageEducation}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{t.advertiser.influencerDetail.languageEducation}</h3>
           <div className="space-y-3">
             {influencer.languages && (
               <div className="flex items-start justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.languages}</span>
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.languages}</span>
                 <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                   {influencer.languages.map((lang: string) => (
-                    <span key={lang} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                    <span key={lang} className="px-2 py-1 bg-secondary/15 text-secondary border border-secondary/20 text-xs rounded-full">
                       {t.advertiser.influencerDetail[lang as keyof typeof t.advertiser.influencerDetail] || lang}
                     </span>
                   ))}
@@ -628,16 +585,16 @@ export default function InfluencerProfilePage() {
             )}
             {influencer.education && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.education}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.education}</span>
+                <span className="text-sm font-semibold text-white">
                   {t.advertiser.influencerDetail[influencer.education as keyof typeof t.advertiser.influencerDetail] || influencer.education}
                 </span>
               </div>
             )}
             {influencer.occupation && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.occupation}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.occupation}</span>
+                <span className="text-sm font-semibold text-white">
                   {t.advertiser.influencerDetail[influencer.occupation as keyof typeof t.advertiser.influencerDetail] || influencer.occupation}
                 </span>
               </div>
@@ -648,12 +605,12 @@ export default function InfluencerProfilePage() {
         {/* 관심사 */}
         {influencer.interests && influencer.interests.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.interests}</h3>
+            <h3 className="text-sm font-semibold text-white mb-2">{t.advertiser.influencerDetail.interests}</h3>
             <div className="flex flex-wrap gap-2">
               {influencer.interests.map((interest: string) => (
                 <span
                   key={interest}
-                  className="px-3 py-1.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 text-sm rounded-full border border-purple-100"
+                  className="px-3 py-1.5 bg-gradient-to-r from-primary/15 to-secondary/15 text-primary text-sm rounded-full border border-primary/20"
                 >
                   {t.advertiser.influencerDetail[interest as keyof typeof t.advertiser.influencerDetail] || interest}
                 </span>
@@ -663,21 +620,21 @@ export default function InfluencerProfilePage() {
         )}
 
         {/* 라이프스타일 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.lifestyle}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{t.advertiser.influencerDetail.lifestyle}</h3>
           <div className="space-y-3">
             {influencer.smoker !== undefined && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.smoker}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.smoker}</span>
+                <span className="text-sm font-semibold text-white">
                   {influencer.smoker ? t.advertiser.influencerDetail.yes : t.advertiser.influencerDetail.no}
                 </span>
               </div>
             )}
             {influencer.drinker && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.drinker}</span>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.drinker}</span>
+                <span className="text-sm font-semibold text-white">
                   {t.advertiser.influencerDetail[influencer.drinker as keyof typeof t.advertiser.influencerDetail] || influencer.drinker}
                 </span>
               </div>
@@ -685,9 +642,9 @@ export default function InfluencerProfilePage() {
           </div>
         </div>
 
-        {/* Recent Works - 개선된 버전 */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+        {/* Recent Works */}
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">
             {t.advertiser.influencerDetail.recentWorks}
             <span className="text-xs text-gray-500 font-normal ml-2">
               {language === 'ko' ? '(콘텐츠 스타일 확인)' : '(Kiểm tra phong cách nội dung)'}
@@ -695,7 +652,7 @@ export default function InfluencerProfilePage() {
           </h3>
           <div className="space-y-3">
             {influencer.recentWorks.map((work: any) => (
-              <div key={work.id} className="flex gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div key={work.id} className="flex gap-3 p-3 bg-dark-700/60 border border-dark-400/30 rounded-xl hover:border-primary/20 transition-all">
                 <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
                   <img
                     src={work.thumbnail}
@@ -710,9 +667,9 @@ export default function InfluencerProfilePage() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">{work.title}</h4>
-                  <p className="text-xs text-gray-600 mb-2 line-clamp-1">{work.description}</p>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                  <h4 className="text-sm font-semibold text-white mb-1 line-clamp-1">{work.title}</h4>
+                  <p className="text-xs text-gray-400 mb-2 line-clamp-1">{work.description}</p>
+                  <div className="flex items-center gap-3 text-xs text-gray-400">
                     <div className="flex items-center gap-1">
                       <Eye size={12} />
                       <span>{(work.views / 1000).toFixed(1)}K</span>
@@ -726,47 +683,50 @@ export default function InfluencerProfilePage() {
                       <span>{work.comments}</span>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">{formatDate(work.date)}</p>
+                  <p className="text-xs text-gray-500 mt-1">{formatDate(work.date)}</p>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
+          <p className="text-xs text-secondary mt-3 p-2 bg-secondary/10 rounded-xl border border-secondary/20">
             💡 {language === 'ko' ? '최근 작업물을 통해 인플루언서의 콘텐츠 스타일, 편집 품질, 톤을 확인하세요' : 'Xem phong cách nội dung, chất lượng chỉnh sửa và tone của influencer qua các công việc gần đây'}
           </p>
         </div>
 
         {/* 완료한 캠페인 */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">
-            {t.advertiser.influencerDetail.completedCampaigns} ({influencer.completedCampaigns})
-          </h3>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-5 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">
+              {t.advertiser.influencerDetail.completedCampaigns} ({influencer.completedCampaigns})
+            </h3>
+          </div>
           <div className="space-y-3">
             {influencer.completedCampaignsList.slice(0, 5).map((campaign: any) => (
               <div
                 key={campaign.id}
                 onClick={() => setSelectedCampaign(campaign)}
-                className="bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
+                className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 hover:border-primary/30 rounded-2xl p-4 transition-all cursor-pointer shadow-xl"
               >
                 <div className="flex gap-3">
                   <img
                     src={campaign.thumbnail}
                     alt={campaign.title}
-                    className="w-20 h-20 rounded-lg object-cover"
+                    className="w-20 h-20 rounded-xl object-cover"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-1">
+                    <h4 className="text-sm font-semibold text-white mb-1 line-clamp-1">
                       {campaign.title}
                     </h4>
                     <div className="flex items-center gap-2 mb-2">
                       <Building size={12} className="text-gray-400" />
-                      <span className="text-xs text-gray-600">{campaign.brand}</span>
+                      <span className="text-xs text-gray-400">{campaign.brand}</span>
                     </div>
                     <div className="flex items-center gap-2 mb-2">
                       <Calendar size={12} className="text-gray-400" />
                       <span className="text-xs text-gray-500">{formatDate(campaign.completedDate)}</span>
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-gray-600">
+                    <div className="flex items-center gap-4 text-xs text-gray-400">
                       <div className="flex items-center gap-1">
                         <Eye size={12} />
                         <span>{(campaign.results.views / 1000).toFixed(0)}K</span>
@@ -776,8 +736,8 @@ export default function InfluencerProfilePage() {
                         <span>{(campaign.results.likes / 1000).toFixed(1)}K</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Star size={12} className="text-yellow-500 fill-yellow-500" />
-                        <span className="font-semibold text-gray-900">{campaign.rating}</span>
+                        <Star size={12} className="text-accent fill-accent" />
+                        <span className="font-semibold text-white">{campaign.rating}</span>
                       </div>
                     </div>
                   </div>
@@ -788,18 +748,18 @@ export default function InfluencerProfilePage() {
         </div>
 
         {/* Additional Info */}
-        <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.completedCampaigns}</span>
-            <span className="text-sm font-semibold text-gray-900">
+            <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.completedCampaigns}</span>
+            <span className="text-sm font-semibold text-white">
               {influencer.completedCampaigns}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">{t.advertiser.influencerDetail.rating}</span>
+            <span className="text-sm text-gray-400">{t.advertiser.influencerDetail.rating}</span>
             <div className="flex items-center gap-1">
-              <Star size={16} className="text-yellow-500 fill-yellow-500" />
-              <span className="text-sm font-semibold text-gray-900">{influencer.rating}</span>
+              <Star size={16} className="text-accent fill-accent" />
+              <span className="text-sm font-semibold text-white">{influencer.rating}</span>
             </div>
           </div>
         </div>
@@ -807,7 +767,7 @@ export default function InfluencerProfilePage() {
         {/* Contact Button */}
         <button
           onClick={() => setShowContactModal(true)}
-          className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-2xl font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
         >
           <Send size={18} />
           {t.advertiser.influencerDetail.contact}
@@ -816,16 +776,16 @@ export default function InfluencerProfilePage() {
 
       {/* Contact Modal */}
       {showContactModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">{t.advertiser.influencerDetail.contactTitle}</h3>
-            <p className="text-sm text-gray-600 mb-4">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-dark-700 border border-dark-400/60 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h3 className="text-lg font-bold text-white mb-4">{t.advertiser.influencerDetail.contactTitle}</h3>
+            <p className="text-sm text-gray-300 mb-4">
               {language === 'ko' ? '캠페인 상세 정보를 입력하고 인플루언서에게 제안서를 보내세요.' : 'Nhập thông tin chi tiết chiến dịch và gửi đề xuất cho influencer.'}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowContactModal(false)}
-                className="flex-1 py-3 border border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50"
+                className="flex-1 py-3 border border-dark-400/40 hover:border-primary/30 rounded-xl font-semibold text-gray-300 transition-all"
               >
                 {t.common.cancel}
               </button>
@@ -834,7 +794,7 @@ export default function InfluencerProfilePage() {
                   alert(language === 'ko' ? '제안서가 전송되었습니다!' : 'Đề xuất đã được gửi!');
                   setShowContactModal(false);
                 }}
-                className="flex-1 py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800"
+                className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
               >
                 {t.advertiser.influencerDetail.sendProposal}
               </button>
@@ -845,14 +805,14 @@ export default function InfluencerProfilePage() {
 
       {/* 캠페인 상세 모달 */}
       {selectedCampaign && (
-        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50">
-          <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-end sm:items-center justify-center z-50">
+          <div className="bg-dark-700 border border-dark-400/60 rounded-t-3xl sm:rounded-2xl w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* 헤더 */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{t.advertiser.influencerDetail.campaignInfo}</h3>
+            <div className="sticky top-0 bg-dark-700 border-b border-dark-400/40 px-6 py-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-white">{t.advertiser.influencerDetail.campaignInfo}</h3>
               <button
                 onClick={() => setSelectedCampaign(null)}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-dark-600 text-gray-400 hover:text-white transition-all"
               >
                 <X size={20} />
               </button>
@@ -864,13 +824,13 @@ export default function InfluencerProfilePage() {
               <img
                 src={selectedCampaign.thumbnail}
                 alt={selectedCampaign.title}
-                className="w-full h-48 object-cover rounded-xl"
+                className="w-full h-48 object-cover rounded-2xl"
               />
 
               {/* 캠페인 정보 */}
               <div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{selectedCampaign.title}</h4>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                <h4 className="text-xl font-bold text-white mb-2">{selectedCampaign.title}</h4>
+                <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
                   <div className="flex items-center gap-1">
                     <Building size={16} className="text-gray-400" />
                     <span>{selectedCampaign.brand}</span>
@@ -882,23 +842,23 @@ export default function InfluencerProfilePage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1">
-                    <Star size={20} className="text-yellow-500 fill-yellow-500" />
-                    <span className="text-lg font-bold text-gray-900">{selectedCampaign.rating}</span>
+                    <Star size={20} className="text-accent fill-accent" />
+                    <span className="text-lg font-bold text-white">{selectedCampaign.rating}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <DollarSign size={20} className="text-green-600" />
-                    <span className="text-lg font-bold text-gray-900">{formatCurrency(selectedCampaign.payment)}</span>
+                    <DollarSign size={20} className="text-success" />
+                    <span className="text-lg font-bold text-white">{formatCurrency(selectedCampaign.payment)}</span>
                   </div>
                 </div>
               </div>
 
               {/* 제출물 */}
-              <div className="bg-gray-50 rounded-xl p-4">
-                <h5 className="text-sm font-semibold text-gray-900 mb-2">{t.advertiser.influencerDetail.deliverables}</h5>
+              <div className="bg-dark-600/80 border border-dark-400/40 rounded-2xl p-4">
+                <h5 className="text-sm font-semibold text-white mb-2">{t.advertiser.influencerDetail.deliverables}</h5>
                 <ul className="space-y-1">
                   {selectedCampaign.deliverables.map((item: string, index: number) => (
-                    <li key={index} className="flex items-center gap-2 text-sm text-gray-700">
-                      <CheckCircle size={16} className="text-green-600" />
+                    <li key={index} className="flex items-center gap-2 text-sm text-gray-300">
+                      <CheckCircle size={16} className="text-success" />
                       {item}
                     </li>
                   ))}
@@ -907,41 +867,41 @@ export default function InfluencerProfilePage() {
 
               {/* 성과 지표 */}
               <div>
-                <h5 className="text-sm font-semibold text-gray-900 mb-3">{t.advertiser.influencerDetail.results}</h5>
+                <h5 className="text-sm font-semibold text-white mb-3">{t.advertiser.influencerDetail.results}</h5>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-blue-50 rounded-xl p-4 text-center">
+                  <div className="bg-gradient-to-br from-secondary/15 to-dark-700 border border-secondary/20 rounded-2xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <Eye size={16} className="text-blue-600" />
-                      <span className="text-sm text-blue-600 font-semibold">{t.advertiser.influencerDetail.views}</span>
+                      <Eye size={16} className="text-secondary" />
+                      <span className="text-sm text-secondary font-semibold">{t.advertiser.influencerDetail.views}</span>
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-white">
                       {(selectedCampaign.results.views / 1000).toFixed(1)}K
                     </div>
                   </div>
-                  <div className="bg-pink-50 rounded-xl p-4 text-center">
+                  <div className="bg-gradient-to-br from-primary/15 to-dark-700 border border-primary/20 rounded-2xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <Heart size={16} className="text-pink-600" />
-                      <span className="text-sm text-pink-600 font-semibold">{t.advertiser.influencerDetail.likes}</span>
+                      <Heart size={16} className="text-primary" />
+                      <span className="text-sm text-primary font-semibold">{t.advertiser.influencerDetail.likes}</span>
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-white">
                       {(selectedCampaign.results.likes / 1000).toFixed(1)}K
                     </div>
                   </div>
-                  <div className="bg-purple-50 rounded-xl p-4 text-center">
+                  <div className="bg-gradient-to-br from-accent/15 to-dark-700 border border-accent/20 rounded-2xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <MessageCircle size={16} className="text-purple-600" />
-                      <span className="text-sm text-purple-600 font-semibold">{t.advertiser.influencerDetail.comments}</span>
+                      <MessageCircle size={16} className="text-accent" />
+                      <span className="text-sm text-accent font-semibold">{t.advertiser.influencerDetail.comments}</span>
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-white">
                       {selectedCampaign.results.comments}
                     </div>
                   </div>
-                  <div className="bg-yellow-50 rounded-xl p-4 text-center">
+                  <div className="bg-gradient-to-br from-success/15 to-dark-700 border border-success/20 rounded-2xl p-4 text-center">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <Bookmark size={16} className="text-yellow-600" />
-                      <span className="text-sm text-yellow-600 font-semibold">{t.advertiser.influencerDetail.saves}</span>
+                      <Bookmark size={16} className="text-success" />
+                      <span className="text-sm text-success font-semibold">{t.advertiser.influencerDetail.saves}</span>
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-white">
                       {selectedCampaign.results.saves}
                     </div>
                   </div>
@@ -950,10 +910,10 @@ export default function InfluencerProfilePage() {
 
               {/* 광고주 평가 */}
               {selectedCampaign.advertiserReview && (
-                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                <div className="bg-success/10 border border-success/20 rounded-2xl p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <Star size={18} className="text-green-600 fill-green-600" />
-                    <h4 className="text-sm font-semibold text-gray-900">
+                    <Star size={18} className="text-success fill-success" />
+                    <h4 className="text-sm font-semibold text-white">
                       {language === 'ko' ? '광고주 평가' : 'Đánh giá từ nhà quảng cáo'}
                     </h4>
                   </div>
@@ -965,21 +925,21 @@ export default function InfluencerProfilePage() {
                           size={16}
                           className={
                             star <= selectedCampaign.advertiserReview.rating
-                              ? 'text-yellow-500 fill-yellow-500'
-                              : 'text-gray-300'
+                              ? 'text-accent fill-accent'
+                              : 'text-gray-600'
                           }
                         />
                       ))}
                     </div>
-                    <span className="text-sm font-bold text-gray-900">
+                    <span className="text-sm font-bold text-white">
                       {selectedCampaign.advertiserReview.rating.toFixed(1)}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                  <p className="text-sm text-gray-300 leading-relaxed mb-2">
                     "{selectedCampaign.advertiserReview.comment}"
                   </p>
                   {selectedCampaign.advertiserReview.wouldRecommend && (
-                    <div className="flex items-center gap-1 text-xs text-green-700">
+                    <div className="flex items-center gap-1 text-xs text-success">
                       <CheckCircle size={14} />
                       <span className="font-medium">{t.advertiser.influencerDetail.wouldRecommend}</span>
                     </div>
@@ -990,7 +950,7 @@ export default function InfluencerProfilePage() {
               {/* 닫기 버튼 */}
               <button
                 onClick={() => setSelectedCampaign(null)}
-                className="w-full py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800"
+                className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
               >
                 {t.advertiser.influencerDetail.close}
               </button>

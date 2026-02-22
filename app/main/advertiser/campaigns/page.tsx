@@ -10,7 +10,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 export default function AdvertiserCampaignsPage() {
   const { language } = useLanguage();
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-dark-700 pb-20">
       <MobileHeader title={language === 'ko' ? '캠페인 관리' : 'Quản lý chiến dịch'} showBack />
 
       <Suspense fallback={

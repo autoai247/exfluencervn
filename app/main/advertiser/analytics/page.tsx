@@ -9,7 +9,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 export default function AdvertiserAnalyticsPage() {
   const { language } = useLanguage();
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-dark-700 pb-20">
       <MobileHeader title={language === 'ko' ? '분석 대시보드' : 'Bảng phân tích'} showBack />
 
       <Suspense fallback={

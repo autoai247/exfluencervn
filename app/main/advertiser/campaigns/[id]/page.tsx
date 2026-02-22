@@ -23,7 +23,7 @@ const mockCampaignDetail = {
   endDate: '2026-03-15',
   deadline: '2026-03-15',
   createdAt: '2026-02-01',
-  deliveryType: 'product' as 'product' | 'service' | 'visit', // product=제품발송, service=매장방문, visit=직접방문
+  deliveryType: 'product' as 'product' | 'service' | 'visit',
 
   requirements: {
     minFollowers: 10000,
@@ -32,7 +32,6 @@ const mockCampaignDetail = {
     categories: ['뷰티', '라이프스타일'],
     ageRange: '20-35세',
     gender: '여성',
-    // Extended requirements
     skinType: ['combination', 'oily'],
     skinTone: ['light', 'medium'],
   },
@@ -119,7 +118,6 @@ const mockCampaignDetail = {
       engagement: 4.5,
       platform: 'Instagram',
       appliedAt: '2026-02-10',
-      // Extended profile for matching
       categories: ['뷰티', '라이프스타일'],
       location: '호치민',
       gender: '여성',
@@ -138,7 +136,6 @@ const mockCampaignDetail = {
       engagement: 3.5,
       platform: 'TikTok',
       appliedAt: '2026-02-12',
-      // Extended profile for matching
       categories: ['패션', '라이프스타일'],
       location: '하노이',
       gender: '여성',
@@ -157,7 +154,6 @@ const mockCampaignDetail = {
       engagement: 4.8,
       platform: 'Instagram',
       appliedAt: '2026-02-13',
-      // Extended profile for matching
       categories: ['뷰티', 'lifestyle'],
       location: '호치민',
       gender: '남성',
@@ -175,16 +171,13 @@ export default function CampaignDetailPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
 
-  // State management for applicants
   const [pendingApplicants, setPendingApplicants] = useState(mockCampaignDetail.pendingApplicants);
   const [acceptedInfluencers, setAcceptedInfluencers] = useState(mockCampaignDetail.acceptedInfluencersList);
 
-  // Modal states for stats
   const [showAcceptedModal, setShowAcceptedModal] = useState(false);
   const [showApplicantsModal, setShowApplicantsModal] = useState(false);
   const [showBudgetModal, setShowBudgetModal] = useState(false);
 
-  // Review modal state
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewInfluencer, setReviewInfluencer] = useState<any>(null);
   const [reviewData, setReviewData] = useState({
@@ -194,12 +187,8 @@ export default function CampaignDetailPage() {
     wouldRecommend: true,
   });
 
-  // Handle approve applicant
   const handleApprove = (applicant: any) => {
-    // Remove from pending
     setPendingApplicants(prev => prev.filter(a => a.id !== applicant.id));
-
-    // Add to accepted list
     const newInfluencer = {
       id: applicant.id,
       name: applicant.name,
@@ -212,60 +201,47 @@ export default function CampaignDetailPage() {
       submittedContent: [],
     };
     setAcceptedInfluencers(prev => [...prev, newInfluencer]);
-
     alert(language === 'ko' ? `${applicant.name} 승인 완료!` : `Đã chấp thuận ${applicant.name}!`);
   };
 
-  // Handle reject applicant
   const handleReject = (applicant: any) => {
     const reason = prompt(language === 'ko' ? `${applicant.name} 거절 이유를 입력하세요 (선택):` : `Nhập lý do từ chối ứng viên ${applicant.name} (tùy chọn):`);
-
-    // Remove from pending
     setPendingApplicants(prev => prev.filter(a => a.id !== applicant.id));
-
     alert(language === 'ko' ? `${applicant.name} 거절 완료.${reason ? `\n이유: ${reason}` : ''}` : `Đã từ chối ứng viên ${applicant.name}.${reason ? `\nLý do: ${reason}` : ''}`);
   };
 
-  // Calculate matching percentage for an applicant
   const calculateApplicantMatch = (applicant: any) => {
     const requirements = mockCampaignDetail.requirements;
     let score = 0;
     const criteria: { name: string; match: boolean; weight: number }[] = [];
 
-    // Followers check (25%)
     const followersMatch = applicant.followers >= requirements.minFollowers;
     criteria.push({ name: language === 'ko' ? '팔로워' : 'Người theo dõi', match: followersMatch, weight: 25 });
     if (followersMatch) score += 25;
 
-    // Engagement check (20%)
     const engagementMatch = applicant.engagement >= requirements.minEngagement;
     criteria.push({ name: language === 'ko' ? '참여율' : 'Tỷ lệ tương tác', match: engagementMatch, weight: 20 });
     if (engagementMatch) score += 20;
 
-    // Platform check (15%)
     const platformMatch = requirements.platforms.includes(applicant.platform);
     criteria.push({ name: language === 'ko' ? '플랫폼' : 'Nền tảng', match: platformMatch, weight: 15 });
     if (platformMatch) score += 15;
 
-    // Category check (15%)
     const categoryMatch = applicant.categories?.some((c: string) =>
       requirements.categories.includes(c)
     ) ?? false;
     criteria.push({ name: language === 'ko' ? '카테고리' : 'Danh mục', match: categoryMatch, weight: 15 });
     if (categoryMatch) score += 15;
 
-    // Gender check (10%)
     const genderMatch = requirements.gender === '무관' || requirements.gender === 'Không giới hạn' || applicant.gender === requirements.gender;
     criteria.push({ name: language === 'ko' ? '성별' : 'Giới tính', match: genderMatch, weight: 10 });
     if (genderMatch) score += 10;
 
-    // Skin type check (10%)
     const skinTypeMatch = !requirements.skinType ||
       (requirements.skinType as string[]).includes(applicant.skinType);
     criteria.push({ name: language === 'ko' ? '피부 타입' : 'Loại da', match: skinTypeMatch, weight: 10 });
     if (skinTypeMatch) score += 10;
 
-    // Skin tone check (5%)
     const skinToneMatch = !requirements.skinTone ||
       (requirements.skinTone as string[]).includes(applicant.skinTone);
     criteria.push({ name: language === 'ko' ? '피부 톤' : 'Tông da', match: skinToneMatch, weight: 5 });
@@ -279,14 +255,14 @@ export default function CampaignDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-dark-700/95 backdrop-blur-sm border-b border-dark-500 px-4 py-4">
         <div className="flex items-center gap-3 mb-2">
-          <button onClick={() => router.back()} className="text-gray-900 hover:text-gray-700">
+          <button onClick={() => router.back()} className="text-white hover:text-gray-300 transition-colors">
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-lg font-bold text-gray-900">{language === 'ko' ? '캠페인 상세' : 'Chi tiết chiến dịch'}</h1>
+          <h1 className="text-lg font-bold text-white">{language === 'ko' ? '캠페인 상세' : 'Chi tiết chiến dịch'}</h1>
         </div>
         <Breadcrumb
           items={[
@@ -299,37 +275,37 @@ export default function CampaignDetailPage() {
 
       <div className="container-mobile space-y-6 py-6">
         {/* Campaign Header */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
           <div className="flex items-start justify-between mb-3">
-            <h2 className="text-xl font-bold text-gray-900">{mockCampaignDetail.title}</h2>
-            <span className="px-3 py-1 bg-gray-900 text-white text-xs rounded-full font-medium">
+            <h2 className="text-xl font-bold text-white flex-1 mr-3">{mockCampaignDetail.title}</h2>
+            <span className="px-3 py-1 bg-success/20 text-success border border-success/30 text-xs rounded-full font-medium flex-shrink-0">
               {language === 'ko' ? '진행 중' : 'Đang hoạt động'}
             </span>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">{mockCampaignDetail.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{mockCampaignDetail.description}</p>
         </div>
 
         {/* Budget Progress */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? '예산 사용 현황' : 'Tình trạng sử dụng ngân sách'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '예산 사용 현황' : 'Tình trạng sử dụng ngân sách'}</h3>
           <div className="mb-3">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600">{language === 'ko' ? '사용된 예산' : 'Ngân sách đã dùng'}</span>
-              <span className="text-gray-900 font-semibold">
+              <span className="text-gray-400">{language === 'ko' ? '사용된 예산' : 'Ngân sách đã dùng'}</span>
+              <span className="text-white font-semibold">
                 {((mockCampaignDetail.spent / mockCampaignDetail.budget) * 100).toFixed(0)}%
               </span>
             </div>
-            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-dark-500 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gray-900 rounded-full"
+                className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all"
                 style={{ width: `${(mockCampaignDetail.spent / mockCampaignDetail.budget) * 100}%` }}
               />
             </div>
             <div className="flex justify-between text-sm mt-2">
-              <span className="text-gray-900 font-semibold">
+              <span className="text-white font-semibold">
                 {formatPoints(mockCampaignDetail.spent)}
               </span>
-              <span className="text-gray-500">
+              <span className="text-gray-400">
                 / {formatPoints(mockCampaignDetail.budget)}
               </span>
             </div>
@@ -340,92 +316,92 @@ export default function CampaignDetailPage() {
         <div className="grid grid-cols-2 gap-3">
           <div
             onClick={() => setShowAcceptedModal(true)}
-            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+            className="bg-gradient-to-br from-primary/15 to-dark-700 border border-primary/20 hover:border-primary/40 rounded-2xl p-4 text-center cursor-pointer transition-all shadow-xl"
           >
-            <Users size={24} className="text-gray-700 mx-auto mb-2" />
-            <div className="text-xl font-bold text-gray-900">
+            <Users size={24} className="text-primary mx-auto mb-2" />
+            <div className="text-xl font-bold text-white">
               {acceptedInfluencers.length}/{mockCampaignDetail.targetInfluencers}
             </div>
-            <div className="text-xs text-gray-500 mt-1">{language === 'ko' ? '승인된 KOL' : 'KOL được chấp thuận'}</div>
-            <div className="text-xs text-gray-400 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
+            <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '승인된 KOL' : 'KOL được chấp thuận'}</div>
+            <div className="text-xs text-gray-500 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
           </div>
           <div
             onClick={() => setShowApplicantsModal(true)}
-            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+            className="bg-gradient-to-br from-secondary/15 to-dark-700 border border-secondary/20 hover:border-secondary/40 rounded-2xl p-4 text-center cursor-pointer transition-all shadow-xl"
           >
-            <Clock size={24} className="text-gray-700 mx-auto mb-2" />
-            <div className="text-xl font-bold text-gray-900">{mockCampaignDetail.applicants}</div>
-            <div className="text-xs text-gray-500 mt-1">{language === 'ko' ? '총 지원자' : 'Tổng ứng viên'}</div>
-            <div className="text-xs text-gray-400 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
+            <Clock size={24} className="text-secondary mx-auto mb-2" />
+            <div className="text-xl font-bold text-white">{mockCampaignDetail.applicants}</div>
+            <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '총 지원자' : 'Tổng ứng viên'}</div>
+            <div className="text-xs text-gray-500 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-            <Eye size={24} className="text-gray-700 mx-auto mb-2" />
-            <div className="text-xl font-bold text-gray-900">
+          <div className="bg-gradient-to-br from-accent/15 to-dark-700 border border-accent/20 rounded-2xl p-4 text-center shadow-xl">
+            <Eye size={24} className="text-accent mx-auto mb-2" />
+            <div className="text-xl font-bold text-white">
               {(mockCampaignDetail.views / 1000).toFixed(0)}K
             </div>
-            <div className="text-xs text-gray-500 mt-1">{language === 'ko' ? '조회수' : 'Lượt xem'}</div>
+            <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? '조회수' : 'Lượt xem'}</div>
           </div>
           <div
             onClick={() => setShowBudgetModal(true)}
-            className="bg-white border border-gray-200 rounded-xl p-4 text-center cursor-pointer hover:border-gray-900 hover:shadow-md transition-all"
+            className="bg-gradient-to-br from-success/15 to-dark-700 border border-success/20 hover:border-success/40 rounded-2xl p-4 text-center cursor-pointer transition-all shadow-xl"
           >
-            <DollarSign size={24} className="text-gray-700 mx-auto mb-2" />
-            <div className="text-lg font-bold text-gray-900">
+            <DollarSign size={24} className="text-success mx-auto mb-2" />
+            <div className="text-lg font-bold text-white">
               {formatPoints(mockCampaignDetail.budgetPerInfluencer)}
             </div>
-            <div className="text-xs text-gray-500 mt-1">{language === 'ko' ? 'KOL당' : 'Mỗi KOL'}</div>
-            <div className="text-xs text-gray-400 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
+            <div className="text-xs text-gray-400 mt-1">{language === 'ko' ? 'KOL당' : 'Mỗi KOL'}</div>
+            <div className="text-xs text-gray-500 mt-1">👆 {language === 'ko' ? '눌러서 보기' : 'Nhấn để xem'}</div>
           </div>
         </div>
 
         {/* Campaign Info */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? '캠페인 정보' : 'Thông tin chiến dịch'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 space-y-3 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '캠페인 정보' : 'Thông tin chiến dịch'}</h3>
 
           <div className="flex items-center gap-3 text-sm">
-            <Calendar size={16} className="text-gray-600" />
-            <span className="text-gray-600">{language === 'ko' ? '기간:' : 'Thời gian:'}</span>
-            <span className="text-gray-900">{mockCampaignDetail.startDate} ~ {mockCampaignDetail.endDate}</span>
+            <Calendar size={16} className="text-gray-400" />
+            <span className="text-gray-400">{language === 'ko' ? '기간:' : 'Thời gian:'}</span>
+            <span className="text-white">{mockCampaignDetail.startDate} ~ {mockCampaignDetail.endDate}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
-            <Clock size={16} className="text-gray-600" />
-            <span className="text-gray-600">{language === 'ko' ? '지원 마감:' : 'Hạn đăng ký:'}</span>
-            <span className="text-gray-900">{mockCampaignDetail.deadline}</span>
+            <Clock size={16} className="text-gray-400" />
+            <span className="text-gray-400">{language === 'ko' ? '지원 마감:' : 'Hạn đăng ký:'}</span>
+            <span className="text-white">{mockCampaignDetail.deadline}</span>
           </div>
         </div>
 
         {/* Requirements */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? '지원 요건' : 'Yêu cầu ứng tuyển'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '지원 요건' : 'Yêu cầu ứng tuyển'}</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">{language === 'ko' ? '최소 팔로워:' : 'Người theo dõi tối thiểu:'}</span>
-              <span className="text-gray-900">{mockCampaignDetail.requirements.minFollowers.toLocaleString()}</span>
+              <span className="text-gray-400">{language === 'ko' ? '최소 팔로워:' : 'Người theo dõi tối thiểu:'}</span>
+              <span className="text-white font-medium">{mockCampaignDetail.requirements.minFollowers.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{language === 'ko' ? '최소 참여율:' : 'Tỷ lệ tương tác tối thiểu:'}</span>
-              <span className="text-gray-900">{mockCampaignDetail.requirements.minEngagement}%</span>
+              <span className="text-gray-400">{language === 'ko' ? '최소 참여율:' : 'Tỷ lệ tương tác tối thiểu:'}</span>
+              <span className="text-white font-medium">{mockCampaignDetail.requirements.minEngagement}%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{language === 'ko' ? '플랫폼:' : 'Nền tảng:'}</span>
-              <span className="text-gray-900">{mockCampaignDetail.requirements.platforms.join(', ')}</span>
+              <span className="text-gray-400">{language === 'ko' ? '플랫폼:' : 'Nền tảng:'}</span>
+              <span className="text-white font-medium">{mockCampaignDetail.requirements.platforms.join(', ')}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">{language === 'ko' ? '카테고리:' : 'Danh mục:'}</span>
-              <span className="text-gray-900">{mockCampaignDetail.requirements.categories.join(', ')}</span>
+              <span className="text-gray-400">{language === 'ko' ? '카테고리:' : 'Danh mục:'}</span>
+              <span className="text-white font-medium">{mockCampaignDetail.requirements.categories.join(', ')}</span>
             </div>
           </div>
         </div>
 
         {/* Deliverables */}
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? '콘텐츠 요건' : 'Yêu cầu nội dung'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '콘텐츠 요건' : 'Yêu cầu nội dung'}</h3>
           <ul className="space-y-2">
             {mockCampaignDetail.deliverables.map((item, index) => (
               <li key={index} className="flex items-start gap-2 text-sm">
-                <CheckCircle size={16} className="text-gray-700 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-600">{item}</span>
+                <CheckCircle size={16} className="text-success flex-shrink-0 mt-0.5" />
+                <span className="text-gray-300">{item}</span>
               </li>
             ))}
           </ul>
@@ -433,10 +409,13 @@ export default function CampaignDetailPage() {
 
         {/* Accepted Influencers */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">{language === 'ko' ? `승인된 KOL (${acceptedInfluencers.length})` : `KOL được chấp thuận (${acceptedInfluencers.length})`}</h3>
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-5 bg-gradient-to-b from-success to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{language === 'ko' ? `승인된 KOL (${acceptedInfluencers.length})` : `KOL được chấp thuận (${acceptedInfluencers.length})`}</h3>
+          </div>
 
           {acceptedInfluencers.map((influencer) => (
-            <div key={influencer.id} className="bg-white border border-gray-200 rounded-xl p-4">
+            <div key={influencer.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
               <div className="flex items-start gap-3 mb-3">
                 <img
                   src={influencer.avatar}
@@ -444,13 +423,13 @@ export default function CampaignDetailPage() {
                   className="w-12 h-12 rounded-full"
                 />
                 <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">{influencer.name}</h4>
-                  <p className="text-xs text-gray-500">{influencer.platform}</p>
+                  <h4 className="font-semibold text-white">{influencer.name}</h4>
+                  <p className="text-xs text-gray-400">{influencer.platform}</p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-xs ${
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                   influencer.status === 'completed'
-                    ? 'bg-green-50 text-green-700'
-                    : 'bg-yellow-50 text-yellow-700'
+                    ? 'bg-success/20 text-success border border-success/30'
+                    : 'bg-accent/20 text-accent border border-accent/30'
                 }`}>
                   {influencer.status === 'completed'
                     ? (language === 'ko' ? '완료' : 'Hoàn thành')
@@ -459,42 +438,42 @@ export default function CampaignDetailPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-gray-50 rounded-lg p-2">
-                  <p className="text-gray-600">{language === 'ko' ? '팔로워' : 'Người theo dõi'}</p>
-                  <p className="text-gray-900 font-semibold">{(influencer.followers / 1000).toFixed(1)}K</p>
+                <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                  <p className="text-gray-400">{language === 'ko' ? '팔로워' : 'Người theo dõi'}</p>
+                  <p className="text-white font-semibold">{(influencer.followers / 1000).toFixed(1)}K</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-2">
-                  <p className="text-gray-600">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</p>
-                  <p className="text-gray-900 font-semibold">{influencer.engagement}%</p>
+                <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                  <p className="text-gray-400">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</p>
+                  <p className="text-white font-semibold">{influencer.engagement}%</p>
                 </div>
               </div>
 
               {/* Payment & Product Shipping */}
               {influencer.status !== 'completed' && influencer.status !== 'in_progress' && (
-                <div className="mt-3 pt-3 border-t border-gray-200 space-y-3">
+                <div className="mt-3 pt-3 border-t border-dark-400/40 space-y-3">
                   {/* Payment Confirmation */}
                   <div>
-                    <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <DollarSign size={14} />
+                    <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                      <DollarSign size={14} className="text-success" />
                       {language === 'ko' ? '결제 정보' : 'Thông tin thanh toán'}
                     </h5>
-                    <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="bg-dark-700/60 rounded-xl p-3 border border-dark-400/30 space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-600">{language === 'ko' ? '결제 금액:' : 'Số tiền thanh toán:'}</span>
-                        <span className="text-gray-900 font-semibold">{mockCampaignDetail.budgetPerInfluencer.toLocaleString()} VND</span>
+                        <span className="text-gray-400">{language === 'ko' ? '결제 금액:' : 'Số tiền thanh toán:'}</span>
+                        <span className="text-white font-semibold">{mockCampaignDetail.budgetPerInfluencer.toLocaleString()} VND</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
                           id={`payment-${influencer.id}`}
-                          className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                          className="w-4 h-4 rounded border-dark-400 text-primary focus:ring-primary"
                           onChange={(e) => {
                             if (e.target.checked) {
                               alert(language === 'ko' ? '결제 완료 표시 (데모)' : 'Đã đánh dấu thanh toán hoàn thành (demo)');
                             }
                           }}
                         />
-                        <label htmlFor={`payment-${influencer.id}`} className="text-xs text-gray-700 cursor-pointer">
+                        <label htmlFor={`payment-${influencer.id}`} className="text-xs text-gray-300 cursor-pointer">
                           {language === 'ko' ? '결제 완료' : 'Đã thanh toán xong'}
                         </label>
                       </div>
@@ -504,38 +483,38 @@ export default function CampaignDetailPage() {
                     </div>
                   </div>
 
-                  {/* Delivery/Visit Information - conditional based on deliveryType */}
+                  {/* Delivery Information */}
                   {mockCampaignDetail.deliveryType === 'product' && (
                     <div>
-                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                         </svg>
                         {language === 'ko' ? '제품 발송' : 'Gửi sản phẩm'}
                       </h5>
-                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                      <div className="bg-dark-700/60 rounded-xl p-3 border border-dark-400/30 space-y-2">
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '배송사' : 'Đơn vị vận chuyển'}</label>
-                          <select className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none">
-                            <option>Viettel Post</option>
-                            <option>Vietnam Post (EMS)</option>
-                            <option>Giao Hàng Nhanh (GHN)</option>
-                            <option>Giao Hàng Tiết Kiệm (GHTK)</option>
-                            <option>J&T Express</option>
-                            <option>Grab Express</option>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '배송사' : 'Đơn vị vận chuyển'}</label>
+                          <select className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white focus:border-primary/50 focus:outline-none">
+                            <option className="bg-dark-700">Viettel Post</option>
+                            <option className="bg-dark-700">Vietnam Post (EMS)</option>
+                            <option className="bg-dark-700">Giao Hàng Nhanh (GHN)</option>
+                            <option className="bg-dark-700">Giao Hàng Tiết Kiệm (GHTK)</option>
+                            <option className="bg-dark-700">J&T Express</option>
+                            <option className="bg-dark-700">Grab Express</option>
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '운송장 번호' : 'Mã vận đơn'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '운송장 번호' : 'Mã vận đơn'}</label>
                           <input
                             type="text"
                             placeholder="VTP123456789"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none"
                           />
                         </div>
                         <button
                           onClick={() => alert(language === 'ko' ? '발송 정보 저장 완료 (데모)' : 'Đã lưu thông tin gửi hàng (demo)')}
-                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                          className="w-full bg-gradient-to-r from-secondary to-blue-400 text-white hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '발송 확인' : 'Xác nhận gửi hàng'}
                         </button>
@@ -548,40 +527,40 @@ export default function CampaignDetailPage() {
 
                   {mockCampaignDetail.deliveryType === 'service' && (
                     <div>
-                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                         {language === 'ko' ? '매장 방문 정보' : 'Thông tin ghé thăm cửa hàng'}
                       </h5>
-                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                      <div className="bg-dark-700/60 rounded-xl p-3 border border-dark-400/30 space-y-2">
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '매장 주소' : 'Địa chỉ cửa hàng'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '매장 주소' : 'Địa chỉ cửa hàng'}</label>
                           <input
                             type="text"
                             placeholder="123 Nguyen Hue, District 1, HCMC"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '영업 시간' : 'Giờ mở cửa'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '영업 시간' : 'Giờ mở cửa'}</label>
                           <input
                             type="text"
                             placeholder={language === 'ko' ? '월-금 10:00-20:00, 주말 10:00-22:00' : 'T2-T6 10:00-20:00, Cuối tuần 10:00-22:00'}
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '담당자 연락처' : 'Liên hệ phụ trách'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '담당자 연락처' : 'Liên hệ phụ trách'}</label>
                           <input
                             type="text"
                             placeholder="+84 90 123 4567"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none"
                           />
                         </div>
                         <button
                           onClick={() => alert(language === 'ko' ? '매장 정보 저장 완료 (데모)' : 'Đã lưu thông tin cửa hàng (demo)')}
-                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                          className="w-full bg-gradient-to-r from-accent to-yellow-400 text-dark-800 hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '정보 저장' : 'Lưu thông tin'}
                         </button>
@@ -594,44 +573,44 @@ export default function CampaignDetailPage() {
 
                   {mockCampaignDetail.deliveryType === 'visit' && (
                     <div>
-                      <h5 className="text-xs font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                        <Calendar size={14} />
+                      <h5 className="text-xs font-semibold text-white mb-2 flex items-center gap-2">
+                        <Calendar size={14} className="text-primary" />
                         {language === 'ko' ? '미팅 일정 잡기' : 'Sắp xếp lịch gặp'}
                       </h5>
-                      <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                      <div className="bg-dark-700/60 rounded-xl p-3 border border-dark-400/30 space-y-2">
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '미팅 날짜' : 'Ngày gặp'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '미팅 날짜' : 'Ngày gặp'}</label>
                           <input
                             type="date"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white focus:border-primary/50 focus:outline-none [color-scheme:dark]"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '미팅 시간' : 'Giờ gặp'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '미팅 시간' : 'Giờ gặp'}</label>
                           <input
                             type="time"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white focus:border-primary/50 focus:outline-none [color-scheme:dark]"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '미팅 장소' : 'Địa điểm gặp'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '미팅 장소' : 'Địa điểm gặp'}</label>
                           <input
                             type="text"
                             placeholder={language === 'ko' ? '사무실, 이벤트 장소 등' : 'Văn phòng, địa điểm sự kiện, v.v.'}
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none"
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-xs text-gray-600">{language === 'ko' ? '특이 사항' : 'Ghi chú đặc biệt'}</label>
+                          <label className="text-xs text-gray-400">{language === 'ko' ? '특이 사항' : 'Ghi chú đặc biệt'}</label>
                           <textarea
                             placeholder={language === 'ko' ? '주차 정보, 준비 물품 등' : 'Thông tin đỗ xe, vật dụng cần chuẩn bị, v.v.'}
                             rows={2}
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
+                            className="w-full bg-dark-600/80 border border-dark-400/40 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none resize-none"
                           />
                         </div>
                         <button
                           onClick={() => alert(language === 'ko' ? '미팅 일정 저장 완료 (데모)' : 'Đã lưu lịch gặp (demo)')}
-                          className="w-full bg-gray-900 text-white hover:bg-gray-800 rounded-lg text-xs py-2"
+                          className="w-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '일정 확인' : 'Xác nhận lịch'}
                         </button>
@@ -645,31 +624,26 @@ export default function CampaignDetailPage() {
               )}
 
               {influencer.status === 'completed' && (
-                <div className="mt-3 pt-3 border-t border-gray-200">
+                <div className="mt-3 pt-3 border-t border-dark-400/40">
                   <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                    <div>
-                      <p className="text-gray-600">{language === 'ko' ? '조회수' : 'Lượt xem'}</p>
-                      <p className="text-gray-900 font-semibold">{influencer.views?.toLocaleString()}</p>
+                    <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                      <p className="text-gray-400">{language === 'ko' ? '조회수' : 'Lượt xem'}</p>
+                      <p className="text-white font-semibold">{influencer.views?.toLocaleString()}</p>
                     </div>
-                    <div>
-                      <p className="text-gray-600">{language === 'ko' ? '좋아요' : 'Lượt thích'}</p>
-                      <p className="text-gray-900 font-semibold">{influencer.likes?.toLocaleString()}</p>
+                    <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                      <p className="text-gray-400">{language === 'ko' ? '좋아요' : 'Lượt thích'}</p>
+                      <p className="text-white font-semibold">{influencer.likes?.toLocaleString()}</p>
                     </div>
                   </div>
                   <button
                     onClick={() => {
                       setReviewInfluencer(influencer);
-                      setReviewData({
-                        rating: 5,
-                        comment: '',
-                        tags: [],
-                        wouldRecommend: true,
-                      });
+                      setReviewData({ rating: 5, comment: '', tags: [], wouldRecommend: true });
                       setShowReviewModal(true);
                     }}
-                    className="w-full bg-yellow-50 text-yellow-700 hover:bg-yellow-100 rounded-lg py-2 flex items-center justify-center gap-1 text-xs font-medium border border-yellow-200"
+                    className="w-full bg-accent/20 text-accent hover:bg-accent/30 rounded-xl py-2 flex items-center justify-center gap-1 text-xs font-medium border border-accent/30 transition-colors"
                   >
-                    <Star size={14} className="fill-yellow-500" />
+                    <Star size={14} className="fill-accent" />
                     {language === 'ko' ? '리뷰 작성' : 'Viết đánh giá'}
                   </button>
                 </div>
@@ -677,7 +651,7 @@ export default function CampaignDetailPage() {
 
               <button
                 onClick={() => router.push(`/main/messages?userId=${influencer.id}&userName=${influencer.name}`)}
-                className="w-full mt-3 bg-gray-100 text-gray-900 hover:bg-gray-200 rounded-lg py-2 flex items-center justify-center gap-1 text-xs"
+                className="w-full mt-3 bg-dark-700/60 text-gray-300 hover:text-white hover:bg-dark-700 border border-dark-400/30 hover:border-primary/30 rounded-xl py-2 flex items-center justify-center gap-1 text-xs transition-all"
               >
                 <MessageCircle size={14} />
                 {language === 'ko' ? '메시지 보내기' : 'Gửi tin nhắn'}
@@ -685,14 +659,14 @@ export default function CampaignDetailPage() {
 
               {/* Submitted Content Review */}
               {influencer.submittedContent && influencer.submittedContent.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Eye size={16} />
+                <div className="mt-4 pt-4 border-t border-dark-400/40">
+                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <Eye size={16} className="text-secondary" />
                     {language === 'ko' ? `제출된 콘텐츠 (${influencer.submittedContent.length})` : `Nội dung đã nộp (${influencer.submittedContent.length})`}
                   </h4>
                   <div className="space-y-3">
                     {influencer.submittedContent.map((content: any) => (
-                      <div key={content.id} className="bg-gray-50 rounded-lg p-3">
+                      <div key={content.id} className="bg-dark-700/60 rounded-xl p-3 border border-dark-400/30">
                         <div className="flex gap-3 mb-2">
                           <img
                             src={content.thumbnail}
@@ -700,12 +674,12 @@ export default function CampaignDetailPage() {
                             className="w-20 h-20 rounded-lg object-cover"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-gray-900 mb-1">{content.description}</p>
+                            <p className="text-xs font-medium text-white mb-1">{content.description}</p>
                             <a
                               href={content.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-xs text-gray-700 hover:underline block truncate"
+                              className="text-xs text-secondary hover:text-secondary/80 block truncate transition-colors"
                             >
                               {content.url}
                             </a>
@@ -719,7 +693,7 @@ export default function CampaignDetailPage() {
                           <div className="flex gap-2 mt-2">
                             <button
                               onClick={() => alert(language === 'ko' ? '콘텐츠 승인 완료 (데모)' : 'Đã chấp thuận nội dung (demo)')}
-                              className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1"
+                              className="flex-1 bg-success/20 text-success hover:bg-success/30 border border-success/30 rounded-lg text-xs py-2 flex items-center justify-center gap-1 transition-colors"
                             >
                               <CheckCircle size={14} />
                               {language === 'ko' ? '승인' : 'Chấp thuận'}
@@ -729,20 +703,20 @@ export default function CampaignDetailPage() {
                                 const reason = prompt(language === 'ko' ? '거절 이유를 입력하세요:' : 'Nhập lý do từ chối:');
                                 if (reason) alert(language === 'ko' ? `거절 완료: ${reason} (데모)` : `Đã từ chối: ${reason} (demo)`);
                               }}
-                              className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2"
+                              className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 rounded-lg text-xs py-2 transition-colors"
                             >
                               {language === 'ko' ? '거절' : 'Từ chối'}
                             </button>
                           </div>
                         ) : content.status === 'approved' ? (
                           <div className="mt-2 flex items-center gap-2 text-xs">
-                            <CheckCircle size={14} className="text-green-700" />
-                            <span className="text-green-700">{language === 'ko' ? '승인됨' : 'Đã duyệt'}</span>
+                            <CheckCircle size={14} className="text-success" />
+                            <span className="text-success">{language === 'ko' ? '승인됨' : 'Đã duyệt'}</span>
                             <span className="text-gray-500">({content.reviewedAt})</span>
                           </div>
                         ) : (
                           <div className="mt-2 flex items-center gap-2 text-xs">
-                            <span className="text-red-700">{language === 'ko' ? '거절됨' : 'Đã từ chối'}</span>
+                            <span className="text-primary">{language === 'ko' ? '거절됨' : 'Đã từ chối'}</span>
                             <span className="text-gray-500">({content.reviewedAt})</span>
                           </div>
                         )}
@@ -757,22 +731,25 @@ export default function CampaignDetailPage() {
 
         {/* Pending Applicants */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">{language === 'ko' ? `대기 중인 지원자 (${pendingApplicants.length})` : `Ứng viên đang chờ (${pendingApplicants.length})`}</h3>
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-5 bg-gradient-to-b from-accent to-primary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{language === 'ko' ? `대기 중인 지원자 (${pendingApplicants.length})` : `Ứng viên đang chờ (${pendingApplicants.length})`}</h3>
+          </div>
 
           {pendingApplicants.map((applicant) => {
             const matchResult = calculateApplicantMatch(applicant);
 
             return (
-              <div key={applicant.id} className={`relative bg-white rounded-xl p-4 ${
-                matchResult.isGoodMatch ? 'border-2 border-green-200' : 'border-2 border-gray-200'
+              <div key={applicant.id} className={`relative bg-dark-600/80 backdrop-blur-sm rounded-2xl p-4 shadow-xl ${
+                matchResult.isGoodMatch ? 'border-2 border-success/30' : 'border-2 border-dark-400/40'
               }`}>
                 {/* Matching Badge */}
                 <div className="absolute top-3 right-3">
                   <div className={`px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${
-                    matchResult.percentage >= 90 ? 'bg-green-700 text-white' :
-                    matchResult.percentage >= 70 ? 'bg-gray-900 text-white' :
-                    matchResult.percentage >= 50 ? 'bg-yellow-600 text-white' :
-                    'bg-red-700 text-white'
+                    matchResult.percentage >= 90 ? 'bg-gradient-to-r from-accent to-yellow-400 text-dark-800' :
+                    matchResult.percentage >= 70 ? 'bg-gradient-to-r from-primary to-secondary text-white' :
+                    matchResult.percentage >= 50 ? 'bg-gradient-to-r from-accent/80 to-orange-400 text-white' :
+                    'bg-primary/20 text-primary border border-primary/30'
                   }`}>
                     <CheckCircle size={12} />
                     {language === 'ko' ? `적합도 ${matchResult.percentage}%` : `Phù hợp ${matchResult.percentage}%`}
@@ -780,7 +757,7 @@ export default function CampaignDetailPage() {
                 </div>
 
                 <div
-                  className="flex items-start gap-3 mb-3 cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-lg transition-colors"
+                  className="flex items-start gap-3 mb-3 cursor-pointer hover:bg-dark-700/30 -mx-4 px-4 py-2 rounded-xl transition-colors"
                   onClick={() => router.push(`/main/advertiser/influencers/${applicant.id}`)}
                 >
                   <img
@@ -789,9 +766,9 @@ export default function CampaignDetailPage() {
                     className="w-12 h-12 rounded-full"
                   />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{applicant.name}</h4>
-                    <p className="text-xs text-gray-500">{applicant.platform}</p>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                    <h4 className="font-semibold text-white">{applicant.name}</h4>
+                    <p className="text-xs text-gray-400">{applicant.platform}</p>
+                    <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
                       <span>📍 {applicant.location}</span>
                       {applicant.gender && <span>• {applicant.gender === '여성' ? (language === 'ko' ? '여성' : 'Nữ') : applicant.gender === '남성' ? (language === 'ko' ? '남성' : 'Nam') : applicant.gender}</span>}
                       {applicant.age && <span>• {applicant.age} {language === 'ko' ? '세' : 'tuổi'}</span>}
@@ -799,76 +776,76 @@ export default function CampaignDetailPage() {
                     {applicant.categories && applicant.categories.length > 0 && (
                       <div className="flex gap-1 mt-1.5">
                         {applicant.categories.slice(0, 2).map((cat: string, idx: number) => (
-                          <span key={idx} className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
+                          <span key={idx} className="px-2 py-0.5 bg-primary/15 text-primary border border-primary/20 rounded-full text-xs">
                             {cat}
                           </span>
                         ))}
                       </div>
                     )}
-                    <p className="text-xs text-gray-400 mt-1">{language === 'ko' ? '지원일' : 'Ngày ứng tuyển'}: {applicant.appliedAt}</p>
+                    <p className="text-xs text-gray-500 mt-1">{language === 'ko' ? '지원일' : 'Ngày ứng tuyển'}: {applicant.appliedAt}</p>
                   </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                <div className="bg-gray-50 rounded-lg p-2">
-                  <p className="text-gray-600">{language === 'ko' ? '팔로워' : 'Người theo dõi'}</p>
-                  <p className="text-gray-900 font-semibold">{(applicant.followers / 1000).toFixed(1)}K</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-2">
-                  <p className="text-gray-600">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</p>
-                  <p className="text-gray-900 font-semibold">{applicant.engagement}%</p>
+
+                <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                  <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                    <p className="text-gray-400">{language === 'ko' ? '팔로워' : 'Người theo dõi'}</p>
+                    <p className="text-white font-semibold">{(applicant.followers / 1000).toFixed(1)}K</p>
+                  </div>
+                  <div className="bg-dark-700/60 rounded-xl p-2 border border-dark-400/30">
+                    <p className="text-gray-400">{language === 'ko' ? '참여율' : 'Tỷ lệ tương tác'}</p>
+                    <p className="text-white font-semibold">{applicant.engagement}%</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* View Profile Button */}
-              <button
-                onClick={() => router.push(`/main/advertiser/influencers/${applicant.id}`)}
-                className="w-full mb-2 bg-gray-100 text-gray-900 hover:bg-gray-200 rounded-lg text-xs py-2.5 flex items-center justify-center gap-1 font-medium border border-gray-200"
-              >
-                <User size={14} />
-                {language === 'ko' ? '상세 프로필 보기' : 'Xem hồ sơ chi tiết'}
-              </button>
-
-              {/* Approve/Reject Buttons */}
-              <div className="flex gap-2">
+                {/* View Profile Button */}
                 <button
-                  onClick={() => handleApprove(applicant)}
-                  className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1 border border-green-200 font-medium"
+                  onClick={() => router.push(`/main/advertiser/influencers/${applicant.id}`)}
+                  className="w-full mb-2 bg-dark-700/60 text-gray-300 hover:text-white hover:border-primary/30 border border-dark-400/30 rounded-xl text-xs py-2.5 flex items-center justify-center gap-1 font-medium transition-all"
                 >
-                  <CheckCircle size={14} />
-                  {language === 'ko' ? '승인' : 'Chấp thuận'}
+                  <User size={14} />
+                  {language === 'ko' ? '상세 프로필 보기' : 'Xem hồ sơ chi tiết'}
                 </button>
-                <button
-                  onClick={() => handleReject(applicant)}
-                  className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-xs py-2 flex items-center justify-center gap-1 border border-red-200 font-medium"
-                >
-                  <X size={14} />
-                  {language === 'ko' ? '거절' : 'Từ chối'}
-                </button>
-              </div>
 
-              {/* Matching Details Dropdown */}
-              <details className="mt-3 text-xs">
-                <summary className="cursor-pointer text-gray-600 hover:text-gray-900 transition-colors">
-                  {language === 'ko' ? '적합도 상세 보기' : 'Xem chi tiết độ phù hợp'}
-                </summary>
-                <div className="mt-2 pt-2 border-t border-gray-200 space-y-1">
-                  {matchResult.criteria.map((criterion, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <span className="text-gray-600">{criterion.name}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-500">{criterion.weight} {language === 'ko' ? '점' : 'điểm'}</span>
-                        {criterion.match ? (
-                          <CheckCircle size={12} className="text-green-700" />
-                        ) : (
-                          <span className="text-red-700">✗</span>
-                        )}
+                {/* Approve/Reject Buttons */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleApprove(applicant)}
+                    className="flex-1 bg-success/20 text-success hover:bg-success/30 border border-success/30 rounded-xl text-xs py-2 flex items-center justify-center gap-1 font-medium transition-colors"
+                  >
+                    <CheckCircle size={14} />
+                    {language === 'ko' ? '승인' : 'Chấp thuận'}
+                  </button>
+                  <button
+                    onClick={() => handleReject(applicant)}
+                    className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 rounded-xl text-xs py-2 flex items-center justify-center gap-1 font-medium transition-colors"
+                  >
+                    <X size={14} />
+                    {language === 'ko' ? '거절' : 'Từ chối'}
+                  </button>
+                </div>
+
+                {/* Matching Details Dropdown */}
+                <details className="mt-3 text-xs">
+                  <summary className="cursor-pointer text-gray-400 hover:text-gray-200 transition-colors">
+                    {language === 'ko' ? '적합도 상세 보기' : 'Xem chi tiết độ phù hợp'}
+                  </summary>
+                  <div className="mt-2 pt-2 border-t border-dark-400/40 space-y-1">
+                    {matchResult.criteria.map((criterion, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-gray-400">{criterion.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-500">{criterion.weight} {language === 'ko' ? '점' : 'điểm'}</span>
+                          {criterion.match ? (
+                            <CheckCircle size={12} className="text-success" />
+                          ) : (
+                            <span className="text-primary">✗</span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </details>
-            </div>
+                    ))}
+                  </div>
+                </details>
+              </div>
             );
           })}
         </div>
@@ -878,33 +855,33 @@ export default function CampaignDetailPage() {
 
       {/* Accepted Influencers Modal */}
       {showAcceptedModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowAcceptedModal(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
-              <h3 className="text-lg font-bold text-gray-900">{language === 'ko' ? `승인된 KOL (${acceptedInfluencers.length})` : `KOL được chấp thuận (${acceptedInfluencers.length})`}</h3>
-              <button onClick={() => setShowAcceptedModal(false)} className="text-gray-500 hover:text-gray-900">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" onClick={() => setShowAcceptedModal(false)}>
+          <div className="bg-dark-700 border border-dark-400/60 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-dark-700 border-b border-dark-400/40 rounded-t-2xl">
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? `승인된 KOL (${acceptedInfluencers.length})` : `KOL được chấp thuận (${acceptedInfluencers.length})`}</h3>
+              <button onClick={() => setShowAcceptedModal(false)} className="text-gray-400 hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 pt-4">
               <div className="space-y-3">
               {acceptedInfluencers.map((influencer) => (
-                <div key={influencer.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div key={influencer.id} className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl hover:border-primary/30 transition-colors">
                   <img src={influencer.avatar} alt={influencer.name} className="w-12 h-12 rounded-full" />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{influencer.name}</h4>
-                    <p className="text-xs text-gray-500">{influencer.platform}</p>
+                    <h4 className="font-semibold text-white">{influencer.name}</h4>
+                    <p className="text-xs text-gray-400">{influencer.platform}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900">{(influencer.followers / 1000).toFixed(1)}K</p>
-                    <p className="text-xs text-gray-500">{influencer.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
+                    <p className="text-sm font-bold text-white">{(influencer.followers / 1000).toFixed(1)}K</p>
+                    <p className="text-xs text-gray-400">{influencer.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
                   </div>
                   <button
                     onClick={() => {
                       setShowAcceptedModal(false);
                       router.push(`/main/advertiser/influencers/${influencer.id}`);
                     }}
-                    className="px-3 py-1 bg-gray-900 text-white text-xs rounded-lg hover:bg-gray-800"
+                    className="px-3 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs rounded-lg hover:opacity-90 transition-opacity"
                   >
                     {language === 'ko' ? '보기' : 'Xem'}
                   </button>
@@ -918,44 +895,42 @@ export default function CampaignDetailPage() {
 
       {/* All Applicants Modal */}
       {showApplicantsModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowApplicantsModal(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
-              <h3 className="text-lg font-bold text-gray-900">{language === 'ko' ? `전체 지원자 (${acceptedInfluencers.length + pendingApplicants.length})` : `Tất cả ứng viên (${acceptedInfluencers.length + pendingApplicants.length})`}</h3>
-              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-500 hover:text-gray-900">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" onClick={() => setShowApplicantsModal(false)}>
+          <div className="bg-dark-700 border border-dark-400/60 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-dark-700 border-b border-dark-400/40 rounded-t-2xl">
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? `전체 지원자 (${acceptedInfluencers.length + pendingApplicants.length})` : `Tất cả ứng viên (${acceptedInfluencers.length + pendingApplicants.length})`}</h3>
+              <button onClick={() => setShowApplicantsModal(false)} className="text-gray-400 hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 pt-4">
-              {/* 승인된 인플루언서 */}
               <div className="mb-6">
-                <h4 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? `승인됨 (${acceptedInfluencers.length})` : `Đã chấp thuận (${acceptedInfluencers.length})`}</h4>
+                <h4 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? `승인됨 (${acceptedInfluencers.length})` : `Đã chấp thuận (${acceptedInfluencers.length})`}</h4>
                 <div className="space-y-2">
                   {acceptedInfluencers.map((influencer) => (
-                    <div key={influencer.id} className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div key={influencer.id} className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-xl">
                       <img src={influencer.avatar} alt={influencer.name} className="w-10 h-10 rounded-full" />
                       <div className="flex-1">
-                        <h5 className="text-sm font-semibold text-gray-900">{influencer.name}</h5>
-                        <p className="text-xs text-gray-500">{(influencer.followers / 1000).toFixed(1)}K · {influencer.engagement}%</p>
+                        <h5 className="text-sm font-semibold text-white">{influencer.name}</h5>
+                        <p className="text-xs text-gray-400">{(influencer.followers / 1000).toFixed(1)}K · {influencer.engagement}%</p>
                       </div>
-                      <span className="px-2 py-1 bg-green-600 text-white text-xs rounded-full">{language === 'ko' ? '승인' : 'Chấp thuận'}</span>
+                      <span className="px-2 py-1 bg-success/20 text-success border border-success/30 text-xs rounded-full">{language === 'ko' ? '승인' : 'Chấp thuận'}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* 대기 중인 지원자 */}
               <div>
-                <h4 className="text-sm font-semibold text-gray-900 mb-3">{language === 'ko' ? `대기 중 (${pendingApplicants.length})` : `Đang chờ (${pendingApplicants.length})`}</h4>
+                <h4 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? `대기 중 (${pendingApplicants.length})` : `Đang chờ (${pendingApplicants.length})`}</h4>
                 <div className="space-y-2">
                   {pendingApplicants.map((applicant) => (
-                    <div key={applicant.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div key={applicant.id} className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl">
                       <img src={applicant.avatar} alt={applicant.name} className="w-10 h-10 rounded-full" />
                       <div className="flex-1">
-                        <h5 className="text-sm font-semibold text-gray-900">{applicant.name}</h5>
-                        <p className="text-xs text-gray-500">{(applicant.followers / 1000).toFixed(1)}K · {applicant.engagement}%</p>
+                        <h5 className="text-sm font-semibold text-white">{applicant.name}</h5>
+                        <p className="text-xs text-gray-400">{(applicant.followers / 1000).toFixed(1)}K · {applicant.engagement}%</p>
                       </div>
-                      <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">{language === 'ko' ? '대기 중' : 'Đang chờ'}</span>
+                      <span className="px-2 py-1 bg-accent/20 text-accent border border-accent/30 text-xs rounded-full">{language === 'ko' ? '대기 중' : 'Đang chờ'}</span>
                     </div>
                   ))}
                 </div>
@@ -967,41 +942,41 @@ export default function CampaignDetailPage() {
 
       {/* Budget Breakdown Modal */}
       {showBudgetModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowBudgetModal(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
-              <h3 className="text-lg font-bold text-gray-900">{language === 'ko' ? '예산 배분 상세' : 'Chi tiết phân bổ ngân sách'}</h3>
-              <button onClick={() => setShowBudgetModal(false)} className="text-gray-500 hover:text-gray-900">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" onClick={() => setShowBudgetModal(false)}>
+          <div className="bg-dark-700 border border-dark-400/60 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-dark-700 border-b border-dark-400/40 rounded-t-2xl">
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? '예산 배분 상세' : 'Chi tiết phân bổ ngân sách'}</h3>
+              <button onClick={() => setShowBudgetModal(false)} className="text-gray-400 hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 pt-4">
               <div className="space-y-4">
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-dark-600/80 border border-dark-400/40 rounded-2xl p-4">
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">{language === 'ko' ? '총 예산' : 'Tổng ngân sách'}</span>
-                    <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budget)}</span>
+                    <span className="text-sm text-gray-400">{language === 'ko' ? '총 예산' : 'Tổng ngân sách'}</span>
+                    <span className="text-sm font-bold text-white">{formatPoints(mockCampaignDetail.budget)}</span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">{language === 'ko' ? '목표 KOL 수' : 'Mục tiêu số KOL'}</span>
-                    <span className="text-sm font-bold text-gray-900">{mockCampaignDetail.targetInfluencers} KOL</span>
+                    <span className="text-sm text-gray-400">{language === 'ko' ? '목표 KOL 수' : 'Mục tiêu số KOL'}</span>
+                    <span className="text-sm font-bold text-white">{mockCampaignDetail.targetInfluencers} KOL</span>
                   </div>
-                  <div className="flex justify-between mb-2 pb-2 border-b border-gray-200">
-                    <span className="text-sm text-gray-600">{language === 'ko' ? 'KOL당 예산' : 'Ngân sách mỗi KOL'}</span>
-                    <span className="text-sm font-bold text-gray-900">{formatPoints(mockCampaignDetail.budgetPerInfluencer)}</span>
+                  <div className="flex justify-between mb-2 pb-2 border-b border-dark-400/40">
+                    <span className="text-sm text-gray-400">{language === 'ko' ? 'KOL당 예산' : 'Ngân sách mỗi KOL'}</span>
+                    <span className="text-sm font-bold text-white">{formatPoints(mockCampaignDetail.budgetPerInfluencer)}</span>
                   </div>
                   <div className="flex justify-between mt-2">
-                    <span className="text-sm text-gray-600">{language === 'ko' ? '사용됨' : 'Đã sử dụng'}</span>
-                    <span className="text-sm font-bold text-green-700">{formatPoints(mockCampaignDetail.spent)}</span>
+                    <span className="text-sm text-gray-400">{language === 'ko' ? '사용됨' : 'Đã sử dụng'}</span>
+                    <span className="text-sm font-bold text-success">{formatPoints(mockCampaignDetail.spent)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">{language === 'ko' ? '잔여 예산' : 'Ngân sách còn lại'}</span>
-                    <span className="text-sm font-bold text-blue-700">{formatPoints(mockCampaignDetail.budget - mockCampaignDetail.spent)}</span>
+                    <span className="text-sm text-gray-400">{language === 'ko' ? '잔여 예산' : 'Ngân sách còn lại'}</span>
+                    <span className="text-sm font-bold text-secondary">{formatPoints(mockCampaignDetail.budget - mockCampaignDetail.spent)}</span>
                   </div>
                 </div>
 
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <p className="text-xs text-blue-700">
+                <div className="bg-secondary/10 border border-secondary/20 rounded-2xl p-3">
+                  <p className="text-xs text-secondary">
                     {language === 'ko'
                       ? `💡 승인된 KOL: ${acceptedInfluencers.length} × ${formatPoints(mockCampaignDetail.budgetPerInfluencer)} = ${formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}`
                       : `💡 KOL được duyệt: ${acceptedInfluencers.length} × ${formatPoints(mockCampaignDetail.budgetPerInfluencer)} = ${formatPoints(acceptedInfluencers.length * mockCampaignDetail.budgetPerInfluencer)}`}
@@ -1015,27 +990,27 @@ export default function CampaignDetailPage() {
 
       {/* Review Modal */}
       {showReviewModal && reviewInfluencer && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowReviewModal(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-white border-b border-gray-200 rounded-t-2xl">
-              <h3 className="text-lg font-bold text-gray-900">{language === 'ko' ? 'KOL 리뷰 작성' : 'Viết đánh giá KOL'}</h3>
-              <button onClick={() => setShowReviewModal(false)} className="text-gray-500 hover:text-gray-900">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50" onClick={() => setShowReviewModal(false)}>
+          <div className="bg-dark-700 border border-dark-400/60 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 flex items-center justify-between p-6 pb-4 bg-dark-700 border-b border-dark-400/40 rounded-t-2xl">
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? 'KOL 리뷰 작성' : 'Viết đánh giá KOL'}</h3>
+              <button onClick={() => setShowReviewModal(false)} className="text-gray-400 hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 pt-4">
               {/* Influencer Info */}
-              <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-3 mb-4 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl">
                 <img src={reviewInfluencer.avatar} alt={reviewInfluencer.name} className="w-12 h-12 rounded-full" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">{reviewInfluencer.name}</h4>
-                  <p className="text-xs text-gray-500">{reviewInfluencer.platform}</p>
+                  <h4 className="font-semibold text-white">{reviewInfluencer.name}</h4>
+                  <p className="text-xs text-gray-400">{reviewInfluencer.platform}</p>
                 </div>
               </div>
 
               {/* Rating */}
               <div className="mb-4">
-                <label className="text-sm font-semibold text-gray-900 mb-2 block">{language === 'ko' ? '평점' : 'Điểm đánh giá'}</label>
+                <label className="text-sm font-semibold text-white mb-2 block">{language === 'ko' ? '평점' : 'Điểm đánh giá'}</label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -1045,29 +1020,29 @@ export default function CampaignDetailPage() {
                     >
                       <Star
                         size={32}
-                        className={star <= reviewData.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
+                        className={star <= reviewData.rating ? 'text-accent fill-accent' : 'text-gray-600'}
                       />
                     </button>
                   ))}
-                  <span className="ml-2 text-lg font-bold text-gray-900">{reviewData.rating.toFixed(1)}</span>
+                  <span className="ml-2 text-lg font-bold text-white">{reviewData.rating.toFixed(1)}</span>
                 </div>
               </div>
 
               {/* Comment */}
               <div className="mb-4">
-                <label className="text-sm font-semibold text-gray-900 mb-2 block">{language === 'ko' ? '리뷰 내용' : 'Nội dung đánh giá'}</label>
+                <label className="text-sm font-semibold text-white mb-2 block">{language === 'ko' ? '리뷰 내용' : 'Nội dung đánh giá'}</label>
                 <textarea
                   value={reviewData.comment}
                   onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
                   placeholder={language === 'ko' ? '이 KOL과의 협력 경험을 공유해 주세요...' : 'Chia sẻ trải nghiệm hợp tác với KOL này...'}
                   rows={4}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none resize-none"
+                  className="w-full bg-dark-600/80 border border-dark-400/40 rounded-xl px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none resize-none"
                 />
               </div>
 
               {/* Tags */}
               <div className="mb-4">
-                <label className="text-sm font-semibold text-gray-900 mb-2 block">{language === 'ko' ? '태그 선택' : 'Chọn nhãn'}</label>
+                <label className="text-sm font-semibold text-white mb-2 block">{language === 'ko' ? '태그 선택' : 'Chọn nhãn'}</label>
                 <div className="flex flex-wrap gap-2">
                   {(language === 'ko'
                     ? ['성실함', '소통 잘됨', '고품질', '창의적', '기한 준수', '전문적', '열정적']
@@ -1082,10 +1057,10 @@ export default function CampaignDetailPage() {
                           setReviewData({ ...reviewData, tags: [...reviewData.tags, tag] });
                         }
                       }}
-                      className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                         reviewData.tags.includes(tag)
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md'
+                          : 'bg-dark-600/80 text-gray-300 border border-dark-400/40 hover:border-primary/30'
                       }`}
                     >
                       {reviewData.tags.includes(tag) ? '✓ ' : ''}{tag}
@@ -1101,9 +1076,9 @@ export default function CampaignDetailPage() {
                     type="checkbox"
                     checked={reviewData.wouldRecommend}
                     onChange={(e) => setReviewData({ ...reviewData, wouldRecommend: e.target.checked })}
-                    className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                    className="w-4 h-4 rounded border-dark-400 text-primary focus:ring-primary"
                   />
-                  <span className="text-sm text-gray-700">{language === 'ko' ? '이 KOL을 다른 광고주에게 추천합니다' : 'Tôi giới thiệu KOL này cho nhà quảng cáo khác'}</span>
+                  <span className="text-sm text-gray-300">{language === 'ko' ? '이 KOL을 다른 광고주에게 추천합니다' : 'Tôi giới thiệu KOL này cho nhà quảng cáo khác'}</span>
                 </label>
               </div>
 
@@ -1111,7 +1086,7 @@ export default function CampaignDetailPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowReviewModal(false)}
-                  className="flex-1 py-3 border border-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
+                  className="flex-1 py-3 bg-dark-600/80 border border-dark-400/40 rounded-xl font-semibold text-gray-300 hover:border-primary/30 transition-all"
                 >
                   {language === 'ko' ? '취소' : 'Hủy'}
                 </button>
@@ -1123,7 +1098,7 @@ export default function CampaignDetailPage() {
                     );
                     setShowReviewModal(false);
                   }}
-                  className="flex-1 py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800"
+                  className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
                 >
                   {language === 'ko' ? '평가 제출' : 'Gửi đánh giá'}
                 </button>

@@ -9,6 +9,9 @@ import {
   Clock,
   ChevronRight,
   Search,
+  DollarSign,
+  Users,
+  Eye,
 } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -73,6 +76,12 @@ const mockCampaigns = [
 
 type StatusType = 'all' | 'active' | 'completed' | 'draft';
 
+const statusConfig = {
+  active: { color: 'bg-success/20 text-success border border-success/30', dot: 'bg-success' },
+  completed: { color: 'bg-secondary/20 text-secondary border border-secondary/30', dot: 'bg-secondary' },
+  draft: { color: 'bg-gray-500/20 text-gray-400 border border-gray-500/30', dot: 'bg-gray-500' },
+};
+
 export default function CampaignsClient() {
   const { language } = useLanguage();
   const t = translations[language].advertiser.campaigns;
@@ -82,7 +91,6 @@ export default function CampaignsClient() {
   const [activeTab, setActiveTab] = useState<StatusType>(statusParam || 'all');
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
-
 
   const filteredCampaigns = mockCampaigns.filter((c) => {
     const matchesStatus = activeTab === 'all' || c.status === activeTab;
@@ -98,39 +106,19 @@ export default function CampaignsClient() {
     draft: mockCampaigns.filter((c) => c.status === 'draft').length,
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'bg-gray-900 text-white';
-      case 'completed':
-        return 'bg-gray-100 text-gray-700';
-      case 'draft':
-        return 'bg-gray-100 text-gray-500';
-      default:
-        return 'bg-gray-100 text-gray-700';
-    }
-  };
-
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'active':
-        return t.active;
-      case 'completed':
-        return t.completed;
-      case 'draft':
-        return t.draft;
-      default:
-        return status;
+      case 'active': return t.active;
+      case 'completed': return t.completed;
+      case 'draft': return t.draft;
+      default: return status;
     }
   };
 
-  // Keyboard shortcuts
   useKeyboardShortcuts([
     {
       key: '/',
-      action: () => {
-        searchInputRef.current?.focus();
-      },
+      action: () => { searchInputRef.current?.focus(); },
       description: 'Focus search input'
     },
     {
@@ -146,38 +134,38 @@ export default function CampaignsClient() {
   ]);
 
   return (
-    <div className="container-mobile py-6 space-y-6">
+    <div className="container-mobile py-6 space-y-5">
       {/* Create Campaign Button */}
       <Link href="/main/advertiser/campaigns/create">
-        <button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center">
-          <Plus size={20} className="mr-2" />
+        <button className="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 active:scale-95">
+          <Plus size={20} />
           {t.createCampaign}
         </button>
       </Link>
 
       {/* Search */}
       <div className="relative">
-        <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
           ref={searchInputRef}
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t.search}
-          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 transition-colors"
+          className="w-full pl-11 pr-4 py-3 bg-dark-600/80 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors backdrop-blur-sm"
         />
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="flex gap-2 overflow-x-auto pb-1">
         {(['all', 'active', 'completed', 'draft'] as StatusType[]).map((status) => (
           <button
             key={status}
             onClick={() => setActiveTab(status)}
-            className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
+            className={`px-4 py-2 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
               activeTab === status
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40 hover:border-primary/30'
             }`}
           >
             {t[status]} ({stats[status]})
@@ -186,85 +174,96 @@ export default function CampaignsClient() {
       </div>
 
       {/* Campaigns List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filteredCampaigns.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-lg text-center py-12 px-6">
-            <TrendingUp size={48} className="text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t.noCampaigns}</h3>
-            <p className="text-sm text-gray-500 mb-6">{t.createFirst}</p>
+          <div className="bg-dark-600/80 backdrop-blur-sm border-2 border-dark-400/40 rounded-2xl text-center py-12 px-6 shadow-xl">
+            <TrendingUp size={48} className="text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">{t.noCampaigns}</h3>
+            <p className="text-sm text-gray-400 mb-6">{t.createFirst}</p>
             <Link href="/main/advertiser/campaigns/create">
-              <button className="bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors inline-flex items-center">
-                <Plus size={18} className="mr-2" />
+              <button className="bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 px-6 rounded-xl transition-all inline-flex items-center gap-2">
+                <Plus size={18} />
                 {t.createCampaign}
               </button>
             </Link>
           </div>
         ) : (
-          filteredCampaigns.map((campaign) => (
-            <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
-              <div className="bg-white border border-gray-200 hover:border-gray-900 rounded-lg p-4 transition-all cursor-pointer">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</h4>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Clock size={12} />
-                      {t.deadline}: {campaign.deadline}
-                    </div>
-                  </div>
-                  <span className={`px-3 py-1 ${getStatusColor(campaign.status)} text-xs font-medium rounded-full whitespace-nowrap ml-2`}>
-                    {getStatusText(campaign.status)}
-                  </span>
-                </div>
+          filteredCampaigns.map((campaign) => {
+            const config = statusConfig[campaign.status as keyof typeof statusConfig] || statusConfig.draft;
+            const budgetPct = campaign.budget > 0 ? (campaign.spent / campaign.budget) * 100 : 0;
 
-                {/* Progress Bar */}
-                {campaign.status !== 'draft' && (
-                  <div className="mb-4">
-                    <div className="flex justify-between text-xs mb-1.5">
-                      <span className="text-gray-500">{t.budget} {t.budgetUsed}</span>
-                      <span className="text-gray-900 font-semibold">
-                        {((campaign.spent / campaign.budget) * 100).toFixed(0)}%
-                      </span>
+            return (
+              <Link key={campaign.id} href={`/main/advertiser/campaigns/${campaign.id}`}>
+                <div className="bg-dark-600/80 backdrop-blur-sm border-2 border-dark-400/40 hover:border-primary/30 rounded-2xl p-4 transition-all cursor-pointer shadow-xl hover:shadow-primary/10">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1 pr-3">
+                      <h4 className="font-bold text-white mb-1 leading-tight">{language === 'ko' ? campaign.titleKo : campaign.titleVi}</h4>
+                      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                        <Clock size={11} />
+                        {t.deadline}: {campaign.deadline}
+                      </div>
                     </div>
-                    <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gray-900 rounded-full transition-all"
-                        style={{ width: `${(campaign.spent / campaign.budget) * 100}%` }}
-                      />
-                    </div>
-                    <div className="flex justify-between text-xs mt-1.5">
-                      <span className="text-gray-400">{formatPoints(campaign.spent)}</span>
-                      <span className="text-gray-400">{formatPoints(campaign.budget)}</span>
-                    </div>
+                    <span className={`px-2.5 py-1 ${config.color} text-xs font-bold rounded-full whitespace-nowrap flex items-center gap-1.5`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+                      {getStatusText(campaign.status)}
+                    </span>
                   </div>
-                )}
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
-                    <div className="font-semibold text-gray-900">{campaign.applicants}</div>
-                    <div className="text-gray-500 mt-1">{t.applicants}</div>
-                  </div>
-                  <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
-                    <div className="font-semibold text-gray-900">{campaign.accepted}</div>
-                    <div className="text-gray-500 mt-1">{t.accepted}</div>
-                  </div>
-                  <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
-                    <div className="font-semibold text-gray-900">
-                      {campaign.views > 0 ? `${(campaign.views / 1000).toFixed(0)}K` : '0'}
+                  {/* Progress Bar */}
+                  {campaign.status !== 'draft' && (
+                    <div className="mb-4">
+                      <div className="flex justify-between text-xs mb-1.5">
+                        <span className="text-gray-400">{t.budget} {t.budgetUsed}</span>
+                        <span className="text-white font-bold">{budgetPct.toFixed(0)}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-dark-500 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all"
+                          style={{ width: `${budgetPct}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-xs mt-1.5">
+                        <span className="text-gray-500">{formatPoints(campaign.spent)}</span>
+                        <span className="text-gray-500">{formatPoints(campaign.budget)}</span>
+                      </div>
                     </div>
-                    <div className="text-gray-500 mt-1">{t.views}</div>
+                  )}
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="text-center p-2.5 bg-dark-700/50 rounded-xl border border-dark-400/30">
+                      <div className="flex items-center justify-center gap-1 mb-1">
+                        <Users size={12} className="text-primary" />
+                      </div>
+                      <div className="font-bold text-white">{campaign.applicants}</div>
+                      <div className="text-gray-500 mt-0.5">{t.applicants}</div>
+                    </div>
+                    <div className="text-center p-2.5 bg-dark-700/50 rounded-xl border border-dark-400/30">
+                      <div className="flex items-center justify-center gap-1 mb-1">
+                        <DollarSign size={12} className="text-success" />
+                      </div>
+                      <div className="font-bold text-white">{campaign.accepted}</div>
+                      <div className="text-gray-500 mt-0.5">{t.accepted}</div>
+                    </div>
+                    <div className="text-center p-2.5 bg-dark-700/50 rounded-xl border border-dark-400/30">
+                      <div className="flex items-center justify-center gap-1 mb-1">
+                        <Eye size={12} className="text-secondary" />
+                      </div>
+                      <div className="font-bold text-white">
+                        {campaign.views > 0 ? `${(campaign.views / 1000).toFixed(0)}K` : '0'}
+                      </div>
+                      <div className="text-gray-500 mt-0.5">{t.views}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-dark-500/50">
+                    <span className="text-xs text-gray-500">{t.viewDetails}</span>
+                    <ChevronRight size={16} className="text-gray-500" />
                   </div>
                 </div>
-
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-                  <span className="text-xs text-gray-500 font-medium">
-                    {t.viewDetails}
-                  </span>
-                  <ChevronRight size={16} className="text-gray-400" />
-                </div>
-              </div>
-            </Link>
-          ))
+              </Link>
+            );
+          })
         )}
       </div>
     </div>

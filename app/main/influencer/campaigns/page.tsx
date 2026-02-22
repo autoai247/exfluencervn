@@ -1227,18 +1227,23 @@ function CampaignsPageContent() {
 
       {/* Recommended Campaigns Section */}
       {recommendedCampaigns.length > 0 && !filters.eligibleOnly && !filters.requiresVehicle && !filters.requiresParent && !filters.requiresPet && !filters.maritalStatus && filters.platforms.length === 0 && filters.categories.length === 0 && (
-        <div className="container-mobile mb-6">
+        <div className="mb-6">
           <div className="flex items-center gap-2 mb-3 px-4">
             <Trophy size={20} className="text-primary" />
             <h3 className="text-lg font-bold text-white">{t.campaignFilters.recommendedCampaigns}</h3>
+            <span className="ml-auto text-xs text-gray-500">{language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}</span>
           </div>
-          <div className="space-y-3 px-4">
+          {/* 가로 슬라이드 */}
+          <div
+            className="flex gap-3 overflow-x-auto pl-4 pr-4 pb-3"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {recommendedCampaigns.map(({ campaign, score }) => {
               const eligibility = checkEligibility(campaign);
               const campaignUrl = `/main/influencer/campaigns/${campaign.id}${isAdminMode ? '?admin=true' : ''}`;
               return (
-                <Link key={campaign.id} href={campaignUrl}>
-                  <div className="relative card-hover overflow-hidden p-0 cursor-pointer border-2 border-primary/50 shadow-xl">
+                <Link key={campaign.id} href={campaignUrl} className="flex-shrink-0 w-[260px]">
+                  <div className="relative card-hover overflow-hidden p-0 cursor-pointer border-2 border-primary/50 shadow-xl h-full">
                     {/* ADMIN ONLY: Demo Campaign Badge */}
                     {isAdminMode && campaign.isDemoMode && (
                       <div className="absolute top-2 left-2 z-20 px-2 py-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-[10px] font-black flex items-center gap-1 shadow-lg border border-white/30 animate-pulse">
@@ -1287,26 +1292,24 @@ function CampaignsPageContent() {
                       <p className="text-xs text-gray-300 mb-2">{campaign.company}</p>
 
                       <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-primary font-bold text-sm">
-                            {(campaign.minBudget / 1000).toFixed(0)}K - {(campaign.maxBudget / 1000).toFixed(0)}K VND
-                          </span>
-                        </div>
-                        <span className="text-xs text-gray-300">
-                          {t.campaign.deadline}: {campaign.deadline}
+                        <span className="text-primary font-bold text-sm">
+                          {(campaign.minBudget / 1000).toFixed(0)}K - {(campaign.maxBudget / 1000).toFixed(0)}K VND
                         </span>
                       </div>
+                      <span className="text-xs text-gray-400">
+                        {t.campaign.deadline}: {campaign.deadline}
+                      </span>
 
                       {/* 신청자 아바타 */}
                       {campaign.applicants > 0 && (
-                        <div className="flex items-center gap-2 pt-2 border-t border-dark-500">
+                        <div className="flex items-center gap-2 pt-2 mt-2 border-t border-dark-500">
                           <div className="flex -space-x-2">
                             {generateApplicantAvatars(campaign.id, campaign.applicants, 4).map((avatar, idx) => (
                               <img
                                 key={idx}
                                 src={avatar.url}
                                 alt={avatar.name}
-                                className="w-6 h-6 rounded-full border-2 border-dark-600 hover:z-10 hover:scale-110 transition-transform"
+                                className="w-6 h-6 rounded-full border-2 border-dark-600"
                                 title={avatar.name}
                                 loading="lazy"
                               />
@@ -1323,7 +1326,7 @@ function CampaignsPageContent() {
               );
             })}
           </div>
-          <div className="h-px bg-dark-500 my-6"></div>
+          <div className="h-px bg-dark-500 mt-3 mb-6 mx-4"></div>
         </div>
       )}
 

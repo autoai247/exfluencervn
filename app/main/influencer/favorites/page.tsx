@@ -59,7 +59,7 @@ const mockFavoriteCampaigns = [
 
 export default function FavoritesPage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [favorites, setFavorites] = useState(mockFavoriteCampaigns);
 
   const removeFavorite = (id: string) => {
@@ -97,27 +97,35 @@ export default function FavoritesPage() {
 
         {/* 현금 캠페인 섹션 */}
         {cashCampaigns.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1 h-5 bg-gradient-to-b from-success to-success/50 rounded-full" />
-              <h3 className="text-base font-semibold text-white">{t.favorites.cashCampaigns}</h3>
-              <span className="text-xs text-gray-500">({cashCampaigns.length})</span>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-5 bg-gradient-to-b from-success to-success/50 rounded-full" />
+                <h3 className="text-base font-semibold text-white">{t.favorites.cashCampaigns}</h3>
+                <span className="text-xs text-gray-500">({cashCampaigns.length})</span>
+              </div>
+              <span className="text-[10px] text-gray-500">
+                {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+              </span>
             </div>
 
-            {cashCampaigns.map((campaign) => (
-              <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
-                {/* 제거 버튼 */}
-                <button
-                  onClick={() => removeFavorite(campaign.id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
-                >
-                  <X size={16} className="text-gray-400" />
-                </button>
+            <div
+              className="flex gap-3 overflow-x-auto pl-0 pr-4 pb-3"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {cashCampaigns.map((campaign) => (
+                <div key={campaign.id} className="flex-shrink-0 w-[260px] bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
+                  {/* 제거 버튼 */}
+                  <button
+                    onClick={() => removeFavorite(campaign.id)}
+                    className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
+                  >
+                    <X size={16} className="text-gray-400" />
+                  </button>
 
-                <Link href={`/main/influencer/campaigns/${campaign.id}`}>
-                  <div className="flex gap-3">
+                  <Link href={`/main/influencer/campaigns/${campaign.id}`}>
                     {/* Thumbnail */}
-                    <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                    <div className="relative w-full h-32 rounded-xl overflow-hidden mb-3">
                       <img
                         src={campaign.thumbnail}
                         alt={campaign.title}
@@ -129,8 +137,8 @@ export default function FavoritesPage() {
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-white text-sm mb-1 line-clamp-2">
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-white text-sm mb-1 line-clamp-2 pr-8">
                         {campaign.title}
                       </h3>
                       <p className="text-xs text-gray-400 mb-2">{campaign.company}</p>
@@ -138,7 +146,7 @@ export default function FavoritesPage() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 text-xs text-gray-400">
                           <MapPin size={12} />
-                          <span>{campaign.location}</span>
+                          <span className="truncate">{campaign.location}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-400">
                           <Calendar size={12} />
@@ -152,36 +160,44 @@ export default function FavoritesPage() {
                         </span>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
         {/* 포인트 캠페인 섹션 */}
         {pointsCampaigns.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1 h-5 bg-gradient-to-b from-secondary to-primary rounded-full" />
-              <h3 className="text-base font-semibold text-white">{t.favorites.pointsCampaigns}</h3>
-              <span className="text-xs text-gray-500">({pointsCampaigns.length})</span>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-5 bg-gradient-to-b from-secondary to-primary rounded-full" />
+                <h3 className="text-base font-semibold text-white">{t.favorites.pointsCampaigns}</h3>
+                <span className="text-xs text-gray-500">({pointsCampaigns.length})</span>
+              </div>
+              <span className="text-[10px] text-gray-500">
+                {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+              </span>
             </div>
 
-            {pointsCampaigns.map((campaign) => (
-              <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
-                {/* 제거 버튼 */}
-                <button
-                  onClick={() => removeFavorite(campaign.id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
-                >
-                  <X size={16} className="text-gray-400" />
-                </button>
+            <div
+              className="flex gap-3 overflow-x-auto pl-0 pr-4 pb-3"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {pointsCampaigns.map((campaign) => (
+                <div key={campaign.id} className="flex-shrink-0 w-[260px] bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
+                  {/* 제거 버튼 */}
+                  <button
+                    onClick={() => removeFavorite(campaign.id)}
+                    className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
+                  >
+                    <X size={16} className="text-gray-400" />
+                  </button>
 
-                <Link href={`/main/influencer/campaigns/${campaign.id}`}>
-                  <div className="flex gap-3">
+                  <Link href={`/main/influencer/campaigns/${campaign.id}`}>
                     {/* Thumbnail */}
-                    <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                    <div className="relative w-full h-32 rounded-xl overflow-hidden mb-3">
                       <img
                         src={campaign.thumbnail}
                         alt={campaign.title}
@@ -193,8 +209,8 @@ export default function FavoritesPage() {
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-white text-sm mb-1 line-clamp-2">
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-white text-sm mb-1 line-clamp-2 pr-8">
                         {campaign.title}
                       </h3>
                       <p className="text-xs text-gray-400 mb-2">{campaign.company}</p>
@@ -202,7 +218,7 @@ export default function FavoritesPage() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 text-xs text-gray-400">
                           <MapPin size={12} />
-                          <span>{campaign.location}</span>
+                          <span className="truncate">{campaign.location}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-400">
                           <Calendar size={12} />
@@ -216,10 +232,10 @@ export default function FavoritesPage() {
                         </span>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

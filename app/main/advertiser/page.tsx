@@ -233,31 +233,39 @@ export default function AdvertiserDashboard() {
                 {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
               </Link>
             </div>
+            <div className="text-[10px] text-gray-500 px-1 -mt-1">
+              {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+            </div>
 
-            <div className="space-y-2">
+            <div
+              className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {mockData.pendingKols.map((kol) => (
-                <div key={kol.id} className="bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-warning/15 shadow-lg hover:border-warning/25 transition-all">
+                <div key={kol.id} className="flex-shrink-0 w-[200px] bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-warning/15 shadow-lg hover:border-warning/25 transition-all">
                   <div className="flex items-center gap-3">
                     <img src={kol.avatar} alt={kol.name}
-                      className="w-11 h-11 rounded-xl border border-dark-400/60 flex-shrink-0 shadow-md" />
+                      className="w-10 h-10 rounded-xl border border-dark-400/60 flex-shrink-0 shadow-md" />
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-white text-sm">{kol.name}</div>
-                      <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                      <div className="font-bold text-white text-sm truncate">{kol.name}</div>
+                      <div className="flex items-center gap-1 mt-0.5 flex-wrap">
                         <span className="text-[10px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-md">{kol.platform}</span>
-                        <span className="text-[10px] text-gray-400">{formatCompactNumber(kol.followers)} followers</span>
                         <span className="text-[10px] text-accent font-semibold">{(kol.engagement * 100).toFixed(1)}% ER</span>
                       </div>
-                      <div className="text-[10px] text-gray-500 mt-0.5">
-                        {kol.niche} · {kol.campaign} · <span className="text-white font-semibold">{formatCash(kol.rate)}/post</span>
-                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <div className="text-[10px] text-gray-400">{formatCompactNumber(kol.followers)} followers</div>
+                    <div className="text-[10px] text-gray-500 mt-0.5 truncate">
+                      {kol.niche} · <span className="text-white font-semibold">{formatCash(kol.rate)}/post</span>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-3">
                     <Link href={`/main/advertiser/influencers/${kol.id}`}
-                      className="flex-1 py-2 bg-dark-500/80 text-gray-300 text-xs font-semibold rounded-xl text-center border border-dark-400/50 hover:bg-dark-400/50 transition-all">
-                      {language === 'ko' ? '프로필 보기' : 'Xem hồ sơ'}
+                      className="flex-1 py-2 bg-dark-500/80 text-gray-300 text-[10px] font-semibold rounded-xl text-center border border-dark-400/50 hover:bg-dark-400/50 transition-all">
+                      {language === 'ko' ? '프로필' : 'Hồ sơ'}
                     </Link>
-                    <button className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-xs font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95">
+                    <button className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95">
                       ✓ {language === 'ko' ? '승인' : 'Duyệt'}
                     </button>
                   </div>
@@ -277,16 +285,22 @@ export default function AdvertiserDashboard() {
             </h3>
             <Link href="/main/advertiser/campaigns" className="text-xs text-primary font-medium">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
           </div>
+          <div className="text-[10px] text-gray-500 px-1 -mt-1">
+            {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+          </div>
 
-          <div className="space-y-3">
+          <div
+            className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {mockData.activeCampaigns.map((c) => (
-              <Link key={c.id} href={`/main/advertiser/campaigns/${c.id}`}>
-                <div className="bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-dark-400/40 hover:border-primary/25 transition-all shadow-lg">
+              <Link key={c.id} href={`/main/advertiser/campaigns/${c.id}`} className="flex-shrink-0 w-[260px]">
+                <div className="bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-dark-400/40 hover:border-primary/25 transition-all shadow-lg h-full">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-white text-sm truncate">{c.title}</h4>
                       <div className="text-xs text-gray-400 mt-0.5">{c.platform}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{language === 'ko' ? (c.deliverableKo || c.deliverable) : (c.deliverableVi || c.deliverable)}</div>
+                      <div className="text-xs text-gray-500 mt-0.5 truncate">{language === 'ko' ? (c.deliverableKo || c.deliverable) : (c.deliverableVi || c.deliverable)}</div>
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
                       <div className="text-sm font-bold text-accent">{formatCash(c.budget)}<span className="text-xs text-gray-500">/KOL</span></div>
@@ -326,33 +340,38 @@ export default function AdvertiserDashboard() {
               {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
             </Link>
           </div>
+          <div className="text-[10px] text-gray-500 px-1 -mt-1">
+            {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+          </div>
 
-          <div className="space-y-2">
+          <div
+            className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {mockData.recommendedKols.map((kol) => (
-              <Link key={kol.id} href={`/main/advertiser/influencers/${kol.id}`}>
-                <div className="bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-dark-400/40 hover:border-secondary/25 transition-all shadow-md">
-                  <div className="flex items-center gap-3">
+              <Link key={kol.id} href={`/main/advertiser/influencers/${kol.id}`} className="flex-shrink-0 w-[200px]">
+                <div className="bg-dark-600/60 backdrop-blur-sm rounded-2xl p-4 border border-dark-400/40 hover:border-secondary/25 transition-all shadow-md h-full">
+                  <div className="flex items-center gap-2 mb-2">
                     <img src={kol.avatar} alt={kol.name}
-                      className="w-12 h-12 rounded-xl border border-dark-400/60 flex-shrink-0 shadow-md" />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white text-sm">{kol.name}</span>
-                        <span className="text-[10px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-md">{kol.platform}</span>
-                      </div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">{kol.niche}</div>
-                      <div className="flex items-center gap-3 mt-1.5">
-                        <span className="text-xs text-gray-300 font-medium">{formatCompactNumber(kol.followers)}</span>
-                        <span className="text-xs text-accent font-semibold">{(kol.engagement * 100).toFixed(1)}% ER</span>
-                        <span className="flex items-center gap-0.5 text-xs text-yellow-400 font-semibold">
-                          <Star size={10} className="fill-yellow-400" />{kol.rating}
-                        </span>
-                      </div>
+                      className="w-10 h-10 rounded-xl border border-dark-400/60 flex-shrink-0 shadow-md" />
+                    <div className="min-w-0">
+                      <div className="font-bold text-white text-sm truncate">{kol.name}</div>
+                      <span className="text-[10px] text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded-md">{kol.platform}</span>
                     </div>
-                    <div className="text-right flex-shrink-0">
+                  </div>
+                  <div className="text-[10px] text-gray-400 truncate">{kol.niche}</div>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-xs text-gray-300 font-medium">{formatCompactNumber(kol.followers)}</span>
+                    <span className="text-xs text-accent font-semibold">{(kol.engagement * 100).toFixed(1)}% ER</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-2">
+                    <div>
                       <div className="text-sm font-bold text-white">{formatCash(kol.rate)}</div>
                       <div className="text-[10px] text-gray-400">/ post</div>
-                      <ChevronRight size={14} className="text-gray-500 ml-auto mt-1" />
                     </div>
+                    <span className="flex items-center gap-0.5 text-xs text-yellow-400 font-semibold">
+                      <Star size={10} className="fill-yellow-400" />{kol.rating}
+                    </span>
                   </div>
                 </div>
               </Link>

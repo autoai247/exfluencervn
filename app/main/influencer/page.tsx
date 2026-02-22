@@ -184,10 +184,16 @@ export default function InfluencerDashboard() {
               </h3>
               <Link href="/main/influencer/jobs" className="text-xs text-primary font-medium">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
             </div>
+            <div className="text-[10px] text-gray-500 px-1 -mt-1">
+              {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+            </div>
 
-            <div className="space-y-3">
+            <div
+              className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {mockData.inProgress.map((c) => (
-                <div key={c.id} className="rounded-2xl bg-dark-600/80 border border-dark-400/50 shadow-xl overflow-hidden p-0 hover:border-primary/20 transition-all">
+                <div key={c.id} className="flex-shrink-0 w-[260px] rounded-2xl bg-dark-600/80 border border-dark-400/50 shadow-xl overflow-hidden p-0 hover:border-primary/20 transition-all">
                   {/* 썸네일 */}
                   <div className="relative h-28 overflow-hidden">
                     <img src={c.thumbnail} alt={c.title} className="w-full h-full object-cover" />
@@ -270,15 +276,21 @@ export default function InfluencerDashboard() {
               {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
             </Link>
           </div>
+          <div className="text-[10px] text-gray-500 px-1 -mt-1">
+            {language === 'ko' ? '옆으로 밀어보세요 →' : 'Vuốt để xem thêm →'}
+          </div>
 
-          <div className="space-y-2">
+          <div
+            className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {mockData.applying.map((a) => (
-              <div key={a.id} className="flex items-center gap-3 bg-dark-600/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-dark-400/40 hover:border-dark-300/50 transition-all shadow-md">
-                <div className="flex-1 min-w-0">
+              <div key={a.id} className="flex-shrink-0 w-[200px] flex flex-col gap-1.5 bg-dark-600/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-dark-400/40 hover:border-dark-300/50 transition-all shadow-md">
+                <div className="min-w-0">
                   <div className="text-sm font-semibold text-white truncate">{a.title}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{a.company} · {language === 'ko' ? a.appliedAtKo : a.appliedAtVi}</div>
+                  <div className="text-xs text-gray-400 mt-0.5 truncate">{a.company} · {language === 'ko' ? a.appliedAtKo : a.appliedAtVi}</div>
                 </div>
-                <div className="flex-shrink-0 flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2 mt-1">
                   <span className="text-sm font-bold text-gray-300">{formatCash(a.reward)}</span>
                   {a.status === 'pending' && (
                     <span className="text-[10px] px-2 py-1 bg-warning/15 text-warning rounded-full font-bold border border-warning/30">

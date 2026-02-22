@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Gift, Trophy, Users, Ticket, Plus, Edit2, Trash2, Play } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Gift, Trophy, Users, Ticket, Plus, Edit2, Trash2, Play, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface RaffleItem {
@@ -28,6 +29,7 @@ interface DrawResult {
 }
 
 export default function RaffleManagerPage() {
+  const router = useRouter();
   const { language } = useLanguage();
   const [raffleItems, setRaffleItems] = useState<RaffleItem[]>([]);
   const [drawResults, setDrawResults] = useState<DrawResult[]>([]);
@@ -122,9 +124,14 @@ export default function RaffleManagerPage() {
       <div className="sticky top-0 z-40 bg-dark-600 border-b border-dark-500">
         <div className="container-mobile">
           <div className="flex items-center justify-between py-4">
-            <div>
-              <h1 className="text-xl font-bold text-white">{language === 'ko' ? '응모 상품 관리' : 'Quản lý sản phẩm rút thăm'}</h1>
-              <p className="text-xs text-gray-400">Raffle Manager</p>
+            <div className="flex items-center gap-3">
+              <button onClick={() => router.back()} className="btn-icon text-white">
+                <ArrowLeft size={24} />
+              </button>
+              <div>
+                <h1 className="text-xl font-bold text-white">{language === 'ko' ? '응모 상품 관리' : 'Quản lý sản phẩm rút thăm'}</h1>
+                <p className="text-xs text-gray-400">Raffle Manager</p>
+              </div>
             </div>
             <Trophy className="text-primary" size={32} />
           </div>
@@ -158,6 +165,15 @@ export default function RaffleManagerPage() {
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold text-white">{language === 'ko' ? '응모 상품 목록' : 'Danh sách sản phẩm rút thăm'}</h2>
           </div>
+
+          {raffleItems.length === 0 && (
+            <div className="text-center py-12">
+              <Gift size={48} className="text-gray-600 mx-auto mb-3" />
+              <p className="text-gray-400 text-sm">
+                {language === 'ko' ? '등록된 응모 상품이 없습니다' : 'Chưa có sản phẩm rút thăm nào'}
+              </p>
+            </div>
+          )}
 
           <div className="space-y-3">
             {raffleItems.map((item) => {

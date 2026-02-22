@@ -271,63 +271,46 @@ export default function AdminDashboardPage() {
     <main className="min-h-screen bg-dark-700">
       <div className="container-mobile min-h-screen pb-20">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+        <div className="sticky top-0 z-10 border-b border-dark-500/50 px-4 py-4 relative" style={{background: 'linear-gradient(135deg, #1A1A2E 0%, #25253A 100%)'}}>
+          {/* 상단 그라디언트 라인 */}
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-accent" />
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-bold text-white">{language === 'ko' ? '관리자 대시보드' : 'Bảng quản trị'}</h1>
-              <p className="text-sm text-gray-400">Exfluencer VN Admin</p>
+              <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse inline-block" />
+                Exfluencer VN Admin
+              </p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <span className="text-white font-bold">A</span>
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/30">
+                <span className="text-white font-bold text-lg">A</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="sticky top-14 z-9 bg-dark-700 border-b border-dark-500 px-4">
+        <div className="sticky top-[73px] z-9 bg-dark-700/95 backdrop-blur-xl border-b border-dark-500/50 px-4">
           <div className="flex gap-2 overflow-x-auto no-scrollbar py-3">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                activeTab === 'overview'
-                  ? 'bg-primary text-white'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
-              }`}
-            >
-              {language === 'ko' ? '개요' : 'Tổng quan'}
-            </button>
-            <button
-              onClick={() => setActiveTab('users')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                activeTab === 'users'
-                  ? 'bg-primary text-white'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
-              }`}
-            >
-              {language === 'ko' ? '사용자 관리' : 'Quản lý người dùng'}
-            </button>
-            <button
-              onClick={() => setActiveTab('campaigns')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                activeTab === 'campaigns'
-                  ? 'bg-primary text-white'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
-              }`}
-            >
-              {language === 'ko' ? '캠페인 승인' : 'Duyệt chiến dịch'}
-            </button>
-            <button
-              onClick={() => setActiveTab('withdrawals')}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                activeTab === 'withdrawals'
-                  ? 'bg-primary text-white'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
-              }`}
-            >
-              {language === 'ko' ? '출금 관리' : 'Quản lý rút tiền'}
-            </button>
+            {[
+              { key: 'overview', ko: '개요', vi: 'Tổng quan' },
+              { key: 'users', ko: '사용자', vi: 'Người dùng' },
+              { key: 'campaigns', ko: '캠페인', vi: 'Chiến dịch' },
+              { key: 'withdrawals', ko: '출금', vi: 'Rút tiền' },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as any)}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm whitespace-nowrap transition-all ${
+                  activeTab === tab.key
+                    ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/25'
+                    : 'bg-dark-600/50 text-gray-400 hover:bg-dark-500/60 hover:text-white'
+                }`}
+              >
+                {language === 'ko' ? tab.ko : tab.vi}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -338,149 +321,143 @@ export default function AdminDashboardPage() {
             <>
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users size={20} className="text-primary" />
+                <div className="rounded-2xl p-4 border border-primary/20 shadow-lg shadow-primary/5" style={{background: 'linear-gradient(135deg, rgba(255,107,107,0.12) 0%, rgba(37,37,58,0.9) 100%)'}}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center">
+                      <Users size={18} className="text-primary" />
+                    </div>
                     <span className="text-xs text-gray-400">{language === 'ko' ? '전체 사용자' : 'Tổng người dùng'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.totalUsers)}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+12%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
+                  <div className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                    <span className="text-success font-semibold">↑ 12%</span>
+                    <span>{language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}</span>
                   </div>
                 </div>
 
-                <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <UserCheck size={20} className="text-secondary" />
+                <div className="rounded-2xl p-4 border border-secondary/20 shadow-lg shadow-secondary/5" style={{background: 'linear-gradient(135deg, rgba(78,205,196,0.12) 0%, rgba(37,37,58,0.9) 100%)'}}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-secondary/20 flex items-center justify-center">
+                      <UserCheck size={18} className="text-secondary" />
+                    </div>
                     <span className="text-xs text-gray-400">{language === 'ko' ? '인플루언서' : 'Influencer'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.activeInfluencers)}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+8%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
+                  <div className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                    <span className="text-success font-semibold">↑ 8%</span>
+                    <span>{language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}</span>
                   </div>
                 </div>
 
-                <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Megaphone size={20} className="text-warning" />
+                <div className="rounded-2xl p-4 border border-warning/20 shadow-lg shadow-warning/5" style={{background: 'linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(37,37,58,0.9) 100%)'}}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-warning/20 flex items-center justify-center">
+                      <Megaphone size={18} className="text-warning" />
+                    </div>
                     <span className="text-xs text-gray-400">{language === 'ko' ? '전체 캠페인' : 'Tổng chiến dịch'}</span>
                   </div>
                   <div className="text-2xl font-bold text-white">{formatNumber(mockStats.totalCampaigns)}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {language === 'ko' ? `활성: ${mockStats.activeCampaigns}개` : `Đang hoạt động: ${mockStats.activeCampaigns}`}
+                  <div className="text-xs text-gray-500 mt-1.5">
+                    {language === 'ko' ? `활성 ${mockStats.activeCampaigns}개` : `Hoạt động: ${mockStats.activeCampaigns}`}
                   </div>
                 </div>
 
-                <div className="bg-dark-600 rounded-xl p-4 border border-dark-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <DollarSign size={20} className="text-success" />
+                <div className="rounded-2xl p-4 border border-success/20 shadow-lg shadow-success/5" style={{background: 'linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(37,37,58,0.9) 100%)'}}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-success/20 flex items-center justify-center">
+                      <DollarSign size={18} className="text-success" />
+                    </div>
                     <span className="text-xs text-gray-400">{language === 'ko' ? '총 거래액' : 'Tổng giao dịch'}</span>
                   </div>
-                  <div className="text-lg font-bold text-white">{formatNumber(mockStats.totalRevenue / 1000000)}M</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    <span className="text-success">+15%</span> {language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}
+                  <div className="text-xl font-bold text-white">{formatNumber(mockStats.totalRevenue / 1000000)}M VND</div>
+                  <div className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                    <span className="text-success font-semibold">↑ 15%</span>
+                    <span>{language === 'ko' ? 'vs 지난달' : 'vs tháng trước'}</span>
                   </div>
                 </div>
               </div>
 
               {/* Alerts */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '알림 & 대기 항목' : 'Thông báo & Mục chờ'}</h3>
-
-                <div className="bg-warning/10 border border-warning/30 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle size={20} className="text-warning flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '승인 대기 중인 캠페인' : 'Chiến dịch chờ duyệt'}</h4>
-                      <p className="text-sm text-gray-300">
-                        {language === 'ko'
-                          ? `${mockStats.pendingCampaigns}개의 캠페인이 승인을 기다리고 있습니다.`
-                          : `${mockStats.pendingCampaigns} chiến dịch đang chờ duyệt.`}
-                      </p>
-                      <button
-                        onClick={() => setActiveTab('campaigns')}
-                        className="text-sm text-warning font-semibold mt-2 hover:underline"
-                      >
-                        {language === 'ko' ? '확인하기 →' : 'Xem ngay →'}
-                      </button>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-4 bg-gradient-to-b from-warning to-primary rounded-full" />
+                  <h3 className="text-sm font-bold text-white">{language === 'ko' ? '알림 & 대기 항목' : 'Thông báo & Mục chờ'}</h3>
                 </div>
 
-                <div className="bg-primary/10 border border-primary/30 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <DollarSign size={20} className="text-primary flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền'}</h4>
-                      <p className="text-sm text-gray-300">
-                        {language === 'ko'
-                          ? `${mockStats.pendingWithdrawals}건의 출금 요청이 처리 대기 중입니다.`
-                          : `${mockStats.pendingWithdrawals} yêu cầu rút tiền đang chờ xử lý.`}
-                      </p>
-                      <button
-                        onClick={() => setActiveTab('withdrawals')}
-                        className="text-sm text-primary font-semibold mt-2 hover:underline"
-                      >
-                        {language === 'ko' ? '처리하기 →' : 'Xử lý ngay →'}
-                      </button>
+                <button onClick={() => setActiveTab('campaigns')} className="w-full text-left rounded-2xl border border-warning/25 p-4 hover:border-warning/40 transition-all" style={{background: 'linear-gradient(135deg, rgba(245,158,11,0.10) 0%, rgba(37,37,58,0.8) 100%)'}}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-warning/20 flex items-center justify-center flex-shrink-0">
+                      <AlertTriangle size={20} className="text-warning" />
                     </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-white text-sm">{language === 'ko' ? '승인 대기 중인 캠페인' : 'Chiến dịch chờ duyệt'}</h4>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {language === 'ko' ? `${mockStats.pendingCampaigns}개 대기 중` : `${mockStats.pendingCampaigns} đang chờ`}
+                      </p>
+                    </div>
+                    <span className="text-xs text-warning font-bold px-2 py-1 bg-warning/10 rounded-lg">
+                      {mockStats.pendingCampaigns}
+                    </span>
                   </div>
-                </div>
+                </button>
 
-                <div className="bg-error/10 border border-error/30 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <Ban size={20} className="text-error flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">{language === 'ko' ? '신고된 사용자' : 'Người dùng bị báo cáo'}</h4>
-                      <p className="text-sm text-gray-300">
-                        {language === 'ko'
-                          ? `${mockStats.flaggedUsers}명의 사용자가 신고되었습니다.`
-                          : `${mockStats.flaggedUsers} người dùng đã bị báo cáo.`}
-                      </p>
-                      <button
-                        onClick={() => setActiveTab('users')}
-                        className="text-sm text-error font-semibold mt-2 hover:underline"
-                      >
-                        {language === 'ko' ? '조사하기 →' : 'Kiểm tra ngay →'}
-                      </button>
+                <button onClick={() => setActiveTab('withdrawals')} className="w-full text-left rounded-2xl border border-primary/25 p-4 hover:border-primary/40 transition-all" style={{background: 'linear-gradient(135deg, rgba(255,107,107,0.10) 0%, rgba(37,37,58,0.8) 100%)'}}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <DollarSign size={20} className="text-primary" />
                     </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-white text-sm">{language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền'}</h4>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {language === 'ko' ? `${mockStats.pendingWithdrawals}건 처리 대기` : `${mockStats.pendingWithdrawals} đang chờ xử lý`}
+                      </p>
+                    </div>
+                    <span className="text-xs text-primary font-bold px-2 py-1 bg-primary/10 rounded-lg">
+                      {mockStats.pendingWithdrawals}
+                    </span>
                   </div>
-                </div>
+                </button>
+
+                <button onClick={() => setActiveTab('users')} className="w-full text-left rounded-2xl border border-error/25 p-4 hover:border-error/40 transition-all" style={{background: 'linear-gradient(135deg, rgba(239,68,68,0.10) 0%, rgba(37,37,58,0.8) 100%)'}}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-error/20 flex items-center justify-center flex-shrink-0">
+                      <Ban size={20} className="text-error" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-white text-sm">{language === 'ko' ? '신고된 사용자' : 'Người dùng bị báo cáo'}</h4>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {language === 'ko' ? `${mockStats.flaggedUsers}명 신고됨` : `${mockStats.flaggedUsers} người đã bị báo cáo`}
+                      </p>
+                    </div>
+                    <span className="text-xs text-error font-bold px-2 py-1 bg-error/10 rounded-lg">
+                      {mockStats.flaggedUsers}
+                    </span>
+                  </div>
+                </button>
               </div>
 
               {/* Recent Activity */}
               <div>
-                <h3 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? '최근 활동' : 'Hoạt động gần đây'}</h3>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-1 h-4 bg-gradient-to-b from-secondary to-primary rounded-full" />
+                  <h3 className="text-sm font-bold text-white">{language === 'ko' ? '최근 활동' : 'Hoạt động gần đây'}</h3>
+                </div>
                 <div className="space-y-2">
-                  <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm text-white">{language === 'ko' ? '새로운 인플루언서 가입' : 'Influencer mới đăng ký'}</p>
-                        <p className="text-xs text-gray-400 mt-1">nguyenthic@gmail.com • {language === 'ko' ? '5분 전' : '5 phút trước'}</p>
+                  {[
+                    { icon: UserCheck, color: 'success', title: language === 'ko' ? '새로운 인플루언서 가입' : 'Influencer mới đăng ký', sub: `nguyenthic@gmail.com • ${language === 'ko' ? '5분 전' : '5 phút trước'}` },
+                    { icon: Megaphone, color: 'warning', title: language === 'ko' ? '캠페인 생성 요청' : 'Yêu cầu tạo chiến dịch', sub: `Fashion Shop VN • ${language === 'ko' ? '15분 전' : '15 phút trước'}` },
+                    { icon: DollarSign, color: 'primary', title: language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền', sub: `응우옌 반 A • 5,000,000 VND • ${language === 'ko' ? '1시간 전' : '1 giờ trước'}` },
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-dark-600/60 backdrop-blur-sm rounded-xl p-3 border border-dark-400/40 flex items-center gap-3">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-${item.color}/15`}>
+                        <item.icon size={16} className={`text-${item.color}`} />
                       </div>
-                      <UserCheck size={18} className="text-success" />
-                    </div>
-                  </div>
-
-                  <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm text-white">{language === 'ko' ? '캠페인 생성 요청' : 'Yêu cầu tạo chiến dịch'}</p>
-                        <p className="text-xs text-gray-400 mt-1">Fashion Shop VN • {language === 'ko' ? '15분 전' : '15 phút trước'}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white font-medium truncate">{item.title}</p>
+                        <p className="text-xs text-gray-500 mt-0.5 truncate">{item.sub}</p>
                       </div>
-                      <Megaphone size={18} className="text-warning" />
                     </div>
-                  </div>
-
-                  <div className="bg-dark-600 rounded-lg p-3 border border-dark-500">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm text-white">{language === 'ko' ? '출금 요청' : 'Yêu cầu rút tiền'}</p>
-                        <p className="text-xs text-gray-400 mt-1">응우옌 반 A • 5,000,000 VND • {language === 'ko' ? '1시간 전' : '1 giờ trước'}</p>
-                      </div>
-                      <DollarSign size={18} className="text-primary" />
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </>

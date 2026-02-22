@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Bell, Menu, Wallet, Globe } from 'lucide-react';
+import { ArrowLeft, Bell, Menu, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -19,8 +19,8 @@ interface MobileHeaderProps {
   onMenu?: () => void;
   rightAction?: React.ReactNode;
   className?: string;
-  showPoints?: boolean; // 포인트 표시 옵션
-  currentPoints?: number; // 현재 포인트
+  showPoints?: boolean;
+  currentPoints?: number;
 }
 
 export default function MobileHeader({
@@ -55,14 +55,17 @@ export default function MobileHeader({
   };
 
   return (
-    <header className={cn('mobile-header', className)} role="banner">
-      <div className="flex items-center justify-between h-14 px-4">
+    <header className={cn('mobile-header relative', className)} role="banner">
+      {/* 상단 무지개 그라디언트 라인 */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-accent" />
+
+      <div className="flex items-center justify-between h-16 px-4">
         {/* Left Action */}
         <div className="w-10">
           {showBack && (
             <button
               onClick={handleBack}
-              className="btn-icon text-white hover:bg-dark-600"
+              className="btn-icon text-white hover:bg-white/10 rounded-xl"
               aria-label="Go back"
             >
               <ArrowLeft size={24} aria-hidden="true" />
@@ -71,7 +74,7 @@ export default function MobileHeader({
           {showMenu && (
             <button
               onClick={onMenu}
-              className="btn-icon text-white hover:bg-dark-600"
+              className="btn-icon text-white hover:bg-white/10 rounded-xl"
               aria-label="Open menu"
             >
               <Menu size={24} aria-hidden="true" />
@@ -103,10 +106,10 @@ export default function MobileHeader({
 
         {/* Right Action */}
         <div className="flex gap-2 items-center">
-          {/* Language Switcher - 개선된 UI */}
+          {/* Language Switcher */}
           <button
             onClick={() => setShowLanguageModal(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-dark-600 hover:bg-dark-500 transition-all"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-dark-500/50 hover:bg-dark-400/50 border border-dark-400/40 backdrop-blur-sm shadow-inner transition-all"
             aria-label={`Change language, current: ${language}`}
           >
             <span className="text-lg leading-none" aria-hidden="true">{languageFlags[language]}</span>
@@ -118,12 +121,11 @@ export default function MobileHeader({
               showNotification && (
                 <button
                   onClick={onNotification}
-                  className="btn-icon text-white hover:bg-dark-600 relative"
+                  className="btn-icon text-white hover:bg-white/10 rounded-xl relative"
                   aria-label="Notifications"
                 >
                   <Bell size={24} aria-hidden="true" />
-                  {/* Notification badge */}
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" aria-label="New notifications" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-dark-700" aria-label="New notifications" />
                 </button>
               )
             )}

@@ -29,10 +29,10 @@ export default function HelpPage() {
           <p className="text-sm text-gray-300 mb-4">
             {t.help.customerSupportDesc}
           </p>
-          <button className="btn btn-primary w-full">
+          <a href="mailto:support@exfluencer.vn" className="btn btn-primary w-full flex items-center justify-center">
             <Mail size={18} className="mr-2" />
             {t.help.contactUs}
-          </button>
+          </a>
         </div>
 
         <div className="space-y-3">

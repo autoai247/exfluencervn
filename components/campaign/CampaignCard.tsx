@@ -228,7 +228,7 @@ export default function CampaignCard({
           {/* Action Buttons */}
           <div className="flex items-center gap-2 pt-3 border-t border-dark-500">
             <div className="flex-1 text-xs text-gray-400 truncate">
-              📅 {language === 'ko' ? '마감' : 'HSD'}: {campaign.deadline}
+              📅 {language === 'ko' ? '마감' : 'Hạn chót'}: {campaign.deadline}
             </div>
             <Link
               href={`${campaignUrl}`}

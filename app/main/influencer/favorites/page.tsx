@@ -76,40 +76,40 @@ export default function FavoritesPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 통계 카드 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-2 border-green-500/30 shadow-xl">
+          <div className="bg-gradient-to-br from-success/15 to-dark-700 border border-success/20 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={20} className="text-green-400" />
+              <DollarSign size={20} className="text-success" />
               <span className="text-sm text-gray-300">{t.wallet.cashPoints}</span>
             </div>
-            <div className="text-2xl font-bold text-green-400">{cashCampaigns.length}{t.favorites.items}</div>
+            <div className="text-2xl font-bold text-success">{cashCampaigns.length}{t.favorites.items}</div>
             <div className="text-xs text-gray-400 mt-1">{t.dashboard.withdrawable}</div>
           </div>
 
-          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-2 border-blue-500/30 shadow-xl">
+          <div className="bg-gradient-to-br from-secondary/15 to-dark-700 border border-secondary/20 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
-              <ShoppingBag size={20} className="text-blue-400" />
+              <ShoppingBag size={20} className="text-secondary" />
               <span className="text-sm text-gray-300">{t.wallet.shoppingPoints}</span>
             </div>
-            <div className="text-2xl font-bold text-blue-400">{pointsCampaigns.length}{t.favorites.items}</div>
+            <div className="text-2xl font-bold text-secondary">{pointsCampaigns.length}{t.favorites.items}</div>
             <div className="text-xs text-gray-400 mt-1">{t.dashboard.useInShop}</div>
           </div>
         </div>
 
         {/* 현금 캠페인 섹션 */}
         {cashCampaigns.length > 0 && (
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 px-1">
-              <DollarSign size={20} className="text-green-400" />
-              <h3 className="text-sm font-semibold text-gray-300">{t.favorites.cashCampaigns}</h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-1 h-5 bg-gradient-to-b from-success to-success/50 rounded-full" />
+              <h3 className="text-base font-semibold text-white">{t.favorites.cashCampaigns}</h3>
               <span className="text-xs text-gray-500">({cashCampaigns.length})</span>
             </div>
 
             {cashCampaigns.map((campaign) => (
-              <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl relative">
+              <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
                 {/* 제거 버튼 */}
                 <button
                   onClick={() => removeFavorite(campaign.id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-dark-600 hover:bg-dark-500 rounded-full flex items-center justify-center transition-colors z-10"
+                  className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
                 >
                   <X size={16} className="text-gray-400" />
                 </button>
@@ -117,13 +117,13 @@ export default function FavoritesPage() {
                 <Link href={`/main/influencer/campaigns/${campaign.id}`}>
                   <div className="flex gap-3">
                     {/* Thumbnail */}
-                    <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
                       <img
                         src={campaign.thumbnail}
                         alt={campaign.title}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-1 left-1 px-2 py-0.5 bg-green-500 text-white text-[10px] rounded-full font-bold">
+                      <div className="absolute top-1 left-1 px-2 py-0.5 bg-gradient-to-r from-success to-success/80 text-white text-[10px] rounded-full font-bold">
                         {t.wallet.cashPoints}
                       </div>
                     </div>
@@ -147,7 +147,7 @@ export default function FavoritesPage() {
                       </div>
 
                       <div className="mt-2">
-                        <span className="text-green-400 font-bold text-sm">
+                        <span className="text-success font-bold text-sm">
                           {formatCash(campaign.budget)}
                         </span>
                       </div>
@@ -161,19 +161,19 @@ export default function FavoritesPage() {
 
         {/* 포인트 캠페인 섹션 */}
         {pointsCampaigns.length > 0 && (
-          <div className="space-y-6">
-            <div className="flex items-center gap-2 px-1">
-              <ShoppingBag size={20} className="text-blue-400" />
-              <h3 className="text-sm font-semibold text-gray-300">{t.favorites.pointsCampaigns}</h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-1 h-5 bg-gradient-to-b from-secondary to-primary rounded-full" />
+              <h3 className="text-base font-semibold text-white">{t.favorites.pointsCampaigns}</h3>
               <span className="text-xs text-gray-500">({pointsCampaigns.length})</span>
             </div>
 
             {pointsCampaigns.map((campaign) => (
-              <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl relative">
+              <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl relative">
                 {/* 제거 버튼 */}
                 <button
                   onClick={() => removeFavorite(campaign.id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-dark-600 hover:bg-dark-500 rounded-full flex items-center justify-center transition-colors z-10"
+                  className="absolute top-3 right-3 w-8 h-8 bg-dark-700/80 hover:bg-dark-500 border border-dark-400/40 rounded-full flex items-center justify-center transition-colors z-10"
                 >
                   <X size={16} className="text-gray-400" />
                 </button>
@@ -181,13 +181,13 @@ export default function FavoritesPage() {
                 <Link href={`/main/influencer/campaigns/${campaign.id}`}>
                   <div className="flex gap-3">
                     {/* Thumbnail */}
-                    <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
                       <img
                         src={campaign.thumbnail}
                         alt={campaign.title}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-1 left-1 px-2 py-0.5 bg-blue-500 text-white text-[10px] rounded-full font-bold">
+                      <div className="absolute top-1 left-1 px-2 py-0.5 bg-gradient-to-r from-secondary to-primary text-white text-[10px] rounded-full font-bold">
                         {t.wallet.shoppingPoints}
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function FavoritesPage() {
                       </div>
 
                       <div className="mt-2">
-                        <span className="text-blue-400 font-bold text-sm">
+                        <span className="text-secondary font-bold text-sm">
                           {formatShoppingPoints(campaign.budget)}
                         </span>
                       </div>
@@ -225,14 +225,14 @@ export default function FavoritesPage() {
 
         {/* Empty State */}
         {favorites.length === 0 && (
-          <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl text-center py-12">
             <Heart size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.favorites.noCampaigns}</h3>
             <p className="text-sm text-gray-400 mb-4">
               {t.favorites.emptyMessage}
             </p>
             <Link href="/main/influencer/campaigns">
-              <button className="btn btn-primary">
+              <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 px-6 shadow-lg shadow-primary/20">
                 {t.favorites.browseCampaigns}
               </button>
             </Link>

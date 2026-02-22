@@ -118,12 +118,12 @@ export default function InfluencerProfilePage() {
       <div className="container-mobile space-y-4 py-5">
 
         {/* ── Profile Card ── */}
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/40 shadow-xl">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-primary/30 rounded-2xl p-4 shadow-xl bg-gradient-to-br from-primary/15 to-secondary/10">
           <div className="flex items-start gap-4">
             <img
               src={userProfile.avatar}
               alt={userProfile.name}
-              className="w-20 h-20 rounded-2xl border-4 border-primary object-cover flex-shrink-0"
+              className="w-20 h-20 rounded-2xl border-2 border-primary/50 object-cover flex-shrink-0 shadow-lg shadow-primary/20"
             />
             <div className="flex-1 min-w-0">
               <h2 className="text-xl font-bold text-white truncate">{userProfile.name}</h2>
@@ -131,7 +131,7 @@ export default function InfluencerProfilePage() {
                 <Star size={13} className="text-accent fill-accent" />
                 <span className="text-sm font-bold text-accent">{userProfile.stats.rating.toFixed(1)}</span>
                 <span className="text-xs text-gray-500">· {userProfile.stats.completedCampaigns} {language === 'ko' ? '캠페인' : 'chiến dịch'}</span>
-                <span className="text-xs text-green-400 font-semibold">· ER {userProfile.engagementRate}%</span>
+                <span className="text-xs text-success font-semibold">· ER {userProfile.engagementRate}%</span>
               </div>
               <div className="flex items-center gap-1 mt-1">
                 <MapPin size={12} className="text-gray-500" />
@@ -145,7 +145,7 @@ export default function InfluencerProfilePage() {
               )}
             </div>
             <Link href="/main/influencer/profile/edit">
-              <div className="w-9 h-9 bg-dark-600 rounded-xl flex items-center justify-center border border-dark-400">
+              <div className="w-9 h-9 bg-dark-700/80 rounded-xl flex items-center justify-center border border-dark-400/40 hover:border-primary/40 transition-all">
                 <Edit size={16} className="text-gray-400" />
               </div>
             </Link>
@@ -170,7 +170,7 @@ export default function InfluencerProfilePage() {
           <button
             type="button"
             onClick={shareProfile}
-            className="mt-4 w-full py-2.5 rounded-xl bg-dark-600 border border-dark-400 text-sm text-gray-300 flex items-center justify-center gap-2"
+            className="mt-4 w-full py-2.5 rounded-xl bg-dark-700/80 border border-dark-400/40 text-sm text-gray-300 flex items-center justify-center gap-2 hover:border-primary/40 hover:text-white transition-all"
           >
             {copied ? <CheckCircle size={15} className="text-accent" /> : <Share2 size={15} />}
             {copied ? (language === 'ko' ? '프로필 링크 복사됨!' : 'Đã sao chép link hồ sơ!') : (language === 'ko' ? '광고주와 프로필 공유' : 'Chia sẻ hồ sơ với nhà quảng cáo')}
@@ -180,17 +180,20 @@ export default function InfluencerProfilePage() {
         {/* ── Social Accounts ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? 'SNS 채널' : 'Kênh mạng xã hội'}</h3>
-            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">{language === 'ko' ? '편집' : 'Chỉnh sửa'}</Link>
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? 'SNS 채널' : 'Kênh mạng xã hội'}</h3>
+            </div>
+            <Link href="/main/influencer/profile/edit" className="text-xs text-primary font-medium">{language === 'ko' ? '편집' : 'Chỉnh sửa'}</Link>
           </div>
 
           {userProfile.socialAccounts.map((acc: { platform: keyof typeof platformIcons; username: string; followers: number; connected: boolean; verified: boolean; lastUpdated?: string }) => {
             const Icon = platformIcons[acc.platform];
             const bg = platformColors[acc.platform];
             return (
-              <div key={acc.platform} className="card bg-dark-600 border-2 border-dark-500 shadow-xl">
+              <div key={acc.platform} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
                 <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-xl ${bg} flex items-center justify-center flex-shrink-0`}>
+                  <div className={`w-11 h-11 rounded-xl ${bg} flex items-center justify-center flex-shrink-0 shadow-md`}>
                     <Icon size={22} className="text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -217,16 +220,19 @@ export default function InfluencerProfilePage() {
         {/* ── Rate Card ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '서비스 요금표' : 'Bảng giá dịch vụ'}</h3>
-            <Link href="/main/influencer/profile/edit" className="text-xs text-primary">{language === 'ko' ? '업데이트' : 'Cập nhật'}</Link>
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-4 bg-gradient-to-b from-accent to-yellow-400 rounded-full" />
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '서비스 요금표' : 'Bảng giá dịch vụ'}</h3>
+            </div>
+            <Link href="/main/influencer/profile/edit" className="text-xs text-primary font-medium">{language === 'ko' ? '업데이트' : 'Cập nhật'}</Link>
           </div>
 
-          <div className="card bg-dark-600 border-2 border-dark-500 shadow-xl p-0 overflow-hidden">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl overflow-hidden">
             {rateCard.map((item, i) => (
               <div
                 key={i}
                 className={`flex items-center justify-between px-4 py-3 ${
-                  i < rateCard.length - 1 ? 'border-b border-dark-500' : ''
+                  i < rateCard.length - 1 ? 'border-b border-dark-400/30' : ''
                 }`}
               >
                 <div>
@@ -238,7 +244,7 @@ export default function InfluencerProfilePage() {
                 </div>
               </div>
             ))}
-            <div className="px-4 py-2.5 bg-dark-700/50 border-t border-dark-500">
+            <div className="px-4 py-2.5 bg-dark-700/50 border-t border-dark-400/30">
               <p className="text-[11px] text-gray-500">{language === 'ko' ? '* 캠페인에 따라 가격 협의 가능. 자세한 내용은 문의해 주세요.' : '* Giá có thể thương lượng tùy chiến dịch. Liên hệ để biết thêm chi tiết.'}</p>
             </div>
           </div>
@@ -247,15 +253,18 @@ export default function InfluencerProfilePage() {
         {/* ── Past Campaigns ── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold text-gray-300">{language === 'ko' ? '완료한 캠페인' : 'Chiến dịch đã thực hiện'}</h3>
-            <Link href="/main/influencer/completed" className="text-xs text-primary">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-4 bg-gradient-to-b from-secondary to-primary rounded-full" />
+              <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '완료한 캠페인' : 'Chiến dịch đã thực hiện'}</h3>
+            </div>
+            <Link href="/main/influencer/completed" className="text-xs text-primary font-medium">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
           </div>
 
           <div className="space-y-3">
             {pastCampaigns.map(c => {
               const Icon = platformIcons[c.platform];
               return (
-                <div key={c.id} className="card bg-dark-600 border-2 border-dark-500 shadow-xl p-0 overflow-hidden flex">
+                <div key={c.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl overflow-hidden flex">
                   <img
                     src={c.thumbnail}
                     alt={c.title}
@@ -277,21 +286,24 @@ export default function InfluencerProfilePage() {
 
         {/* ── Quick Links ── */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">{language === 'ko' ? '활동' : 'Hoạt động'}</h3>
+          <div className="flex items-center gap-2 px-1">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '활동' : 'Hoạt động'}</h3>
+          </div>
 
           {[
-            { href: '/main/influencer/jobs', icon: Briefcase, label: language === 'ko' ? '진행 중인 캠페인' : 'Chiến dịch đang thực hiện', badge: '3', color: 'bg-primary/20', iconColor: 'text-primary' },
-            { href: '/main/influencer/earnings', icon: BarChart2, label: language === 'ko' ? '수입 내역' : 'Lịch sử thu nhập', color: 'bg-accent/20', iconColor: 'text-accent' },
-            { href: '/main/messages', icon: MessageCircle, label: language === 'ko' ? '메시지' : 'Tin nhắn', badge: '3', color: 'bg-blue-500/20', iconColor: 'text-blue-400' },
+            { href: '/main/influencer/jobs', icon: Briefcase, label: language === 'ko' ? '진행 중인 캠페인' : 'Chiến dịch đang thực hiện', badge: '3', bgColor: 'bg-primary/15', iconColor: 'text-primary' },
+            { href: '/main/influencer/earnings', icon: BarChart2, label: language === 'ko' ? '수입 내역' : 'Lịch sử thu nhập', bgColor: 'bg-accent/15', iconColor: 'text-accent' },
+            { href: '/main/messages', icon: MessageCircle, label: language === 'ko' ? '메시지' : 'Tin nhắn', badge: '3', bgColor: 'bg-secondary/15', iconColor: 'text-secondary' },
           ].map(item => (
             <Link key={item.href} href={item.href}>
-              <div className="flex items-center gap-3 bg-dark-600 rounded-xl px-4 py-3 border border-dark-500">
-                <div className={`w-9 h-9 ${item.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+              <div className="flex items-center gap-3 bg-dark-600/80 backdrop-blur-sm rounded-2xl px-4 py-3 border border-dark-400/40 shadow-xl">
+                <div className={`w-9 h-9 ${item.bgColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
                   <item.icon size={18} className={item.iconColor} />
                 </div>
                 <span className="text-sm font-medium text-white flex-1">{item.label}</span>
                 {item.badge && (
-                  <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full font-bold">
+                  <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full font-bold border border-primary/30">
                     {item.badge}
                   </span>
                 )}
@@ -303,7 +315,10 @@ export default function InfluencerProfilePage() {
 
         {/* ── Settings ── */}
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">{language === 'ko' ? '설정 & 지원' : 'Cài đặt & Hỗ trợ'}</h3>
+          <div className="flex items-center gap-2 px-1">
+            <div className="w-1 h-4 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{language === 'ko' ? '설정 & 지원' : 'Cài đặt & Hỗ trợ'}</h3>
+          </div>
 
           {[
             { href: '/settings/notifications', icon: Bell, label: language === 'ko' ? '알림' : 'Thông báo' },
@@ -313,8 +328,10 @@ export default function InfluencerProfilePage() {
             { href: '/privacy', icon: Shield, label: language === 'ko' ? '개인정보처리방침' : 'Chính sách bảo mật' },
           ].map(item => (
             <Link key={item.href} href={item.href}>
-              <div className="flex items-center gap-3 bg-dark-600 rounded-xl px-4 py-3 border border-dark-500">
-                <item.icon size={18} className="text-gray-400" />
+              <div className="flex items-center gap-3 bg-dark-600/80 backdrop-blur-sm rounded-2xl px-4 py-3 border border-dark-400/40 shadow-xl">
+                <div className="w-9 h-9 bg-dark-500/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <item.icon size={18} className="text-gray-400" />
+                </div>
                 <span className="text-sm text-white flex-1">{item.label}</span>
                 <ChevronRight size={16} className="text-gray-500" />
               </div>
@@ -325,7 +342,7 @@ export default function InfluencerProfilePage() {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="w-full py-3 rounded-xl bg-dark-600 border border-red-500/30 text-red-400 text-sm font-semibold flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-2xl bg-dark-600/80 backdrop-blur-sm border border-error/30 text-error text-sm font-semibold flex items-center justify-center gap-2 hover:bg-error/10 transition-all"
         >
           <LogOut size={16} />
           {language === 'ko' ? '로그아웃' : 'Đăng xuất'}

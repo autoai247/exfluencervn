@@ -66,9 +66,9 @@ export default function InviteAdvertiserPage() {
 
       <div className="container-mobile py-6 space-y-6">
         {/* Hero Section */}
-        <div className="card bg-gradient-to-br from-secondary/30 to-primary/30 border-2 border-secondary/50 shadow-xl">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-secondary/30 rounded-2xl p-4 shadow-xl bg-gradient-to-br from-secondary/20 to-primary/20">
           <div className="text-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-secondary to-primary rounded-2xl mx-auto mb-3 flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-secondary to-primary rounded-2xl mx-auto mb-3 flex items-center justify-center shadow-lg shadow-secondary/30">
               <Building2 size={32} className="text-white" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">
@@ -84,11 +84,11 @@ export default function InviteAdvertiserPage() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">
-            <div className="text-center">
+            <div className="bg-dark-700/50 rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-accent">{formatPoints(inviteStats.totalEarnings)}</div>
               <div className="text-xs text-gray-400 mt-1">{t.inviteAdvertiser.totalEarnings}</div>
             </div>
-            <div className="text-center">
+            <div className="bg-dark-700/50 rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-success">{inviteStats.activeAdvertisers}</div>
               <div className="text-xs text-gray-400 mt-1">{t.inviteAdvertiser.activeAdvertisers}</div>
             </div>
@@ -96,15 +96,15 @@ export default function InviteAdvertiserPage() {
         </div>
 
         {/* 인플루언서 혜택 */}
-        <div className="card border-2 border-primary/30 shadow-xl">
-          <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-            <Gift size={20} className="text-primary" />
-            {t.inviteAdvertiser.myBenefits}
-          </h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-primary/30 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.myBenefits}</h3>
+          </div>
 
-          <div className="space-y-6">
-            <div className="flex items-start gap-3 p-3 bg-dark-600 rounded-lg">
-              <div className="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 p-3 bg-dark-700/50 rounded-xl border border-success/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-success/30 to-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <CheckCircle size={20} className="text-success" />
               </div>
               <div className="flex-1">
@@ -113,8 +113,8 @@ export default function InviteAdvertiserPage() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3 bg-dark-600 rounded-lg">
-              <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-3 p-3 bg-dark-700/50 rounded-xl border border-primary/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary/30 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <TrendingUp size={20} className="text-primary" />
               </div>
               <div className="flex-1">
@@ -123,8 +123,8 @@ export default function InviteAdvertiserPage() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3 bg-dark-600 rounded-lg">
-              <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-3 p-3 bg-dark-700/50 rounded-xl border border-secondary/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <DollarSign size={20} className="text-secondary" />
               </div>
               <div className="flex-1">
@@ -133,8 +133,8 @@ export default function InviteAdvertiserPage() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3 bg-dark-600 rounded-lg">
-              <div className="w-10 h-10 bg-warning/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-3 p-3 bg-dark-700/50 rounded-xl border border-warning/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-warning/30 to-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Star size={20} className="text-warning" />
               </div>
               <div className="flex-1">
@@ -146,11 +146,11 @@ export default function InviteAdvertiserPage() {
         </div>
 
         {/* 광고주 혜택 */}
-        <div className="card border-2 border-accent/30 shadow-xl">
-          <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-            <Building2 size={20} className="text-accent" />
-            {t.inviteAdvertiser.brandBenefits}
-          </h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-accent/30 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-gradient-to-b from-accent to-accent/60 rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.brandBenefits}</h3>
+          </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-gray-300">
@@ -171,7 +171,7 @@ export default function InviteAdvertiserPage() {
             </div>
           </div>
 
-          <div className="mt-3 p-3 bg-info/10 border border-info/30 rounded-lg">
+          <div className="mt-3 p-3 bg-info/10 border border-info/30 rounded-xl">
             <p className="text-xs text-gray-300 text-center">
               {t.inviteAdvertiser.winWinNote}
             </p>
@@ -179,15 +179,18 @@ export default function InviteAdvertiserPage() {
         </div>
 
         {/* Invite Code */}
-        <div className="card border-2 border-dark-500/50 shadow-xl">
-          <h3 className="font-semibold text-white mb-3">{t.inviteAdvertiser.myInviteCode}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.myInviteCode}</h3>
+          </div>
 
           <div className="bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 rounded-xl p-4 mb-3">
             <div className="flex items-center justify-between mb-2">
               <span className="text-2xl font-bold text-primary tracking-wider font-mono">{INVITE_CODE}</span>
               <button
                 onClick={handleCopyCode}
-                className="btn btn-primary px-4 py-2 text-sm"
+                className="bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold shadow-lg shadow-primary/20 px-4 py-2 text-sm flex items-center gap-1"
               >
                 {copied ? <CheckCircle size={16} /> : <Copy size={16} />}
                 {copied ? t.inviteAdvertiser.copied : t.inviteAdvertiser.copyCode}
@@ -195,27 +198,33 @@ export default function InviteAdvertiserPage() {
             </div>
           </div>
 
-          <button onClick={handleCopyLink} className="btn btn-secondary w-full mb-2">
-            <Copy size={18} className="mr-2" />
+          <button
+            onClick={handleCopyLink}
+            className="w-full bg-dark-700/60 border border-dark-400/40 rounded-2xl py-3 text-sm font-semibold text-gray-300 hover:text-white hover:border-secondary/40 transition-all flex items-center justify-center gap-2 mb-2"
+          >
+            <Copy size={18} />
             {t.inviteAdvertiser.copyLink}
           </button>
 
-          <button onClick={handleShare} className="btn btn-ghost w-full">
-            <Share2 size={18} className="mr-2" />
+          <button
+            onClick={handleShare}
+            className="w-full bg-dark-700/60 border border-dark-400/40 rounded-2xl py-3 text-sm font-semibold text-gray-400 hover:text-gray-300 hover:border-dark-300/40 transition-all flex items-center justify-center gap-2"
+          >
+            <Share2 size={18} />
             {t.inviteAdvertiser.shareToAdvertiser}
           </button>
         </div>
 
         {/* How it Works */}
-        <div className="card bg-gradient-to-br from-warning/10 to-warning/5 border-2 border-warning/30 shadow-xl">
-          <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
-            <Zap size={20} className="text-warning" />
-            {t.inviteAdvertiser.howItWorks}
-          </h4>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-warning/30 rounded-2xl p-4 shadow-xl bg-gradient-to-br from-warning/10 to-warning/5">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-gradient-to-b from-warning to-warning/60 rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.howItWorks}</h3>
+          </div>
 
           <div className="space-y-3">
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20">
                 <span className="text-white font-bold text-sm">1</span>
               </div>
               <div>
@@ -225,7 +234,7 @@ export default function InviteAdvertiserPage() {
             </div>
 
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-secondary/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-secondary/20">
                 <span className="text-white font-bold text-sm">2</span>
               </div>
               <div>
@@ -235,7 +244,7 @@ export default function InviteAdvertiserPage() {
             </div>
 
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-success to-success/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-success/20">
                 <span className="text-white font-bold text-sm">3</span>
               </div>
               <div>
@@ -245,7 +254,7 @@ export default function InviteAdvertiserPage() {
             </div>
 
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
                 <span className="text-white font-bold text-sm">4</span>
               </div>
               <div>
@@ -257,22 +266,25 @@ export default function InviteAdvertiserPage() {
         </div>
 
         {/* Invite History */}
-        <div className="space-y-6">
-          <h3 className="text-sm font-semibold text-gray-400 px-1">{t.inviteAdvertiser.inviteHistory}</h3>
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 px-1">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.inviteHistory}</h3>
+          </div>
 
           {inviteHistory.map((invite) => (
-            <div key={invite.id} className="card border-2 border-dark-500/50 shadow-xl">
+            <div key={invite.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <Building2 size={16} className="text-secondary" />
                     <h4 className="font-semibold text-white">{invite.name}</h4>
                     {invite.status === 'active' ? (
-                      <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full">
+                      <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full border border-success/30 font-medium">
                         {t.inviteAdvertiser.statusActive}
                       </span>
                     ) : (
-                      <span className="px-2 py-0.5 bg-warning/20 text-warning text-xs rounded-full">
+                      <span className="px-2 py-0.5 bg-warning/20 text-warning text-xs rounded-full border border-warning/30 font-medium">
                         {t.inviteAdvertiser.statusPending}
                       </span>
                     )}
@@ -289,7 +301,7 @@ export default function InviteAdvertiserPage() {
               </div>
 
               {invite.status === 'active' && (
-                <div className="pt-3 border-t border-dark-500">
+                <div className="pt-3 border-t border-dark-500/50">
                   <button className="text-xs text-primary hover:text-primary-light flex items-center gap-1">
                     <Users size={14} />
                     {t.inviteAdvertiser.viewBrandCampaigns}
@@ -301,7 +313,7 @@ export default function InviteAdvertiserPage() {
           ))}
 
           {inviteHistory.length === 0 && (
-            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-8">
+            <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl text-center py-8">
               <Building2 size={48} className="text-gray-600 mx-auto mb-2" />
               <p className="text-gray-400">{t.inviteAdvertiser.noInvites}</p>
               <p className="text-sm text-gray-500 mt-1">{t.inviteAdvertiser.noInvitesDesc}</p>
@@ -310,11 +322,11 @@ export default function InviteAdvertiserPage() {
         </div>
 
         {/* Success Tips */}
-        <div className="card bg-primary/10 border-2 border-primary/30 shadow-xl">
-          <h4 className="font-semibold text-white mb-2 flex items-center gap-2">
-            <TrendingUp size={18} className="text-primary" />
-            {t.inviteAdvertiser.successTipsTitle}
-          </h4>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-primary/30 rounded-2xl p-4 shadow-xl bg-primary/5">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.inviteAdvertiser.successTipsTitle}</h3>
+          </div>
           <ul className="text-xs text-gray-300 space-y-2">
             <li>{t.inviteAdvertiser.successTip1}</li>
             <li>{t.inviteAdvertiser.successTip2}</li>

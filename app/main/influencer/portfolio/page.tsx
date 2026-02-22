@@ -98,7 +98,8 @@ export default function PortfolioPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-dark-700/90 backdrop-blur-md border-b border-dark-400/40">
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="btn-icon text-white">
@@ -124,50 +125,54 @@ export default function PortfolioPage() {
       </div>
 
       <div className="container-mobile py-6 space-y-6">
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
-          <h3 className="text-sm font-semibold text-white mb-4">📊 {t.portfolio.statistics}</h3>
+        {/* Statistics */}
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-primary/30 rounded-2xl p-4 shadow-xl bg-gradient-to-br from-primary/15 to-secondary/10">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.portfolio.statistics}</h3>
+          </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-dark-600 rounded-lg p-3">
+            <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 text-center">
               <Eye size={20} className="text-primary mx-auto mb-1" />
-              <div className="text-lg font-bold text-white text-center">{formatCompactNumber(totalViews)}</div>
-              <div className="text-xs text-gray-400 text-center">{t.portfolio.totalViews}</div>
+              <div className="text-lg font-bold text-white">{formatCompactNumber(totalViews)}</div>
+              <div className="text-xs text-gray-400">{t.portfolio.totalViews}</div>
             </div>
-            <div className="bg-dark-600 rounded-lg p-3">
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-center">
               <Heart size={20} className="text-red-400 mx-auto mb-1" />
-              <div className="text-lg font-bold text-white text-center">{formatCompactNumber(totalLikes)}</div>
-              <div className="text-xs text-gray-400 text-center">{t.portfolio.totalLikes}</div>
+              <div className="text-lg font-bold text-white">{formatCompactNumber(totalLikes)}</div>
+              <div className="text-xs text-gray-400">{t.portfolio.totalLikes}</div>
             </div>
-            <div className="bg-dark-600 rounded-lg p-3">
+            <div className="bg-accent/10 border border-accent/20 rounded-xl p-3 text-center">
               <TrendingUp size={20} className="text-accent mx-auto mb-1" />
-              <div className="text-lg font-bold text-accent text-center">{avgEngagement}%</div>
-              <div className="text-xs text-gray-400 text-center">{t.portfolio.avgEngagement}</div>
+              <div className="text-lg font-bold text-accent">{avgEngagement}%</div>
+              <div className="text-xs text-gray-400">{t.portfolio.avgEngagement}</div>
             </div>
-            <div className="bg-dark-600 rounded-lg p-3">
+            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-center">
               <Star size={20} className="text-yellow-400 mx-auto mb-1" />
-              <div className="text-lg font-bold text-yellow-400 text-center">{avgRating}</div>
-              <div className="text-xs text-gray-400 text-center">{t.portfolio.avgRating}</div>
+              <div className="text-lg font-bold text-yellow-400">{avgRating}</div>
+              <div className="text-xs text-gray-400">{t.portfolio.avgRating}</div>
             </div>
           </div>
         </div>
 
         {/* Platform Filter */}
-        <div className="flex gap-2 overflow-x-auto">
+        <div className="flex gap-2 overflow-x-auto pb-1">
           <button
             onClick={() => setFilter('all')}
-            className={`flex-shrink-0 px-4 py-2.5 rounded-full font-bold text-sm transition-all ${
+            className={`flex-shrink-0 px-4 py-2.5 rounded-2xl font-bold text-sm transition-all ${
               filter === 'all'
-                ? 'bg-primary text-white shadow-lg'
-                : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {t.portfolio.filterAll} ({mockPortfolio.length})
           </button>
           <button
             onClick={() => setFilter('instagram')}
-            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-full font-bold text-sm transition-all ${
+            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-2xl font-bold text-sm transition-all ${
               filter === 'instagram'
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             <FaInstagram size={20} />
@@ -175,10 +180,10 @@ export default function PortfolioPage() {
           </button>
           <button
             onClick={() => setFilter('tiktok')}
-            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-full font-bold text-sm transition-all ${
+            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-2xl font-bold text-sm transition-all ${
               filter === 'tiktok'
-                ? 'bg-black text-white shadow-lg border-2 border-cyan-400'
-                : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                ? 'bg-black text-white shadow-md border border-cyan-400/60'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             <FaTiktok size={20} />
@@ -186,10 +191,10 @@ export default function PortfolioPage() {
           </button>
           <button
             onClick={() => setFilter('youtube')}
-            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-full font-bold text-sm transition-all ${
+            className={`flex items-center gap-2 flex-shrink-0 px-4 py-2.5 rounded-2xl font-bold text-sm transition-all ${
               filter === 'youtube'
-                ? 'bg-red-600 text-white shadow-lg'
-                : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                ? 'bg-red-600 text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             <FaYoutube size={20} />
@@ -199,7 +204,7 @@ export default function PortfolioPage() {
 
         <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-1 gap-4'}>
           {filteredPortfolio.length === 0 ? (
-            <div className="card border-2 border-dark-500/50 shadow-xl text-center py-12">
+            <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl text-center py-12">
               <Award size={48} className="text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 mb-1">{t.portfolio.emptyState}</p>
               <p className="text-sm text-gray-500">
@@ -214,7 +219,7 @@ export default function PortfolioPage() {
             filteredPortfolio.map((item) => {
               const Icon = platformIcons[item.platform];
               return (
-              <div key={item.id} className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
+              <div key={item.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl overflow-hidden">
                 <div
                   className="relative aspect-square cursor-pointer group"
                   onClick={() => {
@@ -228,11 +233,11 @@ export default function PortfolioPage() {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                   <div className="absolute top-2 left-2">
-                    <div className="w-8 h-8 bg-dark-700/90 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-dark-700/90 backdrop-blur-sm rounded-lg flex items-center justify-center border border-dark-500/40">
                       <Icon size={16} className={platformColors[item.platform]} />
                     </div>
                   </div>
-                  <div className="absolute top-2 right-2 px-2 py-1 bg-dark-700/90 rounded-full flex items-center gap-1">
+                  <div className="absolute top-2 right-2 px-2 py-1 bg-dark-700/90 backdrop-blur-sm rounded-full flex items-center gap-1 border border-dark-500/30">
                     <Star size={12} className="text-yellow-400 fill-yellow-400" />
                     <span className="text-xs font-bold text-white">{item.rating}</span>
                   </div>
@@ -265,7 +270,7 @@ export default function PortfolioPage() {
             filteredPortfolio.map((item) => {
               const Icon = platformIcons[item.platform];
               return (
-              <div key={item.id} className="card border-2 border-dark-500/50 shadow-xl p-0 overflow-hidden">
+              <div key={item.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl overflow-hidden">
                 <div
                   className="relative h-48 cursor-pointer group"
                   onClick={() => {
@@ -279,11 +284,11 @@ export default function PortfolioPage() {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute top-3 left-3">
-                    <div className="w-10 h-10 bg-dark-700/80 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-dark-700/80 backdrop-blur-sm rounded-xl flex items-center justify-center border border-dark-500/30">
                       <Icon size={20} className={platformColors[item.platform]} />
                     </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-3 py-1 bg-dark-700/80 rounded-full flex items-center gap-1">
+                  <div className="absolute top-3 right-3 px-3 py-1 bg-dark-700/80 backdrop-blur-sm rounded-full flex items-center gap-1 border border-dark-500/20">
                     <Star size={14} className="text-yellow-400 fill-yellow-400" />
                     <span className="text-sm font-bold text-white">{item.rating}</span>
                   </div>
@@ -294,32 +299,32 @@ export default function PortfolioPage() {
                 </div>
                 <div className="p-4">
                   <div className="grid grid-cols-4 gap-2 mb-3">
-                    <div className="text-center">
-                      <Eye size={16} className="text-gray-400 mx-auto mb-1" />
+                    <div className="bg-primary/10 border border-primary/20 rounded-xl p-2 text-center">
+                      <Eye size={16} className="text-primary mx-auto mb-1" />
                       <div className="text-xs font-bold text-white">{formatCompactNumber(item.metrics.views)}</div>
                     </div>
-                    <div className="text-center">
+                    <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-2 text-center">
                       <Heart size={16} className="text-red-400 mx-auto mb-1" />
                       <div className="text-xs font-bold text-white">{formatCompactNumber(item.metrics.likes)}</div>
                     </div>
-                    <div className="text-center">
+                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-2 text-center">
                       <MessageCircle size={16} className="text-blue-400 mx-auto mb-1" />
                       <div className="text-xs font-bold text-white">{formatCompactNumber(item.metrics.comments)}</div>
                     </div>
-                    <div className="text-center">
+                    <div className="bg-accent/10 border border-accent/20 rounded-xl p-2 text-center">
                       <TrendingUp size={16} className="text-accent mx-auto mb-1" />
                       <div className="text-xs font-bold text-accent">{item.metrics.engagement}%</div>
                     </div>
                   </div>
                   {item.feedback && (
-                    <div className="bg-dark-600 rounded-lg p-3 mb-3">
+                    <div className="bg-dark-500/60 border border-dark-400/30 rounded-xl p-3 mb-3">
                       <p className="text-xs text-gray-300 italic">"{item.feedback}"</p>
                     </div>
                   )}
-                  <div className="flex items-center justify-between pt-3 border-t border-dark-500">
+                  <div className="flex items-center justify-between pt-3 border-t border-dark-400/30">
                     <div className="text-xs text-gray-400">{item.publishedDate}</div>
-                    <a href={item.contentUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
-                      <ExternalLink size={14} className="mr-1" />{t.portfolio.viewContent}
+                    <a href={item.contentUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 bg-gradient-to-r from-primary to-secondary text-white px-3 py-1.5 rounded-xl text-xs font-semibold shadow-md shadow-primary/20">
+                      <ExternalLink size={14} />{t.portfolio.viewContent}
                     </a>
                   </div>
                 </div>
@@ -340,12 +345,12 @@ export default function PortfolioPage() {
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-4 bg-dark-700/50">
+          <div className="flex items-center justify-between px-4 py-4 bg-dark-700/70 backdrop-blur-md border-b border-dark-400/30">
             <div className="flex items-center gap-3">
               {(() => {
                 const Icon = platformIcons[selectedPortfolio.platform];
                 return (
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-dark-600`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-dark-600/80 border border-dark-400/30`}>
                     <Icon size={18} className={platformColors[selectedPortfolio.platform]} />
                   </div>
                 );
@@ -361,7 +366,7 @@ export default function PortfolioPage() {
                 setLightboxImage(null);
                 setSelectedPortfolio(null);
               }}
-              className="btn-icon text-white hover:bg-dark-600"
+              className="btn-icon text-white hover:bg-dark-600/80"
             >
               <X size={24} />
             </button>
@@ -372,36 +377,36 @@ export default function PortfolioPage() {
             <img
               src={lightboxImage}
               alt={selectedPortfolio.campaignTitle}
-              className="max-w-full max-h-full object-contain rounded-lg"
+              className="max-w-full max-h-full object-contain rounded-2xl"
             />
           </div>
 
           {/* Footer - Metrics */}
-          <div className="bg-dark-700/50 px-4 py-4">
+          <div className="bg-dark-700/70 backdrop-blur-md border-t border-dark-400/30 px-4 py-4">
             <div className="grid grid-cols-4 gap-3 mb-3">
-              <div className="text-center">
-                <Eye size={18} className="text-gray-400 mx-auto mb-1" />
+              <div className="bg-primary/10 border border-primary/20 rounded-xl p-2 text-center">
+                <Eye size={18} className="text-primary mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.views)}</div>
                 <div className="text-xs text-gray-400">{language === 'ko' ? '조회수' : 'Lượt xem'}</div>
               </div>
-              <div className="text-center">
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-2 text-center">
                 <Heart size={18} className="text-red-400 mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.likes)}</div>
                 <div className="text-xs text-gray-400">{language === 'ko' ? '좋아요' : 'Lượt thích'}</div>
               </div>
-              <div className="text-center">
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-2 text-center">
                 <MessageCircle size={18} className="text-blue-400 mx-auto mb-1" />
                 <div className="text-sm font-bold text-white">{formatCompactNumber(selectedPortfolio.metrics.comments)}</div>
                 <div className="text-xs text-gray-400">{language === 'ko' ? '댓글' : 'Bình luận'}</div>
               </div>
-              <div className="text-center">
+              <div className="bg-accent/10 border border-accent/20 rounded-xl p-2 text-center">
                 <TrendingUp size={18} className="text-accent mx-auto mb-1" />
                 <div className="text-sm font-bold text-accent">{selectedPortfolio.metrics.engagement}%</div>
                 <div className="text-xs text-gray-400">{language === 'ko' ? '참여율' : 'Tương tác'}</div>
               </div>
             </div>
             {selectedPortfolio.feedback && (
-              <div className="bg-dark-600/50 rounded-lg p-3 mb-2">
+              <div className="bg-dark-600/60 border border-dark-400/30 rounded-xl p-3 mb-3">
                 <p className="text-sm text-gray-300 italic">"{selectedPortfolio.feedback}"</p>
               </div>
             )}
@@ -409,7 +414,7 @@ export default function PortfolioPage() {
               href={selectedPortfolio.contentUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn bg-primary text-white w-full flex items-center justify-center gap-2"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold py-3 shadow-lg shadow-primary/20"
               onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink size={18} />

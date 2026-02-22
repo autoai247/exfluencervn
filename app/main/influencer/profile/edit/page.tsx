@@ -106,7 +106,7 @@ export default function EditProfilePage() {
   return (
     <div className="min-h-screen bg-dark-700">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-dark-800/80 backdrop-blur-sm border-b border-dark-400/40 px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="btn-icon text-white">
@@ -114,8 +114,11 @@ export default function EditProfilePage() {
             </button>
             <h1 className="text-lg font-bold text-white">{t.profile.edit || 'Chỉnh sửa hồ sơ'}</h1>
           </div>
-          <button onClick={handleSubmit} className="btn btn-primary text-sm">
-            <Save size={18} className="mr-1" />
+          <button
+            onClick={handleSubmit}
+            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 text-sm"
+          >
+            <Save size={18} />
             {t.common.save || 'Lưu'}
           </button>
         </div>
@@ -124,20 +127,21 @@ export default function EditProfilePage() {
       <form onSubmit={handleSubmit} className="container-mobile space-y-8 py-6">
 
         {/* ─── 1. Basic Info ─── */}
-        <div className="space-y-4">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-4">
           <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
             <User size={14} /> {language === 'ko' ? '기본 정보' : 'Thông tin cơ bản'}
           </h3>
 
           <div>
-            <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '이름' : 'Họ và tên'} <span className="text-error">*</span></label>
+            <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '이름' : 'Họ và tên'} <span className="text-primary">*</span></label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Nguyen Thi Lan"
-              className="input"
+              className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
             />
           </div>
 
@@ -149,18 +153,18 @@ export default function EditProfilePage() {
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="+84 90 123 4567"
-                className="input"
+                className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Zalo <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">Zalo <span className="text-primary">*</span></label>
               <input
                 type="tel"
                 required
                 value={formData.zalo}
                 onChange={(e) => setFormData({ ...formData, zalo: e.target.value })}
                 placeholder="+84 90 123 4567"
-                className="input"
+                className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
               />
             </div>
           </div>
@@ -172,15 +176,18 @@ export default function EditProfilePage() {
               onChange={(e) => setFormData({ ...formData, bio: e.target.value.slice(0, 150) })}
               rows={2}
               placeholder={language === 'ko' ? '예: HCM의 뷰티 크리에이터, 스킨케어 및 메이크업 리뷰 전문...' : 'VD: Beauty creator tại HCM, chuyên review skincare và makeup...'}
-              className="input resize-none"
+              className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors resize-none"
             />
-            <p className="text-xs text-gray-600 text-right mt-0.5">{formData.bio.length}/150</p>
+            <p className="text-xs text-gray-500 text-right mt-0.5">{formData.bio.length}/150</p>
           </div>
         </div>
 
         {/* ─── 2. SNS Accounts ─── */}
         <div className="space-y-4">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? 'SNS 계정' : 'Tài khoản mạng xã hội'}</h3>
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider">{language === 'ko' ? 'SNS 계정' : 'Tài khoản mạng xã hội'}</h3>
+          </div>
           <p className="text-xs text-gray-500 -mt-2">{language === 'ko' ? '활동 중인 채널을 입력하세요' : 'Điền các kênh bạn đang hoạt động'}</p>
 
           {[
@@ -189,7 +196,7 @@ export default function EditProfilePage() {
             { key: 'youtube', followersKey: 'youtubeFollowers', icon: <FaYoutube className="text-red-500" />, label: 'YouTube', placeholder: 'https://youtube.com/@channel' },
             { key: 'facebook', followersKey: 'facebookFollowers', icon: <FaFacebook className="text-blue-500" />, label: 'Facebook', placeholder: 'https://facebook.com/username' },
           ].map(({ key, followersKey, icon, label, placeholder }) => (
-            <div key={key} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
+            <div key={key} className="bg-dark-700/50 border border-dark-400/30 rounded-2xl p-4">
               <div className="flex items-center gap-2 mb-3">
                 {icon}
                 <span className="text-sm font-semibold text-white">{label}</span>
@@ -200,14 +207,14 @@ export default function EditProfilePage() {
                   value={(formData as any)[key]}
                   onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
                   placeholder={placeholder}
-                  className="input col-span-2 text-sm"
+                  className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors col-span-2 text-sm"
                 />
                 <input
                   type="number"
                   value={(formData as any)[followersKey]}
                   onChange={(e) => setFormData({ ...formData, [followersKey]: e.target.value })}
                   placeholder="Followers"
-                  className="input text-sm"
+                  className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors text-sm"
                   min="0"
                 />
               </div>
@@ -216,17 +223,20 @@ export default function EditProfilePage() {
         </div>
 
         {/* ─── 3. Demographics ─── */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '개인 정보' : 'Thông tin cá nhân'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-4">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            {language === 'ko' ? '개인 정보' : 'Thông tin cá nhân'}
+          </h3>
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '성별' : 'Giới tính'} <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '성별' : 'Giới tính'} <span className="text-primary">*</span></label>
               <select
                 required
                 value={formData.gender}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                className="input"
+                className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors [color-scheme:dark]"
               >
                 <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
                 <option value="female">{language === 'ko' ? '여성' : 'Nữ'}</option>
@@ -236,12 +246,12 @@ export default function EditProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '연령대' : 'Độ tuổi'} <span className="text-error">*</span></label>
+              <label className="text-sm font-medium text-gray-300 mb-1.5 block">{language === 'ko' ? '연령대' : 'Độ tuổi'} <span className="text-primary">*</span></label>
               <select
                 required
                 value={formData.ageRange}
                 onChange={(e) => setFormData({ ...formData, ageRange: e.target.value })}
-                className="input"
+                className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors [color-scheme:dark]"
               >
                 <option value="">{language === 'ko' ? '선택' : 'Chọn'}</option>
                 <option value="18-24">18-24</option>
@@ -253,7 +263,7 @@ export default function EditProfilePage() {
 
             <div>
               <label className="text-sm font-medium text-gray-300 mb-2 block">
-                {language === 'ko' ? '도시' : 'Thành phố'} <span className="text-error">*</span>
+                {language === 'ko' ? '도시' : 'Thành phố'} <span className="text-primary">*</span>
                 {formData.location.length > 0 && (
                   <span className="ml-2 text-xs text-primary font-normal">{formData.location.length}{language === 'ko' ? '개 선택' : ' đã chọn'}</span>
                 )}
@@ -296,7 +306,7 @@ export default function EditProfilePage() {
                         className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                           formData.location.includes(city.value)
                             ? 'bg-primary/20 border-primary text-primary'
-                            : 'bg-dark-700 border-dark-400 text-gray-400'
+                            : 'bg-dark-700/50 border-dark-400/40 text-gray-400 hover:border-primary/30'
                         }`}
                       >
                         {language === 'ko' ? city.ko : city.vi}
@@ -310,10 +320,13 @@ export default function EditProfilePage() {
         </div>
 
         {/* ─── 4. Content Categories ─── */}
-        <div className="space-y-3">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '콘텐츠 분야' : 'Lĩnh vực nội dung'} <span className="text-error">*</span></h3>
-            <span className="text-xs font-semibold text-gray-500">
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              {language === 'ko' ? '콘텐츠 분야' : 'Lĩnh vực nội dung'} <span className="text-primary">*</span>
+            </h3>
+            <span className="text-xs font-semibold text-gray-400">
               {formData.categories.length}{language === 'ko' ? '개 선택' : ' đã chọn'}
             </span>
           </div>
@@ -333,8 +346,8 @@ export default function EditProfilePage() {
                     selected
                       ? 'bg-primary/20 border-primary text-white'
                       : disabled
-                      ? 'bg-dark-700 border-dark-600 text-gray-600 cursor-not-allowed'
-                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                      ? 'bg-dark-700/30 border-dark-400/20 text-gray-600 cursor-not-allowed'
+                      : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                   }`}
                 >
                   {language === 'ko' ? cat.labelKo : cat.labelVi}
@@ -345,8 +358,11 @@ export default function EditProfilePage() {
         </div>
 
         {/* ─── 5. Lifestyle ─── */}
-        <div className="space-y-5">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '라이프스타일 정보' : 'Thông tin cuộc sống'}</h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-5">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            {language === 'ko' ? '라이프스타일 정보' : 'Thông tin cuộc sống'}
+          </h3>
           <p className="text-xs text-gray-500 -mt-2">{language === 'ko' ? '캠페인 매칭 향상에 도움이 됩니다' : 'Giúp ghép chiến dịch phù hợp hơn (xe, du lịch, gia đình...)'}</p>
 
           {/* Vehicle */}
@@ -366,7 +382,7 @@ export default function EditProfilePage() {
                   className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                     formData.vehicle === v.value
                       ? 'bg-primary/20 border-primary text-white'
-                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                      : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                   }`}
                 >
                   {language === 'ko' ? v.labelKo : v.labelVi}
@@ -397,7 +413,7 @@ export default function EditProfilePage() {
                   className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                     formData.maritalStatus === m.value
                       ? 'bg-primary/20 border-primary text-white'
-                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                      : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                   }`}
                 >
                   {m.label}
@@ -425,7 +441,7 @@ export default function EditProfilePage() {
                     className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                       formData.childrenCount === c.value
                         ? 'bg-primary/20 border-primary text-white'
-                        : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                        : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                     }`}
                   >
                     {c.label}
@@ -461,7 +477,7 @@ export default function EditProfilePage() {
                           className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                             sel
                               ? 'bg-secondary/20 border-secondary text-white'
-                              : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-secondary/50'
+                              : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-secondary/50'
                           }`}
                         >
                           {a.label}
@@ -490,7 +506,7 @@ export default function EditProfilePage() {
                   className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                     formData.travelFrequency === tf.value
                       ? 'bg-primary/20 border-primary text-white'
-                      : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                      : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                   }`}
                 >
                   {language === 'ko' ? tf.labelKo : tf.labelVi}
@@ -505,7 +521,7 @@ export default function EditProfilePage() {
             <select
               value={formData.occupation}
               onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
-              className="input"
+              className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors [color-scheme:dark]"
             >
               <option value="">{language === 'ko' ? '공개하지 않음' : 'Không muốn tiết lộ'}</option>
               <option value="student">{language === 'ko' ? '학생' : 'Sinh viên'}</option>
@@ -522,8 +538,11 @@ export default function EditProfilePage() {
 
         {/* ─── 7. Category-specific extras ─── */}
         {(isBeauty || isFashion || isPet) && (
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">{language === 'ko' ? '추가 정보' : 'Thông tin bổ sung'}</h3>
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-4">
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              {language === 'ko' ? '추가 정보' : 'Thông tin bổ sung'}
+            </h3>
 
             {/* Beauty: skin type */}
             {isBeauty && (
@@ -544,7 +563,7 @@ export default function EditProfilePage() {
                       className={`px-3 py-1.5 rounded-full text-xs border-2 transition-all ${
                         formData.skinType === s.value
                           ? 'bg-pink-500/20 border-pink-500 text-white'
-                          : 'bg-dark-600 border-dark-500 text-gray-300'
+                          : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-pink-500/40'
                       }`}
                     >
                       {language === 'ko' ? s.labelKo : s.labelVi}
@@ -564,7 +583,7 @@ export default function EditProfilePage() {
                     value={formData.height}
                     onChange={(e) => setFormData({ ...formData, height: e.target.value })}
                     placeholder="165"
-                    className="input"
+                    className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
                     min="140"
                     max="220"
                   />
@@ -576,7 +595,7 @@ export default function EditProfilePage() {
                     value={formData.weight}
                     onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                     placeholder="52"
-                    className="input"
+                    className="w-full px-4 py-2.5 bg-dark-700/50 border border-dark-400/40 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
                     min="30"
                     max="150"
                   />
@@ -618,7 +637,7 @@ export default function EditProfilePage() {
                         className={`py-2 rounded-xl text-xs font-semibold border-2 transition-all ${
                           sel
                             ? 'bg-primary/20 border-primary text-white'
-                            : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-primary/50'
+                            : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-primary/50'
                         }`}
                       >
                         {pt.label}
@@ -632,8 +651,9 @@ export default function EditProfilePage() {
         )}
 
         {/* ─── 8. Pricing ─── */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl space-y-3">
+          <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
             <DollarSign size={14} /> {language === 'ko' ? '희망 게시물 단가' : 'Mức phí mong muốn / bài đăng'}
           </h3>
           <div className="grid grid-cols-2 gap-2">
@@ -645,7 +665,7 @@ export default function EditProfilePage() {
                 className={`py-2.5 rounded-xl text-sm font-semibold border-2 transition-all ${
                   formData.pricePerPost === p.value
                     ? 'bg-accent/20 border-accent text-white'
-                    : 'bg-dark-600 border-dark-500 text-gray-300 hover:border-accent/50'
+                    : 'bg-dark-700/50 border-dark-400/40 text-gray-300 hover:border-accent/50'
                 }`}
               >
                 {language === 'ko' ? p.labelKo : p.labelVi}
@@ -655,8 +675,11 @@ export default function EditProfilePage() {
           <p className="text-xs text-gray-500">{language === 'ko' ? '참고용이며, 광고주와 협의 가능합니다' : 'Chỉ mang tính tham khảo, có thể thỏa thuận với nhà QC'}</p>
         </div>
 
-        <button type="submit" className="btn btn-primary w-full py-4 text-base font-black">
-          <Save size={20} className="mr-2" />
+        <button
+          type="submit"
+          className="w-full py-4 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-black text-base hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+        >
+          <Save size={20} />
           {language === 'ko' ? '프로필 저장' : 'Lưu hồ sơ'}
         </button>
 

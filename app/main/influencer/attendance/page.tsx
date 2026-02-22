@@ -111,14 +111,14 @@ export default function AttendancePage() {
 
       <div className="container-mobile py-6 space-y-6">
         {/* Hero Stats */}
-        <div className="card bg-gradient-to-br from-orange-500/30 to-yellow-500/20 border-2 border-orange-500/40 shadow-xl">
-          <div className="text-center mb-4">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl bg-gradient-to-br from-orange-500/20 to-yellow-500/10">
+          <div className="text-center mb-5">
             <div className="text-7xl mb-3">🔥</div>
             <div className="text-5xl font-bold text-white mb-2">{attendanceData.currentStreak}</div>
             <div className="text-sm text-gray-300 mb-3">{t.attendance.streak} {t.attendance.days}</div>
 
             {nextMilestone && (
-              <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full">
+              <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full shadow-lg shadow-orange-500/20">
                 <span className="text-white font-bold text-sm">
                   {language === 'ko'
                     ? `${nextMilestone.label}까지 ${daysUntilNextMilestone}${t.attendance.days} 남음!`
@@ -128,21 +128,21 @@ export default function AttendancePage() {
             )}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-orange-500/30">
-            <div className="text-center">
-              <Calendar size={20} className="text-white mx-auto mb-1" />
+          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-orange-500/20">
+            <div className="bg-dark-600/60 backdrop-blur-sm border border-dark-400/30 rounded-xl p-3 text-center">
+              <Calendar size={20} className="text-primary mx-auto mb-1" />
               <div className="text-lg font-bold text-white">{attendanceData.totalDays}</div>
-              <div className="text-xs text-gray-300">{t.attendance.totalCheckins}</div>
+              <div className="text-xs text-gray-400">{t.attendance.totalCheckins}</div>
             </div>
-            <div className="text-center">
+            <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3 text-center">
               <Flame size={20} className="text-orange-400 mx-auto mb-1" />
               <div className="text-lg font-bold text-orange-400">{attendanceData.currentStreak}</div>
-              <div className="text-xs text-gray-300">{t.attendance.streak}</div>
+              <div className="text-xs text-gray-400">{t.attendance.streak}</div>
             </div>
-            <div className="text-center">
+            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-center">
               <Gift size={20} className="text-yellow-400 mx-auto mb-1" />
               <div className="text-lg font-bold text-yellow-400">{formatShoppingPoints(attendanceData.totalPoints)}</div>
-              <div className="text-xs text-gray-300">{t.attendance.rewards}</div>
+              <div className="text-xs text-gray-400">{t.attendance.rewards}</div>
             </div>
           </div>
         </div>
@@ -151,13 +151,13 @@ export default function AttendancePage() {
         {!todayChecked ? (
           <button
             onClick={handleCheckIn}
-            className="w-full btn bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white border-0 text-xl font-bold py-6 shadow-lg shadow-orange-500/30 animate-pulse"
+            className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white rounded-2xl font-semibold text-xl py-5 shadow-lg shadow-orange-500/30 animate-pulse transition-all"
           >
-            <Check size={32} className="mr-3" />
+            <Check size={32} />
             {t.attendance.checkIn} ({formatShoppingPoints(todayReward.points)})
           </button>
         ) : (
-          <div className="card bg-gradient-to-r from-success/20 to-success/5 border-2 border-success/30 shadow-xl text-center py-6">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-success/30 rounded-2xl p-6 shadow-xl bg-gradient-to-r from-success/15 to-success/5 text-center">
             <Check size={48} className="text-success mx-auto mb-3" />
             <h3 className="text-xl font-bold text-white mb-2">{t.attendance.alreadyChecked}</h3>
             <p className="text-sm text-gray-300">{t.attendance.comeBackTomorrow}</p>
@@ -166,11 +166,11 @@ export default function AttendancePage() {
         )}
 
         {/* Weekly Progress */}
-        <div className="card border-2 border-dark-500/50 shadow-xl">
-          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Calendar size={20} className="text-primary" />
-            {t.attendance.calendar}
-          </h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.attendance.calendar}</h3>
+          </div>
 
           <div className="grid grid-cols-7 gap-2">
             {dailyRewards.map((item, index) => {
@@ -183,12 +183,12 @@ export default function AttendancePage() {
                   <div
                     className={`w-full aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition-all ${
                       isPast
-                        ? 'bg-success/20 border-2 border-success'
+                        ? 'bg-success/20 border border-success/50'
                         : isToday && !todayChecked
-                        ? 'bg-gradient-to-br from-orange-500 to-yellow-500 border-2 border-yellow-400 animate-pulse shadow-lg shadow-orange-500/50'
+                        ? 'bg-gradient-to-br from-orange-500 to-yellow-500 border border-yellow-400/50 animate-pulse shadow-lg shadow-orange-500/40'
                         : isToday && todayChecked
-                        ? 'bg-success/20 border-2 border-success'
-                        : 'bg-dark-600 border-2 border-dark-500'
+                        ? 'bg-success/20 border border-success/50'
+                        : 'bg-dark-500/60 border border-dark-400/30'
                     }`}
                   >
                     <div className="text-[10px] font-bold text-white">DAY {dayNumber}</div>
@@ -203,7 +203,7 @@ export default function AttendancePage() {
                       </div>
                     )}
                     {dayNumber === 7 && (
-                      <div className="absolute -top-2 -right-2 bg-accent text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">
+                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-accent to-secondary text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">
                         3K
                       </div>
                     )}
@@ -213,7 +213,7 @@ export default function AttendancePage() {
             })}
           </div>
 
-          <div className="mt-4 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/30 rounded-lg p-3">
+          <div className="mt-4 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/20 rounded-xl p-3">
             <p className="text-xs text-gray-300 text-center">
               💡 {language === 'ko' ? '매일 출석하면 7일마다 총' : 'Điểm danh mỗi ngày, mỗi 7 ngày nhận tổng'} <span className="text-orange-400 font-bold">{formatShoppingPoints(dailyRewards.reduce((sum, d) => sum + d.points, 0))}</span> {language === 'ko' ? '획득!' : '!'}
             </p>
@@ -221,13 +221,13 @@ export default function AttendancePage() {
         </div>
 
         {/* Streak Milestones */}
-        <div className="space-y-6">
-          <h3 className="text-lg font-bold text-white px-1 flex items-center gap-2">
-            <Trophy size={20} className="text-yellow-400" />
-            {t.attendance.rewards}
-          </h3>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 px-1">
+            <div className="w-1 h-4 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.attendance.rewards}</h3>
+          </div>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {streakMilestones.map((milestone, index) => {
               const Icon = milestone.icon;
               const isCompleted = attendanceData.claimedMilestones.includes(milestone.days);
@@ -237,21 +237,21 @@ export default function AttendancePage() {
               return (
                 <div
                   key={milestone.days}
-                  className={`card transition-all shadow-xl ${
+                  className={`bg-dark-600/80 backdrop-blur-sm border rounded-2xl p-4 shadow-xl transition-all ${
                     isCompleted
-                      ? 'bg-gradient-to-r from-success/20 to-success/5 border-2 border-success/30'
+                      ? 'border-success/30 bg-gradient-to-r from-success/15 to-success/5'
                       : isCurrent
-                      ? 'bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30'
-                      : 'bg-dark-600 border-2 border-dark-500 opacity-70'
+                      ? 'border-primary/30 bg-gradient-to-r from-primary/15 to-secondary/10'
+                      : 'border-dark-400/40 opacity-70'
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0 ${
                       isCompleted
-                        ? 'bg-success'
+                        ? 'bg-gradient-to-br from-success to-success/70'
                         : isCurrent
                         ? `bg-gradient-to-br from-${milestone.color}-500 to-${milestone.color}-600`
-                        : 'bg-dark-500'
+                        : 'bg-dark-500/80'
                     }`}>
                       {isCompleted ? (
                         <Check size={32} className="text-white" />
@@ -281,9 +281,9 @@ export default function AttendancePage() {
 
                       {!isCompleted && (
                         <div className="mb-2">
-                          <div className="w-full bg-dark-600 rounded-full h-2">
+                          <div className="w-full bg-dark-500/60 rounded-full h-2">
                             <div
-                              className={`h-2 rounded-full transition-all bg-gradient-to-r from-${milestone.color}-500 to-${milestone.color}-600`}
+                              className={`h-2 rounded-full transition-all bg-gradient-to-r from-${milestone.color}-500 to-${milestone.color}-400`}
                               style={{ width: `${progress}%` }}
                             />
                           </div>
@@ -315,18 +315,18 @@ export default function AttendancePage() {
         </div>
 
         {/* Monthly Calendar Preview */}
-        <div className="card border-2 border-dark-500/50 shadow-xl">
-          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Calendar size={20} className="text-primary" />
-            {t.attendance.thisMonth}
-          </h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-semibold text-white">{t.attendance.thisMonth}</h3>
+          </div>
 
-          <div className="grid grid-cols-7 gap-1 mb-4">
+          <div className="grid grid-cols-7 gap-1 mb-3">
             {(language === 'ko'
               ? ['월', '화', '수', '목', '금', '토', '일']
               : ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']
             ).map((day, i) => (
-              <div key={i} className="text-center text-xs text-gray-400 py-1">
+              <div key={i} className="text-center text-xs text-gray-500 py-1 font-medium">
                 {day}
               </div>
             ))}
@@ -344,14 +344,14 @@ export default function AttendancePage() {
               return (
                 <div
                   key={i}
-                  className={`aspect-square rounded flex items-center justify-center text-xs ${
+                  className={`aspect-square rounded-lg flex items-center justify-center text-xs font-medium transition-all ${
                     !isThisMonth
                       ? 'bg-transparent'
                       : isChecked
-                      ? 'bg-success/20 text-success font-bold'
+                      ? 'bg-success/20 text-success border border-success/30'
                       : isToday
-                      ? 'bg-primary/30 text-white font-bold border-2 border-primary'
-                      : 'bg-dark-600 text-gray-500'
+                      ? 'bg-primary/25 text-white border border-primary/50'
+                      : 'bg-dark-500/40 text-gray-500 border border-dark-400/20'
                   }`}
                 >
                   {isThisMonth && dayNumber}
@@ -364,27 +364,27 @@ export default function AttendancePage() {
           </div>
 
           <div className="mt-4 flex items-center justify-center gap-4 text-xs">
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 bg-success/20 rounded"></div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-4 bg-success/20 border border-success/30 rounded-md"></div>
               <span className="text-gray-400">{t.attendance.checkIn}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 bg-primary/30 border-2 border-primary rounded"></div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-4 bg-primary/25 border border-primary/50 rounded-md"></div>
               <span className="text-gray-400">{language === 'ko' ? '오늘' : 'Hôm nay'}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 bg-dark-600 rounded"></div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-4 bg-dark-500/40 border border-dark-400/20 rounded-md"></div>
               <span className="text-gray-400">{language === 'ko' ? '미출석' : 'Chưa điểm danh'}</span>
             </div>
           </div>
         </div>
 
         {/* Attendance Rules */}
-        <div className="card bg-gradient-to-br from-info/10 to-info/5 border-2 border-info/30 shadow-xl">
-          <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-info/30 rounded-2xl p-4 shadow-xl bg-gradient-to-br from-info/10 to-info/5">
+          <div className="flex items-center gap-2 mb-3">
             <Zap size={18} className="text-info" />
-            {language === 'ko' ? '출석 체크 규칙' : 'Quy tắc điểm danh'}
-          </h4>
+            <h4 className="font-semibold text-white">{language === 'ko' ? '출석 체크 규칙' : 'Quy tắc điểm danh'}</h4>
+          </div>
           <ul className="text-sm text-gray-300 space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-primary flex-shrink-0">•</span>
@@ -418,7 +418,7 @@ export default function AttendancePage() {
         </div>
 
         {/* Motivational Card */}
-        <div className="card bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-purple-500/30 shadow-xl text-center py-6">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-purple-500/30 rounded-2xl p-6 shadow-xl bg-gradient-to-r from-purple-500/15 to-pink-500/10 text-center">
           <Award size={48} className="text-purple-400 mx-auto mb-3" />
           <h3 className="text-xl font-bold text-white mb-2">
             {language === 'ko' ? '30일 연속 출석하면' : 'Điểm danh 30 ngày liên tiếp'}

@@ -73,45 +73,50 @@ export default function WithdrawalPage() {
   return (
     <div className="min-h-screen bg-dark-700">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-dark-700/95 backdrop-blur-sm border-b border-dark-400/40 px-4 py-4">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="btn-icon text-white">
-            <ArrowLeft size={24} />
+          <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-xl bg-dark-600/80 border border-dark-400/40 text-white">
+            <ArrowLeft size={20} />
           </button>
           <h1 className="text-lg font-bold text-white">{t.wallet.withdrawalRequest}</h1>
         </div>
       </div>
 
-      <div className="container-mobile py-6 space-y-6">
+      <div className="container-mobile py-6 space-y-4">
         {/* Available Balance */}
-        <div className="card bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30 shadow-xl">
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl bg-gradient-to-br from-primary/15 to-secondary/10">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">{t.wallet.availableBalance}</p>
+              <p className="text-xs text-gray-400 mb-1">{t.wallet.availableBalance}</p>
               <div className="text-2xl font-bold text-white">
                 {formatPoints(mockWallet.available)}
               </div>
             </div>
-            <Wallet size={40} className="text-primary/50" />
+            <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
+              <Wallet size={24} className="text-primary" />
+            </div>
           </div>
         </div>
 
         {/* Withdrawal Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Amount Input */}
-          <div className="card border-2 border-dark-500/50 shadow-xl">
-            <label className="text-sm font-medium text-gray-300 mb-3 block">
-              {t.wallet.withdrawalAmount}
-            </label>
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              <label className="text-sm font-semibold text-white block">
+                {t.wallet.withdrawalAmount}
+              </label>
+            </div>
             <div className="relative">
               <input
                 type="text"
                 value={amount}
                 onChange={(e) => handleAmountChange(e.target.value)}
                 placeholder="0"
-                className="input text-right text-2xl font-bold pr-16"
+                className="w-full bg-dark-700/80 border border-dark-400/40 rounded-xl px-4 py-3 text-right text-2xl font-bold text-white placeholder-gray-600 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 pr-16"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-medium">
                 VND
               </span>
             </div>
@@ -123,7 +128,7 @@ export default function WithdrawalPage() {
                   key={value}
                   type="button"
                   onClick={() => setQuickAmount(value)}
-                  className="btn btn-ghost text-xs py-2"
+                  className="py-2 px-2 bg-dark-700/80 border border-dark-400/40 rounded-xl text-gray-300 text-xs font-medium hover:border-primary/40 hover:text-primary transition-all"
                 >
                   {value === mockWallet.available ? t.wallet.allAmount : `${(value / 1000).toFixed(0)}K`}
                 </button>
@@ -132,32 +137,37 @@ export default function WithdrawalPage() {
 
             {/* Error Message */}
             {parsedAmount > 0 && parsedAmount < MIN_WITHDRAWAL && (
-              <p className="text-xs text-error mt-2">
+              <p className="text-xs text-error mt-2 flex items-center gap-1">
+                <AlertCircle size={12} />
                 {t.wallet.minimumWithdrawalError} {formatPoints(MIN_WITHDRAWAL)}{t.wallet.minimumWithdrawalErrorSuffix}
               </p>
             )}
             {parsedAmount > mockWallet.available && (
-              <p className="text-xs text-error mt-2">
+              <p className="text-xs text-error mt-2 flex items-center gap-1">
+                <AlertCircle size={12} />
                 {t.wallet.exceededBalanceError}
               </p>
             )}
           </div>
 
           {/* Bank Account Selection */}
-          <div className="card border-2 border-dark-500/50 shadow-xl">
-            <label className="text-sm font-medium text-gray-300 mb-3 block">
-              {t.wallet.withdrawalAccount}
-            </label>
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              <label className="text-sm font-semibold text-white block">
+                {t.wallet.withdrawalAccount}
+              </label>
+            </div>
             <div className="space-y-2">
               {mockWallet.bankAccounts.map((account) => (
                 <button
                   key={account.id}
                   type="button"
                   onClick={() => setSelectedAccount(account.id)}
-                  className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                  className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                     selectedAccount === account.id
-                      ? 'border-primary bg-primary/10'
-                      : 'border-dark-500 bg-dark-600 hover:border-dark-400'
+                      ? 'border-primary/60 bg-primary/10'
+                      : 'border-dark-400/40 bg-dark-700/50 hover:border-dark-400/60'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -165,7 +175,7 @@ export default function WithdrawalPage() {
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-semibold text-white">{account.bankName}</h4>
                         {account.isDefault && (
-                          <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full">
+                          <span className="px-2 py-0.5 bg-success/20 text-success text-xs rounded-full border border-success/30">
                             {t.wallet.defaultAccount}
                           </span>
                         )}
@@ -174,7 +184,7 @@ export default function WithdrawalPage() {
                       <p className="text-xs text-gray-500 mt-1">{account.accountHolder}</p>
                     </div>
                     {selectedAccount === account.id && (
-                      <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
                         <div className="w-2 h-2 rounded-full bg-white" />
                       </div>
                     )}
@@ -186,8 +196,11 @@ export default function WithdrawalPage() {
 
           {/* Withdrawal Summary */}
           {parsedAmount > 0 && canWithdraw && (
-            <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
-              <h3 className="text-sm font-semibold text-white mb-3">{t.wallet.withdrawalSummary}</h3>
+            <div className="bg-dark-600/80 backdrop-blur-sm border border-info/30 rounded-2xl p-4 shadow-xl bg-info/5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-4 bg-gradient-to-b from-info to-blue-400 rounded-full" />
+                <h3 className="text-sm font-semibold text-white">{t.wallet.withdrawalSummary}</h3>
+              </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-400">{t.wallet.requestedAmount}</span>
@@ -197,7 +210,7 @@ export default function WithdrawalPage() {
                   <span className="text-gray-400">{t.wallet.fee} (2%)</span>
                   <span className="text-error">-{formatPoints(fee)}</span>
                 </div>
-                <div className="h-px bg-dark-500 my-2" />
+                <div className="h-px bg-dark-400/40 my-2" />
                 <div className="flex justify-between">
                   <span className="text-white font-semibold">{t.wallet.actualDeposit}</span>
                   <span className="text-success font-bold text-lg">{formatPoints(finalAmount)}</span>
@@ -207,12 +220,14 @@ export default function WithdrawalPage() {
           )}
 
           {/* Info */}
-          <div className="card bg-warning/10 border-2 border-warning/30 shadow-xl">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-warning/30 rounded-2xl p-4 shadow-xl bg-warning/5">
             <div className="flex gap-3">
-              <AlertCircle size={20} className="text-warning flex-shrink-0" />
+              <div className="w-8 h-8 rounded-xl bg-warning/20 flex items-center justify-center flex-shrink-0">
+                <AlertCircle size={16} className="text-warning" />
+              </div>
               <div className="text-sm text-gray-300">
                 <p className="font-semibold text-white mb-2">{t.wallet.withdrawalGuide}</p>
-                <ul className="space-y-1 text-xs">
+                <ul className="space-y-1 text-xs text-gray-400">
                   <li>• {t.wallet.minimumWithdrawal}: {formatPoints(MIN_WITHDRAWAL)}</li>
                   <li>• {t.wallet.withdrawalFee}: 2% ({t.wallet.minimum} {formatPoints(MIN_FEE)})</li>
                   <li>• {t.wallet.processingTime}: {t.wallet.processingDays}</li>
@@ -226,9 +241,13 @@ export default function WithdrawalPage() {
           <button
             type="submit"
             disabled={!canWithdraw}
-            className="btn btn-primary w-full text-base"
+            className={`w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2 transition-all ${
+              canWithdraw
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/20'
+                : 'bg-dark-600/80 text-gray-500 border border-dark-400/40 cursor-not-allowed'
+            }`}
           >
-            <ArrowUpRight size={18} className="mr-2" />
+            <ArrowUpRight size={18} />
             {parsedAmount > 0 ? `${formatPoints(finalAmount)} ${t.wallet.withdrawalRequest}` : t.wallet.withdrawalRequest}
           </button>
         </form>
@@ -236,9 +255,12 @@ export default function WithdrawalPage() {
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-          <div className="bg-dark-600 rounded-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold text-white mb-4">{t.wallet.confirmWithdrawal}</h3>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-600/95 backdrop-blur-sm border border-dark-400/40 rounded-2xl w-full max-w-md p-6 shadow-2xl">
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-1 h-5 bg-gradient-to-b from-primary to-secondary rounded-full" />
+              <h3 className="text-lg font-bold text-white">{t.wallet.confirmWithdrawal}</h3>
+            </div>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between text-sm">
@@ -253,8 +275,8 @@ export default function WithdrawalPage() {
                 <span className="text-gray-400">{t.wallet.actualDeposit}</span>
                 <span className="text-success font-bold">{formatPoints(finalAmount)}</span>
               </div>
-              <div className="h-px bg-dark-500 my-2" />
-              <div className="bg-dark-700 p-3 rounded-lg">
+              <div className="h-px bg-dark-400/40 my-2" />
+              <div className="bg-dark-700/80 border border-dark-400/40 p-3 rounded-xl">
                 <p className="text-xs text-gray-400 mb-1">{t.wallet.depositAccount}</p>
                 <p className="text-sm text-white font-semibold">{selectedBankAccount?.bankName}</p>
                 <p className="text-sm text-gray-300">{selectedBankAccount?.accountNumber}</p>
@@ -262,20 +284,21 @@ export default function WithdrawalPage() {
               </div>
             </div>
 
-            <p className="text-xs text-warning mb-4">
+            <p className="text-xs text-warning mb-4 flex items-start gap-1.5">
+              <AlertCircle size={12} className="mt-0.5 flex-shrink-0" />
               {t.wallet.confirmWarning}
             </p>
 
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 btn btn-ghost"
+                className="flex-1 py-3 bg-dark-700/80 border border-dark-400/40 rounded-2xl text-gray-300 font-semibold text-sm"
               >
                 {t.common.cancel}
               </button>
               <button
                 onClick={confirmWithdrawal}
-                className="flex-1 btn btn-primary"
+                className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold text-sm shadow-lg shadow-primary/20"
               >
                 {t.common.confirm}
               </button>

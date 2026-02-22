@@ -161,54 +161,54 @@ export default function JobsPage() {
       <MobileHeader title={language === 'ko' ? '내 작업' : 'Công việc của tôi'} showNotification />
 
       {/* Tabs */}
-      <div className="sticky top-14 z-20 bg-dark-700 border-b border-dark-500 overflow-x-auto">
+      <div className="sticky top-14 z-20 bg-dark-800/80 backdrop-blur-sm border-b border-dark-400/40 overflow-x-auto">
         <div className="flex gap-2 px-4 py-3 min-w-max">
           <button
             onClick={() => setActiveTab('all')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
               activeTab === 'all'
-                ? 'bg-primary text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {t.common.all} ({statusCounts.all})
           </button>
           <button
             onClick={() => setActiveTab('pending')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
               activeTab === 'pending'
-                ? 'bg-warning text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-warning text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {statusConfig.pending.label} ({statusCounts.pending})
           </button>
           <button
             onClick={() => setActiveTab('accepted')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
               activeTab === 'accepted'
-                ? 'bg-info text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-info text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {statusConfig.accepted.label} ({statusCounts.accepted})
           </button>
           <button
             onClick={() => setActiveTab('in_progress')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
               activeTab === 'in_progress'
-                ? 'bg-secondary text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-secondary text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {statusConfig.in_progress.label} ({statusCounts.in_progress})
           </button>
           <button
             onClick={() => setActiveTab('completed')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
               activeTab === 'completed'
-                ? 'bg-success text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-success text-white shadow-md'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {statusConfig.completed.label} ({statusCounts.completed})
@@ -217,25 +217,25 @@ export default function JobsPage() {
       </div>
 
       {/* Job List */}
-      <div className="container-mobile space-y-6 py-6">
+      <div className="container-mobile space-y-4 py-6">
         {filteredJobs.map((job) => {
           const config = statusConfig[job.status];
           const StatusIcon = config.icon;
 
           return (
-            <div key={job.id} className={`card border-2 ${config.borderColor} ${config.bgColor} shadow-xl`}>
+            <div key={job.id} className={`bg-dark-600/80 backdrop-blur-sm border rounded-2xl p-4 shadow-xl ${config.borderColor}`}>
               {/* Header */}
               <div className="flex items-start gap-3 mb-3">
                 <img
                   src={job.companyLogo}
                   alt={job.company}
-                  className="w-12 h-12 rounded-full"
+                  className="w-12 h-12 rounded-full ring-2 ring-dark-400/40"
                 />
                 <div className="flex-1">
                   <h3 className="font-bold text-white mb-1">{job.title}</h3>
                   <p className="text-sm text-gray-400">{job.company}</p>
                 </div>
-                <div className={`px-3 py-1 rounded-full ${config.bgColor} flex items-center gap-1`}>
+                <div className={`px-3 py-1 rounded-full ${config.bgColor} border ${config.borderColor} flex items-center gap-1`}>
                   <StatusIcon size={14} className={config.color} />
                   <span className={`text-xs font-medium ${config.color}`}>
                     {config.label}
@@ -245,7 +245,7 @@ export default function JobsPage() {
 
               {/* Info Grid */}
               <div className="grid grid-cols-2 gap-3 mb-3">
-                <div className="flex flex-col gap-1">
+                <div className="bg-dark-700/50 border border-dark-400/30 rounded-xl p-3 flex flex-col gap-1">
                   <span className="text-xs text-gray-500">
                     {job.status === 'completed'
                       ? (language === 'ko' ? '획득 수익' : 'Thu nhập đã nhận')
@@ -259,19 +259,20 @@ export default function JobsPage() {
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Calendar size={16} className="text-gray-400" />
-                  <span className="text-gray-400">
-                    {t.campaign.deadline}: {job.deadline}
-                  </span>
+                <div className="bg-dark-700/50 border border-dark-400/30 rounded-xl p-3 flex items-center gap-2 text-sm">
+                  <Calendar size={16} className="text-gray-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-gray-500">{t.campaign.deadline}</p>
+                    <p className="text-gray-300 text-xs font-medium">{job.deadline}</p>
+                  </div>
                 </div>
               </div>
 
               {/* Timeline */}
-              <div className="space-y-2 text-xs text-gray-500">
+              <div className="space-y-1.5 text-xs text-gray-500 mb-3">
                 {job.appliedAt && (
                   <div className="flex items-center gap-2">
-                    <FileText size={12} />
+                    <FileText size={12} className="text-gray-500" />
                     <span>
                       {language === 'ko' ? '지원일' : 'Ngày ứng tuyển'}: {job.appliedAt}
                     </span>
@@ -279,7 +280,7 @@ export default function JobsPage() {
                 )}
                 {job.startedAt && (
                   <div className="flex items-center gap-2">
-                    <Clock size={12} />
+                    <Clock size={12} className="text-secondary" />
                     <span>
                       {language === 'ko' ? '시작일' : 'Ngày bắt đầu'}: {job.startedAt}
                     </span>
@@ -287,7 +288,7 @@ export default function JobsPage() {
                 )}
                 {job.completedAt && (
                   <div className="flex items-center gap-2">
-                    <CheckCircle size={12} />
+                    <CheckCircle size={12} className="text-success" />
                     <span>
                       {t.completed.completedOn}: {job.completedAt}
                     </span>
@@ -297,23 +298,32 @@ export default function JobsPage() {
 
               {/* Feedback (for rejected jobs) */}
               {job.status === 'rejected' && job.feedback && (
-                <div className="mt-3 p-3 bg-dark-700 rounded-lg">
+                <div className="mt-3 p-3 bg-error/10 border border-error/20 rounded-xl">
                   <p className="text-sm text-gray-400">{job.feedback}</p>
                 </div>
               )}
 
               {/* Action Buttons */}
               <div className="mt-3 space-y-2">
-                <Link href={`/main/influencer/jobs/${job.id}`} className="btn btn-ghost w-full">
+                <Link
+                  href={`/main/influencer/jobs/${job.id}`}
+                  className="flex items-center justify-center w-full py-2.5 px-4 bg-dark-600/80 text-gray-300 border border-dark-400/40 rounded-2xl hover:border-primary/30 transition-all text-sm font-medium"
+                >
                   {t.completed.viewDetails}
                 </Link>
                 {job.status === 'accepted' && (
-                  <Link href={`/main/influencer/jobs/${job.id}`} className="btn btn-secondary w-full">
+                  <Link
+                    href={`/main/influencer/jobs/${job.id}`}
+                    className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-secondary to-primary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 text-sm"
+                  >
                     {language === 'ko' ? '작업 시작' : 'Bắt đầu công việc'}
                   </Link>
                 )}
                 {job.status === 'in_progress' && (
-                  <Link href={`/main/influencer/jobs/${job.id}`} className="btn btn-primary w-full">
+                  <Link
+                    href={`/main/influencer/jobs/${job.id}`}
+                    className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 text-sm"
+                  >
                     {language === 'ko' ? '결과물 제출' : 'Nộp kết quả'}
                   </Link>
                 )}
@@ -330,7 +340,10 @@ export default function JobsPage() {
                 : `${statusConfig[activeTab as JobStatus]?.label} ${language === 'ko' ? '작업이 없습니다' : 'không có công việc'}`
               }
             </p>
-            <Link href="/main/influencer/campaigns" className="btn btn-primary mt-4">
+            <Link
+              href="/main/influencer/campaigns"
+              className="inline-flex items-center justify-center mt-4 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+            >
               {t.dashboard.findCampaigns}
             </Link>
           </div>

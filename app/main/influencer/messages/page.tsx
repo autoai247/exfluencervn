@@ -68,7 +68,7 @@ export default function MessagesPage() {
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500">
+      <div className="sticky top-0 z-10 bg-dark-700/90 backdrop-blur-md border-b border-dark-400/40">
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="btn-icon text-white">
@@ -86,13 +86,13 @@ export default function MessagesPage() {
         {/* Search */}
         <div className="px-4 pb-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
             <input
               type="text"
               placeholder={t.messages.search}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-dark-600 border border-dark-500 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary"
+              className="w-full pl-10 pr-4 py-2.5 bg-dark-600/80 backdrop-blur-sm border border-dark-400/50 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 transition-colors"
             />
           </div>
         </div>
@@ -108,10 +108,10 @@ export default function MessagesPage() {
             <button
               key={item.id}
               onClick={() => setFilter(item.id as any)}
-              className={`flex-shrink-0 px-4 py-2.5 rounded-full font-bold text-sm transition-all ${
+              className={`flex-shrink-0 px-4 py-2 rounded-2xl font-semibold text-sm transition-all ${
                 filter === item.id
-                  ? 'bg-primary text-white shadow-lg'
-                  : 'bg-dark-600 text-gray-400 hover:bg-dark-500'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                  : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
               }`}
             >
               {item.label} ({item.count})
@@ -129,15 +129,17 @@ export default function MessagesPage() {
             <p className="text-sm text-gray-500">{t.messages.noMessagesDesc}</p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-3">
             {filteredConversations.map((conv) => (
               <Link
                 key={conv.id}
                 href={`/main/influencer/messages/${conv.id}`}
                 className="block"
               >
-                <div className={`card border-2 border-dark-500/50 shadow-xl p-4 hover:bg-dark-600/50 transition-all ${
-                  conv.unreadCount > 0 ? 'border-l-4 border-primary' : ''
+                <div className={`bg-dark-600/80 backdrop-blur-sm border rounded-2xl p-4 shadow-xl hover:bg-dark-500/70 transition-all ${
+                  conv.unreadCount > 0
+                    ? 'border-primary/40 border-l-4 border-l-primary'
+                    : 'border-dark-400/40'
                 }`}>
                   <div className="flex items-start gap-3">
                     {/* Avatar */}
@@ -146,7 +148,7 @@ export default function MessagesPage() {
                         <img
                           src={conv.avatar}
                           alt={conv.name}
-                          className="w-14 h-14 rounded-full object-cover"
+                          className="w-14 h-14 rounded-full object-cover border-2 border-dark-400/40"
                         />
                       ) : (
                         <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
@@ -174,7 +176,7 @@ export default function MessagesPage() {
                             {getTimeLabel(conv.timestamp, t)}
                           </span>
                           {conv.unreadCount > 0 && (
-                            <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                            <div className="w-5 h-5 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
                               <span className="text-white text-xs font-bold">{conv.unreadCount}</span>
                             </div>
                           )}

@@ -48,26 +48,26 @@ export default function CompletedCampaignsPage() {
       <div className="container-mobile py-6 space-y-6">
         {/* 통계 카드 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="card bg-gradient-to-br from-green-500/20 to-green-600/10 border-2 border-green-500/30 shadow-xl">
+          <div className="bg-gradient-to-br from-success/15 to-dark-700 border border-success/20 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={20} className="text-green-400" />
+              <DollarSign size={20} className="text-success" />
               <span className="text-xs text-gray-300">{t.wallet.cashPoints}</span>
             </div>
-            <div className="text-xl font-bold text-green-400">{formatCash(totalCashEarned)}</div>
+            <div className="text-xl font-bold text-success">{formatCash(totalCashEarned)}</div>
             <div className="text-xs text-gray-400 mt-1">{t.wallet.completed}</div>
             {pendingPayment > 0 && (
-              <div className="text-xs text-yellow-500 mt-1">
+              <div className="text-xs text-accent mt-1">
                 {t.wallet.pending}: {formatCash(pendingPayment)}
               </div>
             )}
           </div>
 
-          <div className="card bg-gradient-to-br from-blue-500/20 to-purple-600/10 border-2 border-blue-500/30 shadow-xl">
+          <div className="bg-gradient-to-br from-secondary/15 to-dark-700 border border-secondary/20 rounded-2xl p-4 shadow-xl backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
-              <ShoppingBag size={20} className="text-blue-400" />
+              <ShoppingBag size={20} className="text-secondary" />
               <span className="text-xs text-gray-300">{t.wallet.shoppingPoints}</span>
             </div>
-            <div className="text-xl font-bold text-blue-400">{formatShoppingPoints(totalPointsEarned)}</div>
+            <div className="text-xl font-bold text-secondary">{formatShoppingPoints(totalPointsEarned)}</div>
             <div className="text-xs text-gray-400 mt-1">{t.wallet.completed}</div>
           </div>
         </div>
@@ -76,30 +76,30 @@ export default function CompletedCampaignsPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${
+            className={`flex-1 py-2 rounded-xl font-semibold text-sm transition-all ${
               activeTab === 'all'
-                ? 'bg-primary text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             {t.common.all} ({campaigns.length})
           </button>
           <button
             onClick={() => setActiveTab('cash')}
-            className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${
+            className={`flex-1 py-2 rounded-xl font-semibold text-sm transition-all ${
               activeTab === 'cash'
-                ? 'bg-green-500 text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-gradient-to-r from-success to-success/80 text-white shadow-md shadow-success/20'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             💰 {t.wallet.cashPoints} ({campaigns.filter(c => c.type === 'cash').length})
           </button>
           <button
             onClick={() => setActiveTab('points')}
-            className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-all ${
+            className={`flex-1 py-2 rounded-xl font-semibold text-sm transition-all ${
               activeTab === 'points'
-                ? 'bg-blue-500 text-white'
-                : 'bg-dark-600 text-gray-400'
+                ? 'bg-gradient-to-r from-secondary to-primary text-white shadow-md shadow-secondary/20'
+                : 'bg-dark-600/80 text-gray-400 border border-dark-400/40'
             }`}
           >
             🛍️ {t.wallet.shoppingPoints} ({campaigns.filter(c => c.type === 'points').length})
@@ -107,24 +107,26 @@ export default function CompletedCampaignsPage() {
         </div>
 
         {/* 캠페인 리스트 */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           {filteredCampaigns.map((campaign) => (
-            <div key={campaign.id} className="card border-2 border-dark-500/50 shadow-xl">
+            <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
               <div className="flex gap-3">
                 {/* Thumbnail */}
-                <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
                   <img
                     src={campaign.thumbnail}
                     alt={campaign.title}
                     className="w-full h-full object-cover"
                   />
                   <div className={`absolute top-1 left-1 px-2 py-0.5 text-white text-[10px] rounded-full font-bold ${
-                    campaign.type === 'cash' ? 'bg-green-500' : 'bg-blue-500'
+                    campaign.type === 'cash'
+                      ? 'bg-gradient-to-r from-success to-success/80'
+                      : 'bg-gradient-to-r from-secondary to-primary'
                   }`}>
                     {campaign.type === 'cash' ? t.wallet.cashPoints : t.wallet.shoppingPoints}
                   </div>
                   {campaign.status === 'paid' && (
-                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center">
+                    <div className="absolute bottom-1 right-1 w-6 h-6 bg-success rounded-full flex items-center justify-center shadow-md">
                       <CheckCircle size={16} className="text-white" />
                     </div>
                   )}
@@ -151,7 +153,7 @@ export default function CompletedCampaignsPage() {
                   <div className="mt-2 flex items-center justify-between">
                     <div>
                       <span className={`font-bold text-sm ${
-                        campaign.type === 'cash' ? 'text-green-400' : 'text-blue-400'
+                        campaign.type === 'cash' ? 'text-success' : 'text-secondary'
                       }`}>
                         {campaign.type === 'cash'
                           ? formatCash(campaign.reward)
@@ -159,7 +161,7 @@ export default function CompletedCampaignsPage() {
                         }
                       </span>
                       {campaign.status === 'pending_payment' && (
-                        <div className="text-[10px] text-yellow-500 font-semibold mt-0.5">
+                        <div className="text-[10px] text-accent font-semibold mt-0.5">
                           ⏱️ {t.wallet.pending}
                         </div>
                       )}
@@ -167,15 +169,15 @@ export default function CompletedCampaignsPage() {
 
                     {campaign.rating && (
                       <div className="flex items-center gap-1">
-                        <Star size={14} className="text-yellow-400 fill-yellow-400" />
-                        <span className="text-xs font-bold text-yellow-400">{campaign.rating}.0</span>
+                        <Star size={14} className="text-accent fill-accent" />
+                        <span className="text-xs font-bold text-accent">{campaign.rating}.0</span>
                       </div>
                     )}
                   </div>
 
                   {/* 리뷰 텍스트 */}
                   {campaign.reviewText && (
-                    <div className="mt-2 p-2 bg-dark-600 rounded-lg">
+                    <div className="mt-2 p-2 bg-dark-700/60 border border-dark-400/30 rounded-xl">
                       <p className="text-xs text-gray-300 italic">"{campaign.reviewText}"</p>
                     </div>
                   )}
@@ -183,19 +185,19 @@ export default function CompletedCampaignsPage() {
               </div>
 
               {/* 액션 버튼 */}
-              <div className="flex gap-2 mt-3 pt-3 border-t border-dark-600">
+              <div className="flex gap-2 mt-3 pt-3 border-t border-dark-500/50">
                 <Link href={`/main/influencer/campaigns/${campaign.id}`} className="flex-1">
-                  <button className="w-full btn btn-ghost text-sm py-2">
-                    <ExternalLink size={14} className="mr-1" />
+                  <button className="w-full bg-dark-700/60 border border-dark-400/40 text-gray-300 hover:text-white rounded-xl text-sm py-2 flex items-center justify-center gap-1 transition-colors">
+                    <ExternalLink size={14} />
                     {t.completed.viewDetails}
                   </button>
                 </Link>
                 {campaign.type === 'cash' && campaign.status === 'paid' && (
                   <button
                     onClick={() => handleDownloadReceipt(campaign)}
-                    className="flex-1 btn btn-primary text-sm py-2"
+                    className="flex-1 bg-gradient-to-r from-primary to-secondary text-white rounded-xl text-sm py-2 font-bold shadow-lg shadow-primary/20 flex items-center justify-center gap-1"
                   >
-                    <Download size={14} className="mr-1" />
+                    <Download size={14} />
                     {t.completed.downloadReceipt}
                   </button>
                 )}
@@ -206,14 +208,14 @@ export default function CompletedCampaignsPage() {
 
         {/* Empty State */}
         {filteredCampaigns.length === 0 && (
-          <div className="card text-center py-12 border-2 border-dark-500/50 shadow-xl">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-8 shadow-xl text-center py-12">
             <CheckCircle size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.completed.noCampaigns}</h3>
             <p className="text-sm text-gray-400 mb-4 whitespace-pre-line">
               {t.completed.emptyDescription}
             </p>
             <Link href="/main/influencer/campaigns">
-              <button className="btn btn-primary">
+              <button className="bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold py-4 px-6 shadow-lg shadow-primary/20">
                 {t.dashboard.findCampaigns}
               </button>
             </Link>
@@ -221,8 +223,11 @@ export default function CompletedCampaignsPage() {
         )}
 
         {/* 안내 */}
-        <div className="card bg-info/10 border-2 border-info/30 shadow-xl">
-          <h4 className="font-semibold text-white mb-2 text-sm">{t.completed.infoTitle}</h4>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-primary/20 rounded-2xl p-4 shadow-xl">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-5 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h4 className="font-semibold text-white text-sm">{t.completed.infoTitle}</h4>
+          </div>
           <ul className="text-xs text-gray-300 space-y-1">
             <li>• {t.completed.infoCash}</li>
             <li>• {t.completed.infoPoints}</li>

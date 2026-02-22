@@ -126,7 +126,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
   return (
     <div className="min-h-screen bg-dark-700 flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500">
+      <div className="sticky top-0 z-10 bg-dark-700/90 backdrop-blur-md border-b border-dark-400/40">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <button onClick={() => router.back()} className="btn-icon text-white flex-shrink-0">
@@ -138,7 +138,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 <img
                   src={conversation.avatar}
                   alt={conversation.name}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-dark-400/40"
                 />
                 {conversation.isOnline && (
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-success rounded-full border-2 border-dark-700"></div>
@@ -155,7 +155,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
             </div>
           </div>
 
-          <div className="flex items-center gap-2 ml-2">
+          <div className="flex items-center gap-1 ml-2">
             <button className="btn-icon text-gray-400 hover:text-white">
               <Phone size={20} />
             </button>
@@ -170,12 +170,12 @@ export default function ConversationPage({ params }: { params: { id: string } })
 
         {/* Campaign Info Banner */}
         <div className="px-4 pb-3">
-          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-lg p-3">
+          <div className="bg-dark-600/60 backdrop-blur-sm border border-primary/25 rounded-xl p-3 bg-gradient-to-r from-primary/10 to-secondary/5">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <p className="text-xs text-gray-400">{conversation.campaignTitle}</p>
               </div>
-              <button className="btn btn-primary btn-sm">
+              <button className="flex items-center gap-1 bg-gradient-to-r from-primary to-secondary text-white px-3 py-1.5 rounded-xl text-xs font-semibold shadow-md shadow-primary/20">
                 {t.messages.viewCampaign}
               </button>
             </div>
@@ -189,7 +189,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
           <div key={groupIdx}>
             {/* Date Divider */}
             <div className="flex items-center justify-center mb-4">
-              <div className="px-3 py-1 bg-dark-600 rounded-full">
+              <div className="px-3 py-1 bg-dark-600/80 backdrop-blur-sm border border-dark-400/30 rounded-full">
                 <span className="text-xs text-gray-400">{group.date}</span>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
                           <img
                             src={conversation.avatar}
                             alt={conversation.name}
-                            className="w-8 h-8 rounded-full object-cover"
+                            className="w-8 h-8 rounded-full object-cover border border-dark-400/30"
                           />
                         )}
                       </div>
@@ -225,16 +225,16 @@ export default function ConversationPage({ params }: { params: { id: string } })
                       {/* Message Bubble */}
                       {msg.type === 'text' ? (
                         <div
-                          className={`px-4 py-2.5 rounded-2xl ${
+                          className={`px-4 py-2.5 rounded-2xl shadow-md ${
                             isMe
-                              ? 'bg-primary text-white rounded-br-sm'
-                              : 'bg-dark-600 text-white rounded-bl-sm'
+                              ? 'bg-gradient-to-r from-primary to-secondary text-white rounded-br-sm shadow-primary/20'
+                              : 'bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 text-white rounded-bl-sm'
                           }`}
                         >
                           <p className="text-sm whitespace-pre-wrap break-words">{msg.message}</p>
                         </div>
                       ) : msg.type === 'image' ? (
-                        <div className="rounded-2xl overflow-hidden">
+                        <div className="rounded-2xl overflow-hidden border border-dark-400/30 shadow-md">
                           <img
                             src={msg.imageUrl}
                             alt="Sent image"
@@ -276,10 +276,10 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 <img
                   src={conversation.avatar}
                   alt={conversation.name}
-                  className="w-8 h-8 rounded-full object-cover"
+                  className="w-8 h-8 rounded-full object-cover border border-dark-400/30"
                 />
               </div>
-              <div className="bg-dark-600 px-4 py-2.5 rounded-2xl rounded-bl-sm">
+              <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 px-4 py-2.5 rounded-2xl rounded-bl-sm">
                 <div className="flex gap-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -294,13 +294,13 @@ export default function ConversationPage({ params }: { params: { id: string } })
       </div>
 
       {/* Quick Replies (Optional) */}
-      <div className="px-4 py-2 border-t border-dark-600">
+      <div className="px-4 py-2 border-t border-dark-400/30 bg-dark-700/80 backdrop-blur-sm">
         <div className="flex gap-2 overflow-x-auto pb-1">
           {[t.messages.quickReply1, t.messages.quickReply2, t.messages.quickReply3, t.messages.quickReply4].map((quick, idx) => (
             <button
               key={idx}
               onClick={() => setMessage(quick)}
-              className="flex-shrink-0 px-3 py-1.5 bg-dark-600 hover:bg-dark-500 rounded-full text-xs text-gray-300 transition-all"
+              className="flex-shrink-0 px-3 py-1.5 bg-dark-600/80 border border-dark-400/40 hover:bg-dark-500/80 rounded-full text-xs text-gray-300 transition-all"
             >
               {quick}
             </button>
@@ -309,25 +309,25 @@ export default function ConversationPage({ params }: { params: { id: string } })
       </div>
 
       {/* Input Area */}
-      <div className="sticky bottom-0 bg-dark-700 border-t border-dark-500 px-4 py-3">
+      <div className="sticky bottom-0 bg-dark-700/90 backdrop-blur-md border-t border-dark-400/40 px-4 py-3">
         <div className="flex items-end gap-2">
           {/* Attachment Button */}
           <div className="relative">
             <button
               onClick={() => setShowAttachMenu(!showAttachMenu)}
-              className="btn-icon text-gray-400 hover:text-white mb-1"
+              className="btn-icon text-gray-400 hover:text-primary mb-1 transition-colors"
             >
               <Paperclip size={22} />
             </button>
 
             {/* Attachment Menu */}
             {showAttachMenu && (
-              <div className="absolute bottom-full left-0 mb-2 bg-dark-600 rounded-xl shadow-xl border border-dark-500 overflow-hidden">
+              <div className="absolute bottom-full left-0 mb-2 bg-dark-600/90 backdrop-blur-md rounded-2xl shadow-xl border border-dark-400/40 overflow-hidden">
                 <button
                   onClick={() => handleAttachment('image')}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500 transition-all w-full text-left"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500/80 transition-all w-full text-left"
                 >
-                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary/20 border border-primary/20 rounded-xl flex items-center justify-center">
                     <ImageIcon size={20} className="text-primary" />
                   </div>
                   <div>
@@ -337,9 +337,9 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 </button>
                 <button
                   onClick={() => handleAttachment('camera')}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500 transition-all w-full text-left border-t border-dark-500"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500/80 transition-all w-full text-left border-t border-dark-400/30"
                 >
-                  <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-secondary/20 border border-secondary/20 rounded-xl flex items-center justify-center">
                     <Camera size={20} className="text-secondary" />
                   </div>
                   <div>
@@ -349,9 +349,9 @@ export default function ConversationPage({ params }: { params: { id: string } })
                 </button>
                 <button
                   onClick={() => handleAttachment('file')}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500 transition-all w-full text-left border-t border-dark-500"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-dark-500/80 transition-all w-full text-left border-t border-dark-400/30"
                 >
-                  <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-accent/20 border border-accent/20 rounded-xl flex items-center justify-center">
                     <File size={20} className="text-accent" />
                   </div>
                   <div>
@@ -376,7 +376,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
               }}
               placeholder={t.messages.typeMessage}
               rows={1}
-              className="w-full px-4 py-3 bg-dark-600 border border-dark-500 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary resize-none max-h-24"
+              className="w-full px-4 py-3 bg-dark-600/80 backdrop-blur-sm border border-dark-400/50 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-primary/60 resize-none max-h-24 transition-colors"
               style={{
                 minHeight: '44px',
                 height: 'auto',
@@ -388,10 +388,10 @@ export default function ConversationPage({ params }: { params: { id: string } })
           <button
             onClick={handleSend}
             disabled={!message.trim()}
-            className={`btn-icon mb-1 ${
+            className={`btn-icon mb-1 transition-all ${
               message.trim()
-                ? 'bg-primary text-white hover:bg-primary-dark'
-                : 'bg-dark-600 text-gray-500 cursor-not-allowed'
+                ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/30'
+                : 'bg-dark-600/80 text-gray-500 cursor-not-allowed border border-dark-400/40'
             }`}
           >
             <Send size={20} />

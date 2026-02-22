@@ -27,8 +27,8 @@ export default function BottomNav({ userType }: BottomNavProps) {
     : [
         { href: '/main/advertiser', icon: Home, label: t.nav.home },
         { href: '/main/advertiser/campaigns', icon: LayoutGrid, label: t.nav.campaigns },
+        { href: '/main/advertiser/shop', icon: BookOpen, label: t.nav.shop },
         { href: '/main/advertiser/influencers', icon: Search, label: t.nav.kol },
-        { href: '/main/advertiser/ranking', icon: Trophy, label: t.nav.ranking },
         { href: '/main/advertiser/analytics', icon: BarChart3, label: t.nav.analytics },
         { href: '/main/advertiser/profile', icon: User, label: t.nav.profile },
       ];

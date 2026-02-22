@@ -499,10 +499,10 @@ export default function CampaignDetailPage() {
   const [showApplicantsModal, setShowApplicantsModal] = useState(false);
   const [showEarningsModal, setShowEarningsModal] = useState(false);
 
-  // Auto-open apply modal if ?apply=true param is present
+  // Auto-redirect to register if ?apply=true param is present
   useEffect(() => {
     if (searchParams?.get('apply') === 'true') {
-      setShowApplyModal(true);
+      router.push('/auth/register');
     }
   }, [searchParams]);
 
@@ -927,7 +927,7 @@ export default function CampaignDetailPage() {
             {/* BIG APPLY BUTTON */}
             {campaign.status === 'not_applied' && !applySubmitted ? (
               <button
-                onClick={() => setShowApplyModal(true)}
+                onClick={() => router.push('/auth/register')}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-lg shadow-xl shadow-primary/40 active:scale-95 transition-transform flex items-center justify-center gap-2"
               >
                 {language === 'ko' ? `🎯 지금 지원 — ${formatPoints(campaign.budget)} VND` : `🎯 Ứng tuyển ngay — ${formatPoints(campaign.budget)} VND`}
@@ -1338,7 +1338,7 @@ export default function CampaignDetailPage() {
         {/* Apply Button */}
         {campaign.status === 'not_applied' && !applySubmitted && (
           <button
-            onClick={() => setShowApplyModal(true)}
+            onClick={() => router.push('/auth/register')}
             className="w-full py-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-black text-xl shadow-2xl shadow-primary/40 active:scale-95 transition-all"
           >
             {language === 'ko' ? '🎯 지금 지원 — 무료' : '🎯 Ứng tuyển ngay — Miễn phí'}
@@ -2349,7 +2349,7 @@ export default function CampaignDetailPage() {
                 <div className="text-accent font-black text-lg leading-tight">+{formatPoints(campaign.budget)} VND</div>
               </div>
               <button
-                onClick={() => setShowApplyModal(true)}
+                onClick={() => router.push('/auth/register')}
                 className="flex-shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-black text-base shadow-lg shadow-primary/30 active:scale-95 transition-transform"
               >
                 {language === 'ko' ? '🎯 지금 지원' : '🎯 Ứng tuyển ngay'}

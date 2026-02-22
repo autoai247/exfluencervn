@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
 import { SiKakao, SiNaver, SiZalo } from 'react-icons/si';
 import { useToast } from '@/components/common/ToastContainer';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface SocialLoginProps {
   onSuccess?: (provider: string, data: any) => void;
@@ -59,10 +60,12 @@ export default function SocialLogin({
   onError,
   providers = ['google', 'facebook', 'kakao', 'naver'],
   layout = 'grid',
-  language = 'vi',
+  language: langProp,
 }: SocialLoginProps) {
   const [loading, setLoading] = useState<SocialProvider | null>(null);
   const toast = useToast();
+  const { language: contextLanguage } = useLanguage();
+  const language = langProp ?? contextLanguage;
 
   const text = {
     ko: {

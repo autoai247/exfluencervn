@@ -101,15 +101,15 @@ export default function HomePage() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-primary">36</div>
+                <div className="text-3xl font-bold text-primary">5K+</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.kols}</div>
               </div>
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-secondary">0%</div>
+                <div className="text-3xl font-bold text-secondary">1.2K+</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.brands}</div>
               </div>
               <div className="bg-dark-600/50 backdrop-blur-sm rounded-2xl p-5 text-center border border-dark-500/50">
-                <div className="text-3xl font-bold text-accent">1K+</div>
+                <div className="text-3xl font-bold text-accent">10K+</div>
                 <div className="text-xs text-gray-400 mt-1">{t.homepage.campaigns}</div>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
                 className="block w-full text-center py-4 font-semibold bg-transparent text-accent rounded-2xl border-2 border-accent/50 hover:border-accent hover:bg-accent/10 transition-all text-sm"
                 aria-label="Browse open campaigns"
               >
-                {language === 'vi' ? '👀 Xem 36 chiến dịch đang mở →' : '👀 36개 오픈 캠페인 보기 →'}
+                {language === 'vi' ? '👀 Xem các chiến dịch đang mở →' : '👀 오픈 캠페인 보기 →'}
               </Link>
               <Link
                 href="/auth/login"

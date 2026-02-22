@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Clock, CheckCircle, XCircle, ExternalLink, Calendar, DollarSign, Share2 } from 'lucide-react';
 import { FaFacebook } from 'react-icons/fa';
 import { formatPoints } from '@/lib/points';
+import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -19,12 +20,18 @@ interface ShareHistory {
   rejectionReason?: string;
 }
 
-// Mock campaign titles (in production, fetch from API)
-const mockCampaignTitles: { [key: string]: string } = {
+// Mock campaign titles - bilingual (in production, fetch from API)
+const mockCampaignTitlesKo: { [key: string]: string } = {
   '1': '신규 스킨케어 제품 리뷰 캠페인',
   '2': '베트남 레스토랑 체험 리뷰',
   '3': '스마트폰 언박싱 & 리뷰',
   '4': '피트니스 앱 프로모션',
+};
+const mockCampaignTitlesVi: { [key: string]: string } = {
+  '1': 'Chiến dịch review sản phẩm skincare mới',
+  '2': 'Trải nghiệm nhà hàng Việt Nam',
+  '3': 'Unboxing & Review điện thoại thông minh',
+  '4': 'Quảng bá ứng dụng thể dục',
 };
 
 export default function ShareHistoryPage() {
@@ -96,17 +103,16 @@ export default function ShareHistoryPage() {
     }
   };
 
+  const mockCampaignTitles = language === 'ko' ? mockCampaignTitlesKo : mockCampaignTitlesVi;
+
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700/90 backdrop-blur-sm border-b border-dark-500/50 px-4 py-4">
-        <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="btn-icon text-white">
-            <ArrowLeft size={24} />
-          </button>
-          <h1 className="text-lg font-bold text-white">{t.shareHistory.title}</h1>
-        </div>
-      </div>
+      <MobileHeader
+        title={t.shareHistory.title}
+        showBack
+        showNotification
+        onNotification={() => router.push('/main/influencer/notifications')}
+      />
 
       <div className="container-mobile space-y-6 py-6">
         {/* Stats Cards */}
@@ -250,24 +256,19 @@ export default function ShareHistoryPage() {
                   )}
 
                   {share.status === 'rejected' && (
-                    <button
-                      onClick={() => {
-                        alert(share.rejectionReason || (language === 'ko'
-                          ? '관리자가 게시물을 확인할 수 없었습니다.\n\n사유:\n• 링크가 잘못되었거나 삭제됨\n• 내용이 캠페인과 무관함\n• 게시물이 비공개이거나 접근 불가 (공개 설정 필요)'
-                          : 'Quản trị viên không thể xác minh bài đăng.\n\nLý do:\n• Liên kết không hợp lệ hoặc đã bị xóa\n• Nội dung không liên quan đến chiến dịch\n• Bài đăng ở chế độ riêng tư hoặc không thể truy cập (cần đặt công khai)'));
-                      }}
-                      className="text-xs text-error hover:underline"
-                    >
-                      {t.shareHistory.viewReason}
-                    </button>
+                    <span className="text-xs text-error">{t.shareHistory.viewReason}</span>
                   )}
                 </div>
 
                 {/* Rejection Reason */}
-                {share.status === 'rejected' && share.rejectionReason && (
+                {share.status === 'rejected' && (
                   <div className="mt-3 p-3 bg-error/10 border border-error/30 rounded-xl">
                     <p className="text-xs text-error font-semibold mb-1">{t.shareHistory.rejectionReason}</p>
-                    <p className="text-xs text-gray-300">{share.rejectionReason}</p>
+                    <p className="text-xs text-gray-300">
+                      {share.rejectionReason || (language === 'ko'
+                        ? '관리자가 게시물을 확인할 수 없었습니다. 링크가 잘못되었거나 삭제됨, 내용이 캠페인과 무관함, 또는 게시물이 비공개 상태일 수 있습니다.'
+                        : 'Quản trị viên không thể xác minh bài đăng. Liên kết không hợp lệ hoặc đã bị xóa, nội dung không liên quan, hoặc bài đăng ở chế độ riêng tư.')}
+                    </p>
                   </div>
                 )}
               </div>

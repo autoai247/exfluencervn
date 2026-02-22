@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { translations } from '@/lib/i18n/translations';
-import { ArrowLeft, Building2, FileText, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Building2, FileText, CheckCircle2, AlertCircle } from 'lucide-react';
+import MobileHeader from '@/components/common/MobileHeader';
+import BottomNav from '@/components/common/BottomNav';
 
 export default function BusinessVerificationPage() {
   const { language } = useLanguage();
@@ -30,10 +31,6 @@ export default function BusinessVerificationPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // TODO: API 호출
-    console.log('Business verification submitted:', formData);
-
-    // 임시: localStorage 저장
     localStorage.setItem('businessVerification', JSON.stringify({
       ...formData,
       status: 'pending',
@@ -45,67 +42,56 @@ export default function BusinessVerificationPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-dark-100 border border-dark-200 rounded-xl p-8 text-center">
-          <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={32} className="text-green-500" />
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-2">
-            {t.submitted}
-          </h2>
-          <p className="text-gray-400 mb-6">
-            {t.submittedMessage}
-          </p>
-          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6 text-left">
-            <p className="text-sm text-gray-300">
-              📧 {t.email}: {formData.email}
+      <div className="min-h-screen bg-dark-700 pb-20">
+        <MobileHeader
+          title={language === 'ko' ? '사업자 인증' : 'Xác minh doanh nghiệp'}
+          showBack
+        />
+        <div className="container-mobile pt-16 flex items-center justify-center min-h-[80vh]">
+          <div className="w-full bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-8 text-center shadow-xl">
+            <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={32} className="text-success" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              {t.submitted}
+            </h2>
+            <p className="text-gray-400 mb-6">
+              {t.submittedMessage}
             </p>
-            <p className="text-sm text-gray-300 mt-1">
-              📞 {t.phone}: {formData.phone}
-            </p>
+            <div className="bg-primary/10 border border-primary/30 rounded-xl p-4 mb-6 text-left">
+              <p className="text-sm text-gray-300">
+                {language === 'ko' ? '이메일' : 'Email'}: {formData.email}
+              </p>
+              <p className="text-sm text-gray-300 mt-1">
+                {language === 'ko' ? '전화' : 'Điện thoại'}: {formData.phone}
+              </p>
+            </div>
+            <button
+              onClick={() => router.push('/main/advertiser')}
+              className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+            >
+              {t.goToDashboard}
+            </button>
           </div>
-          <button
-            onClick={() => router.push('/main/advertiser/dashboard')}
-            className="w-full bg-mint text-black py-3 rounded-xl font-bold hover:bg-mint/90 transition-all"
-          >
-            {t.goToDashboard}
-          </button>
         </div>
+        <BottomNav userType="advertiser" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-30 bg-dark/95 backdrop-blur-sm border-b border-dark-200">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/main/advertiser/dashboard"
-              className="w-10 h-10 bg-dark-100 rounded-lg flex items-center justify-center hover:bg-dark-200 transition-all"
-            >
-              <ArrowLeft size={20} className="text-white" />
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold text-white">
-                {t.title}
-              </h1>
-              <p className="text-sm text-gray-400">
-                {t.subtitle}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-dark-700 pb-20">
+      <MobileHeader
+        title={language === 'ko' ? '사업자 인증' : 'Xác minh doanh nghiệp'}
+        showBack
+      />
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <form onSubmit={handleSubmit} className="container-mobile pt-6 pb-8 space-y-6">
         {/* Info Box */}
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 flex items-start gap-3">
-          <AlertCircle size={20} className="text-blue-500 flex-shrink-0 mt-0.5" />
+        <div className="bg-primary/10 border border-primary/30 rounded-2xl p-4 flex items-start gap-3">
+          <AlertCircle size={20} className="text-primary flex-shrink-0 mt-0.5" />
           <div className="text-sm text-gray-300">
-            <p className="font-medium text-blue-400 mb-1">
+            <p className="font-semibold text-primary mb-1">
               {t.whyNeeded}
             </p>
             <p>
@@ -115,27 +101,28 @@ export default function BusinessVerificationPage() {
         </div>
 
         {/* Company Info */}
-        <section className="bg-dark-100 border border-dark-200 rounded-xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-mint/10 rounded-lg flex items-center justify-center">
-              <Building2 size={20} className="text-mint" />
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl space-y-5">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <div className="w-9 h-9 bg-primary/20 rounded-xl flex items-center justify-center">
+              <Building2 size={18} className="text-primary" />
             </div>
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-sm font-bold text-white">
               {t.companyInfo}
             </h2>
           </div>
 
           {/* Company Name */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              {t.companyName} <span className="text-red-500">*</span>
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-white">
+              {t.companyName} <span className="text-primary">*</span>
             </label>
             <input
               type="text"
               placeholder={t.companyNameKo}
               value={formData.companyName}
               onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
               required
             />
             <input
@@ -143,149 +130,153 @@ export default function BusinessVerificationPage() {
               placeholder={t.companyNameVi}
               value={formData.companyNameVi}
               onChange={(e) => setFormData({ ...formData, companyNameVi: e.target.value })}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
               required
             />
           </div>
 
           {/* Registration Numbers */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-300">
-                {t.businessRegNumber} <span className="text-red-500">*</span>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-white">
+                {t.businessRegNumber} <span className="text-primary">*</span>
               </label>
               <input
                 type="text"
                 placeholder="0123456789"
                 value={formData.registrationNumber}
                 onChange={(e) => setFormData({ ...formData, registrationNumber: e.target.value })}
-                className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+                className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
                 required
               />
             </div>
 
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-300">
-                {t.taxCode} <span className="text-red-500">*</span>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-white">
+                {t.taxCode} <span className="text-primary">*</span>
               </label>
               <input
                 type="text"
                 placeholder="0123456789-001"
                 value={formData.taxCode}
                 onChange={(e) => setFormData({ ...formData, taxCode: e.target.value })}
-                className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+                className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
                 required
               />
             </div>
           </div>
 
           {/* Business Type */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-white">
               {t.businessType}
             </label>
             <select
               value={formData.businessType}
               onChange={(e) => setFormData({ ...formData, businessType: e.target.value as any })}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white focus:border-mint focus:outline-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white focus:border-primary/50 focus:outline-none transition-colors"
             >
-              <option value="limited_company">{t.businessTypes.limitedCompany}</option>
-              <option value="joint_stock">{t.businessTypes.jointStock}</option>
-              <option value="partnership">{t.businessTypes.partnership}</option>
-              <option value="private_enterprise">{t.businessTypes.privateEnterprise}</option>
-              <option value="household_business">{t.businessTypes.householdBusiness}</option>
+              <option value="limited_company" className="bg-dark-700">{t.businessTypes.limitedCompany}</option>
+              <option value="joint_stock" className="bg-dark-700">{t.businessTypes.jointStock}</option>
+              <option value="partnership" className="bg-dark-700">{t.businessTypes.partnership}</option>
+              <option value="private_enterprise" className="bg-dark-700">{t.businessTypes.privateEnterprise}</option>
+              <option value="household_business" className="bg-dark-700">{t.businessTypes.householdBusiness}</option>
             </select>
           </div>
 
           {/* Address */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              {t.address} <span className="text-red-500">*</span>
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-white">
+              {t.address} <span className="text-primary">*</span>
             </label>
             <textarea
               value={formData.registeredAddress}
               onChange={(e) => setFormData({ ...formData, registeredAddress: e.target.value })}
               placeholder={t.addressPlaceholder}
               rows={3}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none resize-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors resize-none"
               required
             />
           </div>
 
           {/* Legal Representative */}
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              {t.legalRepresentative} <span className="text-red-500">*</span>
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-white">
+              {t.legalRepresentative} <span className="text-primary">*</span>
             </label>
             <input
               type="text"
               value={formData.legalRepresentative}
               onChange={(e) => setFormData({ ...formData, legalRepresentative: e.target.value })}
               placeholder={t.legalRepresentativePlaceholder}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
               required
             />
           </div>
-        </section>
+        </div>
 
         {/* Contact Info */}
-        <section className="bg-dark-100 border border-dark-200 rounded-xl p-6 space-y-6">
-          <h3 className="text-lg font-bold text-white">
-            {t.contactInfo}
-          </h3>
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <h3 className="text-sm font-bold text-white">
+              {t.contactInfo}
+            </h3>
+          </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-300">
-                {t.emailLabel} <span className="text-red-500">*</span>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-white">
+                {t.emailLabel} <span className="text-primary">*</span>
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="company@example.com"
-                className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+                className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
                 required
               />
             </div>
 
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-300">
-                {t.phoneLabel} <span className="text-red-500">*</span>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-white">
+                {t.phoneLabel} <span className="text-primary">*</span>
               </label>
               <input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="+84 901 234 567"
-                className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+                className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
                 required
               />
             </div>
           </div>
-        </section>
+        </div>
 
         {/* Document Upload */}
-        <section className="bg-dark-100 border border-dark-200 rounded-xl p-6 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-              <FileText size={20} className="text-purple-500" />
+        <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+            <div className="w-9 h-9 bg-secondary/20 rounded-xl flex items-center justify-center">
+              <FileText size={18} className="text-secondary" />
             </div>
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-sm font-bold text-white">
               {t.documents}
             </h2>
           </div>
 
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              {t.businessLicense} <span className="text-red-500">*</span>
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-white">
+              {t.businessLicense} <span className="text-primary">*</span>
             </label>
             <input
               type="url"
               value={formData.certificateImage}
               onChange={(e) => setFormData({ ...formData, certificateImage: e.target.value })}
               placeholder="https://example.com/certificate.jpg"
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-mint focus:outline-none"
+              className="w-full bg-dark-700/50 border border-dark-400/40 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary/50 focus:outline-none transition-colors"
               required
             />
             <p className="text-xs text-gray-500">
@@ -295,28 +286,31 @@ export default function BusinessVerificationPage() {
               <img
                 src={formData.certificateImage}
                 alt="Certificate preview"
-                className="w-full max-w-md h-64 object-cover rounded-lg border border-dark-200"
+                className="w-full max-w-md h-64 object-cover rounded-xl border border-dark-400/40"
               />
             )}
           </div>
-        </section>
+        </div>
 
         {/* Submit */}
         <div className="flex gap-3">
-          <Link
-            href="/main/advertiser/dashboard"
-            className="flex-1 bg-dark-100 border border-dark-200 text-white py-4 rounded-xl font-bold text-center hover:bg-dark-200 transition-all"
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="flex-1 bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 text-gray-300 py-3.5 rounded-2xl font-bold hover:border-primary/30 transition-all"
           >
             {t.cancel}
-          </Link>
+          </button>
           <button
             type="submit"
-            className="flex-1 bg-mint text-black py-4 rounded-xl font-bold hover:bg-mint/90 transition-all"
+            className="flex-[2] bg-gradient-to-r from-primary to-secondary text-white py-3.5 rounded-2xl font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/20"
           >
             {t.submit}
           </button>
         </div>
       </form>
+
+      <BottomNav userType="advertiser" />
     </div>
   );
 }

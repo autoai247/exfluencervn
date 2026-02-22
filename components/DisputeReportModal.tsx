@@ -101,7 +101,7 @@ export default function DisputeReportModal({
   if (step === 'success') {
     return (
       <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-        <div className="bg-dark-100 rounded-xl w-full max-w-md p-8 text-center">
+        <div className="bg-dark-700 rounded-xl w-full max-w-md p-8 text-center">
           <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 size={32} className="text-green-500" />
           </div>
@@ -126,9 +126,9 @@ export default function DisputeReportModal({
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-dark-100 rounded-xl w-full max-w-2xl my-8">
+      <div className="bg-dark-700 rounded-xl w-full max-w-2xl my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-dark-200">
+        <div className="flex items-center justify-between p-6 border-b border-dark-600">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <AlertTriangle size={24} className="text-red-500" />
@@ -138,7 +138,7 @@ export default function DisputeReportModal({
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 bg-dark-200 rounded-lg flex items-center justify-center hover:bg-dark-300 transition-all"
+            className="w-10 h-10 bg-dark-600 rounded-lg flex items-center justify-center hover:bg-dark-500 transition-all"
           >
             <X size={20} className="text-white" />
           </button>
@@ -172,7 +172,7 @@ export default function DisputeReportModal({
             <select
               value={formData.reason}
               onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:outline-none"
+              className="w-full bg-dark-700 border border-dark-500 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:outline-none"
               required
             >
               <option value="">
@@ -200,7 +200,7 @@ export default function DisputeReportModal({
                   : 'Vui lòng mô tả chi tiết những gì đã xảy ra...'
               }
               rows={5}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-red-500 focus:outline-none resize-none"
+              className="w-full bg-dark-700 border border-dark-500 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-red-500 focus:outline-none resize-none"
               required
             />
           </div>
@@ -221,7 +221,7 @@ export default function DisputeReportModal({
                     setFormData({ ...formData, evidenceUrls: newUrls });
                   }}
                   placeholder={`${language === 'ko' ? '증거 자료' : 'Bằng chứng'} ${index + 1} URL`}
-                  className="flex-1 bg-dark border border-dark-200 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:border-red-500 focus:outline-none"
+                  className="flex-1 bg-dark-700 border border-dark-500 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:border-red-500 focus:outline-none"
                 />
                 {formData.evidenceUrls.length > 1 && (
                   <button
@@ -265,7 +265,7 @@ export default function DisputeReportModal({
                   : 'Bạn muốn hành động gì? (Ví dụ: Yêu cầu thanh toán, hủy hợp đồng, v.v.)'
               }
               rows={3}
-              className="w-full bg-dark border border-dark-200 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-red-500 focus:outline-none resize-none"
+              className="w-full bg-dark-700 border border-dark-500 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-red-500 focus:outline-none resize-none"
             />
           </div>
 
@@ -274,7 +274,7 @@ export default function DisputeReportModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-dark-200 text-white py-3 rounded-xl font-bold hover:bg-dark-300 transition-all"
+              className="flex-1 bg-dark-600 text-white py-3 rounded-xl font-bold hover:bg-dark-500 transition-all"
             >
               {language === 'ko' ? '취소' : 'Hủy'}
             </button>

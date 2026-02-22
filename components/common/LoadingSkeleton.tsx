@@ -125,7 +125,7 @@ export function FullScreenLoader() {
         {/* 텍스트 */}
         <div className="space-y-2">
           <p className="text-white text-lg font-bold">{language === 'ko' ? '잠시만 기다려주세요' : 'Vui lòng đợi'}</p>
-          <p className="text-gray-400 text-sm">Please wait...</p>
+          <p className="text-gray-400 text-sm">{language === 'ko' ? '로딩 중입니다...' : 'Đang tải...'}</p>
         </div>
 
         {/* 로딩 바 */}

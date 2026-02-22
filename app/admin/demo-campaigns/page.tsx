@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Play, Pause, Plus, Trash2, BarChart3, Settings, Zap, Clock, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Plus, Trash2, BarChart3, Settings, Zap, Clock, TrendingUp, X, AlertTriangle } from 'lucide-react';
 import type { Category } from '@/types';
 import {
   loadSettings,
@@ -55,6 +55,8 @@ export default function DemoCampaignsAdminPage() {
   const [stats, setStats] = useState(getGenerationStats());
   const [isGenerating, setIsGenerating] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   // 초기 로드
   useEffect(() => {
@@ -82,7 +84,8 @@ export default function DemoCampaignsAdminPage() {
   // 즉시 생성
   const handleGenerateNow = () => {
     if (settings.categories.length === 0) {
-      alert(language === 'ko' ? '최소 1개 카테고리를 선택해주세요!' : 'Vui lòng chọn ít nhất 1 danh mục!');
+      setValidationError(language === 'ko' ? '최소 1개 카테고리를 선택해주세요!' : 'Vui lòng chọn ít nhất 1 danh mục!');
+      setTimeout(() => setValidationError(''), 3000);
       return;
     }
 
@@ -100,11 +103,14 @@ export default function DemoCampaignsAdminPage() {
 
   // 모두 삭제
   const handleClearAll = () => {
-    if (!confirm(language === 'ko' ? '정말 모든 자동 생성 캠페인을 삭제하시겠습니까?' : 'Bạn có chắc muốn xóa tất cả chiến dịch tự động?')) return;
+    setShowClearConfirm(true);
+  };
 
+  const executeClearAll = () => {
     clearAllGeneratedCampaigns();
     setCampaigns([]);
     setStats(getGenerationStats());
+    setShowClearConfirm(false);
     setSuccessMessage(language === 'ko' ? '🗑️ 모든 캠페인 삭제 완료' : '🗑️ Đã xóa tất cả chiến dịch');
     setTimeout(() => setSuccessMessage(''), 3000);
   };
@@ -119,6 +125,50 @@ export default function DemoCampaignsAdminPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
+      {/* Clear All Confirm Modal */}
+      {showClearConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl w-full max-w-sm p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <AlertTriangle size={20} className="text-warning" />
+                {language === 'ko' ? '전체 삭제 확인' : 'Xác nhận xóa tất cả'}
+              </h3>
+              <button onClick={() => setShowClearConfirm(false)} className="text-gray-400 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-sm text-gray-300 mb-6">
+              {language === 'ko'
+                ? '정말 모든 자동 생성 캠페인을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.'
+                : 'Bạn có chắc muốn xóa tất cả chiến dịch tự động? Hành động này không thể hoàn tác.'}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowClearConfirm(false)}
+                className="flex-1 py-3 bg-dark-700 hover:bg-dark-500 text-gray-300 rounded-xl font-semibold text-sm transition-all"
+              >
+                {language === 'ko' ? '취소' : 'Hủy'}
+              </button>
+              <button
+                onClick={executeClearAll}
+                className="flex-1 py-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-400 hover:to-rose-400 text-white rounded-xl font-bold text-sm shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-2"
+              >
+                <Trash2 size={16} />
+                {language === 'ko' ? '전체 삭제' : 'Xóa tất cả'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Validation Error Toast */}
+      {validationError && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-red-500 text-white rounded-full shadow-2xl font-semibold text-sm">
+          {validationError}
+        </div>
+      )}
+
       {/* Header */}
       <div className="sticky top-0 z-10 bg-gradient-to-r from-purple-900 to-pink-900 border-b border-pink-500 shadow-2xl">
         <div className="px-4 py-4">

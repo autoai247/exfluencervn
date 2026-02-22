@@ -149,16 +149,20 @@ export default function AdvertiserNotificationsPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                filter === 'all' ? 'bg-primary text-white' : 'bg-dark-600 text-gray-400'
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                filter === 'all'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                  : 'bg-dark-600/80 text-gray-400 border border-dark-400/40 hover:border-primary/30'
               }`}
             >
               {language === 'ko' ? '전체' : 'Tất cả'} ({notifications.length})
             </button>
             <button
               onClick={() => setFilter('unread')}
-              className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                filter === 'unread' ? 'bg-primary text-white' : 'bg-dark-600 text-gray-400'
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                filter === 'unread'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md shadow-primary/20'
+                  : 'bg-dark-600/80 text-gray-400 border border-dark-400/40 hover:border-primary/30'
               }`}
             >
               {language === 'ko' ? '미읽음' : 'Chưa đọc'} ({unreadCount})

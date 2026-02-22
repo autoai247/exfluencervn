@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, TrendingUp, User, Phone, Building2, CheckSquare, Square, Facebook, MessageCircle } from 'lucide-react';
@@ -136,8 +136,9 @@ export default function RegisterPage() {
         // 회원가입 성공 - 로그인 페이지로 리다이렉트
         router.push('/auth/login?registered=true');
       }
-    } catch (err: any) {
-      setErrors({ ...errors, submit: err.message || 'Registration failed' });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : (language === 'ko' ? '회원가입에 실패했습니다.' : 'Đăng ký thất bại.');
+      setErrors({ ...errors, submit: message });
       setLoading(false);
     }
   };
@@ -516,13 +517,20 @@ export default function RegisterPage() {
                     <Link href="/privacy" target="_blank" className="text-primary underline hover:text-primary-light">
                       {t.auth.register.privacyPolicy}
                     </Link>
-                    {' '}{t.auth.register.agreeToTerms} *
+                    {' '}{language === 'ko' ? '에 동의합니다' : 'Tôi đồng ý với'} *
                   </span>
                 </div>
                 {errors.agreePrivacy && (
                   <p className="text-xs text-error ml-8">{errors.agreePrivacy}</p>
                 )}
               </div>
+
+              {/* Submit Error */}
+              {errors.submit && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-sm text-red-500 text-center">{errors.submit}</p>
+                </div>
+              )}
 
               {/* Submit */}
               <button

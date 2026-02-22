@@ -271,7 +271,7 @@ export default function InfluencerSearchPage() {
   };
 
   const handleSendInvite = () => {
-    alert(language === 'ko' ? `${selectedInfluencer?.name}님에게 초대장을 보냈습니다!` : `Đã gửi lời mời đến ${selectedInfluencer?.name}!`);
+    // 초대장 전송 처리 (추후 API 연동)
     setShowInviteModal(false);
     setSelectedInfluencer(null);
     setSelectedMatchScore(null);

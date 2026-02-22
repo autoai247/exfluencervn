@@ -25,11 +25,11 @@ import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatCompactNumber } from '@/lib/points';
 
-// Mock portfolio data
-const mockPortfolio = [
+// Mock portfolio data - bilingual
+const getMockPortfolio = (language: string) => [
   {
     id: '1',
-    campaignTitle: '신규 스킨케어 제품 리뷰',
+    campaignTitle: language === 'ko' ? '신규 스킨케어 제품 리뷰' : 'Review sản phẩm skincare mới',
     brand: 'Beauty Brand',
     platform: 'instagram' as 'instagram' | 'tiktok' | 'youtube',
     thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
@@ -43,12 +43,12 @@ const mockPortfolio = [
       engagement: 14.7,
     },
     rating: 5.0,
-    feedback: '매우 만족스러운 협업이었습니다!',
+    feedback: language === 'ko' ? '매우 만족스러운 협업이었습니다!' : 'Hợp tác rất tuyệt vời và chuyên nghiệp!',
     category: 'beauty',
   },
   {
     id: '2',
-    campaignTitle: '베트남 레스토랑 체험',
+    campaignTitle: language === 'ko' ? '베트남 레스토랑 체험' : 'Trải nghiệm nhà hàng Việt Nam',
     brand: 'Pho House Vietnam',
     platform: 'tiktok' as 'instagram' | 'tiktok' | 'youtube',
     thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
@@ -62,7 +62,7 @@ const mockPortfolio = [
       engagement: 15.3,
     },
     rating: 4.5,
-    feedback: '음식 촬영 각도가 훌륭했습니다.',
+    feedback: language === 'ko' ? '음식 촬영 각도가 훌륭했습니다.' : 'Góc quay món ăn rất xuất sắc.',
     category: 'food',
   },
 ];
@@ -85,7 +85,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<'all' | 'instagram' | 'tiktok' | 'youtube'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
-  const [selectedPortfolio, setSelectedPortfolio] = useState<typeof mockPortfolio[0] | null>(null);
+
+  const mockPortfolio = getMockPortfolio(language);
+  const [selectedPortfolio, setSelectedPortfolio] = useState<ReturnType<typeof getMockPortfolio>[0] | null>(null);
 
   const totalViews = mockPortfolio.reduce((sum, item) => sum + item.metrics.views, 0);
   const totalLikes = mockPortfolio.reduce((sum, item) => sum + item.metrics.likes, 0);
@@ -98,31 +100,28 @@ export default function PortfolioPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700/90 backdrop-blur-md border-b border-dark-400/40">
-        <div className="flex items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-3">
-            <button onClick={() => router.back()} className="btn-icon text-white">
-              <ArrowLeft size={24} />
-            </button>
-            <h1 className="text-lg font-bold text-white">{t.portfolio.title}</h1>
-          </div>
-          <div className="flex gap-2">
+      <MobileHeader
+        title={t.portfolio.title}
+        showBack
+        showNotification
+        onNotification={() => router.push('/main/influencer/notifications')}
+        rightAction={
+          <div className="flex gap-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`btn-icon ${viewMode === 'grid' ? 'text-primary bg-primary/20' : 'text-gray-400'}`}
+              className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all ${viewMode === 'grid' ? 'text-primary bg-primary/20' : 'text-gray-400'}`}
             >
               <Grid3x3 size={20} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`btn-icon ${viewMode === 'list' ? 'text-primary bg-primary/20' : 'text-gray-400'}`}
+              className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all ${viewMode === 'list' ? 'text-primary bg-primary/20' : 'text-gray-400'}`}
             >
               <LayoutList size={20} />
             </button>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       <div className="container-mobile py-6 space-y-6">
         {/* Statistics */}

@@ -112,7 +112,7 @@ export default function AdminUserDetailPage() {
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4">
+      <div className="sticky top-0 z-10 bg-dark-700/95 backdrop-blur-sm border-b border-dark-400/40 px-4 py-4">
         <div className="flex items-center gap-3">
           <button onClick={() => router.back()} className="btn-icon text-white">
             <ArrowLeft size={24} />

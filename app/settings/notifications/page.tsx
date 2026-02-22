@@ -17,49 +17,73 @@ interface NotificationSetting {
 export default function NotificationSettingsPage() {
   const router = useRouter();
   const { language } = useLanguage();
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const [settings, setSettings] = useState<NotificationSetting[]>([
     {
       id: 'campaigns',
-      title: language === 'ko' ? '새로운 캠페인' : 'Chiến dịch mới',
-      description: language === 'ko' ? '나에게 맞는 새 캠페인이 등록되면 알림' : 'Thông báo khi có chiến dịch phù hợp mới',
+      title: '',
+      description: '',
       icon: Briefcase,
       push: true,
       email: true,
     },
     {
       id: 'messages',
-      title: language === 'ko' ? '메시지' : 'Tin nhắn',
-      description: language === 'ko' ? '새 메시지 수신 시 알림' : 'Thông báo khi nhận tin nhắn mới',
+      title: '',
+      description: '',
       icon: MessageCircle,
       push: true,
       email: false,
     },
     {
       id: 'payments',
-      title: language === 'ko' ? '결제 및 출금' : 'Thanh toán và rút tiền',
-      description: language === 'ko' ? '포인트 획득 및 출금 처리 알림' : 'Thông báo nhận điểm và xử lý rút tiền',
+      title: '',
+      description: '',
       icon: DollarSign,
       push: true,
       email: true,
     },
     {
       id: 'applications',
-      title: language === 'ko' ? '지원 상태' : 'Trạng thái ứng tuyển',
-      description: language === 'ko' ? '캠페인 지원 승인/거절 알림' : 'Thông báo duyệt/từ chối ứng tuyển chiến dịch',
+      title: '',
+      description: '',
       icon: TrendingUp,
       push: true,
       email: true,
     },
     {
       id: 'reviews',
-      title: language === 'ko' ? '리뷰 및 평가' : 'Đánh giá và nhận xét',
-      description: language === 'ko' ? '새로운 리뷰나 평가 등록 시 알림' : 'Thông báo khi có đánh giá mới',
+      title: '',
+      description: '',
       icon: Users,
       push: true,
       email: false,
     },
   ]);
+
+  const notificationLabels: Record<string, { title: string; description: string }> = {
+    campaigns: {
+      title: language === 'ko' ? '새로운 캠페인' : 'Chiến dịch mới',
+      description: language === 'ko' ? '나에게 맞는 새 캠페인이 등록되면 알림' : 'Thông báo khi có chiến dịch phù hợp mới',
+    },
+    messages: {
+      title: language === 'ko' ? '메시지' : 'Tin nhắn',
+      description: language === 'ko' ? '새 메시지 수신 시 알림' : 'Thông báo khi nhận tin nhắn mới',
+    },
+    payments: {
+      title: language === 'ko' ? '결제 및 출금' : 'Thanh toán và rút tiền',
+      description: language === 'ko' ? '포인트 획득 및 출금 처리 알림' : 'Thông báo nhận điểm và xử lý rút tiền',
+    },
+    applications: {
+      title: language === 'ko' ? '지원 상태' : 'Trạng thái ứng tuyển',
+      description: language === 'ko' ? '캠페인 지원 승인/거절 알림' : 'Thông báo duyệt/từ chối ứng tuyển chiến dịch',
+    },
+    reviews: {
+      title: language === 'ko' ? '리뷰 및 평가' : 'Đánh giá và nhận xét',
+      description: language === 'ko' ? '새로운 리뷰나 평가 등록 시 알림' : 'Thông báo khi có đánh giá mới',
+    },
+  };
 
   const togglePush = (id: string) => {
     setSettings(settings.map(s =>
@@ -74,8 +98,11 @@ export default function NotificationSettingsPage() {
   };
 
   const handleSave = () => {
-    alert(language === 'ko' ? '알림 설정이 저장되었습니다!' : 'Đã lưu cài đặt thông báo!');
-    router.back();
+    setSaveSuccess(true);
+    setTimeout(() => {
+      setSaveSuccess(false);
+      router.back();
+    }, 1200);
   };
 
   return (
@@ -105,6 +132,7 @@ export default function NotificationSettingsPage() {
         <div className="space-y-3">
           {settings.map((setting) => {
             const Icon = setting.icon;
+            const labels = notificationLabels[setting.id];
             return (
               <div key={setting.id} className="card">
                 <div className="flex items-start gap-3 mb-4">
@@ -112,8 +140,8 @@ export default function NotificationSettingsPage() {
                     <Icon size={20} className="text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-white mb-1">{setting.title}</h3>
-                    <p className="text-xs text-gray-400">{setting.description}</p>
+                    <h3 className="font-semibold text-white mb-1">{labels.title}</h3>
+                    <p className="text-xs text-gray-400">{labels.description}</p>
                   </div>
                 </div>
 
@@ -157,9 +185,20 @@ export default function NotificationSettingsPage() {
           })}
         </div>
 
+        {/* Save Success Message */}
+        {saveSuccess && (
+          <div className="bg-success/10 border border-success/30 rounded-lg p-3">
+            <p className="text-sm text-success text-center">
+              {language === 'ko' ? '알림 설정이 저장되었습니다!' : 'Đã lưu cài đặt thông báo!'}
+            </p>
+          </div>
+        )}
+
         {/* Save Button */}
-        <button onClick={handleSave} className="btn btn-primary w-full">
-          {language === 'ko' ? '설정 저장' : 'Lưu cài đặt'}
+        <button onClick={handleSave} className="btn btn-primary w-full" disabled={saveSuccess}>
+          {saveSuccess
+            ? (language === 'ko' ? '저장됨' : 'Đã lưu')
+            : (language === 'ko' ? '설정 저장' : 'Lưu cài đặt')}
         </button>
       </div>
     </div>

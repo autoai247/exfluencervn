@@ -666,8 +666,18 @@ export default function AdminDashboardPage() {
                         <p className="text-xs text-gray-400">{language === 'ko' ? '요청 시간' : 'Thời gian yêu cầu'}: {withdrawal.createdAt}</p>
                         <p className="text-xs text-gray-500 mt-1">ID: {withdrawal.id}</p>
                       </div>
-                      <span className="text-xs px-2 py-1 rounded-lg bg-warning/20 text-warning">
-                        {language === 'ko' ? '대기중' : 'Đang chờ'}
+                      <span className={`text-xs px-2 py-1 rounded-lg ${
+                        withdrawal.status === 'pending'
+                          ? 'bg-warning/20 text-warning'
+                          : withdrawal.status === 'completed'
+                          ? 'bg-success/20 text-success'
+                          : 'bg-error/20 text-error'
+                      }`}>
+                        {withdrawal.status === 'pending'
+                          ? (language === 'ko' ? '대기중' : 'Đang chờ')
+                          : withdrawal.status === 'completed'
+                          ? (language === 'ko' ? '완료' : 'Hoàn thành')
+                          : (language === 'ko' ? '거부됨' : 'Đã từ chối')}
                       </span>
                     </div>
 

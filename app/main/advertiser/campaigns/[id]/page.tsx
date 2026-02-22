@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, Messag
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import Breadcrumb from '@/components/common/Breadcrumb';
+import BottomNav from '@/components/common/BottomNav';
 
 // Mock campaign detail data
 const mockCampaignDetail = {
@@ -201,13 +202,12 @@ export default function CampaignDetailPage() {
       submittedContent: [],
     };
     setAcceptedInfluencers(prev => [...prev, newInfluencer]);
-    alert(language === 'ko' ? `${applicant.name} 승인 완료!` : `Đã chấp thuận ${applicant.name}!`);
+    // 승인 완료 - toast 또는 UI 상태로 처리
   };
 
   const handleReject = (applicant: any) => {
-    const reason = prompt(language === 'ko' ? `${applicant.name} 거절 이유를 입력하세요 (선택):` : `Nhập lý do từ chối ứng viên ${applicant.name} (tùy chọn):`);
     setPendingApplicants(prev => prev.filter(a => a.id !== applicant.id));
-    alert(language === 'ko' ? `${applicant.name} 거절 완료.${reason ? `\n이유: ${reason}` : ''}` : `Đã từ chối ứng viên ${applicant.name}.${reason ? `\nLý do: ${reason}` : ''}`);
+    // 거절 완료 - UI 상태로 처리
   };
 
   const calculateApplicantMatch = (applicant: any) => {
@@ -467,10 +467,8 @@ export default function CampaignDetailPage() {
                           type="checkbox"
                           id={`payment-${influencer.id}`}
                           className="w-4 h-4 rounded border-dark-400 text-primary focus:ring-primary"
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              alert(language === 'ko' ? '결제 완료 표시 (데모)' : 'Đã đánh dấu thanh toán hoàn thành (demo)');
-                            }
+                          onChange={(_e) => {
+                            // 결제 완료 처리 - 추후 API 연동
                           }}
                         />
                         <label htmlFor={`payment-${influencer.id}`} className="text-xs text-gray-300 cursor-pointer">
@@ -513,7 +511,7 @@ export default function CampaignDetailPage() {
                           />
                         </div>
                         <button
-                          onClick={() => alert(language === 'ko' ? '발송 정보 저장 완료 (데모)' : 'Đã lưu thông tin gửi hàng (demo)')}
+                          onClick={() => {/* 발송 정보 저장 - 추후 API 연동 */}}
                           className="w-full bg-gradient-to-r from-secondary to-blue-400 text-white hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '발송 확인' : 'Xác nhận gửi hàng'}
@@ -559,7 +557,7 @@ export default function CampaignDetailPage() {
                           />
                         </div>
                         <button
-                          onClick={() => alert(language === 'ko' ? '매장 정보 저장 완료 (데모)' : 'Đã lưu thông tin cửa hàng (demo)')}
+                          onClick={() => {/* 매장 정보 저장 - 추후 API 연동 */}}
                           className="w-full bg-gradient-to-r from-accent to-yellow-400 text-dark-800 hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '정보 저장' : 'Lưu thông tin'}
@@ -609,7 +607,7 @@ export default function CampaignDetailPage() {
                           />
                         </div>
                         <button
-                          onClick={() => alert(language === 'ko' ? '미팅 일정 저장 완료 (데모)' : 'Đã lưu lịch gặp (demo)')}
+                          onClick={() => {/* 미팅 일정 저장 - 추후 API 연동 */}}
                           className="w-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 rounded-lg text-xs py-2 font-medium"
                         >
                           {language === 'ko' ? '일정 확인' : 'Xác nhận lịch'}
@@ -692,17 +690,14 @@ export default function CampaignDetailPage() {
                         {content.status === 'pending' ? (
                           <div className="flex gap-2 mt-2">
                             <button
-                              onClick={() => alert(language === 'ko' ? '콘텐츠 승인 완료 (데모)' : 'Đã chấp thuận nội dung (demo)')}
+                              onClick={() => {/* 콘텐츠 승인 - 추후 API 연동 */}}
                               className="flex-1 bg-success/20 text-success hover:bg-success/30 border border-success/30 rounded-lg text-xs py-2 flex items-center justify-center gap-1 transition-colors"
                             >
                               <CheckCircle size={14} />
                               {language === 'ko' ? '승인' : 'Chấp thuận'}
                             </button>
                             <button
-                              onClick={() => {
-                                const reason = prompt(language === 'ko' ? '거절 이유를 입력하세요:' : 'Nhập lý do từ chối:');
-                                if (reason) alert(language === 'ko' ? `거절 완료: ${reason} (데모)` : `Đã từ chối: ${reason} (demo)`);
-                              }}
+                              onClick={() => {/* 콘텐츠 거절 - 추후 API 연동 */}}
                               className="flex-1 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30 rounded-lg text-xs py-2 transition-colors"
                             >
                               {language === 'ko' ? '거절' : 'Từ chối'}
@@ -1092,10 +1087,6 @@ export default function CampaignDetailPage() {
                 </button>
                 <button
                   onClick={() => {
-                    alert(language === 'ko'
-                      ? `평가가 저장되었습니다!\n점수: ${reviewData.rating}\n태그: ${reviewData.tags.join(', ')}\n추천: ${reviewData.wouldRecommend ? '예' : '아니오'}`
-                      : `Đã lưu đánh giá!\nĐiểm: ${reviewData.rating}\nNhãn: ${reviewData.tags.join(', ')}\nGiới thiệu: ${reviewData.wouldRecommend ? 'Có' : 'Không'}`
-                    );
                     setShowReviewModal(false);
                   }}
                   className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
@@ -1107,6 +1098,8 @@ export default function CampaignDetailPage() {
           </div>
         </div>
       )}
+
+      <BottomNav userType="advertiser" />
     </div>
   );
 }

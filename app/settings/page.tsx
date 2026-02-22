@@ -32,8 +32,11 @@ export default function SettingsPage() {
     setShowDeleteModal(true);
   };
 
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordForm, setPasswordForm] = useState({ current: '', next: '', confirm: '' });
+
   const confirmDeleteAccount = () => {
-    alert(t.settings.deleteModal.success);
     setShowDeleteModal(false);
     localStorage.removeItem('exfluencer_user');
     router.push('/');
@@ -125,29 +128,74 @@ export default function SettingsPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="bg-dark-600 rounded-xl w-full max-w-md p-6">
             <h3 className="text-lg font-bold text-white mb-4">{t.settings.changePassword}</h3>
-            <form className="space-y-4">
+            {passwordSuccess ? (
+              <div className="bg-success/10 border border-success/30 rounded-lg p-4 mb-4">
+                <p className="text-sm text-success text-center">{t.settings.passwordModal.success}</p>
+              </div>
+            ) : null}
+            {passwordError ? (
+              <div className="bg-error/10 border border-error/30 rounded-lg p-3 mb-4">
+                <p className="text-sm text-error text-center">{passwordError}</p>
+              </div>
+            ) : null}
+            <form className="space-y-4" onSubmit={(e) => {
+              e.preventDefault();
+              setPasswordError('');
+              if (!passwordForm.current) {
+                setPasswordError(language === 'ko' ? '현재 비밀번호를 입력하세요.' : 'Vui lòng nhập mật khẩu hiện tại.');
+                return;
+              }
+              if (passwordForm.next.length < 8) {
+                setPasswordError(language === 'ko' ? '새 비밀번호는 8자 이상이어야 합니다.' : 'Mật khẩu mới phải có ít nhất 8 ký tự.');
+                return;
+              }
+              if (passwordForm.next !== passwordForm.confirm) {
+                setPasswordError(language === 'ko' ? '새 비밀번호가 일치하지 않습니다.' : 'Mật khẩu mới không khớp.');
+                return;
+              }
+              setPasswordSuccess(true);
+              setPasswordForm({ current: '', next: '', confirm: '' });
+              setTimeout(() => {
+                setPasswordSuccess(false);
+                setShowPasswordModal(false);
+              }, 1500);
+            }}>
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">{t.settings.passwordModal.currentPassword}</label>
-                <input type="password" className="input" placeholder={t.settings.passwordModal.currentPasswordPlaceholder} />
+                <input
+                  type="password"
+                  className="input"
+                  placeholder={t.settings.passwordModal.currentPasswordPlaceholder}
+                  value={passwordForm.current}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, current: e.target.value })}
+                />
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">{t.settings.passwordModal.newPassword}</label>
-                <input type="password" className="input" placeholder={t.settings.passwordModal.newPasswordPlaceholder} />
+                <input
+                  type="password"
+                  className="input"
+                  placeholder={t.settings.passwordModal.newPasswordPlaceholder}
+                  value={passwordForm.next}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, next: e.target.value })}
+                />
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">{t.settings.passwordModal.confirmPassword}</label>
-                <input type="password" className="input" placeholder={t.settings.passwordModal.confirmPasswordPlaceholder} />
+                <input
+                  type="password"
+                  className="input"
+                  placeholder={t.settings.passwordModal.confirmPasswordPlaceholder}
+                  value={passwordForm.confirm}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                />
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={() => setShowPasswordModal(false)} className="flex-1 btn btn-ghost">
+                <button type="button" onClick={() => { setShowPasswordModal(false); setPasswordError(''); setPasswordSuccess(false); setPasswordForm({ current: '', next: '', confirm: '' }); }} className="flex-1 btn btn-ghost">
                   {t.settings.passwordModal.cancel}
                 </button>
                 <button
-                  type="button"
-                  onClick={() => {
-                    alert(t.settings.passwordModal.success);
-                    setShowPasswordModal(false);
-                  }}
+                  type="submit"
                   className="flex-1 btn btn-primary"
                 >
                   {t.settings.passwordModal.change}
@@ -206,7 +254,7 @@ export default function SettingsPage() {
             </p>
             <div className="flex gap-3">
               <button onClick={() => setShowDeleteModal(false)} className="flex-1 btn btn-ghost">
-                {t.settings.passwordModal.cancel}
+                {t.settings.deleteModal.cancel}
               </button>
               <button onClick={confirmDeleteAccount} className="flex-1 btn bg-error text-white hover:bg-error/80">
                 {t.settings.deleteModal.delete}

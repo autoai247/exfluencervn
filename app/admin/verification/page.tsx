@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, XCircle, Eye, Building2, FileText, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, XCircle, Eye, Building2, FileText, AlertTriangle, X } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Mock data for pending verifications
@@ -44,30 +44,47 @@ export default function AdminVerificationPage() {
   const [verifications, setVerifications] = useState(mockPendingVerifications);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
+  const [confirmModal, setConfirmModal] = useState<{ type: 'approve' | 'reject'; id: string } | null>(null);
+  const [rejectReason, setRejectReason] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
 
   const handleApprove = (id: string) => {
-    if (confirm(language === 'ko' ? '이 사업자를 승인하시겠습니까?' : 'Bạn có chắc muốn phê duyệt doanh nghiệp này?')) {
-      setVerifications(prev =>
-        prev.map(v =>
-          v.id === id ? { ...v, status: 'approved' as const, reviewedAt: new Date().toISOString() } : v
-        )
-      );
-      alert(language === 'ko' ? '승인되었습니다!' : 'Đã phê duyệt!');
-    }
+    setConfirmModal({ type: 'approve', id });
   };
 
   const handleReject = (id: string) => {
-    const reason = prompt(language === 'ko' ? '거부 사유를 입력하세요:' : 'Nhập lý do từ chối:');
-    if (reason) {
-      setVerifications(prev =>
-        prev.map(v =>
-          v.id === id
-            ? { ...v, status: 'rejected' as const, reviewedAt: new Date().toISOString(), rejectionReason: reason }
-            : v
-        )
-      );
-      alert(language === 'ko' ? `거부되었습니다: ${reason}` : `Đã từ chối: ${reason}`);
-    }
+    setRejectReason('');
+    setConfirmModal({ type: 'reject', id });
+  };
+
+  const executeApprove = () => {
+    if (!confirmModal) return;
+    setVerifications(prev =>
+      prev.map(v =>
+        v.id === confirmModal.id ? { ...v, status: 'approved' as const, reviewedAt: new Date().toISOString() } : v
+      )
+    );
+    showToast(language === 'ko' ? '승인되었습니다!' : 'Đã phê duyệt!');
+    setConfirmModal(null);
+  };
+
+  const executeReject = () => {
+    if (!confirmModal || !rejectReason.trim()) return;
+    setVerifications(prev =>
+      prev.map(v =>
+        v.id === confirmModal.id
+          ? { ...v, status: 'rejected' as const, reviewedAt: new Date().toISOString(), rejectionReason: rejectReason }
+          : v
+      )
+    );
+    showToast(language === 'ko' ? `거부되었습니다: ${rejectReason}` : `Đã từ chối: ${rejectReason}`);
+    setConfirmModal(null);
+    setRejectReason('');
   };
 
   const selected = verifications.find(v => v.id === selectedId);
@@ -95,9 +112,77 @@ export default function AdminVerificationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark pb-24">
+    <div className="min-h-screen bg-dark-700 pb-24">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-green-500 text-white rounded-full shadow-2xl animate-bounce font-semibold text-sm">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* Confirm Modal */}
+      {confirmModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl w-full max-w-md p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white">
+                {confirmModal.type === 'approve'
+                  ? (language === 'ko' ? '승인 확인' : 'Xác nhận phê duyệt')
+                  : (language === 'ko' ? '거부 확인' : 'Xác nhận từ chối')}
+              </h3>
+              <button onClick={() => setConfirmModal(null)} className="text-gray-400 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            {confirmModal.type === 'approve' ? (
+              <p className="text-gray-300 text-sm mb-6">
+                {language === 'ko' ? '이 사업자를 승인하시겠습니까? 승인 후에는 광고주로 활동할 수 있습니다.' : 'Bạn có chắc muốn phê duyệt doanh nghiệp này? Sau khi phê duyệt họ có thể hoạt động như nhà quảng cáo.'}
+              </p>
+            ) : (
+              <>
+                <p className="text-gray-300 text-sm mb-3">
+                  {language === 'ko' ? '거부 사유를 입력하세요:' : 'Nhập lý do từ chối:'}
+                </p>
+                <textarea
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  placeholder={language === 'ko' ? '예: 사업자등록증 정보 불일치' : 'Ví dụ: Thông tin giấy phép không khớp'}
+                  className="w-full bg-dark-700 border border-dark-500 rounded-xl p-3 text-white text-sm resize-none h-24 mb-4 focus:outline-none focus:border-primary/60"
+                />
+              </>
+            )}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmModal(null)}
+                className="flex-1 py-3 bg-dark-700 hover:bg-dark-500 text-gray-300 rounded-xl font-semibold text-sm transition-all"
+              >
+                {language === 'ko' ? '취소' : 'Hủy'}
+              </button>
+              {confirmModal.type === 'approve' ? (
+                <button
+                  onClick={executeApprove}
+                  className="flex-1 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-green-500/25 flex items-center justify-center gap-2"
+                >
+                  <CheckCircle2 size={16} />
+                  {language === 'ko' ? '승인' : 'Phê duyệt'}
+                </button>
+              ) : (
+                <button
+                  onClick={executeReject}
+                  disabled={!rejectReason.trim()}
+                  className="flex-1 py-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-400 hover:to-rose-400 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-red-500/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <XCircle size={16} />
+                  {language === 'ko' ? '거부' : 'Từ chối'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="sticky top-0 z-30 bg-dark/95 backdrop-blur-sm border-b border-dark-200">
+      <div className="sticky top-0 z-30 bg-dark-700/95 backdrop-blur-sm border-b border-dark-400/40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <h1 className="text-2xl font-bold text-white">{language === 'ko' ? '사업자 인증 승인 관리' : 'Quản lý xét duyệt xác minh doanh nghiệp'}</h1>
           <p className="text-sm text-gray-400 mt-1">{language === 'ko' ? '광고주 사업자 인증을 검토하고 승인/거부하세요' : 'Xem xét và phê duyệt/từ chối xác minh doanh nghiệp của nhà quảng cáo'}</p>
@@ -107,25 +192,25 @@ export default function AdminVerificationPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-dark-100 border border-dark-200 rounded-xl p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-4">
             <p className="text-sm text-gray-400">{language === 'ko' ? '대기 중' : 'Đang chờ'}</p>
-            <p className="text-2xl font-bold text-orange-500">
+            <p className="text-2xl font-bold text-orange-400">
               {verifications.filter(v => v.status === 'pending').length}
             </p>
           </div>
-          <div className="bg-dark-100 border border-dark-200 rounded-xl p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-4">
             <p className="text-sm text-gray-400">{language === 'ko' ? '승인됨' : 'Đã duyệt'}</p>
-            <p className="text-2xl font-bold text-green-500">
+            <p className="text-2xl font-bold text-green-400">
               {verifications.filter(v => v.status === 'approved').length}
             </p>
           </div>
-          <div className="bg-dark-100 border border-dark-200 rounded-xl p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-4">
             <p className="text-sm text-gray-400">{language === 'ko' ? '거부됨' : 'Đã từ chối'}</p>
-            <p className="text-2xl font-bold text-red-500">
+            <p className="text-2xl font-bold text-red-400">
               {verifications.filter(v => v.status === 'rejected').length}
             </p>
           </div>
-          <div className="bg-dark-100 border border-dark-200 rounded-xl p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-4">
             <p className="text-sm text-gray-400">{language === 'ko' ? '전체' : 'Tổng'}</p>
             <p className="text-2xl font-bold text-white">{verifications.length}</p>
           </div>
@@ -137,10 +222,10 @@ export default function AdminVerificationPage() {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                 filter === f
-                  ? 'bg-mint text-black'
-                  : 'bg-dark-100 text-gray-400 hover:bg-dark-200'
+                  ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/25'
+                  : 'bg-dark-600/60 text-gray-400 hover:bg-dark-500/60 hover:text-white border border-dark-400/40'
               }`}
             >
               {getFilterLabel(f)}
@@ -153,7 +238,7 @@ export default function AdminVerificationPage() {
           {/* Left: List */}
           <div className="lg:col-span-1 space-y-3">
             {filteredVerifications.length === 0 ? (
-              <div className="bg-dark-100 border border-dark-200 rounded-xl p-8 text-center">
+              <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-8 text-center">
                 <p className="text-gray-400">{language === 'ko' ? '신청 내역이 없습니다' : 'Không có yêu cầu nào'}</p>
               </div>
             ) : (
@@ -161,10 +246,10 @@ export default function AdminVerificationPage() {
                 <button
                   key={verification.id}
                   onClick={() => setSelectedId(verification.id)}
-                  className={`w-full text-left bg-dark-100 border rounded-xl p-4 transition-all ${
+                  className={`w-full text-left bg-dark-600/80 backdrop-blur-sm border rounded-2xl shadow-xl p-4 transition-all ${
                     selectedId === verification.id
-                      ? 'border-mint'
-                      : 'border-dark-200 hover:border-dark-300'
+                      ? 'border-primary/60 shadow-primary/10'
+                      : 'border-dark-400/40 hover:border-dark-300/60'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
@@ -194,7 +279,7 @@ export default function AdminVerificationPage() {
           {/* Right: Detail */}
           <div className="lg:col-span-2">
             {selected ? (
-              <div className="bg-dark-100 border border-dark-200 rounded-xl p-6 space-y-6">
+              <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-6 space-y-6">
                 <div className="flex items-start justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-white mb-1">{selected.companyName}</h2>
@@ -269,7 +354,7 @@ export default function AdminVerificationPage() {
                   <img
                     src={selected.certificateImage}
                     alt="Certificate"
-                    className="w-full h-96 object-cover rounded-lg border border-dark-200"
+                    className="w-full h-96 object-cover rounded-xl border border-dark-400/40"
                   />
                   <a
                     href={selected.certificateImage}
@@ -284,17 +369,17 @@ export default function AdminVerificationPage() {
 
                 {/* Actions */}
                 {selected.status === 'pending' && (
-                  <div className="flex gap-3 pt-4 border-t border-dark-200">
+                  <div className="flex gap-3 pt-4 border-t border-dark-400/40">
                     <button
                       onClick={() => handleReject(selected.id)}
-                      className="flex-1 bg-red-500/20 text-red-500 border border-red-500/30 py-3 rounded-xl font-bold hover:bg-red-500/30 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 bg-gradient-to-r from-red-500/20 to-rose-500/20 text-red-400 border border-red-500/30 py-3 rounded-xl font-bold hover:from-red-500/30 hover:to-rose-500/30 transition-all flex items-center justify-center gap-2"
                     >
                       <XCircle size={20} />
                       {language === 'ko' ? '거부' : 'Từ chối'}
                     </button>
                     <button
                       onClick={() => handleApprove(selected.id)}
-                      className="flex-1 bg-green-500/20 text-green-500 border border-green-500/30 py-3 rounded-xl font-bold hover:bg-green-500/30 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-bold hover:from-green-400 hover:to-emerald-400 transition-all shadow-lg shadow-green-500/25 flex items-center justify-center gap-2"
                     >
                       <CheckCircle2 size={20} />
                       {language === 'ko' ? '승인' : 'Phê duyệt'}
@@ -313,7 +398,7 @@ export default function AdminVerificationPage() {
                 )}
               </div>
             ) : (
-              <div className="bg-dark-100 border border-dark-200 rounded-xl p-12 text-center">
+              <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl p-12 text-center">
                 <Building2 size={48} className="text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-400">{language === 'ko' ? '좌측에서 신청을 선택하세요' : 'Chọn một yêu cầu từ danh sách bên trái'}</p>
               </div>

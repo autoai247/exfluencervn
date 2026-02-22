@@ -21,6 +21,7 @@ interface MobileHeaderProps {
   className?: string;
   showPoints?: boolean;
   currentPoints?: number;
+  pointsHref?: string;
 }
 
 export default function MobileHeader({
@@ -35,6 +36,7 @@ export default function MobileHeader({
   className,
   showPoints = false,
   currentPoints = 0,
+  pointsHref = '/main/influencer/wallet?tab=shopping',
 }: MobileHeaderProps) {
   const router = useRouter();
   const { language } = useLanguage();
@@ -60,26 +62,25 @@ export default function MobileHeader({
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-accent" />
 
       <div className="flex items-center justify-between h-16 px-4">
-        {/* Left Action */}
+        {/* Left Action - showBack takes priority over showMenu */}
         <div className="w-10">
-          {showBack && (
+          {showBack ? (
             <button
               onClick={handleBack}
               className="btn-icon text-white hover:bg-white/10 rounded-xl"
-              aria-label="Go back"
+              aria-label={language === 'ko' ? '뒤로 가기' : 'Quay lại'}
             >
               <ArrowLeft size={24} aria-hidden="true" />
             </button>
-          )}
-          {showMenu && (
+          ) : showMenu ? (
             <button
               onClick={onMenu}
               className="btn-icon text-white hover:bg-white/10 rounded-xl"
-              aria-label="Open menu"
+              aria-label={language === 'ko' ? '메뉴 열기' : 'Mở menu'}
             >
               <Menu size={24} aria-hidden="true" />
             </button>
-          )}
+          ) : null}
         </div>
 
         {/* Title with Points */}
@@ -89,8 +90,8 @@ export default function MobileHeader({
               <h1 className="text-lg font-bold text-white truncate">{title}</h1>
               {showPoints && (
                 <Link
-                  href="/main/influencer/wallet?tab=shopping"
-                  aria-label={`Shopping points: ${formatShoppingPoints(currentPoints)}`}
+                  href={pointsHref}
+                  aria-label={language === 'ko' ? `쇼핑 포인트: ${formatShoppingPoints(currentPoints)}` : `Điểm mua sắm: ${formatShoppingPoints(currentPoints)}`}
                 >
                   <div className="flex items-center justify-center gap-1 mt-0.5">
                     <Wallet size={12} className="text-primary" aria-hidden="true" />
@@ -110,7 +111,7 @@ export default function MobileHeader({
           <button
             onClick={() => setShowLanguageModal(true)}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-dark-500/50 hover:bg-dark-400/50 border border-dark-400/40 backdrop-blur-sm shadow-inner transition-all"
-            aria-label={`Change language, current: ${language}`}
+            aria-label={language === 'ko' ? `언어 변경 (현재: ${language.toUpperCase()})` : `Thay đổi ngôn ngữ (hiện tại: ${language.toUpperCase()})`}
           >
             <span className="text-lg leading-none" aria-hidden="true">{languageFlags[language]}</span>
             <span className="text-xs font-bold text-white uppercase">{language}</span>
@@ -122,10 +123,10 @@ export default function MobileHeader({
                 <button
                   onClick={onNotification}
                   className="btn-icon text-white hover:bg-white/10 rounded-xl relative"
-                  aria-label="Notifications"
+                  aria-label={language === 'ko' ? '알림' : 'Thông báo'}
                 >
                   <Bell size={24} aria-hidden="true" />
-                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-dark-700" aria-label="New notifications" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-dark-700" aria-label={language === 'ko' ? '새 알림' : 'Thông báo mới'} />
                 </button>
               )
             )}

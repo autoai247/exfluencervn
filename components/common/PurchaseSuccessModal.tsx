@@ -105,7 +105,7 @@ export default function PurchaseSuccessModal({
           {language === 'ko' ? '구매 완료!' : 'Mua hàng thành công!'}
         </h2>
         <p className="text-sm text-gray-400 text-center mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          Purchase Successful
+          {language === 'ko' ? '결제가 성공적으로 완료되었습니다' : 'Thanh toán đã được thực hiện thành công'}
         </p>
 
         {/* Item Info */}

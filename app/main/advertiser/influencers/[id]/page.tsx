@@ -453,14 +453,12 @@ export default function InfluencerProfilePage() {
                   <img
                     src={review.advertiserLogo}
                     alt={review.advertiser}
-                    className="w-10 h-10 rounded-full border border-dark-400/40 cursor-pointer hover:ring-2 hover:ring-primary/30 transition-all"
-                    onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
+                    className="w-10 h-10 rounded-full border border-dark-400/40 transition-all"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <h4
-                        className="text-sm font-semibold text-white cursor-pointer hover:text-gray-300 transition-colors"
-                        onClick={() => alert(language === 'ko' ? `${review.advertiser} 프로필 페이지 (준비 중)` : `Trang hồ sơ ${review.advertiser} (Đang chuẩn bị)`)}
+                        className="text-sm font-semibold text-white transition-colors"
                       >
                         {review.advertiser}
                       </h4>
@@ -791,7 +789,7 @@ export default function InfluencerProfilePage() {
               </button>
               <button
                 onClick={() => {
-                  alert(language === 'ko' ? '제안서가 전송되었습니다!' : 'Đề xuất đã được gửi!');
+                  // 제안서 전송 처리 (추후 API 연동)
                   setShowContactModal(false);
                 }}
                 className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"

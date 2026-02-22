@@ -14,27 +14,32 @@ export default function PrivacySettingsPage() {
   const [showPhone, setShowPhone] = useState(false);
   const [allowMessages, setAllowMessages] = useState('all'); // all, connections, none
   const [dataTracking, setDataTracking] = useState(true);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [exportSuccess, setExportSuccess] = useState(false);
+  const [showDeleteDataConfirm, setShowDeleteDataConfirm] = useState(false);
+  const [deleteDataSuccess, setDeleteDataSuccess] = useState(false);
 
   const handleSave = () => {
-    alert(language === 'ko' ? '개인정보 보호 설정이 저장되었습니다!' : 'Đã lưu cài đặt bảo mật!');
-    router.back();
+    setSaveSuccess(true);
+    setTimeout(() => {
+      setSaveSuccess(false);
+      router.back();
+    }, 1200);
   };
 
   const handleExportData = () => {
-    alert(language === 'ko'
-      ? '데이터 다운로드를 준비 중입니다.\n이메일로 다운로드 링크를 보내드립니다.'
-      : 'Đang chuẩn bị tải xuống dữ liệu.\nChúng tôi sẽ gửi liên kết tải xuống qua email.');
+    setExportSuccess(true);
+    setTimeout(() => setExportSuccess(false), 3000);
   };
 
   const handleDeleteData = () => {
-    const confirmed = confirm(language === 'ko'
-      ? '정말로 모든 개인 데이터를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.'
-      : 'Bạn có chắc muốn xóa tất cả dữ liệu cá nhân?\nHành động này không thể hoàn tác.');
-    if (confirmed) {
-      alert(language === 'ko'
-        ? '데이터 삭제 요청이 접수되었습니다.\n7일 이내에 모든 데이터가 영구 삭제됩니다.'
-        : 'Yêu cầu xóa dữ liệu đã được tiếp nhận.\nTất cả dữ liệu sẽ bị xóa vĩnh viễn trong vòng 7 ngày.');
-    }
+    setShowDeleteDataConfirm(true);
+  };
+
+  const confirmDeleteData = () => {
+    setShowDeleteDataConfirm(false);
+    setDeleteDataSuccess(true);
+    setTimeout(() => setDeleteDataSuccess(false), 4000);
   };
 
   const visibilityOptions = [
@@ -214,6 +219,16 @@ export default function PrivacySettingsPage() {
               </button>
             </div>
 
+            {exportSuccess && (
+              <div className="bg-success/10 border border-success/30 rounded-lg p-3">
+                <p className="text-sm text-success">
+                  {language === 'ko'
+                    ? '데이터 다운로드를 준비 중입니다. 이메일로 다운로드 링크를 보내드립니다.'
+                    : 'Đang chuẩn bị tải xuống dữ liệu. Chúng tôi sẽ gửi liên kết tải xuống qua email.'}
+                </p>
+              </div>
+            )}
+
             <button
               onClick={handleExportData}
               className="w-full btn btn-secondary justify-start"
@@ -221,6 +236,16 @@ export default function PrivacySettingsPage() {
               <Download size={18} className="mr-2" />
               {language === 'ko' ? '내 데이터 다운로드' : 'Tải xuống dữ liệu của tôi'}
             </button>
+
+            {deleteDataSuccess && (
+              <div className="bg-warning/10 border border-warning/30 rounded-lg p-3">
+                <p className="text-sm text-warning">
+                  {language === 'ko'
+                    ? '데이터 삭제 요청이 접수되었습니다. 7일 이내에 모든 데이터가 영구 삭제됩니다.'
+                    : 'Yêu cầu xóa dữ liệu đã được tiếp nhận. Tất cả dữ liệu sẽ bị xóa vĩnh viễn trong vòng 7 ngày.'}
+                </p>
+              </div>
+            )}
 
             <button
               onClick={handleDeleteData}
@@ -232,11 +257,52 @@ export default function PrivacySettingsPage() {
           </div>
         </div>
 
+        {/* Save Success Message */}
+        {saveSuccess && (
+          <div className="bg-success/10 border border-success/30 rounded-lg p-3">
+            <p className="text-sm text-success text-center">
+              {language === 'ko' ? '개인정보 보호 설정이 저장되었습니다!' : 'Đã lưu cài đặt bảo mật!'}
+            </p>
+          </div>
+        )}
+
         {/* Save Button */}
-        <button onClick={handleSave} className="btn btn-primary w-full">
-          {language === 'ko' ? '설정 저장' : 'Lưu cài đặt'}
+        <button onClick={handleSave} className="btn btn-primary w-full" disabled={saveSuccess}>
+          {saveSuccess
+            ? (language === 'ko' ? '저장됨' : 'Đã lưu')
+            : (language === 'ko' ? '설정 저장' : 'Lưu cài đặt')}
         </button>
       </div>
+
+      {/* Delete Data Confirmation Modal */}
+      {showDeleteDataConfirm && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-dark-600 rounded-xl w-full max-w-md p-6">
+            <h3 className="text-lg font-bold text-error mb-4">
+              {language === 'ko' ? '데이터 삭제 확인' : 'Xác nhận xóa dữ liệu'}
+            </h3>
+            <p className="text-gray-300 mb-6 text-sm">
+              {language === 'ko'
+                ? '정말로 모든 개인 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.'
+                : 'Bạn có chắc muốn xóa tất cả dữ liệu cá nhân? Hành động này không thể hoàn tác.'}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteDataConfirm(false)}
+                className="flex-1 btn btn-ghost"
+              >
+                {language === 'ko' ? '취소' : 'Hủy'}
+              </button>
+              <button
+                onClick={confirmDeleteData}
+                className="flex-1 btn bg-error text-white hover:bg-error/80"
+              >
+                {language === 'ko' ? '삭제 요청' : 'Yêu cầu xóa'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

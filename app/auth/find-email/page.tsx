@@ -7,7 +7,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
 export default function FindEmailPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [foundEmail, setFoundEmail] = useState('');
@@ -22,10 +22,10 @@ export default function FindEmailPage() {
     try {
       const supabase = createClient();
 
-      // 전화번호로 프로필 검색
+      // 전화번호로 프로필 검색 (이메일 마스킹된 형태로 저장된 경우 포함)
       const { data, error: searchError } = await supabase
         .from('profiles')
-        .select('id')
+        .select('id, masked_email')
         .eq('phone', phone)
         .single();
 
@@ -35,24 +35,32 @@ export default function FindEmailPage() {
         return;
       }
 
-      // 사용자 정보 가져오기
-      const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(data.id);
+      // masked_email 컬럼이 있으면 사용, 없으면 id 기반 마스킹 표시
+      if (data.masked_email) {
+        setFoundEmail(data.masked_email);
+      } else {
+        // profiles에서 이메일을 직접 조회 (public 컬럼)
+        const { data: emailData, error: emailError } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('id', data.id)
+          .single();
 
-      if (userError || !user) {
-        setError(t.auth.findEmail.notFound);
-        setLoading(false);
-        return;
+        if (emailError || !emailData?.email) {
+          setError(t.auth.findEmail.notFound);
+          setLoading(false);
+          return;
+        }
+
+        // 이메일 마스킹 처리
+        const rawEmail = emailData.email as string;
+        const [localPart, domain] = rawEmail.split('@');
+        const maskedLocal = localPart.substring(0, Math.min(3, localPart.length)) + '***';
+        setFoundEmail(`${maskedLocal}@${domain}`);
       }
-
-      // 이메일 마스킹 처리
-      const email = user.email || '';
-      const [localPart, domain] = email.split('@');
-      const maskedLocal = localPart.substring(0, 3) + '***';
-      const maskedEmail = `${maskedLocal}@${domain}`;
-
-      setFoundEmail(maskedEmail);
-    } catch (err: any) {
-      setError(err.message || 'Failed to find email');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : (language === 'ko' ? '이메일 찾기에 실패했습니다.' : 'Không thể tìm email.');
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -159,7 +167,7 @@ export default function FindEmailPage() {
             {/* Back to Login */}
             <div className="text-center pt-4">
               <Link href="/auth/login" className="text-sm text-gray-400 hover:text-primary">
-                ← {t.auth.login.loginButton}
+                ← {language === 'ko' ? '로그인 페이지로 돌아가기' : 'Quay lại trang đăng nhập'}
               </Link>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Gift, Trophy, Users, Ticket, Plus, Edit2, Trash2, Play, ArrowLeft } from 'lucide-react';
+import { Gift, Trophy, Users, Ticket, Plus, Edit2, Trash2, Play, ArrowLeft, X, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 interface RaffleItem {
@@ -37,6 +37,14 @@ export default function RaffleManagerPage() {
   const [adminPassword, setAdminPassword] = useState('');
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedRaffleId, setSelectedRaffleId] = useState<string | null>(null);
+  const [drawResultModal, setDrawResultModal] = useState<{ name: string; email: string; ticketCount: number; winProbability: string } | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 4000);
+  };
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -77,6 +85,7 @@ export default function RaffleManagerPage() {
 
   const executeDraw = async () => {
     if (!selectedRaffleId || !adminPassword) return;
+    setErrorMessage('');
 
     try {
       const response = await fetch('/api/admin/raffle/draw', {
@@ -91,19 +100,22 @@ export default function RaffleManagerPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert(language === 'ko'
-        ? `🎉 당첨자: ${data.winner.name}\n이메일: ${data.winner.email}\n티켓 수: ${data.winner.ticketCount}장\n당첨 확률: ${data.stats.winProbability}`
-        : `🎉 Người trúng thưởng: ${data.winner.name}\nEmail: ${data.winner.email}\nSố vé: ${data.winner.ticketCount}\nXác suất trúng: ${data.stats.winProbability}`);
-        loadRaffleItems();
-        loadDrawResults();
         setShowPasswordModal(false);
         setAdminPassword('');
+        setDrawResultModal({
+          name: data.winner.name,
+          email: data.winner.email,
+          ticketCount: data.winner.ticketCount,
+          winProbability: data.stats.winProbability,
+        });
+        loadRaffleItems();
+        loadDrawResults();
       } else {
-        alert((language === 'ko' ? '추첨 실패: ' : 'Rút thăm thất bại: ') + data.error);
+        setErrorMessage((language === 'ko' ? '추첨 실패: ' : 'Rút thăm thất bại: ') + data.error);
       }
     } catch (error) {
       console.error('Draw error:', error);
-      alert(language === 'ko' ? '추첨 중 오류가 발생했습니다' : 'Đã xảy ra lỗi khi rút thăm');
+      setErrorMessage(language === 'ko' ? '추첨 중 오류가 발생했습니다' : 'Đã xảy ra lỗi khi rút thăm');
     }
   };
 
@@ -120,8 +132,52 @@ export default function RaffleManagerPage() {
 
   return (
     <div className="min-h-screen bg-dark-700 pb-20">
+      {/* Toast */}
+      {toastMessage && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-green-500 text-white rounded-full shadow-2xl font-semibold text-sm">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* Draw Result Modal */}
+      {drawResultModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
+            <div className="text-5xl mb-4">🎉</div>
+            <h3 className="text-xl font-bold text-white mb-4">
+              {language === 'ko' ? '추첨 완료!' : 'Rút thăm hoàn tất!'}
+            </h3>
+            <div className="bg-dark-700/80 rounded-xl p-4 space-y-3 text-sm mb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-400">{language === 'ko' ? '당첨자' : 'Người trúng'}</span>
+                <span className="text-white font-bold">{drawResultModal.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">{language === 'ko' ? '이메일' : 'Email'}</span>
+                <span className="text-white">{drawResultModal.email}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">{language === 'ko' ? '티켓 수' : 'Số vé'}</span>
+                <span className="text-primary font-semibold">{language === 'ko' ? `${drawResultModal.ticketCount}장` : drawResultModal.ticketCount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">{language === 'ko' ? '당첨 확률' : 'Xác suất trúng'}</span>
+                <span className="text-secondary font-semibold">{drawResultModal.winProbability}</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setDrawResultModal(null)}
+              className="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold shadow-lg transition-all hover:opacity-90 flex items-center justify-center gap-2"
+            >
+              <CheckCircle size={18} />
+              {language === 'ko' ? '확인' : 'Xác nhận'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-dark-600 border-b border-dark-500">
+      <div className="sticky top-0 z-40 bg-dark-700/95 backdrop-blur-sm border-b border-dark-400/40">
         <div className="container-mobile">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-3">
@@ -273,34 +329,43 @@ export default function RaffleManagerPage() {
 
       {/* 관리자 비밀번호 모달 */}
       {showPasswordModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-dark-600 rounded-2xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold text-white mb-4">{language === 'ko' ? '추첨 실행' : 'Thực hiện rút thăm'}</h3>
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl shadow-xl w-full max-w-md p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white">{language === 'ko' ? '추첨 실행' : 'Thực hiện rút thăm'}</h3>
+              <button
+                onClick={() => { setShowPasswordModal(false); setAdminPassword(''); setErrorMessage(''); }}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
             <p className="text-sm text-gray-400 mb-4">
-              {language === 'ko' ? '관리자 비밀번호를 입력하세요' : 'Nhập mật khẩu quản trị viên'}
+              {language === 'ko' ? '추첨을 실행하려면 관리자 비밀번호를 입력하세요' : 'Nhập mật khẩu quản trị viên để thực hiện rút thăm'}
             </p>
             <input
               type="password"
               value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              onChange={(e) => { setAdminPassword(e.target.value); setErrorMessage(''); }}
               placeholder={language === 'ko' ? '관리자 비밀번호' : 'Mật khẩu quản trị viên'}
-              className="input w-full mb-4"
+              className="input w-full mb-3"
             />
+            {errorMessage && (
+              <p className="text-xs text-red-400 mb-3">{errorMessage}</p>
+            )}
             <div className="flex gap-3">
               <button
-                onClick={() => {
-                  setShowPasswordModal(false);
-                  setAdminPassword('');
-                }}
-                className="btn bg-dark-700 text-gray-300 flex-1"
+                onClick={() => { setShowPasswordModal(false); setAdminPassword(''); setErrorMessage(''); }}
+                className="flex-1 py-3 bg-dark-700 hover:bg-dark-500 text-gray-300 rounded-xl font-semibold text-sm transition-all"
               >
                 {language === 'ko' ? '취소' : 'Hủy'}
               </button>
               <button
                 onClick={executeDraw}
                 disabled={!adminPassword}
-                className="btn btn-primary flex-1 disabled:opacity-50"
+                className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/25 disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:opacity-90 flex items-center justify-center gap-2"
               >
+                <Play size={16} />
                 {language === 'ko' ? '추첨 실행' : 'Thực hiện rút thăm'}
               </button>
             </div>

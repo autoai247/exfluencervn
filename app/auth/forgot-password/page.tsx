@@ -7,7 +7,7 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
 export default function ForgotPasswordPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -26,14 +26,17 @@ export default function ForgotPasswordPage() {
       });
 
       if (resetError) {
-        setError(resetError.message);
+        setError(language === 'ko'
+          ? '이메일 전송에 실패했습니다. 이메일 주소를 확인해 주세요.'
+          : 'Gửi email thất bại. Vui lòng kiểm tra địa chỉ email.');
         setLoading(false);
         return;
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to send reset email');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : (language === 'ko' ? '오류가 발생했습니다. 다시 시도해 주세요.' : 'Đã xảy ra lỗi. Vui lòng thử lại.');
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -134,7 +137,7 @@ export default function ForgotPasswordPage() {
             {/* Back to Login */}
             <div className="text-center pt-4">
               <Link href="/auth/login" className="text-sm text-gray-400 hover:text-primary">
-                ← {t.auth.login.loginButton}
+                ← {language === 'ko' ? '로그인 페이지로 돌아가기' : 'Quay lại trang đăng nhập'}
               </Link>
             </div>
           </div>

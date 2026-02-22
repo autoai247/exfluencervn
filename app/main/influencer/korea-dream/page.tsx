@@ -76,6 +76,8 @@ export default function KoreaDreamPage() {
   const [showExchangeModal, setShowExchangeModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
   const [shoppingPoints, setShoppingPoints] = useState(0);
+  const [exchangeError, setExchangeError] = useState<string | null>(null);
+  const [exchangeSuccess, setExchangeSuccess] = useState<{ total: number; points: number } | null>(null);
 
   useEffect(() => {
     // Load shopping points from localStorage
@@ -96,14 +98,16 @@ export default function KoreaDreamPage() {
 
     const pkg = exchangePackages[selectedPackage];
     if (shoppingPoints < pkg.points) {
-      alert(t.koreaDream.insufficientPoints);
+      setExchangeError(t.koreaDream.insufficientPoints);
       return;
     }
 
     // 실제로는 API 호출
-    alert(`${t.koreaDream.exchangeSuccessMessage.replace('{count}', pkg.total.toString())}\n\n${t.koreaDream.pointsUsed}: ${formatShoppingPoints(pkg.points)}\n${t.koreaDream.ticketsReceived}: ${pkg.total}${t.koreaDream.ticketsUnit} (${t.koreaDream.bonus} ${pkg.bonus}${t.koreaDream.ticketsUnit} ${t.koreaDream.bonusIncluded})`);
+    setExchangeError(null);
+    setExchangeSuccess({ total: pkg.total, points: pkg.points });
     setShoppingPoints(shoppingPoints - pkg.points);
     setShowExchangeModal(false);
+    setTimeout(() => setExchangeSuccess(null), 4000);
   };
 
   return (
@@ -125,6 +129,23 @@ export default function KoreaDreamPage() {
         showNotification
         onNotification={() => router.push('/main/influencer/notifications')}
       />
+
+      {/* Exchange Success Banner */}
+      {exchangeSuccess && (
+        <div className="container-mobile pt-4">
+          <div className="bg-success/10 border border-success/30 rounded-2xl p-4 shadow-xl flex items-center gap-3">
+            <Check size={20} className="text-success flex-shrink-0" />
+            <div>
+              <p className="text-sm font-bold text-white">
+                {t.koreaDream.exchangeSuccessMessage.replace('{count}', exchangeSuccess.total.toString())}
+              </p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {t.koreaDream.pointsUsed}: {formatShoppingPoints(exchangeSuccess.points)} | {t.koreaDream.ticketsReceived}: {exchangeSuccess.total}{t.koreaDream.ticketsUnit}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="container-mobile space-y-6 py-6">
         {/* Hero Banner */}
@@ -534,6 +555,12 @@ export default function KoreaDreamPage() {
               </div>
             </div>
 
+            {exchangeError && (
+              <div className="mb-4 p-3 bg-error/10 border border-error/30 rounded-xl">
+                <p className="text-sm text-error text-center font-semibold">{exchangeError}</p>
+              </div>
+            )}
+
             <div className="space-y-3">
               <PrimaryCTA
                 onClick={confirmExchange}
@@ -542,7 +569,7 @@ export default function KoreaDreamPage() {
                 {t.common.confirm}
               </PrimaryCTA>
               <button
-                onClick={() => setShowExchangeModal(false)}
+                onClick={() => { setShowExchangeModal(false); setExchangeError(null); }}
                 className="w-full py-3 rounded-2xl text-gray-400 hover:text-white border border-dark-400/40 hover:border-dark-300/60 transition-all font-semibold"
               >
                 {t.koreaDream.cancel}

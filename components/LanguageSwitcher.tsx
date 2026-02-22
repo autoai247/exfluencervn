@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { Globe } from 'lucide-react';
 
 export default function LanguageSwitcher() {

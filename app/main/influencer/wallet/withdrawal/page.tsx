@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight, AlertCircle, Wallet, DollarSign } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, AlertCircle, Wallet, DollarSign, CheckCircle } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import MobileHeader from '@/components/common/MobileHeader';
 
 const mockWallet = {
   available: 2500000,
@@ -36,6 +37,7 @@ export default function WithdrawalPage() {
   const [amount, setAmount] = useState('');
   const [selectedAccount, setSelectedAccount] = useState(mockWallet.bankAccounts[0].id);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [withdrawalSuccess, setWithdrawalSuccess] = useState(false);
 
   const parsedAmount = parseInt(amount.replace(/,/g, '')) || 0;
   const fee = Math.max(parsedAmount * FEE_RATE, MIN_FEE);
@@ -63,24 +65,26 @@ export default function WithdrawalPage() {
   };
 
   const confirmWithdrawal = () => {
-    alert(t.wallet.withdrawalSuccess);
     setShowConfirmModal(false);
-    router.back();
+    setWithdrawalSuccess(true);
+    setTimeout(() => router.back(), 2000);
   };
 
   const selectedBankAccount = mockWallet.bankAccounts.find(acc => acc.id === selectedAccount);
 
   return (
-    <div className="min-h-screen bg-dark-700">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-dark-700/95 backdrop-blur-sm border-b border-dark-400/40 px-4 py-4">
-        <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="w-9 h-9 flex items-center justify-center rounded-xl bg-dark-600/80 border border-dark-400/40 text-white">
-            <ArrowLeft size={20} />
-          </button>
-          <h1 className="text-lg font-bold text-white">{t.wallet.withdrawalRequest}</h1>
+    <div className="min-h-screen bg-dark-700 pb-20">
+      <MobileHeader title={t.wallet.withdrawalRequest} showBack />
+
+      {/* Withdrawal Success Banner */}
+      {withdrawalSuccess && (
+        <div className="container-mobile pt-4">
+          <div className="bg-success/10 border border-success/30 rounded-2xl p-4 shadow-xl flex items-center gap-3">
+            <CheckCircle size={20} className="text-success flex-shrink-0" />
+            <p className="text-sm font-bold text-white">{t.wallet.withdrawalSuccess}</p>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="container-mobile py-6 space-y-4">
         {/* Available Balance */}

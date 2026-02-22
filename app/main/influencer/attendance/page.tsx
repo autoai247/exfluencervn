@@ -49,6 +49,7 @@ export default function AttendancePage() {
   const [attendanceData, setAttendanceData] = useState(mockAttendanceData);
   const [todayChecked, setTodayChecked] = useState(mockAttendanceData.todayChecked);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [checkInMessage, setCheckInMessage] = useState<{ points: number; bonus?: number; streakLabel?: string } | null>(null);
 
   const currentDayInWeek = (attendanceData.currentStreak % 7) || 7; // 1-7 사이 값
   const todayReward = dailyRewards[currentDayInWeek - 1];
@@ -62,7 +63,6 @@ export default function AttendancePage() {
     if (todayChecked) return;
 
     let totalEarned = todayReward.points;
-    let bonusMessage = '';
 
     // 마일스톤 체크 (7일, 14일, 21일, 30일)
     const newStreak = attendanceData.currentStreak + 1;
@@ -70,17 +70,12 @@ export default function AttendancePage() {
 
     if (milestone) {
       totalEarned += milestone.bonus;
-      bonusMessage = `\n\n🎉 ${milestone.label} ${language === 'ko' ? '달성!' : 'đạt được!'}\n${language === 'ko' ? '보너스' : 'Thưởng'} +${formatShoppingPoints(milestone.bonus)}`;
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
+      setCheckInMessage({ points: todayReward.points, bonus: milestone.bonus, streakLabel: milestone.label });
+    } else {
+      setCheckInMessage({ points: todayReward.points });
     }
-
-    alert(
-      `✅ ${t.attendance.checkInSuccess}\n\n` +
-      `💰 ${t.attendance.todayReward}: ${formatShoppingPoints(todayReward.points)}\n` +
-      `🔥 ${t.attendance.streak}: ${newStreak}${t.attendance.days}` +
-      bonusMessage
-    );
 
     setTodayChecked(true);
     setAttendanceData({
@@ -162,6 +157,28 @@ export default function AttendancePage() {
             <h3 className="text-xl font-bold text-white mb-2">{t.attendance.alreadyChecked}</h3>
             <p className="text-sm text-gray-300">{t.attendance.comeBackTomorrow}</p>
             <p className="text-xs text-success mt-2">+{formatShoppingPoints(todayReward.points)} {t.completed.earned}</p>
+          </div>
+        )}
+
+        {/* Check-in Success Message */}
+        {checkInMessage && (
+          <div className="bg-dark-600/80 backdrop-blur-sm border border-orange-500/30 rounded-2xl p-4 shadow-xl bg-gradient-to-r from-orange-500/10 to-yellow-500/10">
+            <div className="flex items-center gap-2 mb-2">
+              <Check size={18} className="text-success" />
+              <span className="text-sm font-bold text-white">{t.attendance.checkInSuccess}</span>
+            </div>
+            <div className="space-y-1 text-sm text-gray-300">
+              <div className="flex justify-between">
+                <span>{t.attendance.todayReward}</span>
+                <span className="text-orange-400 font-semibold">+{formatShoppingPoints(checkInMessage.points)}</span>
+              </div>
+              {checkInMessage.bonus && (
+                <div className="flex justify-between">
+                  <span>{checkInMessage.streakLabel} {language === 'ko' ? '달성 보너스' : 'bonus đạt được'}</span>
+                  <span className="text-yellow-400 font-semibold">+{formatShoppingPoints(checkInMessage.bonus)}</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

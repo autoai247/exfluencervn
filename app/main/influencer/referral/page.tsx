@@ -70,17 +70,18 @@ export default function ReferralPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(REFERRAL_CODE);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    alert(t.referral.codeCopied);
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(REFERRAL_LINK);
-    alert(t.referral.linkCopied);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const handleShare = () => {
@@ -289,8 +290,10 @@ export default function ReferralPage() {
 
             {/* 일반 공유 버튼 */}
             <button onClick={handleCopyLink} className="w-full btn btn-ghost border-2 border-dark-500 py-3">
-              <Copy size={18} className="mr-2" />
-              {language === 'ko' ? '링크 복사' : 'Sao chép liên kết'}
+              {linkCopied ? <Check size={18} className="mr-2 text-success" /> : <Copy size={18} className="mr-2" />}
+              {linkCopied
+                ? (language === 'ko' ? '✅ 복사됨' : '✅ Đã sao chép')
+                : (language === 'ko' ? '링크 복사' : 'Sao chép liên kết')}
             </button>
           </div>
         </div>

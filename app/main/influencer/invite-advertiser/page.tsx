@@ -29,21 +29,18 @@ export default function InviteAdvertiserPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(INVITE_CODE);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    alert(language === 'ko'
-      ? '✅ 초대 코드가 복사되었습니다!\n\n협업 중인 광고주에게 공유하세요!'
-      : '✅ Đã sao chép mã mời!\n\nHãy chia sẻ cho nhà quảng cáo bạn đang hợp tác!');
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(INVITE_LINK);
-    alert(language === 'ko'
-      ? '✅ 초대 링크가 복사되었습니다!\n\n광고주에게 공유하면 양쪽 모두 혜택을 받습니다!'
-      : '✅ Đã sao chép liên kết mời!\n\nChia sẻ cho nhà quảng cáo để cả hai cùng nhận ưu đãi!');
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const handleShare = () => {
@@ -202,8 +199,10 @@ export default function InviteAdvertiserPage() {
             onClick={handleCopyLink}
             className="w-full bg-dark-700/60 border border-dark-400/40 rounded-2xl py-3 text-sm font-semibold text-gray-300 hover:text-white hover:border-secondary/40 transition-all flex items-center justify-center gap-2 mb-2"
           >
-            <Copy size={18} />
-            {t.inviteAdvertiser.copyLink}
+            {linkCopied ? <CheckCircle size={18} className="text-success" /> : <Copy size={18} />}
+            {linkCopied
+              ? (language === 'ko' ? '✅ 복사됨' : '✅ Đã sao chép')
+              : t.inviteAdvertiser.copyLink}
           </button>
 
           <button

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { FaInstagram, FaTiktok, FaYoutube, FaFacebook } from 'react-icons/fa';
 import MobileHeader from '@/components/common/MobileHeader';
+import BottomNav from '@/components/common/BottomNav';
 import { useToast } from '@/components/common/ToastContainer';
 import { formatCash } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -908,7 +909,7 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
   // ─── Success Screen ─────────────────────────────────────────
   if (submitted) {
     return (
-      <div className="min-h-screen bg-dark-700 pb-10">
+      <div className="min-h-screen bg-dark-700 pb-20">
         <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500 px-4 py-4 flex items-center gap-3">
           <CheckCircle size={22} className="text-accent" />
           <h1 className="text-base font-bold text-white">{language === 'ko' ? '캠페인이 생성되었습니다!' : 'Chiến dịch đã tạo!'}</h1>
@@ -995,13 +996,14 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
             {language === 'ko' ? '대시보드 보기 →' : 'Xem Dashboard →'}
           </button>
         </div>
+        <BottomNav userType="advertiser" />
       </div>
     );
   }
 
   // ─── Render ─────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-dark-700 pb-10">
+    <div className="min-h-screen bg-dark-700 pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-dark-700 border-b border-dark-500">
         <div className="px-4 py-4 flex items-center gap-3">
@@ -1044,6 +1046,8 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
         {step === 2 && renderStep2()}
         {step === 3 && renderStep3()}
       </div>
+
+      <BottomNav userType="advertiser" />
     </div>
   );
 }

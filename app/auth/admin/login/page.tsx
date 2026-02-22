@@ -22,18 +22,23 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError('');
 
-    // Mock admin credentials
-    // TODO: Replace with actual API call
-    if (formData.email === 'admin@exfluencervn.com' && formData.password === 'admin123') {
-      setTimeout(() => {
+    try {
+      const res = await fetch('/api/auth/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
+
+      if (res.ok) {
         router.push('/main/admin');
-        setLoading(false);
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        setError(language === 'ko' ? '관리자 계정 정보가 올바르지 않습니다.' : 'Thông tin tài khoản quản trị viên không chính xác.');
-        setLoading(false);
-      }, 1000);
+      } else {
+        const data = await res.json();
+        setError(data.error || (language === 'ko' ? '관리자 계정 정보가 올바르지 않습니다.' : 'Thông tin tài khoản quản trị viên không chính xác.'));
+      }
+    } catch {
+      setError(language === 'ko' ? '서버 연결에 실패했습니다.' : 'Không thể kết nối đến máy chủ.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,15 +86,6 @@ export default function AdminLoginPage() {
                 </div>
               </div>
             )}
-
-            {/* Demo Credentials */}
-            <div className="bg-primary/10 border border-primary/30 rounded-xl p-4">
-              <p className="text-xs text-gray-400 mb-2">{language === 'ko' ? '데모 계정 (테스트용)' : 'Tài khoản demo (để thử nghiệm)'}</p>
-              <div className="space-y-1">
-                <p className="text-sm text-white font-mono">{language === 'ko' ? '이메일' : 'Email'}: admin@exfluencervn.com</p>
-                <p className="text-sm text-white font-mono">{language === 'ko' ? '비밀번호' : 'Mật khẩu'}: admin123</p>
-              </div>
-            </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">

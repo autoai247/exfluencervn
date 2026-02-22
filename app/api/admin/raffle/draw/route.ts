@@ -9,8 +9,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { raffleId, adminPassword } = body;
 
-    // 간단한 관리자 인증 (실제로는 JWT 등 사용)
-    if (adminPassword !== 'admin123') {
+    // 관리자 세션 쿠키 또는 adminPassword 검증
+    const adminSession = request.cookies.get('admin_session')?.value;
+    const sessionSecret = process.env.ADMIN_SESSION_SECRET;
+
+    const isValidSession = sessionSecret && adminSession === sessionSecret;
+    const isValidPassword = adminPassword && adminPassword === process.env.ADMIN_PASSWORD;
+
+    if (!isValidSession && !isValidPassword) {
       return NextResponse.json(
         { error: '관리자 권한이 없습니다' },
         { status: 403 }
@@ -129,8 +135,14 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { drawId, adminPassword } = body;
 
-    // 관리자 인증
-    if (adminPassword !== 'admin123') {
+    // 관리자 세션 쿠키 또는 adminPassword 검증
+    const adminSession = request.cookies.get('admin_session')?.value;
+    const sessionSecret = process.env.ADMIN_SESSION_SECRET;
+
+    const isValidSession = sessionSecret && adminSession === sessionSecret;
+    const isValidPassword = adminPassword && adminPassword === process.env.ADMIN_PASSWORD;
+
+    if (!isValidSession && !isValidPassword) {
       return NextResponse.json(
         { error: '관리자 권한이 없습니다' },
         { status: 403 }

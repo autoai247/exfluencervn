@@ -1,7 +1,19 @@
-import { type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // 관리자 경로 보호
+  if (pathname.startsWith('/main/admin')) {
+    const adminSession = request.cookies.get('admin_session')?.value;
+    const sessionSecret = process.env.ADMIN_SESSION_SECRET;
+
+    if (!sessionSecret || adminSession !== sessionSecret) {
+      return NextResponse.redirect(new URL('/auth/admin/login', request.url));
+    }
+  }
+
   return await updateSession(request);
 }
 

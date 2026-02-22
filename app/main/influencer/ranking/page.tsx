@@ -1,27 +1,102 @@
 'use client';
 
-import { Trophy, Crown, Medal, TrendingUp, Users, Eye } from 'lucide-react';
+import { useState } from 'react';
+import { Trophy, Crown, Medal, TrendingUp, Users, X, Star, Package, Instagram, Youtube, Globe } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const mockRankings = [
-  { rank: 1, name: 'Nguyễn Minh Anh', avatar: 'https://ui-avatars.com/api/?name=Nguyen+Minh+Anh&background=FFD700&color=000', campaigns: 156, followers: 285000, engagement: 8.2 },
-  { rank: 2, name: 'Trần Khánh Linh', avatar: 'https://ui-avatars.com/api/?name=Tran+Khanh+Linh&background=C0C0C0&color=000', campaigns: 142, followers: 256000, engagement: 7.9 },
-  { rank: 3, name: 'Lê Hoàng Phúc', avatar: 'https://ui-avatars.com/api/?name=Le+Hoang+Phuc&background=CD7F32&color=fff', campaigns: 138, followers: 234000, engagement: 7.5 },
-  { rank: 4, name: 'Phạm Thu Hà', avatar: 'https://ui-avatars.com/api/?name=Pham+Thu+Ha&background=E5E7EB&color=1F2937', campaigns: 121, followers: 198000, engagement: 7.1 },
-  { rank: 5, name: 'Hoàng Văn Minh', avatar: 'https://ui-avatars.com/api/?name=Hoang+Van+Minh&background=E5E7EB&color=1F2937', campaigns: 115, followers: 187000, engagement: 6.8 },
-  { rank: 6, name: '김민지', avatar: 'https://ui-avatars.com/api/?name=Kim+Minji&background=E5E7EB&color=1F2937', campaigns: 98, followers: 125000, engagement: 5.2, isCurrentUser: true },
+interface RankingUser {
+  rank: number;
+  name: string;
+  avatar: string;
+  campaigns: number;
+  followers: number;
+  engagement: number;
+  isCurrentUser?: boolean;
+  bio?: string;
+  categories?: string[];
+  rating?: number;
+  instagram?: string;
+  youtube?: string;
+  tiktok?: string;
+  website?: string;
+}
+
+const mockRankings: RankingUser[] = [
+  {
+    rank: 1, name: 'Nguyễn Minh Anh',
+    avatar: 'https://ui-avatars.com/api/?name=Nguyen+Minh+Anh&background=FFD700&color=000',
+    campaigns: 156, followers: 285000, engagement: 8.2,
+    bio: 'Fashion & Lifestyle Influencer tại TP.HCM. Chuyên về thời trang cao cấp và phong cách sống.',
+    categories: ['Fashion', 'Lifestyle', 'Beauty'],
+    rating: 4.9,
+    instagram: '@minhanhstyle', youtube: 'Minh Anh Channel',
+  },
+  {
+    rank: 2, name: 'Trần Khánh Linh',
+    avatar: 'https://ui-avatars.com/api/?name=Tran+Khanh+Linh&background=C0C0C0&color=000',
+    campaigns: 142, followers: 256000, engagement: 7.9,
+    bio: 'Food & Travel blogger. Khám phá ẩm thực và du lịch khắp Việt Nam và Đông Nam Á.',
+    categories: ['Food', 'Travel', 'Lifestyle'],
+    rating: 4.8,
+    instagram: '@khanhlinh.food', tiktok: '@khanhlinh',
+  },
+  {
+    rank: 3, name: 'Lê Hoàng Phúc',
+    avatar: 'https://ui-avatars.com/api/?name=Le+Hoang+Phuc&background=CD7F32&color=fff',
+    campaigns: 138, followers: 234000, engagement: 7.5,
+    bio: 'Tech & Gaming content creator. Review công nghệ và game mới nhất.',
+    categories: ['Tech', 'Gaming', 'Electronics'],
+    rating: 4.7,
+    youtube: 'Hoàng Phúc Tech', instagram: '@hoangphuc.tech',
+  },
+  {
+    rank: 4, name: 'Phạm Thu Hà',
+    avatar: 'https://ui-avatars.com/api/?name=Pham+Thu+Ha&background=E5E7EB&color=1F2937',
+    campaigns: 121, followers: 198000, engagement: 7.1,
+    bio: 'Beauty & Skincare influencer. Chuyên review mỹ phẩm và chăm sóc da.',
+    categories: ['Beauty', 'Skincare', 'Fashion'],
+    rating: 4.6,
+    instagram: '@thuha.beauty', tiktok: '@thuha',
+  },
+  {
+    rank: 5, name: 'Hoàng Văn Minh',
+    avatar: 'https://ui-avatars.com/api/?name=Hoang+Van+Minh&background=E5E7EB&color=1F2937',
+    campaigns: 115, followers: 187000, engagement: 6.8,
+    bio: 'Fitness & Health creator. Hướng dẫn tập luyện và dinh dưỡng khoa học.',
+    categories: ['Fitness', 'Health', 'Sports'],
+    rating: 4.5,
+    youtube: 'Minh Fitness', instagram: '@hvm.fitness',
+  },
+  {
+    rank: 6, name: '김민지',
+    avatar: 'https://ui-avatars.com/api/?name=Kim+Minji&background=E5E7EB&color=1F2937',
+    campaigns: 98, followers: 125000, engagement: 5.2, isCurrentUser: true,
+    bio: 'K-beauty & Korean culture influencer tại Việt Nam. Chia sẻ về văn hóa và làm đẹp Hàn Quốc.',
+    categories: ['K-Beauty', 'Culture', 'Fashion'],
+    rating: 4.4,
+    instagram: '@minji.vn', tiktok: '@minji_kr',
+  },
 ];
 
 export default function RankingPage() {
   const { language, t } = useLanguage();
+  const [selectedUser, setSelectedUser] = useState<RankingUser | null>(null);
 
   const getRankBadge = (rank: number) => {
     if (rank === 1) return { icon: Crown, color: 'from-yellow-400 to-yellow-600', text: 'text-yellow-400', shadow: 'shadow-yellow-500/30', border: 'border-yellow-500/40' };
     if (rank === 2) return { icon: Medal, color: 'from-gray-300 to-gray-500', text: 'text-gray-300', shadow: 'shadow-gray-400/20', border: 'border-gray-400/40' };
     if (rank === 3) return { icon: Medal, color: 'from-orange-400 to-orange-600', text: 'text-orange-400', shadow: 'shadow-orange-500/20', border: 'border-orange-500/40' };
     return { icon: Trophy, color: 'from-dark-500 to-dark-600', text: 'text-gray-400', shadow: '', border: 'border-dark-400/40' };
+  };
+
+  const getRankNameColor = (rank: number, isCurrentUser?: boolean) => {
+    if (isCurrentUser) return 'text-primary';
+    if (rank === 1) return 'text-yellow-400';
+    if (rank === 2) return 'text-gray-300';
+    if (rank === 3) return 'text-orange-400';
+    return 'text-white';
   };
 
   return (
@@ -52,7 +127,7 @@ export default function RankingPage() {
           </div>
           <div className="grid grid-cols-3 gap-3">
             {/* 2nd Place */}
-            <div className="flex flex-col items-center pt-8">
+            <div className="flex flex-col items-center pt-8 cursor-pointer" onClick={() => setSelectedUser(mockRankings[1])}>
               <div className="relative mb-2">
                 <img src={mockRankings[1].avatar} alt={mockRankings[1].name} className="w-16 h-16 rounded-full border-4 border-gray-400 shadow-lg shadow-gray-400/20" />
                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-gray-400/30">
@@ -69,7 +144,7 @@ export default function RankingPage() {
             </div>
 
             {/* 1st Place */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center cursor-pointer" onClick={() => setSelectedUser(mockRankings[0])}>
               <div className="relative mb-2">
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-yellow-400 text-lg">👑</div>
                 <img src={mockRankings[0].avatar} alt={mockRankings[0].name} className="w-20 h-20 rounded-full border-4 border-yellow-400 shadow-xl shadow-yellow-500/30" />
@@ -87,7 +162,7 @@ export default function RankingPage() {
             </div>
 
             {/* 3rd Place */}
-            <div className="flex flex-col items-center pt-8">
+            <div className="flex flex-col items-center pt-8 cursor-pointer" onClick={() => setSelectedUser(mockRankings[2])}>
               <div className="relative mb-2">
                 <img src={mockRankings[2].avatar} alt={mockRankings[2].name} className="w-16 h-16 rounded-full border-4 border-orange-500 shadow-lg shadow-orange-500/20" />
                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-700 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/30">
@@ -120,7 +195,8 @@ export default function RankingPage() {
             return (
               <div
                 key={user.rank}
-                className={`bg-dark-600/80 backdrop-blur-sm rounded-2xl p-4 border transition-all shadow-xl ${
+                onClick={() => setSelectedUser(user)}
+                className={`bg-dark-600/80 backdrop-blur-sm rounded-2xl p-4 border transition-all shadow-xl cursor-pointer active:scale-[0.98] ${
                   isCurrentUser
                     ? 'border-primary/50 shadow-primary/20 shadow-lg bg-primary/5'
                     : `${badge.border} hover:border-dark-300/50`
@@ -146,13 +222,7 @@ export default function RankingPage() {
                     }`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className={`font-bold truncate ${
-                          isCurrentUser ? 'text-primary' :
-                          user.rank === 1 ? 'text-yellow-400' :
-                          user.rank === 2 ? 'text-gray-300' :
-                          user.rank === 3 ? 'text-orange-400' :
-                          'text-white'
-                        }`}>
+                        <p className={`font-bold truncate ${getRankNameColor(user.rank, user.isCurrentUser)}`}>
                           {user.name}
                         </p>
                         {isCurrentUser && (
@@ -176,12 +246,7 @@ export default function RankingPage() {
 
                   {/* Campaigns */}
                   <div className="text-right">
-                    <div className={`font-bold text-lg ${
-                      user.rank === 1 ? 'text-yellow-400' :
-                      user.rank === 2 ? 'text-gray-300' :
-                      user.rank === 3 ? 'text-orange-400' :
-                      'text-white'
-                    }`}>{user.campaigns}</div>
+                    <div className={`font-bold text-lg ${getRankNameColor(user.rank, user.isCurrentUser)}`}>{user.campaigns}</div>
                     <div className="text-xs text-gray-400">{t.ranking.campaignsUnit}</div>
                   </div>
                 </div>
@@ -199,6 +264,161 @@ export default function RankingPage() {
       </div>
 
       <BottomNav userType="influencer" />
+
+      {/* Profile Bottom Sheet Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex flex-col justify-end">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedUser(null)}
+          />
+
+          {/* Sheet */}
+          <div className="relative bg-dark-700 rounded-t-3xl shadow-2xl max-h-[85vh] overflow-y-auto">
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-2">
+              <div className="w-10 h-1 bg-dark-400 rounded-full" />
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedUser(null)}
+              className="absolute top-4 right-4 w-8 h-8 bg-dark-600/80 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="px-5 pb-8 pt-2">
+              {/* Profile Header */}
+              <div className="flex items-center gap-4 mb-5">
+                <div className="relative flex-shrink-0">
+                  <img
+                    src={selectedUser.avatar}
+                    alt={selectedUser.name}
+                    className={`w-20 h-20 rounded-2xl border-2 shadow-lg ${
+                      selectedUser.rank === 1 ? 'border-yellow-400/70 shadow-yellow-500/20' :
+                      selectedUser.rank === 2 ? 'border-gray-400/70 shadow-gray-400/20' :
+                      selectedUser.rank === 3 ? 'border-orange-500/70 shadow-orange-500/20' :
+                      'border-primary/50 shadow-primary/10'
+                    }`}
+                  />
+                  {/* Rank Badge on avatar */}
+                  <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg ${
+                    selectedUser.rank === 1 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600' :
+                    selectedUser.rank === 2 ? 'bg-gradient-to-br from-gray-300 to-gray-500' :
+                    selectedUser.rank === 3 ? 'bg-gradient-to-br from-orange-400 to-orange-600' :
+                    'bg-gradient-to-br from-dark-400 to-dark-500'
+                  }`}>
+                    {selectedUser.rank <= 3 ? (
+                      selectedUser.rank === 1 ? '👑' : selectedUser.rank
+                    ) : selectedUser.rank}
+                  </div>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <h2 className={`text-lg font-bold ${getRankNameColor(selectedUser.rank, selectedUser.isCurrentUser)}`}>
+                      {selectedUser.name}
+                    </h2>
+                    {selectedUser.isCurrentUser && (
+                      <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full border border-primary/30 font-medium">
+                        {t.ranking.you}
+                      </span>
+                    )}
+                  </div>
+                  {selectedUser.rating && (
+                    <div className="flex items-center gap-1 mb-2">
+                      <Star size={14} className="text-accent fill-accent" />
+                      <span className="text-accent font-semibold text-sm">{selectedUser.rating}</span>
+                      <span className="text-gray-500 text-xs">/ 5.0</span>
+                    </div>
+                  )}
+                  {selectedUser.bio && (
+                    <p className="text-gray-400 text-sm leading-relaxed">{selectedUser.bio}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Categories */}
+              {selectedUser.categories && selectedUser.categories.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {selectedUser.categories.map((cat) => (
+                    <span key={cat} className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-xs font-medium">
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-3 mb-5">
+                <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-3 text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <Users size={16} className="text-secondary" />
+                  </div>
+                  <div className="text-white font-bold text-base">
+                    {selectedUser.followers >= 1000000
+                      ? `${(selectedUser.followers / 1000000).toFixed(1)}M`
+                      : `${(selectedUser.followers / 1000).toFixed(0)}K`}
+                  </div>
+                  <div className="text-gray-500 text-[10px] mt-0.5">Followers</div>
+                </div>
+                <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-3 text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <Package size={16} className="text-primary" />
+                  </div>
+                  <div className="text-white font-bold text-base">{selectedUser.campaigns}</div>
+                  <div className="text-gray-500 text-[10px] mt-0.5">{t.ranking.campaignsUnit}</div>
+                </div>
+                <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-3 text-center">
+                  <div className="flex items-center justify-center mb-1">
+                    <TrendingUp size={16} className="text-success" />
+                  </div>
+                  <div className="text-white font-bold text-base">{selectedUser.engagement}%</div>
+                  <div className="text-gray-500 text-[10px] mt-0.5">Engagement</div>
+                </div>
+              </div>
+
+              {/* SNS Links */}
+              {(selectedUser.instagram || selectedUser.youtube || selectedUser.tiktok || selectedUser.website) && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
+                    <span className="text-sm font-semibold text-white">SNS</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedUser.instagram && (
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                        <Instagram size={14} className="text-pink-400" />
+                        {selectedUser.instagram}
+                      </div>
+                    )}
+                    {selectedUser.youtube && (
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                        <Youtube size={14} className="text-red-400" />
+                        {selectedUser.youtube}
+                      </div>
+                    )}
+                    {selectedUser.tiktok && (
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                        <span className="text-xs font-bold text-white">TikTok</span>
+                        {selectedUser.tiktok}
+                      </div>
+                    )}
+                    {selectedUser.website && (
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                        <Globe size={14} className="text-secondary" />
+                        {selectedUser.website}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

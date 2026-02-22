@@ -1,24 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db/jsonDb';
-
+import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
+
+function createServiceClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
+
 // 응모 상품 목록 조회
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
     const activeOnly = searchParams.get('activeOnly') === 'true';
 
-    let items = db.getRaffleItems();
+    const supabase = createServiceClient();
 
-    // 활성 상품만 필터링
+    let query = supabase
+      .from('raffle_items')
+      .select('*')
+      .order('created_at', { ascending: false });
+
     if (activeOnly) {
-      items = items.filter(item => item.active);
+      query = query.eq('active', true);
+    }
+
+    const { data: items, error } = await query;
+
+    if (error) {
+      console.error('Supabase raffle items fetch error:', error);
+      return NextResponse.json(
+        { error: '서버 오류가 발생했습니다' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
       success: true,
-      items,
+      items: items || [],
     });
 
   } catch (error) {
@@ -36,7 +57,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       name,
+      nameVi,
       description,
+      descriptionVi,
       price,
       totalTickets,
       currentTickets = 0,
@@ -53,16 +76,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newItem = db.createRaffleItem({
-      name,
-      description,
-      price,
-      totalTickets,
-      currentTickets,
-      prizeValue,
-      stock,
-      active,
-    });
+    const supabase = createServiceClient();
+
+    const { data: newItem, error } = await supabase
+      .from('raffle_items')
+      .insert({
+        name,
+        name_vi: nameVi ?? null,
+        description,
+        description_vi: descriptionVi ?? null,
+        price,
+        total_tickets: totalTickets,
+        current_tickets: currentTickets,
+        prize_value: prizeValue,
+        stock: stock ?? 0,
+        active,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase create raffle item error:', error);
+      return NextResponse.json(
+        { error: '서버 오류가 발생했습니다' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
@@ -91,9 +130,31 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const updatedItem = db.updateRaffleItem(id, updates);
+    // camelCase → snake_case 변환
+    const dbUpdates: Record<string, unknown> = {};
+    if (updates.name !== undefined) dbUpdates.name = updates.name;
+    if (updates.nameVi !== undefined) dbUpdates.name_vi = updates.nameVi;
+    if (updates.description !== undefined) dbUpdates.description = updates.description;
+    if (updates.descriptionVi !== undefined) dbUpdates.description_vi = updates.descriptionVi;
+    if (updates.price !== undefined) dbUpdates.price = updates.price;
+    if (updates.totalTickets !== undefined) dbUpdates.total_tickets = updates.totalTickets;
+    if (updates.currentTickets !== undefined) dbUpdates.current_tickets = updates.currentTickets;
+    if (updates.prizeValue !== undefined) dbUpdates.prize_value = updates.prizeValue;
+    if (updates.stock !== undefined) dbUpdates.stock = updates.stock;
+    if (updates.active !== undefined) dbUpdates.active = updates.active;
+    dbUpdates.updated_at = new Date().toISOString();
 
-    if (!updatedItem) {
+    const supabase = createServiceClient();
+
+    const { data: updatedItem, error } = await supabase
+      .from('raffle_items')
+      .update(dbUpdates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase update raffle item error:', error);
       return NextResponse.json(
         { error: '응모 상품을 찾을 수 없습니다' },
         { status: 404 }

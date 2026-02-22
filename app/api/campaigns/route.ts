@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const location = searchParams.get('location');
     const type = searchParams.get('type'); // cash or points
     const status = searchParams.get('status') || 'active';
+    const advertiserId = searchParams.get('advertiser_id');
 
     let query = supabaseAdmin
       .from('campaigns')
@@ -20,6 +21,9 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false });
 
     // Filters
+    if (advertiserId) {
+      query = query.eq('advertiser_id', advertiserId);
+    }
     if (platform) {
       query = query.contains('platforms', [platform]);
     }

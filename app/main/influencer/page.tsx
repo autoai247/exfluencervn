@@ -18,67 +18,10 @@ import BottomNav from '@/components/common/BottomNav';
 import { formatCash } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { getMockUserProfile } from '@/lib/mockData';
-
-// ─── Mock Data ───────────────────────────────────────────
-const mockData = {
-  campaigns: {
-    available: 36,
-    newToday: 6,
-  },
-
-  inProgress: [
-    {
-      id: '1',
-      title: 'Skincare Product Review',
-      company: 'Beauty Brand',
-      reward: 500000,
-      stage: 2,
-      action: 'submit',
-      deadline: '15/03',
-      daysLeft: 3,
-      thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
-    },
-    {
-      id: '2',
-      title: 'Spring Makeup Promotion',
-      company: 'K-Beauty Co.',
-      reward: 400000,
-      stage: 1,
-      action: 'check_brief',
-      deadline: '20/03',
-      daysLeft: 8,
-      thumbnail: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=300&fit=crop',
-    },
-    {
-      id: '3',
-      title: 'Fitness App Promotion',
-      company: 'FitLife App',
-      reward: 600000,
-      stage: 3,
-      action: 'waiting',
-      deadline: '25/03',
-      daysLeft: 13,
-      thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop',
-    },
-  ],
-
-  applying: [
-    { id: 'a1', title: 'Food Review Campaign', company: 'Pho House', reward: 300000, appliedAtKo: '2일 전', appliedAtVi: '2 ngày trước', status: 'pending' },
-    { id: 'a2', title: 'Tech Unboxing', company: 'TechStore VN', reward: 800000, appliedAtKo: '3일 전', appliedAtVi: '3 ngày trước', status: 'rejected' },
-    { id: 'a3', title: 'Travel Vlog', company: 'VietTravel', reward: 1200000, appliedAtKo: '1일 전', appliedAtVi: '1 ngày trước', status: 'pending' },
-  ],
-
-  earnings: [
-    { id: 'e1', title: 'Fitness App Promotion', company: 'FitLife App', amount: 600000, paidAt: '10/02', status: 'confirmed' },
-    { id: 'e2', title: 'Winter Skincare', company: 'Beauty Brand', amount: 500000, paidAt: '28/01', status: 'confirmed' },
-    { id: 'e3', title: 'Makeup Tutorial', company: 'K-Beauty Co.', amount: 400000, paidAt: null, status: 'waiting' },
-  ],
-};
+import { createClient } from '@/lib/supabase/client';
 
 const STEPS_VI = ['Đăng ký', 'Duyệt', 'Làm việc', 'Nộp bài', 'Hoàn thành'];
 const STEPS_KO = ['신청', '승인', '작업', '제출', '완료'];
-
-// ─────────────────────────────────────────────────────────
 
 export default function InfluencerDashboard() {
   const router = useRouter();
@@ -86,15 +29,171 @@ export default function InfluencerDashboard() {
   const [mounted, setMounted] = useState(false);
   const userProfile = getMockUserProfile(language);
 
+  // Supabase 데이터 상태
+  const [inProgress, setInProgress] = useState<any[]>([]);
+  const [applying, setApplying] = useState<any[]>([]);
+  const [earnings, setEarnings] = useState<any[]>([]);
+  const [campaignCount, setCampaignCount] = useState({ available: 0, newToday: 0 });
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        // 활성 캠페인 수
+        const { count: availableCount } = await supabase
+          .from('campaigns')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'active');
+
+        const today = new Date().toISOString().split('T')[0];
+        const { count: newTodayCount } = await supabase
+          .from('campaigns')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'active')
+          .gte('created_at', today);
+
+        setCampaignCount({
+          available: availableCount || 0,
+          newToday: newTodayCount || 0,
+        });
+
+        if (user) {
+          // 진행 중 캠페인 (campaign_participants)
+          const { data: participantData, error: participantError } = await supabase
+            .from('campaign_participants')
+            .select(`
+              id,
+              status,
+              stage,
+              action,
+              deadline,
+              days_left,
+              campaigns (
+                id,
+                title,
+                thumbnail,
+                budget,
+                advertiser_profiles (company_name)
+              )
+            `)
+            .eq('influencer_id', user.id)
+            .in('status', ['accepted', 'in_progress'])
+            .order('created_at', { ascending: false })
+            .limit(5);
+
+          if (!participantError && participantData) {
+            const formatted = participantData.map((p: any) => ({
+              id: p.id,
+              title: p.campaigns?.title || '',
+              company: p.campaigns?.advertiser_profiles?.company_name || '',
+              reward: p.campaigns?.budget || 0,
+              stage: p.stage || 1,
+              action: p.action || 'waiting',
+              deadline: p.deadline || '',
+              daysLeft: p.days_left || 0,
+              thumbnail: p.campaigns?.thumbnail || 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
+            }));
+            setInProgress(formatted);
+          }
+
+          // 신청 결과 (campaign_applications)
+          const { data: applicationData, error: applicationError } = await supabase
+            .from('campaign_applications')
+            .select(`
+              id,
+              status,
+              created_at,
+              campaigns (
+                id,
+                title,
+                budget,
+                advertiser_profiles (company_name)
+              )
+            `)
+            .eq('influencer_id', user.id)
+            .in('status', ['pending', 'rejected'])
+            .order('created_at', { ascending: false })
+            .limit(5);
+
+          if (!applicationError && applicationData) {
+            const formatted = applicationData.map((a: any) => {
+              const appliedDate = new Date(a.created_at);
+              const now = new Date();
+              const diffDays = Math.floor((now.getTime() - appliedDate.getTime()) / (1000 * 60 * 60 * 24));
+              return {
+                id: a.id,
+                title: a.campaigns?.title || '',
+                company: a.campaigns?.advertiser_profiles?.company_name || '',
+                reward: a.campaigns?.budget || 0,
+                appliedAtKo: diffDays === 0 ? '오늘' : `${diffDays}일 전`,
+                appliedAtVi: diffDays === 0 ? 'Hôm nay' : `${diffDays} ngày trước`,
+                status: a.status,
+              };
+            });
+            setApplying(formatted);
+          }
+
+          // 수익 내역 (points 테이블)
+          const { data: pointsData, error: pointsError } = await supabase
+            .from('points')
+            .select(`
+              id,
+              amount,
+              type,
+              status,
+              created_at,
+              description,
+              campaign_id,
+              campaigns (
+                title,
+                advertiser_profiles (company_name)
+              )
+            `)
+            .eq('user_id', user.id)
+            .eq('type', 'campaign_reward')
+            .order('created_at', { ascending: false })
+            .limit(5);
+
+          if (!pointsError && pointsData) {
+            const formatted = pointsData.map((p: any) => ({
+              id: p.id,
+              title: p.campaigns?.title || p.description || '',
+              company: p.campaigns?.advertiser_profiles?.company_name || '',
+              amount: p.amount || 0,
+              paidAt: p.status === 'confirmed'
+                ? new Date(p.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }).replace('. ', '/').replace('.', '')
+                : null,
+              status: p.status || 'waiting',
+            }));
+            setEarnings(formatted);
+          }
+        }
+      } catch (err) {
+        console.error('대시보드 데이터 로딩 오류:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (mounted) {
+      fetchDashboardData();
+    }
+  }, [mounted]);
+
   if (!mounted) return null;
 
   const STEPS = language === 'ko' ? STEPS_KO : STEPS_VI;
-  const urgentCampaign = mockData.inProgress.find((c) => c.daysLeft <= 3);
-  const totalConfirmed = mockData.earnings
+  const urgentCampaign = inProgress.find((c) => c.daysLeft <= 3);
+  const totalConfirmed = earnings
     .filter((e) => e.status === 'confirmed')
     .reduce((sum, e) => sum + e.amount, 0);
-  const totalWaiting = mockData.earnings
+  const totalWaiting = earnings
     .filter((e) => e.status === 'waiting')
     .reduce((sum, e) => sum + e.amount, 0);
 
@@ -164,8 +263,8 @@ export default function InfluencerDashboard() {
                 <span className="text-lg font-bold text-white">{language === 'ko' ? '캠페인 찾기' : 'Tìm chiến dịch'}</span>
               </div>
               <div className="text-sm text-white/80">
-                <span className="font-bold text-white">{mockData.campaigns.available} {language === 'ko' ? '캠페인' : 'chiến dịch'}</span>
-                {' '}· +{mockData.campaigns.newToday} {language === 'ko' ? '오늘 신규' : 'mới hôm nay'}
+                <span className="font-bold text-white">{campaignCount.available} {language === 'ko' ? '캠페인' : 'chiến dịch'}</span>
+                {' '}· +{campaignCount.newToday} {language === 'ko' ? '오늘 신규' : 'mới hôm nay'}
               </div>
             </div>
             <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm">
@@ -175,12 +274,21 @@ export default function InfluencerDashboard() {
         </Link>
 
         {/* ── 진행 중 캠페인 ── */}
-        {mockData.inProgress.length > 0 && (
+        {isLoading ? (
+          <div className="space-y-2">
+            <div className="h-5 bg-dark-500 rounded w-1/3 animate-pulse" />
+            <div className="flex gap-3 overflow-x-hidden">
+              {[1, 2].map((i) => (
+                <div key={i} className="flex-shrink-0 w-[260px] h-52 bg-dark-500 rounded-2xl animate-pulse" />
+              ))}
+            </div>
+          </div>
+        ) : inProgress.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <h3 className="flex items-center gap-2 text-sm font-bold text-white">
                 <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
-                {language === 'ko' ? `진행 중 (${mockData.inProgress.length})` : `Đang thực hiện (${mockData.inProgress.length})`}
+                {language === 'ko' ? `진행 중 (${inProgress.length})` : `Đang thực hiện (${inProgress.length})`}
               </h3>
               <Link href="/main/influencer/jobs" className="text-xs text-primary font-medium">{language === 'ko' ? '전체 보기' : 'Xem tất cả'}</Link>
             </div>
@@ -192,7 +300,7 @@ export default function InfluencerDashboard() {
               className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {mockData.inProgress.map((c) => (
+              {inProgress.map((c) => (
                 <Link key={c.id} href={`/main/influencer/jobs/${c.id}`} className="flex-shrink-0 w-[260px]">
                   <div className="rounded-2xl bg-dark-600/80 border border-dark-400/50 shadow-xl overflow-hidden p-0 hover:border-primary/30 transition-all h-full">
                     {/* 썸네일 */}
@@ -270,7 +378,7 @@ export default function InfluencerDashboard() {
           <div className="flex items-center justify-between px-1">
             <h3 className="flex items-center gap-2 text-sm font-bold text-white">
               <div className="w-1 h-4 bg-gradient-to-b from-secondary to-primary rounded-full" />
-              {language === 'ko' ? `제출한 신청 (${mockData.applying.length})` : `Đơn đã nộp (${mockData.applying.length})`}
+              {language === 'ko' ? `제출한 신청 (${applying.length})` : `Đơn đã nộp (${applying.length})`}
             </h3>
             <Link href="/main/influencer/my-campaigns" className="text-xs text-primary font-medium">
               {language === 'ko' ? '전체 보기' : 'Xem tất cả'}
@@ -284,7 +392,12 @@ export default function InfluencerDashboard() {
             className="flex gap-3 overflow-x-auto pl-1 pr-4 pb-3"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {mockData.applying.map((a) => (
+            {applying.length === 0 && !isLoading && (
+              <div className="flex-shrink-0 w-[200px] h-20 flex items-center justify-center bg-dark-600/60 rounded-xl border border-dark-400/40">
+                <span className="text-xs text-gray-500">{language === 'ko' ? '신청 내역 없음' : 'Không có đơn'}</span>
+              </div>
+            )}
+            {applying.map((a) => (
               <Link key={a.id} href={`/main/influencer/my-campaigns`} className="flex-shrink-0 w-[200px]">
                 <div className="flex flex-col gap-1.5 bg-dark-600/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-dark-400/40 hover:border-primary/30 transition-all shadow-md h-full">
                   <div className="min-w-0">
@@ -346,7 +459,7 @@ export default function InfluencerDashboard() {
 
           {/* 건별 목록 */}
           <div className="space-y-2">
-            {mockData.earnings.map((e) => (
+            {earnings.map((e) => (
               <Link key={e.id} href="/main/influencer/earnings">
                 <div className="flex items-center gap-3 bg-dark-600/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-dark-400/40 hover:border-accent/30 transition-all shadow-md">
                   <div className="flex-1 min-w-0">

@@ -8,13 +8,14 @@ export async function GET(request: NextRequest) {
     
     const campaignId = searchParams.get('campaign_id');
     const influencerId = searchParams.get('influencer_id');
+    const advertiserId = searchParams.get('advertiser_id');
     const status = searchParams.get('status');
 
     let query = supabaseAdmin
       .from('applications')
       .select(`
         *,
-        campaign:campaigns(id, title, thumbnail, budget, company:users!advertiser_id(name)),
+        campaign:campaigns(id, title, thumbnail, budget, advertiser_id, company:users!advertiser_id(name)),
         influencer:users!influencer_id(name, email)
       `)
       .order('applied_at', { ascending: false });
@@ -25,6 +26,10 @@ export async function GET(request: NextRequest) {
     }
     if (influencerId) {
       query = query.eq('influencer_id', influencerId);
+    }
+    if (advertiserId) {
+      // 광고주 ID로 필터링: 해당 광고주의 캠페인에 지원한 목록
+      query = query.eq('campaign.advertiser_id', advertiserId);
     }
     if (status) {
       query = query.eq('status', status);

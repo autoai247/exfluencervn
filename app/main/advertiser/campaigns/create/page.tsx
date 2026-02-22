@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import {
   ArrowLeft,
   Save,
@@ -335,16 +336,79 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
     }
 
     setIsSubmitting(true);
-    await new Promise(r => setTimeout(r, 1200));
 
     try {
-      localStorage.removeItem('campaign_draft_vn');
-    } catch {
-      // ignore
-    }
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
 
-    setIsSubmitting(false);
-    setSubmitted(true);
+      if (!user) {
+        toast.error(
+          language === 'ko' ? '로그인 필요' : 'Cần đăng nhập',
+          language === 'ko' ? '캠페인을 생성하려면 로그인이 필요합니다.' : 'Bạn cần đăng nhập để tạo chiến dịch.'
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      const res = await fetch('/api/campaigns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          advertiser_id: user.id,
+          title: form.title,
+          description: form.description,
+          platforms: form.platform,
+          deliverables: form.deliverable,
+          categories: form.niche,
+          slots: parseInt(form.slots) || 3,
+          budget: parseInt(form.budget) || 0,
+          min_followers: parseInt(form.minFollowers) || 10000,
+          min_engagement: parseFloat(form.minEngagement) || 3,
+          gender: form.gender,
+          age_range: form.ageRange,
+          location: form.location,
+          start_date: form.startDate || null,
+          end_date: form.endDate || null,
+          deadline: form.endDate || null,
+          hashtags: form.hashtags,
+          guidelines: form.guidelines,
+          provided: form.provided,
+          brand: form.brand,
+          status: 'active',
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to create campaign');
+      }
+
+      const data = await res.json();
+
+      try {
+        localStorage.removeItem('campaign_draft_vn');
+      } catch {
+        // ignore
+      }
+
+      setIsSubmitting(false);
+      setSubmitted(true);
+
+      // 생성 성공 시 캠페인 상세 페이지로 이동 (약간 딜레이 후)
+      setTimeout(() => {
+        if (data.id) {
+          router.push(`/main/advertiser/campaigns/${data.id}`);
+        }
+      }, 3000);
+
+    } catch (error: any) {
+      console.error('Campaign creation error:', error);
+      toast.error(
+        language === 'ko' ? '생성 실패' : 'Tạo thất bại',
+        error.message || (language === 'ko' ? '다시 시도해 주세요.' : 'Vui lòng thử lại.')
+      );
+      setIsSubmitting(false);
+    }
   };
 
   const copyShareText = async () => {
@@ -990,10 +1054,10 @@ ${form.description ? form.description.slice(0, 150) + (form.description.length >
 
           {/* Go to Dashboard */}
           <button
-            onClick={() => router.push('/main/advertiser')}
+            onClick={() => router.push('/main/advertiser/campaigns')}
             className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white text-sm font-bold"
           >
-            {language === 'ko' ? '대시보드 보기 →' : 'Xem Dashboard →'}
+            {language === 'ko' ? '캠페인 목록 보기 →' : 'Xem danh sách chiến dịch →'}
           </button>
         </div>
         <BottomNav userType="advertiser" />

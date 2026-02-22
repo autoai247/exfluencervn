@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Heart, MapPin, Calendar, DollarSign, ShoppingBag, X } from 'lucide-react';
@@ -8,61 +8,177 @@ import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatCash, formatShoppingPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { createClient } from '@/lib/supabase/client';
 
-// Mock data
-const mockFavoriteCampaigns = [
-  {
-    id: '1',
-    title: '신규 스킨케어 제품 리뷰 캠페인',
-    company: 'K-Beauty Co.',
-    thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
-    budget: 500000,
-    budgetType: 'cash' as const, // 현금 수익
-    location: '서울, 한국',
-    deadline: '2024-03-15',
-    status: 'active' as const,
-  },
-  {
-    id: '2',
-    title: '베트남 레스토랑 체험 리뷰',
-    company: 'Pho House Vietnam',
-    thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
-    budget: 300000,
-    budgetType: 'cash' as const,
-    location: '호치민, 베트남',
-    deadline: '2024-03-20',
-    status: 'active' as const,
-  },
-  {
-    id: '3',
-    title: '포인트 적립 이벤트 - SNS 공유하고 포인트 받기',
-    company: 'Exfluencer VN',
-    thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop',
-    budget: 50000,
-    budgetType: 'points' as const, // 쇼핑 포인트 보상
-    location: '온라인',
-    deadline: '2024-04-01',
-    status: 'active' as const,
-  },
-  {
-    id: '4',
-    title: '출석 체크 챌린지 - 30일 연속 달성',
-    company: 'Exfluencer VN',
-    thumbnail: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=300&fit=crop',
-    budget: 100000,
-    budgetType: 'points' as const,
-    location: '온라인',
-    deadline: '2024-03-30',
-    status: 'active' as const,
-  },
-];
+type FavoriteCampaign = {
+  id: string;
+  title: string;
+  company: string;
+  thumbnail: string;
+  budget: number;
+  budgetType: 'cash' | 'points';
+  location: string;
+  deadline: string;
+  status: 'active' | 'closed';
+};
 
 export default function FavoritesPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
-  const [favorites, setFavorites] = useState(mockFavoriteCampaigns);
+  const [favorites, setFavorites] = useState<FavoriteCampaign[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const removeFavorite = (id: string) => {
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          // 비로그인: localStorage에서 즐겨찾기 campaign ID 읽어서 조회
+          const savedIds: string[] = JSON.parse(localStorage.getItem('campaign_favorites') || '[]');
+          if (savedIds.length === 0) {
+            setFavorites([]);
+            return;
+          }
+          const { data, error } = await supabase
+            .from('campaigns')
+            .select(`
+              id,
+              title,
+              thumbnail,
+              budget,
+              type,
+              location,
+              deadline,
+              status,
+              advertiser_profiles (company_name)
+            `)
+            .in('id', savedIds);
+
+          if (!error && data) {
+            const formatted: FavoriteCampaign[] = data.map((c: any) => ({
+              id: c.id,
+              title: c.title || '',
+              company: c.advertiser_profiles?.company_name || '',
+              thumbnail: c.thumbnail || 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
+              budget: c.budget || 0,
+              budgetType: c.type === 'points' ? 'points' : 'cash',
+              location: c.location || '',
+              deadline: c.deadline || '',
+              status: c.status === 'active' ? 'active' : 'closed',
+            }));
+            setFavorites(formatted);
+          }
+          return;
+        }
+
+        // 로그인 사용자: favorites 테이블 또는 localStorage ID로 조회
+        const savedIds: string[] = JSON.parse(localStorage.getItem('campaign_favorites') || '[]');
+
+        // DB favorites 테이블 시도
+        const { data: favData, error: favError } = await supabase
+          .from('favorites')
+          .select(`
+            campaign_id,
+            campaigns (
+              id,
+              title,
+              thumbnail,
+              budget,
+              type,
+              location,
+              deadline,
+              status,
+              advertiser_profiles (company_name)
+            )
+          `)
+          .eq('user_id', user.id);
+
+        if (!favError && favData && favData.length > 0) {
+          const formatted: FavoriteCampaign[] = favData
+            .filter((f: any) => f.campaigns)
+            .map((f: any) => ({
+              id: f.campaigns.id,
+              title: f.campaigns.title || '',
+              company: f.campaigns.advertiser_profiles?.company_name || '',
+              thumbnail: f.campaigns.thumbnail || 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
+              budget: f.campaigns.budget || 0,
+              budgetType: f.campaigns.type === 'points' ? 'points' : 'cash',
+              location: f.campaigns.location || '',
+              deadline: f.campaigns.deadline || '',
+              status: f.campaigns.status === 'active' ? 'active' : 'closed',
+            }));
+          setFavorites(formatted);
+        } else if (savedIds.length > 0) {
+          // favorites 테이블이 없거나 비어있으면 localStorage 기반 조회
+          const { data, error } = await supabase
+            .from('campaigns')
+            .select(`
+              id,
+              title,
+              thumbnail,
+              budget,
+              type,
+              location,
+              deadline,
+              status,
+              advertiser_profiles (company_name)
+            `)
+            .in('id', savedIds);
+
+          if (!error && data) {
+            const formatted: FavoriteCampaign[] = data.map((c: any) => ({
+              id: c.id,
+              title: c.title || '',
+              company: c.advertiser_profiles?.company_name || '',
+              thumbnail: c.thumbnail || 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
+              budget: c.budget || 0,
+              budgetType: c.type === 'points' ? 'points' : 'cash',
+              location: c.location || '',
+              deadline: c.deadline || '',
+              status: c.status === 'active' ? 'active' : 'closed',
+            }));
+            setFavorites(formatted);
+          } else {
+            setFavorites([]);
+          }
+        } else {
+          setFavorites([]);
+        }
+      } catch (err) {
+        console.error('즐겨찾기 fetch 실패:', err);
+        setFavorites([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+  const removeFavorite = async (id: string) => {
+    // localStorage에서 제거
+    const savedIds: string[] = JSON.parse(localStorage.getItem('campaign_favorites') || '[]');
+    const newIds = savedIds.filter((sid) => sid !== id);
+    localStorage.setItem('campaign_favorites', JSON.stringify(newIds));
+
+    // DB에서도 제거 시도
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('campaign_id', id);
+      }
+    } catch (err) {
+      console.error('즐겨찾기 삭제 오류:', err);
+    }
+
     setFavorites(favorites.filter(c => c.id !== id));
   };
 
@@ -95,8 +211,24 @@ export default function FavoritesPage() {
           </div>
         </div>
 
+        {/* 로딩 스켈레톤 */}
+        {isLoading && (
+          <div className="flex gap-3 overflow-x-hidden">
+            {[1, 2].map((i) => (
+              <div key={i} className="flex-shrink-0 w-[260px] animate-pulse bg-dark-600/80 border border-dark-400/40 rounded-2xl p-4">
+                <div className="w-full h-32 rounded-xl bg-dark-500 mb-3" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-dark-500 rounded w-3/4" />
+                  <div className="h-3 bg-dark-500 rounded w-1/2" />
+                  <div className="h-3 bg-dark-500 rounded w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* 현금 캠페인 섹션 */}
-        {cashCampaigns.length > 0 && (
+        {!isLoading && cashCampaigns.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -168,7 +300,7 @@ export default function FavoritesPage() {
         )}
 
         {/* 포인트 캠페인 섹션 */}
-        {pointsCampaigns.length > 0 && (
+        {!isLoading && pointsCampaigns.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -240,7 +372,7 @@ export default function FavoritesPage() {
         )}
 
         {/* Empty State */}
-        {favorites.length === 0 && (
+        {!isLoading && favorites.length === 0 && (
           <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl text-center py-12">
             <Heart size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.favorites.noCampaigns}</h3>

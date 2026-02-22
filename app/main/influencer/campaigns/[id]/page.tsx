@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
 import { ArrowLeft, Calendar, DollarSign, Users, Eye, Clock, CheckCircle, Upload, FileText, Share2, ExternalLink, Gift, AlertCircle, Trophy, X } from 'lucide-react';
 import { FaFacebook } from 'react-icons/fa';
 import { formatPoints } from '@/lib/points';
@@ -532,23 +533,77 @@ export default function CampaignDetailPage() {
     }
   }, [params.id]);
 
-  const handleApplyCampaign = (e: React.FormEvent) => {
+  const handleApplyCampaign = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: API 호출로 실제 지원 저장
-    // 지원 정보를 localStorage에 임시 저장
-    const application = {
-      campaignId: params.id,
-      campaignTitle: language === 'ko' ? campaign.titleKo : campaign.titleVi,
-      ...applyForm,
-      appliedAt: new Date().toISOString(),
-    };
-    const existing = JSON.parse(localStorage.getItem('exfluencer_applications') || '[]');
-    localStorage.setItem('exfluencer_applications', JSON.stringify([...existing, application]));
-    setApplySubmitted(true);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      const res = await fetch('/api/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          campaign_id: params.id,
+          influencer_id: user?.id ?? null,
+          name: applyForm.name,
+          zalo: applyForm.zalo,
+          platform_url: applyForm.platformUrl,
+          followers_range: applyForm.followers,
+          message: applyForm.message,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        // 이미 지원한 경우에도 성공 화면 표시 (중복 지원 안내)
+        if (res.status === 409) {
+          setApplySubmitted(true);
+          return;
+        }
+        throw new Error(err.error || 'Failed to submit application');
+      }
+
+      setApplySubmitted(true);
+    } catch (error) {
+      console.error('Application submit error:', error);
+      // 네트워크 오류 등 실패 시 localStorage 폴백 저장
+      const application = {
+        campaignId: params.id,
+        campaignTitle: language === 'ko' ? campaign.titleKo : campaign.titleVi,
+        ...applyForm,
+        appliedAt: new Date().toISOString(),
+      };
+      const existing = JSON.parse(localStorage.getItem('exfluencer_applications') || '[]');
+      localStorage.setItem('exfluencer_applications', JSON.stringify([...existing, application]));
+      setApplySubmitted(true);
+    }
   };
 
-  const handleSubmitWork = (e: React.FormEvent) => {
+  const handleSubmitWork = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      const res = await fetch('/api/submitted-contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          campaign_id: params.id,
+          influencer_id: user?.id ?? null,
+          content_url: uploadData.url,
+          description: uploadData.description,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error('Content submit error:', err.error);
+      }
+    } catch (error) {
+      console.error('Content submit error:', error);
+    }
+
     alert(t.campaignDetail.alerts.workSubmitted);
     setShowUploadModal(false);
     setUploadData({ url: '', description: '' });
@@ -636,7 +691,7 @@ export default function CampaignDetailPage() {
   };
 
   // Submit share link
-  const handleSubmitShareLink = () => {
+  const handleSubmitShareLink = async () => {
     if (!shareLinkInput.trim()) {
       alert(t.campaignDetail.alerts.pleaseEnterLink);
       return;
@@ -676,11 +731,24 @@ export default function CampaignDetailPage() {
       t.campaignDetail.alerts.shareLinkSubmitted.replace('${formatPoints(SHARE_BONUS_AMOUNT)}', formatPoints(SHARE_BONUS_AMOUNT))
     );
 
-    // TODO: Send to server API for admin review
-    // await fetch('/api/share/submit', {
-    //   method: 'POST',
-    //   body: JSON.stringify(newShare)
-    // });
+    // Send to server API for admin review
+    try {
+      await fetch('/api/submitted-contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          campaign_id: newShare.campaignId,
+          influencer_id: null,
+          content_url: newShare.postUrl,
+          description: `Facebook share - ${newShare.platform}`,
+          content_type: 'share',
+          points_earned: newShare.pointsEarned,
+          status: newShare.status,
+        }),
+      });
+    } catch (error) {
+      console.error('Share submit API error:', error);
+    }
 
     // Reset modal
     setShowShareLinkModal(false);

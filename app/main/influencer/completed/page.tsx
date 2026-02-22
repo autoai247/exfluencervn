@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Calendar, DollarSign, ShoppingBag, Star, MapPin, Download, ExternalLink } from 'lucide-react';
@@ -8,7 +8,21 @@ import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatCash, formatShoppingPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { getMockCompletedCampaigns, type MockCompletedCampaign } from '@/lib/mockData';
+import { createClient } from '@/lib/supabase/client';
+
+type MockCompletedCampaign = {
+  id: string;
+  title: string;
+  company: string;
+  thumbnail: string;
+  reward: number;
+  type: 'cash' | 'points';
+  status: 'paid' | 'pending_payment';
+  completedDate: string;
+  location: string;
+  rating?: number;
+  reviewText?: string;
+};
 
 type TabType = 'all' | 'cash' | 'points';
 
@@ -16,7 +30,78 @@ export default function CompletedCampaignsPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const campaigns = getMockCompletedCampaigns(language);
+  const [campaigns, setCampaigns] = useState<MockCompletedCampaign[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCompleted = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          setCampaigns([]);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('campaign_participants')
+          .select(`
+            id,
+            status,
+            completed_at,
+            reward_amount,
+            reward_type,
+            payment_status,
+            rating,
+            review_text,
+            campaigns (
+              id,
+              title,
+              thumbnail,
+              location,
+              advertiser_profiles (
+                company_name
+              )
+            )
+          `)
+          .eq('influencer_id', user.id)
+          .eq('status', 'completed')
+          .order('completed_at', { ascending: false });
+
+        if (error) {
+          console.error('완료 캠페인 로딩 오류:', error);
+          setCampaigns([]);
+        } else {
+          const formatted: MockCompletedCampaign[] = (data || []).map((p: any) => ({
+            id: p.id,
+            title: p.campaigns?.title || '',
+            company: p.campaigns?.advertiser_profiles?.company_name || '',
+            thumbnail: p.campaigns?.thumbnail
+              || 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
+            reward: p.reward_amount || 0,
+            type: (p.reward_type === 'points' ? 'points' : 'cash') as 'cash' | 'points',
+            status: (p.payment_status === 'paid' ? 'paid' : 'pending_payment') as 'paid' | 'pending_payment',
+            completedDate: p.completed_at
+              ? new Date(p.completed_at).toLocaleDateString('ko-KR')
+              : '',
+            location: p.campaigns?.location || '',
+            rating: p.rating,
+            reviewText: p.review_text,
+          }));
+          setCampaigns(formatted);
+        }
+      } catch (err) {
+        console.error('완료 캠페인 fetch 실패:', err);
+        setCampaigns([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCompleted();
+  }, []);
 
   const handleDownloadReceipt = (campaign: MockCompletedCampaign) => {
     alert(`📄 ${campaign.title}\n\n${t.completed.downloadReceipt}\n\n- ${t.completed.receiptContent.campaignName}: ${campaign.title}\n- ${t.completed.earned}: ${formatCash(campaign.reward)}\n- ${t.completed.completedOn}: ${campaign.completedDate}\n- ${t.completed.receiptContent.status}: ${t.completed.receiptContent.statusPaid}\n\n${t.completed.receiptContent.note}`);
@@ -106,8 +191,27 @@ export default function CompletedCampaignsPage() {
           </button>
         </div>
 
+        {/* 로딩 스켈레톤 */}
+        {isLoading && (
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse bg-dark-600/80 border border-dark-400/40 rounded-2xl p-4">
+                <div className="flex gap-3">
+                  <div className="w-24 h-24 rounded-xl bg-dark-500 flex-shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-dark-500 rounded w-3/4" />
+                    <div className="h-3 bg-dark-500 rounded w-1/2" />
+                    <div className="h-3 bg-dark-500 rounded w-1/3" />
+                    <div className="h-5 bg-dark-500 rounded w-1/4 mt-2" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* 캠페인 리스트 */}
-        <div className="space-y-4">
+        {!isLoading && <div className="space-y-4">
           {filteredCampaigns.map((campaign) => (
             <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
               <Link href={`/main/influencer/campaigns/${campaign.id}`} className="block">
@@ -206,10 +310,10 @@ export default function CompletedCampaignsPage() {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
 
         {/* Empty State */}
-        {filteredCampaigns.length === 0 && (
+        {!isLoading && filteredCampaigns.length === 0 && (
           <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-8 shadow-xl text-center py-12">
             <CheckCircle size={48} className="text-gray-600 mx-auto mb-3" />
             <h3 className="text-lg font-bold text-white mb-2">{t.completed.noCampaigns}</h3>

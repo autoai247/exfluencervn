@@ -268,3 +268,78 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ============================================================
+-- profiles 테이블에 포인트/캐시 컬럼 추가 (없는 경우)
+-- ============================================================
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS shopping_points INTEGER DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS cash INTEGER DEFAULT 0;
+
+-- ============================================================
+-- Raffle (응모) 관련 테이블
+-- ============================================================
+
+-- Raffle Items 테이블
+CREATE TABLE IF NOT EXISTS public.raffle_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  name_vi TEXT,
+  description TEXT,
+  description_vi TEXT,
+  price INTEGER NOT NULL,
+  prize_value TEXT,
+  stock INTEGER DEFAULT 0,
+  total_tickets INTEGER DEFAULT 0,
+  current_tickets INTEGER DEFAULT 0,
+  active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Raffle Tickets 테이블
+CREATE TABLE IF NOT EXISTS public.raffle_tickets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  raffle_id UUID REFERENCES public.raffle_items(id) ON DELETE CASCADE,
+  ticket_count INTEGER DEFAULT 0,
+  total_spent INTEGER DEFAULT 0,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, raffle_id)
+);
+
+-- Raffle Purchase History
+CREATE TABLE IF NOT EXISTS public.raffle_purchase_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  raffle_id UUID REFERENCES public.raffle_items(id) ON DELETE CASCADE,
+  tickets INTEGER NOT NULL,
+  points_spent INTEGER NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Raffle Draws
+CREATE TABLE IF NOT EXISTS public.raffle_draws (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  raffle_id UUID REFERENCES public.raffle_items(id) ON DELETE CASCADE,
+  winner_id UUID REFERENCES public.profiles(id),
+  winner_name TEXT,
+  draw_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  total_participants INTEGER DEFAULT 0,
+  announced BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- RLS
+ALTER TABLE public.raffle_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.raffle_tickets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.raffle_purchase_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.raffle_draws ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can view raffle items" ON public.raffle_items FOR SELECT USING (true);
+CREATE POLICY "Users can view own tickets" ON public.raffle_tickets FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own tickets" ON public.raffle_tickets FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own tickets" ON public.raffle_tickets FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can view own purchase history" ON public.raffle_purchase_history FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own purchase history" ON public.raffle_purchase_history FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Anyone can view raffle draws" ON public.raffle_draws FOR SELECT USING (true);

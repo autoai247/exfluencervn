@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Clock,
@@ -15,7 +15,7 @@ import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { getMockJobs } from '@/lib/mockData';
+import { createClient } from '@/lib/supabase/client';
 
 type JobStatus = 'pending' | 'accepted' | 'in_progress' | 'completed' | 'rejected';
 
@@ -139,20 +139,90 @@ const getStatusConfig = (t: any) => ({
 export default function JobsPage() {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'all' | JobStatus>('all');
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const statusConfig = getStatusConfig(t);
-  const mockJobs = getMockJobs(language);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          setJobs([]);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('campaign_participants')
+          .select(`
+            id,
+            status,
+            deadline,
+            applied_at,
+            started_at,
+            completed_at,
+            submitted_content,
+            feedback,
+            campaigns (
+              id,
+              title,
+              budget,
+              advertiser_profiles (
+                company_name,
+                logo_url
+              )
+            )
+          `)
+          .eq('influencer_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('작업 목록 로딩 오류:', error);
+          setJobs([]);
+        } else {
+          const formatted: Job[] = (data || []).map((p: any) => ({
+            id: p.id,
+            campaignId: p.campaigns?.id || '',
+            title: p.campaigns?.title || '',
+            company: p.campaigns?.advertiser_profiles?.company_name || '',
+            companyLogo: p.campaigns?.advertiser_profiles?.logo_url
+              || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.campaigns?.advertiser_profiles?.company_name || 'A')}&background=6C5CE7&color=fff`,
+            budget: p.campaigns?.budget || 0,
+            status: p.status as JobStatus,
+            deadline: p.deadline || '',
+            appliedAt: p.applied_at ? new Date(p.applied_at).toLocaleDateString('ko-KR') : undefined,
+            startedAt: p.started_at ? new Date(p.started_at).toLocaleDateString('ko-KR') : undefined,
+            completedAt: p.completed_at ? new Date(p.completed_at).toLocaleDateString('ko-KR') : undefined,
+            submittedContent: p.submitted_content,
+            feedback: p.feedback,
+          }));
+          setJobs(formatted);
+        }
+      } catch (err) {
+        console.error('작업 fetch 실패:', err);
+        setJobs([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   const filteredJobs = activeTab === 'all'
-    ? mockJobs
-    : mockJobs.filter((job) => job.status === activeTab);
+    ? jobs
+    : jobs.filter((job) => job.status === activeTab);
 
   const statusCounts = {
-    all: mockJobs.length,
-    pending: mockJobs.filter((j) => j.status === 'pending').length,
-    accepted: mockJobs.filter((j) => j.status === 'accepted').length,
-    in_progress: mockJobs.filter((j) => j.status === 'in_progress').length,
-    completed: mockJobs.filter((j) => j.status === 'completed').length,
-    rejected: mockJobs.filter((j) => j.status === 'rejected').length,
+    all: jobs.length,
+    pending: jobs.filter((j) => j.status === 'pending').length,
+    accepted: jobs.filter((j) => j.status === 'accepted').length,
+    in_progress: jobs.filter((j) => j.status === 'in_progress').length,
+    completed: jobs.filter((j) => j.status === 'completed').length,
+    rejected: jobs.filter((j) => j.status === 'rejected').length,
   };
 
   return (
@@ -218,7 +288,27 @@ export default function JobsPage() {
 
       {/* Job List */}
       <div className="container-mobile space-y-4 py-6">
-        {filteredJobs.map((job) => {
+        {isLoading && (
+          <>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse bg-dark-600/80 border border-dark-400/40 rounded-2xl p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-dark-500" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-dark-500 rounded w-3/4" />
+                    <div className="h-3 bg-dark-500 rounded w-1/2" />
+                  </div>
+                  <div className="w-20 h-6 bg-dark-500 rounded-full" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="h-16 bg-dark-500 rounded-xl" />
+                  <div className="h-16 bg-dark-500 rounded-xl" />
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+        {!isLoading && filteredJobs.map((job) => {
           const config = statusConfig[job.status];
           const StatusIcon = config.icon;
 
@@ -325,7 +415,7 @@ export default function JobsPage() {
           );
         })}
 
-        {filteredJobs.length === 0 && (
+        {!isLoading && filteredJobs.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-400">
               {activeTab === 'all'

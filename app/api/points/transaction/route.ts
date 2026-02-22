@@ -1,90 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db/jsonDb';
-
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { userId, type, walletType, amount, description } = body;
 
-    // 입력 검증
-    if (!userId || !type || !walletType || amount === undefined || !description) {
-      return NextResponse.json(
-        { error: '필수 필드가 누락되었습니다' },
-        { status: 400 }
-      );
-    }
-
-    // 사용자 조회
-    const user = db.getUserById(userId);
-    if (!user) {
-      return NextResponse.json(
-        { error: '사용자를 찾을 수 없습니다' },
-        { status: 404 }
-      );
-    }
-
-    // 포인트 차감 시 잔액 확인
-    if (type === 'spending' && walletType === 'shopping') {
-      if (user.shoppingPoints < Math.abs(amount)) {
-        return NextResponse.json(
-          { error: '쇼핑 포인트가 부족합니다' },
-          { status: 400 }
-        );
-      }
-    }
-
-    // 현금 출금 시 잔액 확인
-    if (type === 'withdrawal' && walletType === 'cash') {
-      if (user.cash < Math.abs(amount)) {
-        return NextResponse.json(
-          { error: '현금이 부족합니다' },
-          { status: 400 }
-        );
-      }
-    }
-
-    // 포인트/현금 업데이트
-    const updates: Partial<typeof user> = {};
-    if (walletType === 'shopping') {
-      updates.shoppingPoints = user.shoppingPoints + amount;
-    } else {
-      updates.cash = user.cash + amount;
-    }
-
-    const updatedUser = db.updateUser(userId, updates);
-    if (!updatedUser) {
-      return NextResponse.json(
-        { error: '사용자 업데이트 실패' },
-        { status: 500 }
-      );
-    }
-
-    // 거래 내역 저장
-    const transaction = db.addPointTransaction({
-      userId,
-      type,
-      walletType,
-      amount,
-      description,
-      date: new Date().toISOString(),
-    });
-
-    return NextResponse.json({
-      success: true,
-      transaction,
-      newBalance: walletType === 'shopping' ? updatedUser.shoppingPoints : updatedUser.cash,
-    });
-
-  } catch (error) {
-    console.error('Point transaction error:', error);
-    return NextResponse.json(
-      { error: '서버 오류가 발생했습니다' },
-      { status: 500 }
-    );
-  }
-}
+// points 테이블 type 컬럼 허용 값
+const VALID_TYPES = ['earned', 'spent', 'bonus', 'refund'] as const;
+type PointType = (typeof VALID_TYPES)[number];
 
 export async function GET(request: NextRequest) {
   try {
@@ -98,15 +19,162 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const transactions = db.getPointTransactions(userId);
+    const supabase = createClient();
+
+    const { data: transactions, error } = await supabase
+      .from('points')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Get transactions error:', error);
+      return NextResponse.json(
+        { error: '포인트 내역 조회에 실패했습니다' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      transactions,
+      transactions: transactions ?? [],
     });
-
   } catch (error) {
     console.error('Get transactions error:', error);
+    return NextResponse.json(
+      { error: '서버 오류가 발생했습니다' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const {
+      userId,
+      type,
+      amount,
+      reason,
+      relatedCampaignId,
+    }: {
+      userId: string;
+      type: PointType;
+      amount: number;
+      reason: string;
+      relatedCampaignId?: string;
+    } = body;
+
+    // 입력 검증
+    if (!userId || !type || amount === undefined || !reason) {
+      return NextResponse.json(
+        { error: '필수 필드가 누락되었습니다 (userId, type, amount, reason)' },
+        { status: 400 }
+      );
+    }
+
+    if (!VALID_TYPES.includes(type)) {
+      return NextResponse.json(
+        {
+          error: `type은 다음 중 하나여야 합니다: ${VALID_TYPES.join(', ')}`,
+        },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createClient();
+
+    // 사용자 존재 여부 확인
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .single();
+
+    if (profileError || !profile) {
+      return NextResponse.json(
+        { error: '사용자를 찾을 수 없습니다' },
+        { status: 404 }
+      );
+    }
+
+    // spent / refund 시 잔액 확인
+    if (type === 'spent') {
+      const { data: currentPoints, error: sumError } = await supabase
+        .from('points')
+        .select('amount')
+        .eq('user_id', userId);
+
+      if (sumError) {
+        return NextResponse.json(
+          { error: '잔액 조회에 실패했습니다' },
+          { status: 500 }
+        );
+      }
+
+      const balance = (currentPoints ?? []).reduce(
+        (acc, row) => acc + row.amount,
+        0
+      );
+
+      if (balance + amount < 0) {
+        return NextResponse.json(
+          { error: '포인트가 부족합니다' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // 포인트 트랜잭션 삽입
+    const insertPayload: {
+      user_id: string;
+      type: PointType;
+      amount: number;
+      reason: string;
+      related_campaign_id?: string;
+    } = {
+      user_id: userId,
+      type,
+      amount,
+      reason,
+    };
+
+    if (relatedCampaignId) {
+      insertPayload.related_campaign_id = relatedCampaignId;
+    }
+
+    const { data: transaction, error: insertError } = await supabase
+      .from('points')
+      .insert(insertPayload)
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error('Point transaction insert error:', insertError);
+      return NextResponse.json(
+        { error: '포인트 트랜잭션 저장에 실패했습니다' },
+        { status: 500 }
+      );
+    }
+
+    // 현재 잔액 계산
+    const { data: allPoints } = await supabase
+      .from('points')
+      .select('amount')
+      .eq('user_id', userId);
+
+    const newBalance = (allPoints ?? []).reduce(
+      (acc, row) => acc + row.amount,
+      0
+    );
+
+    return NextResponse.json({
+      success: true,
+      transaction,
+      newBalance,
+    });
+  } catch (error) {
+    console.error('Point transaction error:', error);
     return NextResponse.json(
       { error: '서버 오류가 발생했습니다' },
       { status: 500 }

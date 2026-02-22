@@ -26,8 +26,9 @@ import EmptyState from '@/components/common/EmptyState';
 import { formatCash } from '@/lib/points';
 import type { Platform, Category } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { getMockCampaigns, getMockUserProfile } from '@/lib/mockData';
+import { getMockUserProfile } from '@/lib/mockData';
 import { checkAndGenerateCampaigns } from '@/lib/demoCampaignGenerator';
+import { createClient } from '@/lib/supabase/client';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import CampaignCard from '@/components/campaign/CampaignCard';
 
@@ -388,16 +389,40 @@ function CampaignsPageContent() {
     }
   }, []);
 
-  // Use translated mock data based on current language
-  const [mockCampaigns, setMockCampaigns] = useState(getMockCampaigns(language));
   const mockUserProfile = getMockUserProfile(language);
+  const [mockCampaigns, setMockCampaigns] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Auto-generate campaigns daily (if enabled in admin settings)
+  // Fetch campaigns from Supabase
   useEffect(() => {
-    // Check and generate new campaigns (runs once per day)
+    const fetchCampaigns = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('campaigns')
+          .select('*')
+          .eq('status', 'active')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('캠페인 로딩 오류:', error);
+          // 오류 시 빈 배열 유지
+          setMockCampaigns([]);
+        } else {
+          setMockCampaigns(data || []);
+        }
+      } catch (err) {
+        console.error('캠페인 fetch 실패:', err);
+        setMockCampaigns([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCampaigns();
+    // Auto-generate campaigns daily (if enabled in admin settings)
     checkAndGenerateCampaigns(language);
-    // Reload campaigns after check
-    setMockCampaigns(getMockCampaigns(language));
   }, [language]);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -505,11 +530,11 @@ function CampaignsPageContent() {
   }, [filters]);
 
   // 자격 체크 함수 (Optimized with useCallback)
-  const checkEligibility = useCallback((campaign: typeof mockCampaigns[0]) => {
+  const checkEligibility = useCallback((campaign: any) => {
     const checks = {
-      followers: mockUserProfile.followers >= campaign.requiredFollowers,
-      engagement: mockUserProfile.engagementRate >= campaign.requiredEngagement,
-      platform: campaign.platforms.some(p => mockUserProfile.platforms.includes(p)),
+      followers: mockUserProfile.followers >= (campaign.requiredFollowers ?? campaign.required_followers ?? 0),
+      engagement: mockUserProfile.engagementRate >= (campaign.requiredEngagement ?? campaign.required_engagement ?? 0),
+      platform: (campaign.platforms as Platform[])?.some((p: Platform) => mockUserProfile.platforms.includes(p)) ?? true,
       location: campaign.location === 'Online' || campaign.location.includes(mockUserProfile.location.split(',')[0]),
 
       // Extended eligibility checks
@@ -537,7 +562,7 @@ function CampaignsPageContent() {
   }, [mockUserProfile]);
 
   // Calculate recommendation score for campaigns (0-100) (Optimized with useCallback)
-  const calculateRecommendationScore = useCallback((campaign: typeof mockCampaigns[0]) => {
+  const calculateRecommendationScore = useCallback((campaign: any) => {
     let score = 0;
     const criteria = checkEligibility(campaign);
 
@@ -558,9 +583,9 @@ function CampaignsPageContent() {
     if (criteria.skinTone) score += 5;
 
     // Bonus for category match
-    const categoryMatch = campaign.categories.some(c =>
+    const categoryMatch = (campaign.categories as Category[])?.some((c: Category) =>
       mockUserProfile.categories.includes(c)
-    );
+    ) ?? false;
     if (categoryMatch) score += 10;
 
     // Bonus for budget (higher budget = more attractive)
@@ -601,7 +626,7 @@ function CampaignsPageContent() {
 
     // Platform filter
     if (filters.platforms.length > 0) {
-      const hasMatchingPlatform = campaign.platforms.some((p) =>
+      const hasMatchingPlatform = (campaign.platforms as Platform[])?.some((p: Platform) =>
         filters.platforms.includes(p)
       );
       if (!hasMatchingPlatform) return false;
@@ -609,7 +634,7 @@ function CampaignsPageContent() {
 
     // Category filter
     if (filters.categories.length > 0) {
-      const hasMatchingCategory = campaign.categories.some((c) =>
+      const hasMatchingCategory = (campaign.categories as Category[])?.some((c: Category) =>
         filters.categories.includes(c)
       );
       if (!hasMatchingCategory) return false;
@@ -1220,13 +1245,34 @@ function CampaignsPageContent() {
         </div>
       )}
 
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="container-mobile space-y-6 py-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="animate-pulse rounded-2xl overflow-hidden border-2 border-dark-500/50">
+              <div className="w-full h-48 bg-dark-500" />
+              <div className="p-4 space-y-3">
+                <div className="h-4 bg-dark-500 rounded w-3/4" />
+                <div className="h-3 bg-dark-500 rounded w-1/2" />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="h-8 bg-dark-500 rounded" />
+                  <div className="h-8 bg-dark-500 rounded" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Results Count */}
-      <div className="px-4 py-3 text-sm text-gray-300">
-        {filteredCampaigns.length}{t.campaignFilters.totalCampaigns}
-      </div>
+      {!isLoading && (
+        <div className="px-4 py-3 text-sm text-gray-300">
+          {filteredCampaigns.length}{t.campaignFilters.totalCampaigns}
+        </div>
+      )}
 
       {/* Recommended Campaigns Section */}
-      {recommendedCampaigns.length > 0 && !filters.eligibleOnly && !filters.requiresVehicle && !filters.requiresParent && !filters.requiresPet && !filters.maritalStatus && filters.platforms.length === 0 && filters.categories.length === 0 && (
+      {!isLoading && recommendedCampaigns.length > 0 && !filters.eligibleOnly && !filters.requiresVehicle && !filters.requiresParent && !filters.requiresPet && !filters.maritalStatus && filters.platforms.length === 0 && filters.categories.length === 0 && (
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3 px-4">
             <Trophy size={20} className="text-primary" />
@@ -1331,7 +1377,7 @@ function CampaignsPageContent() {
       )}
 
       {/* Campaign List */}
-      <div className="container-mobile space-y-6 pb-6">
+      {!isLoading && <div className="container-mobile space-y-6 pb-6">
         {filteredCampaigns.map((campaign) => {
           const eligibility = checkEligibility(campaign);
           const campaignUrl = `/main/influencer/campaigns/${campaign.id}${isAdminMode ? '?admin=true' : ''}`;
@@ -1425,8 +1471,9 @@ function CampaignsPageContent() {
 
                 {/* Platforms */}
                 <div className="flex gap-2 mb-3">
-                  {campaign.platforms.map((platform) => {
+                  {(campaign.platforms as Platform[]).map((platform) => {
                     const Icon = platformIcons[platform];
+                    if (!Icon) return null;
                     return (
                       <div
                         key={platform}
@@ -1616,7 +1663,7 @@ function CampaignsPageContent() {
             dark
           />
         )}
-      </div>
+      </div>}
 
       {/* Bottom Navigation */}
       <BottomNav userType="influencer" />

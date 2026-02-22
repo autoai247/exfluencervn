@@ -188,7 +188,10 @@ export default function AdvertiserDashboard() {
                     className="text-[10px] px-2 py-1 bg-dark-500/80 text-gray-300 rounded-lg text-center border border-dark-400/50 hover:bg-dark-400/50 transition-all">
                     {language === 'ko' ? '보기' : 'Xem'}
                   </a>
-                  <button className="text-[10px] px-2 py-1 bg-accent text-dark-800 rounded-lg font-bold shadow-sm shadow-accent/30">
+                  <button
+                    onClick={() => router.push('/main/advertiser/campaigns')}
+                    className="text-[10px] px-2 py-1 bg-accent text-dark-800 rounded-lg font-bold shadow-sm shadow-accent/30 hover:bg-accent/80 transition-all active:scale-95"
+                  >
                     ✓ {formatCash(p.amount)}
                   </button>
                 </div>
@@ -265,7 +268,10 @@ export default function AdvertiserDashboard() {
                       className="flex-1 py-2 bg-dark-500/80 text-gray-300 text-[10px] font-semibold rounded-xl text-center border border-dark-400/50 hover:bg-dark-400/50 transition-all">
                       {language === 'ko' ? '프로필' : 'Hồ sơ'}
                     </Link>
-                    <button className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95">
+                    <button
+                      onClick={() => router.push(`/main/advertiser/campaigns?tab=approvals`)}
+                      className="flex-1 py-2 bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95"
+                    >
                       ✓ {language === 'ko' ? '승인' : 'Duyệt'}
                     </button>
                   </div>

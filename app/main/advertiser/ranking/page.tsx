@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Trophy, Crown, Medal, TrendingUp, Users, X, Star, Package, Instagram, Youtube, Globe } from 'lucide-react';
+import { Trophy, Crown, Medal, TrendingUp, Users, X, Star, Package, Instagram, Youtube, Globe, MessageCircle, Megaphone, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -362,39 +363,83 @@ export default function AdvertiserRankingPage() {
 
               {/* SNS Links */}
               {(selectedUser.instagram || selectedUser.youtube || selectedUser.tiktok || selectedUser.website) && (
-                <div>
+                <div className="mb-5">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full" />
                     <span className="text-sm font-semibold text-white">SNS</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {selectedUser.instagram && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://instagram.com/${selectedUser.instagram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-pink-400/40 hover:text-pink-400 transition-colors"
+                      >
                         <Instagram size={14} className="text-pink-400" />
                         {selectedUser.instagram}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.youtube && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://youtube.com/@${selectedUser.youtube.replace(/ /g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-red-400/40 hover:text-red-400 transition-colors"
+                      >
                         <Youtube size={14} className="text-red-400" />
                         {selectedUser.youtube}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.tiktok && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://tiktok.com/${selectedUser.tiktok}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-white/30 hover:text-white transition-colors"
+                      >
                         <span className="text-xs font-bold text-white">TikTok</span>
                         {selectedUser.tiktok}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.website && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={selectedUser.website.startsWith('http') ? selectedUser.website : `https://${selectedUser.website}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-secondary/40 hover:text-secondary transition-colors"
+                      >
                         <Globe size={14} className="text-secondary" />
                         {selectedUser.website}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                   </div>
                 </div>
               )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-2 border-t border-dark-500/50">
+                <Link
+                  href={`/main/messages?userId=influencer_${selectedUser.rank}&userName=${encodeURIComponent(selectedUser.name)}`}
+                  className="flex-1 py-3 bg-dark-600 hover:bg-dark-500 border border-dark-400/60 rounded-xl text-sm font-semibold text-white transition-all flex items-center justify-center gap-2"
+                  onClick={() => setSelectedUser(null)}
+                >
+                  <MessageCircle size={16} />
+                  {language === 'ko' ? '메시지 보내기' : 'Nhắn tin'}
+                </Link>
+                <Link
+                  href="/main/advertiser/campaigns/create"
+                  className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2"
+                  onClick={() => setSelectedUser(null)}
+                >
+                  <Megaphone size={16} />
+                  {language === 'ko' ? '캠페인 초대' : 'Mời chiến dịch'}
+                </Link>
+              </div>
             </div>
           </div>
         </div>

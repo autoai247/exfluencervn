@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Copy, Share2, Building2, TrendingUp, Gift, CheckCircle, DollarSign, Star, Zap, Users, ChevronRight } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
@@ -301,11 +302,11 @@ export default function InviteAdvertiserPage() {
 
               {invite.status === 'active' && (
                 <div className="pt-3 border-t border-dark-500/50">
-                  <button className="text-xs text-primary hover:text-primary-light flex items-center gap-1">
+                  <Link href="/main/influencer/campaigns" className="text-xs text-primary hover:text-primary-light flex items-center gap-1">
                     <Users size={14} />
                     {t.inviteAdvertiser.viewBrandCampaigns}
                     <ChevronRight size={14} />
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Trophy, Crown, Medal, TrendingUp, Users, X, Star, Package, Instagram, Youtube, Globe } from 'lucide-react';
+import { Trophy, Crown, Medal, TrendingUp, Users, X, Star, Package, Instagram, Youtube, Globe, ExternalLink } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -389,28 +389,52 @@ export default function RankingPage() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {selectedUser.instagram && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://instagram.com/${selectedUser.instagram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-pink-400/40 hover:text-pink-400 transition-colors"
+                      >
                         <Instagram size={14} className="text-pink-400" />
                         {selectedUser.instagram}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.youtube && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://youtube.com/@${selectedUser.youtube.replace(/ /g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-red-400/40 hover:text-red-400 transition-colors"
+                      >
                         <Youtube size={14} className="text-red-400" />
                         {selectedUser.youtube}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.tiktok && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={`https://tiktok.com/${selectedUser.tiktok.replace('@', '@')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-white/30 hover:text-white transition-colors"
+                      >
                         <span className="text-xs font-bold text-white">TikTok</span>
                         {selectedUser.tiktok}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                     {selectedUser.website && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300">
+                      <a
+                        href={selectedUser.website.startsWith('http') ? selectedUser.website : `https://${selectedUser.website}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-dark-600/80 border border-dark-400/40 rounded-xl text-sm text-gray-300 hover:border-secondary/40 hover:text-secondary transition-colors"
+                      >
                         <Globe size={14} className="text-secondary" />
                         {selectedUser.website}
-                      </div>
+                        <ExternalLink size={10} className="text-gray-600" />
+                      </a>
                     )}
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, CheckCircle, Clock, BadgeDollarSign, Info } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
@@ -122,7 +123,8 @@ export default function EarningsPage() {
         {/* ── Danh sách ── */}
         <div className="space-y-3">
           {filtered.map(e => (
-            <div key={e.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+            <Link key={e.id} href={`/main/influencer/jobs`} className="block">
+            <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl hover:border-primary/30 transition-all cursor-pointer">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-white truncate">{e.title}</div>
@@ -155,16 +157,15 @@ export default function EarningsPage() {
               )}
 
               {e.contentUrl && (
-                <a
-                  href={e.contentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 block text-center py-2 bg-dark-700/60 border border-dark-400/40 rounded-xl text-xs text-gray-400 hover:text-gray-300 transition-colors"
+                <button
+                  onClick={(ev) => { ev.preventDefault(); window.open(e.contentUrl!, '_blank', 'noopener,noreferrer'); }}
+                  className="mt-2 w-full text-center py-2 bg-dark-700/60 border border-dark-400/40 rounded-xl text-xs text-gray-400 hover:text-gray-300 transition-colors"
                 >
                   {language === 'ko' ? '게시된 콘텐츠 보기 →' : 'Xem nội dung đã đăng →'}
-                </a>
+                </button>
               )}
             </div>
+            </Link>
           ))}
 
           {filtered.length === 0 && (

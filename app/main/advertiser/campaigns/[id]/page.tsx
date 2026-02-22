@@ -417,13 +417,21 @@ export default function CampaignDetailPage() {
           {acceptedInfluencers.map((influencer) => (
             <div key={influencer.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
               <div className="flex items-start gap-3 mb-3">
-                <img
-                  src={influencer.avatar}
-                  alt={influencer.name}
-                  className="w-12 h-12 rounded-full"
-                />
+                <button
+                  onClick={() => router.push(`/main/advertiser/influencers/${influencer.id}`)}
+                  className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                >
+                  <img
+                    src={influencer.avatar}
+                    alt={influencer.name}
+                    className="w-12 h-12 rounded-full"
+                  />
+                </button>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-white">{influencer.name}</h4>
+                  <h4
+                    className="font-semibold text-white cursor-pointer hover:text-primary transition-colors"
+                    onClick={() => router.push(`/main/advertiser/influencers/${influencer.id}`)}
+                  >{influencer.name}</h4>
                   <p className="text-xs text-gray-400">{influencer.platform}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -861,7 +869,14 @@ export default function CampaignDetailPage() {
             <div className="flex-1 overflow-y-auto p-6 pt-4">
               <div className="space-y-3">
               {acceptedInfluencers.map((influencer) => (
-                <div key={influencer.id} className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl hover:border-primary/30 transition-colors">
+                <div
+                  key={influencer.id}
+                  onClick={() => {
+                    setShowAcceptedModal(false);
+                    router.push(`/main/advertiser/influencers/${influencer.id}`);
+                  }}
+                  className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl hover:border-primary/30 transition-colors cursor-pointer"
+                >
                   <img src={influencer.avatar} alt={influencer.name} className="w-12 h-12 rounded-full" />
                   <div className="flex-1">
                     <h4 className="font-semibold text-white">{influencer.name}</h4>
@@ -871,15 +886,9 @@ export default function CampaignDetailPage() {
                     <p className="text-sm font-bold text-white">{(influencer.followers / 1000).toFixed(1)}K</p>
                     <p className="text-xs text-gray-400">{influencer.engagement}% {language === 'ko' ? '참여율' : 'tương tác'}</p>
                   </div>
-                  <button
-                    onClick={() => {
-                      setShowAcceptedModal(false);
-                      router.push(`/main/advertiser/influencers/${influencer.id}`);
-                    }}
-                    className="px-3 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs rounded-lg hover:opacity-90 transition-opacity"
-                  >
+                  <div className="px-3 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs rounded-lg">
                     {language === 'ko' ? '보기' : 'Xem'}
-                  </button>
+                  </div>
                 </div>
               ))}
               </div>
@@ -903,7 +912,14 @@ export default function CampaignDetailPage() {
                 <h4 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? `승인됨 (${acceptedInfluencers.length})` : `Đã chấp thuận (${acceptedInfluencers.length})`}</h4>
                 <div className="space-y-2">
                   {acceptedInfluencers.map((influencer) => (
-                    <div key={influencer.id} className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-xl">
+                    <div
+                      key={influencer.id}
+                      onClick={() => {
+                        setShowApplicantsModal(false);
+                        router.push(`/main/advertiser/influencers/${influencer.id}`);
+                      }}
+                      className="flex items-center gap-3 p-3 bg-success/10 border border-success/20 rounded-xl cursor-pointer hover:border-success/40 transition-colors"
+                    >
                       <img src={influencer.avatar} alt={influencer.name} className="w-10 h-10 rounded-full" />
                       <div className="flex-1">
                         <h5 className="text-sm font-semibold text-white">{influencer.name}</h5>
@@ -919,7 +935,14 @@ export default function CampaignDetailPage() {
                 <h4 className="text-sm font-semibold text-white mb-3">{language === 'ko' ? `대기 중 (${pendingApplicants.length})` : `Đang chờ (${pendingApplicants.length})`}</h4>
                 <div className="space-y-2">
                   {pendingApplicants.map((applicant) => (
-                    <div key={applicant.id} className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl">
+                    <div
+                      key={applicant.id}
+                      onClick={() => {
+                        setShowApplicantsModal(false);
+                        router.push(`/main/advertiser/influencers/${applicant.id}`);
+                      }}
+                      className="flex items-center gap-3 p-3 bg-dark-600/80 border border-dark-400/40 rounded-xl cursor-pointer hover:border-primary/30 transition-colors"
+                    >
                       <img src={applicant.avatar} alt={applicant.name} className="w-10 h-10 rounded-full" />
                       <div className="flex-1">
                         <h5 className="text-sm font-semibold text-white">{applicant.name}</h5>

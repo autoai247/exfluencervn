@@ -14,7 +14,8 @@ import {
   XCircle,
   Eye,
   Search,
-  Filter
+  Filter,
+  ChevronRight
 } from 'lucide-react';
 import type { UserType, UserStatus, CampaignStatus } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -500,7 +501,8 @@ export default function AdminDashboardPage() {
 
               <div className="space-y-3">
                 {filteredUsers.map((user) => (
-                  <div key={user.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
+                  <Link key={user.id} href={`/main/admin/users/${user.id}`} className="block">
+                  <div className="bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-primary/40 transition-all cursor-pointer active:scale-[0.99]">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
@@ -547,16 +549,15 @@ export default function AdminDashboardPage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <Link
-                        href={`/main/admin/users/${user.id}`}
+                      <div
                         className="flex-1 py-2 bg-dark-700 hover:bg-dark-500 rounded-lg text-xs font-medium text-white transition-colors flex items-center justify-center gap-1"
                       >
                         <Eye size={14} />
                         {language === 'ko' ? '상세보기' : 'Xem chi tiết'}
-                      </Link>
+                      </div>
                       {user.status === 'active' ? (
                         <button
-                          onClick={() => handleBanUser(user.id)}
+                          onClick={(e) => { e.preventDefault(); handleBanUser(user.id); }}
                           className="flex-1 py-2 bg-error/20 hover:bg-error/30 rounded-lg text-xs font-medium text-error transition-colors flex items-center justify-center gap-1"
                         >
                           <Ban size={14} />
@@ -564,7 +565,7 @@ export default function AdminDashboardPage() {
                         </button>
                       ) : (
                         <button
-                          onClick={() => handleUnbanUser(user.id)}
+                          onClick={(e) => { e.preventDefault(); handleUnbanUser(user.id); }}
                           className="flex-1 py-2 bg-success/20 hover:bg-success/30 rounded-lg text-xs font-medium text-success transition-colors flex items-center justify-center gap-1"
                         >
                           <CheckCircle size={14} />
@@ -573,6 +574,7 @@ export default function AdminDashboardPage() {
                       )}
                     </div>
                   </div>
+                  </Link>
                 ))}
               </div>
             </>
@@ -592,10 +594,13 @@ export default function AdminDashboardPage() {
 
               <div className="space-y-3">
                 {campaigns.map((campaign) => (
-                  <div key={campaign.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500">
+                  <div key={campaign.id} className="bg-dark-600 rounded-xl p-4 border border-dark-500 hover:border-warning/30 transition-all cursor-pointer active:scale-[0.99]">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-white mb-1">{campaign.title}</h4>
+                        <div className="flex items-center gap-1 mb-1">
+                          <h4 className="font-semibold text-white">{campaign.title}</h4>
+                          <ChevronRight size={14} className="text-gray-500 flex-shrink-0" />
+                        </div>
                         <p className="text-xs text-gray-400">{campaign.advertiser}</p>
                         <p className="text-xs text-gray-500 mt-1">ID: {campaign.id} • {language === 'ko' ? '생성' : 'Ngày tạo'}: {campaign.createdAt}</p>
                       </div>

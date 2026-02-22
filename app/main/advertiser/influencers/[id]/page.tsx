@@ -31,6 +31,7 @@ export default function InfluencerProfilePage() {
   const { t, language } = useLanguage();
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
+  const [showAllReviews, setShowAllReviews] = useState(false);
 
   // Mock data - 다중 SNS 플랫폼 지원
   const influencer = {
@@ -447,7 +448,7 @@ export default function InfluencerProfilePage() {
           </div>
 
           <div className="space-y-4">
-            {influencer.reviews.slice(0, 3).map((review: any) => (
+            {(showAllReviews ? influencer.reviews : influencer.reviews.slice(0, 3)).map((review: any) => (
               <div key={review.id} className="pb-4 border-b border-dark-400/40 last:border-0 last:pb-0">
                 <div className="flex items-start gap-3 mb-2">
                   <img
@@ -484,8 +485,13 @@ export default function InfluencerProfilePage() {
           </div>
 
           {influencer.reviews.length > 3 && (
-            <button className="w-full mt-4 py-2 text-sm text-gray-300 hover:text-white font-medium border border-dark-400/40 hover:border-primary/30 rounded-xl transition-all">
-              {t.advertiser.influencerDetail.viewAll} ({influencer.reviews.length})
+            <button
+              onClick={() => setShowAllReviews(!showAllReviews)}
+              className="w-full mt-4 py-2 text-sm text-gray-300 hover:text-white font-medium border border-dark-400/40 hover:border-primary/30 rounded-xl transition-all"
+            >
+              {showAllReviews
+                ? (language === 'ko' ? '접기' : 'Thu gọn')
+                : `${t.advertiser.influencerDetail.viewAll} (${influencer.reviews.length})`}
             </button>
           )}
         </div>

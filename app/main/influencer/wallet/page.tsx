@@ -232,7 +232,8 @@ export default function WalletPage() {
             </div>
 
             {bankAccounts.map((account) => (
-              <div key={account.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+              <Link key={account.id} href="/main/influencer/wallet/bank-accounts" className="block">
+              <div className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl hover:border-primary/30 transition-all cursor-pointer">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -249,6 +250,7 @@ export default function WalletPage() {
                   <ChevronRight size={20} className="text-gray-500" />
                 </div>
               </div>
+              </Link>
             ))}
 
             <Link href="/main/influencer/wallet/bank-accounts/add">

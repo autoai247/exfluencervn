@@ -223,7 +223,8 @@ export default function JobsPage() {
           const StatusIcon = config.icon;
 
           return (
-            <div key={job.id} className={`bg-dark-600/80 backdrop-blur-sm border rounded-2xl p-4 shadow-xl ${config.borderColor}`}>
+            <Link key={job.id} href={`/main/influencer/jobs/${job.id}`} className="block">
+            <div className={`bg-dark-600/80 backdrop-blur-sm border rounded-2xl p-4 shadow-xl hover:border-primary/30 transition-all cursor-pointer ${config.borderColor}`}>
               {/* Header */}
               <div className="flex items-start gap-3 mb-3">
                 <img
@@ -305,30 +306,22 @@ export default function JobsPage() {
 
               {/* Action Buttons */}
               <div className="mt-3 space-y-2">
-                <Link
-                  href={`/main/influencer/jobs/${job.id}`}
-                  className="flex items-center justify-center w-full py-2.5 px-4 bg-dark-600/80 text-gray-300 border border-dark-400/40 rounded-2xl hover:border-primary/30 transition-all text-sm font-medium"
-                >
+                <div className="flex items-center justify-center w-full py-2.5 px-4 bg-dark-600/80 text-gray-300 border border-dark-400/40 rounded-2xl text-sm font-medium">
                   {t.completed.viewDetails}
-                </Link>
+                </div>
                 {job.status === 'accepted' && (
-                  <Link
-                    href={`/main/influencer/jobs/${job.id}`}
-                    className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-secondary to-primary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 text-sm"
-                  >
+                  <div className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-secondary to-primary text-white rounded-2xl font-semibold shadow-lg shadow-primary/20 text-sm">
                     {language === 'ko' ? '작업 시작' : 'Bắt đầu công việc'}
-                  </Link>
+                  </div>
                 )}
                 {job.status === 'in_progress' && (
-                  <Link
-                    href={`/main/influencer/jobs/${job.id}`}
-                    className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 text-sm"
-                  >
+                  <div className="flex items-center justify-center w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-semibold shadow-lg shadow-primary/20 text-sm">
                     {language === 'ko' ? '결과물 제출' : 'Nộp kết quả'}
-                  </Link>
+                  </div>
                 )}
               </div>
             </div>
+            </Link>
           );
         })}
 

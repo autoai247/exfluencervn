@@ -110,6 +110,7 @@ export default function CompletedCampaignsPage() {
         <div className="space-y-4">
           {filteredCampaigns.map((campaign) => (
             <div key={campaign.id} className="bg-dark-600/80 backdrop-blur-sm border border-dark-400/40 rounded-2xl p-4 shadow-xl">
+              <Link href={`/main/influencer/campaigns/${campaign.id}`} className="block">
               <div className="flex gap-3">
                 {/* Thumbnail */}
                 <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
@@ -183,6 +184,7 @@ export default function CompletedCampaignsPage() {
                   )}
                 </div>
               </div>
+              </Link>
 
               {/* 액션 버튼 */}
               <div className="flex gap-2 mt-3 pt-3 border-t border-dark-500/50">

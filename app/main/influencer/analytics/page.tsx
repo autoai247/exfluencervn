@@ -1,6 +1,7 @@
 'use client';
 
-import { BarChart3, TrendingUp, DollarSign, Users, Eye, Calendar, Award, Target } from 'lucide-react';
+import Link from 'next/link';
+import { BarChart3, TrendingUp, DollarSign, Users, Eye, Calendar, Award, Target, ChevronRight } from 'lucide-react';
 import MobileHeader from '@/components/common/MobileHeader';
 import BottomNav from '@/components/common/BottomNav';
 import { formatPoints } from '@/lib/points';
@@ -28,9 +29,9 @@ const mockStats = {
 };
 
 const recentCampaigns = [
-  { name: 'Review Skincare cao cấp', date: '2026-02-10', earning: 2500000, views: 85000, status: 'completed' },
-  { name: 'Fashion Brand Collaboration', date: '2026-02-05', earning: 3200000, views: 124000, status: 'completed' },
-  { name: 'Unboxing Beauty Box', date: '2026-01-28', earning: 1800000, views: 67000, status: 'completed' },
+  { id: '1', name: 'Review Skincare cao cấp', date: '2026-02-10', earning: 2500000, views: 85000, status: 'completed' },
+  { id: '2', name: 'Fashion Brand Collaboration', date: '2026-02-05', earning: 3200000, views: 124000, status: 'completed' },
+  { id: '3', name: 'Unboxing Beauty Box', date: '2026-01-28', earning: 1800000, views: 67000, status: 'completed' },
 ];
 
 export default function InfluencerAnalyticsPage() {
@@ -182,11 +183,12 @@ export default function InfluencerAnalyticsPage() {
           <h3 className="text-sm font-semibold text-gray-400 mb-3 px-2">
             {t.analyticsPage.recentCampaigns}
           </h3>
-          <div className="space-y-6">
+          <div className="space-y-3">
             {recentCampaigns.map((campaign, idx) => (
-              <div
+              <Link
                 key={idx}
-                className="bg-dark-600/80 backdrop-blur-xl rounded-xl p-4 border-2 border-dark-500/50 shadow-xl"
+                href={`/main/influencer/campaigns/${campaign.id}`}
+                className="block bg-dark-600/80 backdrop-blur-xl rounded-xl p-4 border-2 border-dark-500/50 shadow-xl active:scale-95 transition-transform"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
@@ -196,22 +198,23 @@ export default function InfluencerAnalyticsPage() {
                       {campaign.date}
                     </p>
                   </div>
-                  <div className="px-2 py-1 bg-success/20 text-success text-xs rounded-full font-medium">
-                    {t.analyticsPage.completed}
+                  <div className="flex items-center gap-2">
+                    <div className="px-2 py-1 bg-success/20 text-success text-xs rounded-full font-medium">
+                      {t.analyticsPage.completed}
+                    </div>
+                    <ChevronRight size={14} className="text-gray-500" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-4">
-                    <span className="text-gray-400">
-                      <Eye size={12} className="inline mr-1" />
-                      {(campaign.views / 1000).toFixed(0)}K
-                    </span>
-                  </div>
+                  <span className="text-gray-400 flex items-center gap-1">
+                    <Eye size={12} />
+                    {(campaign.views / 1000).toFixed(0)}K
+                  </span>
                   <div className="text-success font-bold">
                     +{formatPoints(campaign.earning)}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

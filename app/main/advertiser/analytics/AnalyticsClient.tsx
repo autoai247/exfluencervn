@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
   TrendingUp,
@@ -11,6 +12,8 @@ import {
   Activity,
   Target,
   Zap,
+  Calendar,
+  ChevronRight,
 } from 'lucide-react';
 import { formatPoints } from '@/lib/points';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -46,6 +49,12 @@ export default function AnalyticsClient() {
   };
 
   const budgetUtilization = ((stats.totalSpent / stats.totalBudget) * 100).toFixed(1);
+
+  const recentCampaigns = [
+    { id: '1', name: language === 'ko' ? '스킨케어 브랜드 캠페인' : 'Chiến dịch thương hiệu skincare', date: '2026-02-10', budget: 3000000, reach: 124000, status: 'active' },
+    { id: '2', name: language === 'ko' ? '패션 협업 프로모션' : 'Khuyến mãi hợp tác thời trang', date: '2026-02-05', budget: 2500000, reach: 98000, status: 'completed' },
+    { id: '3', name: language === 'ko' ? '뷰티 언박싱 이벤트' : 'Sự kiện unboxing làm đẹp', date: '2026-01-28', budget: 1800000, reach: 67000, status: 'completed' },
+  ];
 
   const overviewCards = [
     {
@@ -258,6 +267,54 @@ export default function AnalyticsClient() {
           </div>
         </div>
       )}
+
+      {/* Recent Campaigns */}
+      <div>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h3 className="text-sm font-bold text-white">
+            {language === 'ko' ? '최근 캠페인' : 'Chiến dịch gần đây'}
+          </h3>
+          <Link href="/main/advertiser/campaigns" className="text-xs text-primary">
+            {language === 'ko' ? '전체보기' : 'Xem tất cả'}
+          </Link>
+        </div>
+        <div className="space-y-3">
+          {recentCampaigns.map((campaign) => (
+            <Link
+              key={campaign.id}
+              href={`/main/advertiser/campaigns/${campaign.id}`}
+              className="flex items-center justify-between bg-dark-600/80 backdrop-blur-sm border-2 border-dark-400/40 rounded-2xl p-4 shadow-xl active:scale-95 transition-transform"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-semibold text-sm truncate">{campaign.name}</p>
+                <p className="text-gray-400 text-xs mt-1 flex items-center gap-1">
+                  <Calendar size={10} />
+                  {campaign.date}
+                </p>
+                <div className="flex items-center gap-3 mt-2 text-xs">
+                  <span className="text-gray-400 flex items-center gap-1">
+                    <Eye size={10} />
+                    {(campaign.reach / 1000).toFixed(0)}K
+                  </span>
+                  <span className="text-success font-medium">{formatPoints(campaign.budget)} VND</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 ml-3">
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  campaign.status === 'active'
+                    ? 'bg-primary/20 text-primary'
+                    : 'bg-success/20 text-success'
+                }`}>
+                  {campaign.status === 'active'
+                    ? (language === 'ko' ? '진행중' : 'Đang chạy')
+                    : (language === 'ko' ? '완료' : 'Hoàn thành')}
+                </span>
+                <ChevronRight size={14} className="text-gray-500" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* Info Banner */}
       <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary/20 rounded-2xl p-4 shadow-xl">

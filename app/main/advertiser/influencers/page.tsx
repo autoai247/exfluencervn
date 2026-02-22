@@ -33,15 +33,15 @@ import {
 const mockInfluencers: Influencer[] = [
   {
     id: '1',
-    name: '김민지',
+    name: 'Nguyễn Thị Lan',
     categories: ['beauty', 'lifestyle'],
     platforms: [
-      { platform: 'instagram', followers: 85000, engagement: 5.2, avgViews: 18000, username: '@minji_beauty' },
-      { platform: 'tiktok', followers: 40000, engagement: 4.1, avgViews: 7000, username: '@minji_official' },
+      { platform: 'instagram', followers: 85000, engagement: 5.2, avgViews: 18000, username: '@lan.beauty' },
+      { platform: 'tiktok', followers: 40000, engagement: 4.1, avgViews: 7000, username: '@lan_official' },
     ],
-    followers: 125000, // 총합
-    engagement: 4.8, // 평균
-    platform: 'instagram', // 주력
+    followers: 125000,
+    engagement: 4.8,
+    platform: 'instagram',
     avgViews: 25000,
     rating: 4.9,
     completedCampaigns: 45,
@@ -55,11 +55,11 @@ const mockInfluencers: Influencer[] = [
   },
   {
     id: '2',
-    name: '이서연',
+    name: 'Trần Hà My',
     categories: ['fashion', 'beauty'],
     platforms: [
-      { platform: 'instagram', followers: 52000, engagement: 4.8, avgViews: 12000, username: '@seoyeon_style' },
-      { platform: 'tiktok', followers: 46000, engagement: 5.6, avgViews: 23000, username: '@seoyeon_ootd' },
+      { platform: 'instagram', followers: 52000, engagement: 4.8, avgViews: 12000, username: '@hamy_style' },
+      { platform: 'tiktok', followers: 46000, engagement: 5.6, avgViews: 23000, username: '@hamy_ootd' },
     ],
     followers: 98000,
     engagement: 5.2,
@@ -77,12 +77,12 @@ const mockInfluencers: Influencer[] = [
   },
   {
     id: '3',
-    name: '박지훈',
+    name: 'Lê Minh Tuấn',
     categories: ['tech', 'gaming'],
     platforms: [
-      { platform: 'youtube', followers: 98000, engagement: 4.5, avgViews: 35000, username: '@jihoon_tech' },
-      { platform: 'instagram', followers: 38000, engagement: 3.8, avgViews: 8000, username: '@jihoon_daily' },
-      { platform: 'tiktok', followers: 20000, engagement: 4.2, avgViews: 6000, username: '@jihoon_shorts' },
+      { platform: 'youtube', followers: 98000, engagement: 4.5, avgViews: 35000, username: '@tuan_tech' },
+      { platform: 'instagram', followers: 38000, engagement: 3.8, avgViews: 8000, username: '@tuan_daily' },
+      { platform: 'tiktok', followers: 20000, engagement: 4.2, avgViews: 6000, username: '@tuan_shorts' },
     ],
     followers: 156000,
     engagement: 4.3,
@@ -99,11 +99,11 @@ const mockInfluencers: Influencer[] = [
   },
   {
     id: '4',
-    name: '최유리',
+    name: 'Phạm Bảo Châu',
     categories: ['beauty', 'skincare'],
     platforms: [
-      { platform: 'instagram', followers: 145000, engagement: 5.8, avgViews: 42000, username: '@yuri_skincare' },
-      { platform: 'youtube', followers: 65000, engagement: 5.1, avgViews: 28000, username: '@유리뷰티' },
+      { platform: 'instagram', followers: 145000, engagement: 5.8, avgViews: 42000, username: '@baochau_skincare' },
+      { platform: 'youtube', followers: 65000, engagement: 5.1, avgViews: 28000, username: '@BaoChauBeauty' },
     ],
     followers: 210000,
     engagement: 5.5,
@@ -121,11 +121,11 @@ const mockInfluencers: Influencer[] = [
   },
   {
     id: '5',
-    name: '정민수',
+    name: 'Võ Đức Hùng',
     categories: ['fitness', 'health'],
     platforms: [
-      { platform: 'instagram', followers: 62000, engagement: 4.2, avgViews: 14000, username: '@minsu_fitness' },
-      { platform: 'youtube', followers: 25000, engagement: 3.1, avgViews: 5500, username: '@민수PT' },
+      { platform: 'instagram', followers: 62000, engagement: 4.2, avgViews: 14000, username: '@hung_fitness' },
+      { platform: 'youtube', followers: 25000, engagement: 3.1, avgViews: 5500, username: '@HungPT' },
     ],
     followers: 87000,
     engagement: 3.8,
@@ -141,11 +141,11 @@ const mockInfluencers: Influencer[] = [
   },
   {
     id: '6',
-    name: '황수진',
+    name: 'Đỗ Thị Thu Hương',
     categories: ['food', 'travel'],
     platforms: [
-      { platform: 'tiktok', followers: 88000, engagement: 4.5, avgViews: 28000, username: '@sujin_foodie' },
-      { platform: 'instagram', followers: 54000, engagement: 3.8, avgViews: 12000, username: '@sujin_eats' },
+      { platform: 'tiktok', followers: 88000, engagement: 4.5, avgViews: 28000, username: '@huong_foodie' },
+      { platform: 'instagram', followers: 54000, engagement: 3.8, avgViews: 12000, username: '@huong_eats' },
     ],
     followers: 142000,
     engagement: 4.2,

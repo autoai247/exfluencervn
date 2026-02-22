@@ -753,7 +753,7 @@ function CampaignsPageContent() {
               {isAdminMode && (
                 <Link href="/admin/demo-campaigns">
                   <button className="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white text-[10px] rounded-full font-bold transition-all flex items-center gap-1">
-                    ⚙️ Cài đặt tự động
+                    ⚙️ {language === 'ko' ? '자동 설정' : 'Cài đặt tự động'}
                   </button>
                 </Link>
               )}

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, TrendingUp, User, Phone, Building2, CheckSquare, Square, Facebook, MessageCircle } from 'lucide-react';
-import { FaGoogle } from 'react-icons/fa';
 import type { UserType } from '@/types';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
@@ -244,46 +243,6 @@ export default function RegisterPage() {
                     ← {t.common.back}
                   </button>
                 </div>
-
-            {/* Social Login */}
-            <div className="space-y-3">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-dark-500"></div>
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-dark-700 px-2 text-gray-400">{t.auth.register.quickSignup}</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => alert(language === 'ko' ? 'Facebook 로그인 기능은 곧 출시됩니다.' : 'Tính năng đăng nhập Facebook sẽ sớm ra mắt.')}
-                  className="btn btn-ghost border-blue-500/30 hover:bg-blue-500/10 text-sm py-3"
-                >
-                  <Facebook size={18} className="text-blue-500" />
-                  <span>Facebook</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => alert(language === 'ko' ? 'Google 로그인 기능은 곧 출시됩니다.' : 'Tính năng đăng nhập Google sẽ sớm ra mắt.')}
-                  className="btn btn-ghost border-red-500/30 hover:bg-red-500/10 text-sm py-3"
-                >
-                  <FaGoogle size={18} className="text-red-500" />
-                  <span>Google</span>
-                </button>
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-dark-500"></div>
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-dark-700 px-2 text-gray-400">{t.auth.register.orEmail}</span>
-                </div>
-              </div>
-            </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
